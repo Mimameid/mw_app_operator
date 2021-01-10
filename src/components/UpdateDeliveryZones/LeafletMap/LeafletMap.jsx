@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
 
-import LeafletUI from './LeafletUI/LeafletUIContainer';
-import PolygonLayer from './PolygonLayer/PolygonLayerContainer';
-import VertexMarkerLayer from './VertexMarkerLayer/VertexMarkerLayer';
+import LeafletPanel from './LeafletPanel/LeafletPanelContainer';
+import DrawLayer from './DrawLayer/DrawLayerContainer';
 
-function LeafletMap({ disableWidthChanged, deliveryZoneState, widthChanged }) {
-  const [dragging, setDragging] = useState(true);
+function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -16,15 +14,19 @@ function LeafletMap({ disableWidthChanged, deliveryZoneState, widthChanged }) {
     disableWidthChanged();
   }, [widthChanged]);
 
+  useEffect(() => {
+    if (map) {
+      if (drawMode) {
+        map._container.style.cursor = 'cell';
+      } else {
+        map._container.style.cursor = 'default';
+      }
+    }
+  }, [drawMode]);
+
   const onMapCreate = (map) => {
     setMap(map);
     map.invalidateSize();
-  };
-
-  const mouseDownHandler = (event) => {
-    if (deliveryZoneState.vertexSelected) {
-      setDragging(false);
-    }
   };
 
   return (
@@ -35,18 +37,14 @@ function LeafletMap({ disableWidthChanged, deliveryZoneState, widthChanged }) {
         style={{ height: '100%', width: '100%' }}
         doubleClickZoom={false}
         zoomControl={false}
-        onMouseDown={mouseDownHandler}
-        dragging={dragging}
         whenCreated={onMapCreate}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
-        <VertexMarkerLayer />
-        <PolygonLayer />
-
-        <LeafletUI />
+        <LeafletPanel />
+        <DrawLayer />
       </MapContainer>
     </div>
   );

@@ -1,22 +1,25 @@
+import polygonClipping from 'polygon-clipping';
+
 import store from '../store';
 
 export function getColor() {
   let colors = [
-    '#fa9579',
-    '#654062',
-    '#65d6ce',
-    '#f9e0ae',
-    '#fc8621',
-    '#c24914',
-    '#682c0e',
-    '#4e8d7c',
-    '#045762',
-    '#ea97ad',
+    '#2f4f4f',
+    '#8b4513',
+    '#ff69b4',
+    '#000080',
+    '#eee8aa',
+    '#00ffff',
+    '#6495ed',
+    '#228b22',
+    '#ffd700',
+    '#ff00ff',
+    '#ff0000',
   ];
 
   let usedColors = [];
-  for (let polygons of store.getState().deliveryZoneState.polygons) {
-    usedColors.push(polygons.color);
+  for (let area of store.getState().deliveryZoneState.areas) {
+    usedColors.push(area.color);
   }
 
   for (let color of colors) {
@@ -24,4 +27,27 @@ export function getColor() {
       return color;
     }
   }
+}
+
+export function getDifference(areas, areaPolygons, areaNumber) {
+  if (areas.length < 1) {
+    // convert to linear ring
+    return areaPolygons;
+  }
+
+  // create polygon feature (geojson format) of array of linear rings
+  let selectedPolygon = areaPolygons;
+
+  for (let i = 0; i < areas.length; i++) {
+    if (areas[i].areaNumber !== areaNumber) {
+      selectedPolygon = polygonClipping.difference(selectedPolygon, areas[i].areaPolygons);
+
+      if (!selectedPolygon.length) {
+        if (polygonClipping.intersection(selectedPolygon, areas[i].areaPolygons)) {
+          // TODO: polygon was drawn entirely inside of another polygon, what to do?
+        }
+      }
+    }
+  }
+  return selectedPolygon;
 }

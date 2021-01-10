@@ -1,3 +1,26 @@
+export function wasPolygonEdited(deliveryZoneState) {
+  let currentPolygon = deliveryZoneState.areaPolygons[deliveryZoneState.selectedPolygonIndex];
+  if (currentPolygon[0].length < 3) {
+    return false;
+  }
+
+  // check if the current polygon is an existing one
+  let selectedArea = deliveryZoneState.areas.find((area) => area.areaNumber === deliveryZoneState.areaNumber);
+  if (selectedArea) {
+    // Check if arrays are equal
+    if (
+      JSON.stringify(selectedArea.areaPolygons[deliveryZoneState.selectedPolygonIndex]) ===
+      JSON.stringify(currentPolygon)
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  } else {
+    return true;
+  }
+}
+
 export const debounce = (func, wait, immediate) => {
   let timeout;
   return (...myArgs) => {
@@ -21,8 +44,7 @@ export const throttle = (fn, delay) => {
     if (now - lastCall < delay) {
       return;
     }
-    console.log(now, lastCall, delay);
-    console.log('hitti');
+
     lastCall = now;
     // eslint-disable-next-line consistent-return
     return fn(...args);

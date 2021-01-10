@@ -1,5 +1,5 @@
 import React from 'react';
-import { CircleMarker, Tooltip, useMapEvents } from 'react-leaflet';
+import { CircleMarker, useMapEvents } from 'react-leaflet';
 
 function VertexMarker({ coordinates, index, selectVertex, unselectVertex, updateVertex, vertexSelected, color }) {
   useMapEvents({
@@ -7,9 +7,6 @@ function VertexMarker({ coordinates, index, selectVertex, unselectVertex, update
       if (vertexSelected) {
         updateVertex([event.latlng.lat, event.latlng.lng]);
       }
-
-      // setDragging(true);
-      // unselectVertex();
     },
   });
 
@@ -24,28 +21,20 @@ function VertexMarker({ coordinates, index, selectVertex, unselectVertex, update
       event.target._map.dragging.disable();
       selectVertex(index);
     },
-    mouseup(event) {
+
+    click(event) {
       event.target._map.dragging.enable();
-      unselectVertex(index);
+      event.originalEvent.view.L.DomEvent.stopPropagation(event);
+      unselectVertex();
     },
   };
 
   return (
     <CircleMarker
-      color="black"
-      weight={1}
-      fillColor={color}
-      fillOpacity={1}
+      pathOptions={{ color: 'black', weight: 1, fillColor: color, fillOpacity: 1, radius: 7 }}
       center={coordinates}
-      radius={6}
       eventHandlers={eventHandlers}
-    >
-      {index === 0 ? (
-        <Tooltip direction="top" offset={[0, -10]} permanent>
-          Schließen
-        </Tooltip>
-      ) : null}
-    </CircleMarker>
+    />
   );
 }
 

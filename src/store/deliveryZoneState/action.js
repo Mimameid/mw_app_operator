@@ -1,8 +1,13 @@
 import {
   TOGGLE_DRAWMODE,
-  CREATE_POLYGON,
+  TOGGLE_SELECTMODE,
+  TOGGLE_DELETEMODE,
+  CREATE_AREA,
+  DELETE_AREA,
+  SAVE_AREA,
+  ACTIVATE_AREA,
+  DEACTIVATE_AREA,
   ACTIVATE_POLYGON,
-  SAVE_POLYGON,
   REMOVE_POLYGON,
   ADD_POINT,
   REMOVE_POINT,
@@ -14,34 +19,66 @@ import {
 
 import { getColor } from './utils';
 
-export function toggleDrawmode() {
+export function toggleDrawMode() {
   return {
     type: TOGGLE_DRAWMODE,
   };
 }
-
-export function createPolygon() {
+export function toggleSelectMode() {
   return {
-    type: CREATE_POLYGON,
+    type: TOGGLE_SELECTMODE,
+  };
+}
+export function toggleDeleteMode() {
+  return {
+    type: TOGGLE_DELETEMODE,
+  };
+}
+
+export function saveArea() {
+  return {
+    type: SAVE_AREA,
+  };
+}
+
+export function createArea() {
+  return {
+    type: CREATE_AREA,
     payload: getColor(),
   };
 }
+
+export function deleteArea(areaNumber) {
+  return {
+    type: DELETE_AREA,
+    payload: areaNumber,
+  };
+}
+
+export function activateArea(areaNumber) {
+  return {
+    type: ACTIVATE_AREA,
+    payload: areaNumber,
+  };
+}
+
+export function deactivateArea(areaNumber) {
+  return {
+    type: DEACTIVATE_AREA,
+    payload: areaNumber,
+  };
+}
+
+export function activatePolygon(polygonIndex) {
+  return {
+    type: ACTIVATE_POLYGON,
+    payload: polygonIndex,
+  };
+}
+
 export function removePolygon() {
   return {
     type: REMOVE_POLYGON,
-  };
-}
-
-export function savePolygon() {
-  return {
-    type: SAVE_POLYGON,
-  };
-}
-
-export function activatePolygon(polygonNumber) {
-  return {
-    type: ACTIVATE_POLYGON,
-    payload: polygonNumber,
   };
 }
 
@@ -77,9 +114,9 @@ export function unselectVertex() {
   };
 }
 
-export function updateVertex(coords) {
+export function updateVertex(vertexIndex) {
   return {
     type: UPDATE_VERTEX,
-    payload: coords,
+    payload: vertexIndex,
   };
 }

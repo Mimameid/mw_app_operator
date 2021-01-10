@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 
 import { CircleMarker, Polyline, useMapEvents } from 'react-leaflet';
 
 const MOUSE_POSITION_DELTA = 0.000025;
 
-function LookaheadLine() {
-  const activePolygon = useSelector((state) => state.deliveryZoneState.activePolygon);
+function LookaheadLine({ selectedPolygon, color }) {
   const [mousePosition, setMousePosition] = useState([0, 0]);
 
   useMapEvents({
@@ -22,27 +20,32 @@ function LookaheadLine() {
 
   const eventHandlers = {
     mouseover(event) {
-      event.originalEvent.target.style.cursor = 'crosshair';
+      event.originalEvent.target.style.cursor = 'cell';
     },
   };
 
   return (
     <React.Fragment>
-      {activePolygon?.coords.length > 0 ? (
-        <Polyline
-          dashArray={[5, 20]}
-          positions={[activePolygon.coords[activePolygon.coords.length - 1], mousePosition]}
-          color={activePolygon.color}
-          eventHandlers={eventHandlers}
-        />
+      {selectedPolygon[0].length > 1 ? (
+        <React.Fragment>
+          <Polyline
+            dashArray={[5, 20]}
+            positions={[selectedPolygon[0][selectedPolygon[0].length - 2], mousePosition]}
+            pathOptions={{ color: color }}
+            eventHandlers={eventHandlers}
+          />
+          <Polyline
+            dashArray={[5, 20]}
+            positions={[selectedPolygon[0][0], mousePosition]}
+            pathOptions={{ color: color }}
+            eventHandlers={eventHandlers}
+          />
+        </React.Fragment>
       ) : null}
       <CircleMarker
-        color="black"
-        fillColor={activePolygon.color}
+        pathOptions={{ color: 'black', fillColor: color, radius: 7, weight: 1 }}
         fillOpacity={1}
         center={mousePosition}
-        radius={6}
-        weight={1}
         eventHandlers={eventHandlers}
         // onMouseDown={circleMouseDownHandler}
         // onClick={circleMouseClickHandler}
