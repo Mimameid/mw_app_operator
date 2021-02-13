@@ -87,8 +87,6 @@ function LeafletPanel({
       return;
     }
 
-    console.log(areas);
-    console.log(activeArea);
     if (wasAreaEdited(areas, activeArea)) {
       setDialogOpen(true);
     } else {

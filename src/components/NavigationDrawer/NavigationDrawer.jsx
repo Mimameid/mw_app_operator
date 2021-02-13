@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 function NavigationDrawer() {
   const dispatch = useDispatch();
   const theme = useTheme();
-  console.log(theme);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
