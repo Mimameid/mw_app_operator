@@ -5,7 +5,6 @@ import {
   deactivateArea,
   toggleDeleteMode,
   createArea,
-  toggleSelectMode,
 } from '../../../../store/deliveryZoneState/action';
 
 import LeafletPanel from './LeafletPanel';
@@ -16,15 +15,14 @@ export const LeafletPanelContainer = (props) => {
 
 const mapStateToProps = (state) => ({
   drawMode: state.deliveryZoneState.drawMode,
-  selectMode: state.deliveryZoneState.selectMode,
-  deleteMode: state.deliveryZoneState.deleteMode,
-  deliveryZoneState: state.deliveryZoneState,
+
+  areas: state.deliveryZoneState.areas,
+  activeArea: state.deliveryZoneState.activeArea,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleDrawMode: () => dispatch(toggleDrawMode()),
-    toggleSelectMode: () => dispatch(toggleSelectMode()),
     toggleDeleteMode: () => dispatch(toggleDeleteMode()),
     createArea: () => dispatch(createArea()),
     deactivateArea: () => dispatch(deactivateArea()),

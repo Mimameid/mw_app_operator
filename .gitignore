@@ -23,3 +23,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .eslintcache
+src/assets/plz_to_location_name.json
+src/assets/plz_to_polygon_mapping_germany.json

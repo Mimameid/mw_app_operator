@@ -1,13 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Add, Close, Edit } from '@material-ui/icons';
+import { Edit } from '@material-ui/icons';
 
 import L from 'leaflet';
 
-import { wasPolygonEdited } from '../../../../utils/utils.js';
+import { wasAreaEdited } from '../../../../utils/utils.js';
 import AreaPanel from './AreaPanel/AreaPanelContainer';
-import DrawEditorPanel from './DrawEditorPanel/DrawEditorPanelContainer';
+import SaveDrawer from './SaveDrawer/SaveDrawerContainer';
+import PLZDrawer from './PLZDrawer/PLZDrawerContainer';
 import CustomDialog from '../../../common/CustomDialog/CustomDialog';
 
 const MAX_AREAS = 11;
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     padding: theme.spacing(1),
-    fontSize: 0,
+    fontSize: theme.typography.body1.fontSize,
   },
   editIcon: {
     transform: 'rotate(-15deg)',
@@ -55,20 +56,18 @@ const useStyles = makeStyles((theme) => ({
 
 function LeafletPanel({
   drawMode,
-  selectMode,
-  deleteMode,
+  areas,
+  activeArea,
+
   toggleDrawMode,
-  toggleSelectMode,
-  toggleDeleteMode,
   createArea,
   deactivateArea,
-  deliveryZoneState,
 }) {
   const classes = useStyles();
   const divRef = useRef(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [editButtonDialogOpen, setEditButtonDialogOpen] = useState(false);
   const [radius, setRadius] = useState('4px');
+  const [plzOpen, setPLZOpen] = useState(false);
   const iconButtonSize = 'small';
 
   useEffect(() => {
@@ -82,66 +81,38 @@ function LeafletPanel({
   }, [drawMode]);
 
   const handleAddButton = (event) => {
-    if (!drawMode) {
-      if (selectMode) {
-        toggleSelectMode();
-      }
-
-      toggleDrawMode();
+    if (areas.length < 1) {
       createArea();
-    } else {
-      if (wasPolygonEdited(deliveryZoneState)) {
-        setDialogOpen(true);
-      } else {
-        setDialogOpen(false);
-        toggleDrawMode();
-        deactivateArea();
-        if (selectMode) {
-          toggleSelectMode();
-        }
-      }
-
-      if (deleteMode) {
-        toggleDeleteMode();
-      }
+      toggleDrawMode();
+      return;
     }
-  };
 
-  const handleEditButton = (event) => {
-    if (!drawMode) {
-      if (!selectMode) {
-        toggleSelectMode();
-      } else {
-        toggleSelectMode();
-      }
+    console.log(areas);
+    console.log(activeArea);
+    if (wasAreaEdited(areas, activeArea)) {
+      setDialogOpen(true);
     } else {
-      if (wasPolygonEdited(deliveryZoneState)) {
-        setEditButtonDialogOpen(true);
-      } else {
-        setEditButtonDialogOpen(false);
+      if (!drawMode) {
+        createArea();
         toggleDrawMode();
-        toggleSelectMode();
+      } else {
         deactivateArea();
+        toggleDrawMode();
       }
     }
   };
 
   const handleRejectDialog = (event) => {
     setDialogOpen(false);
-    setEditButtonDialogOpen(false);
   };
 
   const handleAcceptDialog = (event) => {
+    deactivateArea();
     setDialogOpen(false);
+    if (!drawMode) {
+      createArea();
+    }
     toggleDrawMode();
-    deactivateArea();
-  };
-
-  const handleEditAcceptDialog = (event) => {
-    setEditButtonDialogOpen(false);
-    toggleDrawMode();
-    deactivateArea();
-    toggleSelectMode();
   };
 
   return (
@@ -149,23 +120,19 @@ function LeafletPanel({
       <div style={{ direction: 'rtl' }}>
         <Paper className={classes.buttonsContainer} style={{ borderRadius: radius }}>
           <IconButton
-            className={classes.iconButton}
+            className={`${classes.iconButton} ${classes.editIcon} ${drawMode ? classes.editIconAnimation : null}`}
             onClick={handleAddButton}
             size={iconButtonSize}
-            disabled={deliveryZoneState.areas.length > MAX_AREAS - 1}
-          >
-            {drawMode ? <Close /> : <Add />}
-          </IconButton>
-
-          <IconButton
-            className={`${classes.iconButton} ${classes.editIcon} ${selectMode ? classes.editIconAnimation : null}`}
-            onClick={handleEditButton}
-            size={iconButtonSize}
+            disabled={areas.length > MAX_AREAS - 1}
           >
             <Edit />
           </IconButton>
+          {/* <IconButton className={classes.iconButton} onClick={() => setPLZOpen(!plzOpen)}>
+            PLZ
+          </IconButton> */}
         </Paper>
-        <DrawEditorPanel setParentRadius={setRadius} />
+        {/* <PLZDrawer open={plzOpen} setParentRadius={setRadius} /> */}
+        <SaveDrawer setParentRadius={setRadius} />
       </div>
       <CustomDialog
         open={dialogOpen}
@@ -175,15 +142,6 @@ function LeafletPanel({
         message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
           unwiederruflich gelöscht."
       />
-      <CustomDialog
-        open={editButtonDialogOpen}
-        handleReject={handleRejectDialog}
-        handleAccept={handleEditAcceptDialog}
-        title="Bearbeitung abbrechen?"
-        message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
-          unwiederruflich gelöscht."
-      />
-
       <AreaPanel />
     </div>
   );

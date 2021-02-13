@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Polygon } from 'react-leaflet';
+import { MapContainer, TileLayer } from 'react-leaflet';
 
 import LeafletPanel from './LeafletPanel/LeafletPanelContainer';
-import DrawLayer from './DrawLayer/DrawLayerContainer';
+import AreaLayer from './AreaLayer/AreaLayerContainer';
 
 function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
   const [map, setMap] = useState(null);
@@ -12,17 +12,17 @@ function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
       map.invalidateSize();
     }
     disableWidthChanged();
-  }, [widthChanged]);
+  }, [widthChanged, disableWidthChanged, map]);
 
   useEffect(() => {
     if (map) {
       if (drawMode) {
-        map._container.style.cursor = 'cell';
+        map._container.style.cursor = 'cell !important';
       } else {
         map._container.style.cursor = 'default';
       }
     }
-  }, [drawMode]);
+  }, [drawMode, map]);
 
   const onMapCreate = (map) => {
     setMap(map);
@@ -36,7 +36,7 @@ function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
         zoom={14}
         style={{ height: '100%', width: '100%' }}
         doubleClickZoom={false}
-        zoomControl={false}
+        zoomControl={true}
         whenCreated={onMapCreate}
       >
         <TileLayer
@@ -44,7 +44,7 @@ function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
         <LeafletPanel />
-        <DrawLayer />
+        <AreaLayer />
       </MapContainer>
     </div>
   );

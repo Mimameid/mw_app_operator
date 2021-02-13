@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { CircleMarker, Polyline, useMapEvents } from 'react-leaflet';
+import { CircleMarker, Polyline, Tooltip, useMapEvents } from 'react-leaflet';
 
 const MOUSE_POSITION_DELTA = 0.000025;
 
@@ -24,6 +24,12 @@ function LookaheadLine({ selectedPolygon, color }) {
     },
   };
 
+  let tooltipText = 'Zum Schließen ersten Marker klicken';
+  if (selectedPolygon[0].length === 0) {
+    tooltipText = 'Zum Starten auf der Karte klicken';
+  } else if (selectedPolygon[0].length < 4) {
+    tooltipText = 'Klicken, um weiterzuzeichnen';
+  }
   return (
     <React.Fragment>
       {selectedPolygon[0].length > 1 ? (
@@ -34,12 +40,6 @@ function LookaheadLine({ selectedPolygon, color }) {
             pathOptions={{ color: color }}
             eventHandlers={eventHandlers}
           />
-          <Polyline
-            dashArray={[5, 20]}
-            positions={[selectedPolygon[0][0], mousePosition]}
-            pathOptions={{ color: color }}
-            eventHandlers={eventHandlers}
-          />
         </React.Fragment>
       ) : null}
       <CircleMarker
@@ -47,9 +47,14 @@ function LookaheadLine({ selectedPolygon, color }) {
         fillOpacity={1}
         center={mousePosition}
         eventHandlers={eventHandlers}
+        pane="markerPane"
         // onMouseDown={circleMouseDownHandler}
         // onClick={circleMouseClickHandler}
-      />
+      >
+        <Tooltip direction={'bottom'} opacity={0.9} offset={[0, 10]} permanent>
+          {tooltipText}
+        </Tooltip>
+      </CircleMarker>
     </React.Fragment>
   );
 }

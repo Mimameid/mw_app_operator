@@ -34,12 +34,13 @@ const useStyles = makeStyles((theme) => ({
 function NavigationDrawer() {
   const dispatch = useDispatch();
   const theme = useTheme();
+  console.log(theme);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     dispatch({ type: 'SET_WIDTH', payload: { width: open ? 200 : theme.spacing(7) + 1 } });
-  }, [open]);
+  }, [open, dispatch, theme]);
 
   const handleDrawerControl = () => {
     setOpen(!open);

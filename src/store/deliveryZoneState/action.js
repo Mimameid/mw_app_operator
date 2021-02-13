@@ -8,13 +8,15 @@ import {
   ACTIVATE_AREA,
   DEACTIVATE_AREA,
   ACTIVATE_POLYGON,
+  ADD_POLYGON,
   REMOVE_POLYGON,
-  ADD_POINT,
-  REMOVE_POINT,
-  REMOVE_ALL_POINTS,
+  ROTATE_POLYGON,
+  ADD_VERTEX,
+  REMOVE_VERTEX,
   SELECT_VERTEX,
   UNSELECT_VERTEX,
   UPDATE_VERTEX,
+  SET_MINIMUM_ORDER_VALUE,
 } from './types';
 
 import { getColor } from './utils';
@@ -62,10 +64,9 @@ export function activateArea(areaNumber) {
   };
 }
 
-export function deactivateArea(areaNumber) {
+export function deactivateArea() {
   return {
     type: DEACTIVATE_AREA,
-    payload: areaNumber,
   };
 }
 
@@ -76,28 +77,34 @@ export function activatePolygon(polygonIndex) {
   };
 }
 
+export function addPolygon() {
+  return {
+    type: ADD_POLYGON,
+  };
+}
+
 export function removePolygon() {
   return {
     type: REMOVE_POLYGON,
   };
 }
 
-export function addPoint(point) {
+export function rotatePolygon() {
   return {
-    type: ADD_POINT,
-    payload: point,
+    type: ROTATE_POLYGON,
   };
 }
 
-export function removePoint() {
+export function addVertex(vertex) {
   return {
-    type: REMOVE_POINT,
+    type: ADD_VERTEX,
+    payload: vertex,
   };
 }
 
-export function removeAllPoints() {
+export function removeVertex() {
   return {
-    type: REMOVE_ALL_POINTS,
+    type: REMOVE_VERTEX,
   };
 }
 
@@ -114,9 +121,16 @@ export function unselectVertex() {
   };
 }
 
-export function updateVertex(vertexIndex) {
+export function updateVertex(coords) {
   return {
     type: UPDATE_VERTEX,
-    payload: vertexIndex,
+    payload: coords,
+  };
+}
+
+export function setMinimumOrderValue(value) {
+  return {
+    type: SET_MINIMUM_ORDER_VALUE,
+    payload: value,
   };
 }

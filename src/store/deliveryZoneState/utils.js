@@ -29,17 +29,17 @@ export function getColor() {
   }
 }
 
-export function getDifference(areas, areaPolygons, areaNumber) {
+export function getDifference(areas, activeArea) {
   if (areas.length < 1) {
     // convert to linear ring
-    return areaPolygons;
+    return activeArea.areaPolygons;
   }
 
   // create polygon feature (geojson format) of array of linear rings
-  let selectedPolygon = areaPolygons;
+  let selectedPolygon = activeArea.areaPolygons;
 
   for (let i = 0; i < areas.length; i++) {
-    if (areas[i].areaNumber !== areaNumber) {
+    if (areas[i].areaNumber !== activeArea.areaNumber) {
       selectedPolygon = polygonClipping.difference(selectedPolygon, areas[i].areaPolygons);
 
       if (!selectedPolygon.length) {

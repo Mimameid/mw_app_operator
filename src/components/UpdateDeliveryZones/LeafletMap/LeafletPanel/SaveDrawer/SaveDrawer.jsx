@@ -1,9 +1,9 @@
 import React from 'react';
 import { Paper, IconButton, Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Delete, Save } from '@material-ui/icons';
+import { Save } from '@material-ui/icons';
 
-import { wasPolygonEdited } from '../../../../../utils/utils';
+import { wasAreaEdited } from '../../../../../utils/utils';
 
 const useStyles = makeStyles((theme) => ({
   sliderContainer: {
@@ -42,16 +42,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DrawEditorPanel({ setParentRadius, toggleDeleteMode, saveArea, deliveryZoneState }) {
+function SaveDrawer({
+  drawMode,
+  areas,
+  activeArea,
+
+  setParentRadius,
+  toggleDrawMode,
+  saveArea,
+}) {
   const classes = useStyles();
   const iconButtonSize = 'small';
 
-  const deleteModeHandler = (event) => {
-    toggleDeleteMode();
-  };
-
   const saveAreaHandler = (event) => {
     saveArea();
+    if (drawMode) {
+      toggleDrawMode();
+    }
   };
   const handlePolygonMenuExit = (event) => {
     setParentRadius('4px');
@@ -60,37 +67,23 @@ function DrawEditorPanel({ setParentRadius, toggleDeleteMode, saveArea, delivery
     setParentRadius('0 4px 4px 0');
   };
 
-  let saveButtonEnabled = true;
-  if (deliveryZoneState.drawMode) {
-    saveButtonEnabled =
-      deliveryZoneState.areaPolygons[deliveryZoneState.selectedPolygonIndex][0].length < 4 ||
-      !wasPolygonEdited(deliveryZoneState);
+  let enablePanel = true;
+  if (activeArea.areaNumber > -1) {
+    enablePanel = !wasAreaEdited(areas, activeArea);
   }
 
   return (
     <div className={classes.sliderContainer}>
       <Slide
         direction="left"
-        in={deliveryZoneState.drawMode}
+        in={activeArea.areaNumber > -1 && !enablePanel}
         mountOnEnter
         unmountOnExit
         onExited={handlePolygonMenuExit}
         onEnter={handlePolygonMenuEnter}
       >
         <Paper className={classes.sliderPaperOpen}>
-          <IconButton
-            className={`${classes.iconButton} ${deliveryZoneState.deleteMode ? classes.deleteIconAnimation : null}`}
-            onClick={deleteModeHandler}
-            size={iconButtonSize}
-          >
-            <Delete />
-          </IconButton>
-          <IconButton
-            className={classes.iconButton}
-            onClick={saveAreaHandler}
-            size={iconButtonSize}
-            disabled={saveButtonEnabled}
-          >
+          <IconButton className={classes.iconButton} onClick={saveAreaHandler} size={iconButtonSize}>
             <Save />
           </IconButton>
         </Paper>
@@ -99,4 +92,4 @@ function DrawEditorPanel({ setParentRadius, toggleDeleteMode, saveArea, delivery
   );
 }
 
-export default DrawEditorPanel;
+export default SaveDrawer;

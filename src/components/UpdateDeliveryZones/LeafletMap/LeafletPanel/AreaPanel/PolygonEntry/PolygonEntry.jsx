@@ -1,119 +1,137 @@
 import React, { useState } from 'react';
-import { Paper, IconButton, Divider, TextField, InputAdornment } from '@material-ui/core';
+import { IconButton, Divider, TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { Delete } from '@material-ui/icons';
+import { Delete, Add } from '@material-ui/icons';
 
-import CustomSwitch from './CustomSwitch/CustomSwitch';
 import CustomDialog from '../../../../../common/CustomDialog/CustomDialog';
 
-import { wasPolygonEdited } from '../../../../../../utils/utils';
+import { wasAreaEdited } from '../../../../../../utils/utils';
 
-const useStyles = makeStyles((theme) => ({
-  polygonContainer: {
-    direction: 'ltr',
-    display: 'flex',
-    alignItems: 'center',
-    borderRadius: '0px',
-    '&:last-child': {
-      borderRadius: '0 0 4px 4px',
+const useStyles = (props) => {
+  return makeStyles((theme) => ({
+    polygonContainer: {
+      direction: 'ltr',
+      display: 'flex',
+      alignItems: 'center',
+      borderRadius: '0px',
+      overflow: 'hidden',
+      '&:last-child': {
+        borderRadius: '0 0 4px 4px',
+      },
+      '&:first-child': {
+        borderRadius: '4px 4px 0 0',
+      },
+      '&:only-child': {
+        borderRadius: '4px',
+      },
     },
-    '&:first-child': {
-      borderRadius: '4px 4px 0 0',
+
+    polygonSelected: {
+      backgroundColor: props.color + '77',
     },
-    '&:only-child': {
-      borderRadius: '4px',
+    polygonHover: {
+      '&:hover': {
+        backgroundColor: props.color + '77',
+      },
     },
-  },
-  polygonColorDisplay: {
-    marginRight: 'auto',
-  },
-  orderValueContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginLeft: 'auto',
-  },
-  minimumOrderValueInput: {
-    maxWidth: '36px',
-    padding: '2px',
-    marginLeft: 'auto',
-    fontSize: '0.8rem',
-    '& .MuiInputBase-input': {
-      padding: '1px 2px',
+
+    orderValueContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      marginLeft: 'auto',
     },
-    '& .MuiOutlinedInput-root': {
-      fontSize: '0.8rem',
+    minimumOrderValueInput: {
+      maxWidth: '36px',
       padding: '2px',
-
-      '& fieldset': {},
-      '&:hover fieldset': {
-        borderColor: '#2a9d8f',
-        border: '1px solid',
-        borderRadius: '2px',
+      marginLeft: 'auto',
+      fontSize: '0.8rem',
+      '& .MuiInputBase-input': {
+        padding: '1px 2px',
       },
-      '&.Mui-focused fieldset': {
-        borderColor: '#2a9d8f',
-        border: '1px solid',
-        borderRadius: '2px',
+      '& .MuiOutlinedInput-root': {
+        fontSize: '0.8rem',
+        padding: '2px',
+
+        '& fieldset': {},
+        '&:hover fieldset': {
+          borderColor: '#2a9d8f',
+          border: '1px solid',
+          borderRadius: '2px',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#2a9d8f',
+          border: '1px solid',
+          borderRadius: '2px',
+        },
       },
     },
-  },
-}));
+  }));
+};
 
 function PolygonEntry({
-  toggleDrawMode,
-  toggleSelectMode,
-  activateArea,
-  deactivateArea,
-  deleteArea,
-  deliveryZoneState,
-
   color,
   index,
   minimumOrderValue,
   areaNumber,
+
+  drawMode,
+  areas,
+  activeArea,
+
+  toggleDrawMode,
+  activateArea,
+  deactivateArea,
+  deleteArea,
+  addPolygon,
+  setMinimumOrderValue,
 }) {
-  const classes = useStyles();
-  const [changeZoneDialogOpen, setchangeZoneDialogOpen] = useState(false);
+  const classes = useStyles({ color })();
+  const [changeZoneDialogOpen, setChangeZoneDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [cancelEditOpen, setCancelEditOpen] = useState(false);
   const [orderValue, setOrderValue] = useState(minimumOrderValue);
 
-  const handleActivateArea = (event, areaNumber) => {
-    if (deliveryZoneState.selectMode) {
-      toggleSelectMode();
+  const handleActivateArea = (event) => {
+    if (activeArea.areaNumber === areaNumber || event.target !== event.currentTarget) {
+      return;
     }
-    if (!deliveryZoneState.drawMode) {
-      toggleDrawMode();
-      activateArea(areaNumber);
+
+    if (wasAreaEdited(areas, activeArea)) {
+      setChangeZoneDialogOpen(true);
     } else {
-      if (wasPolygonEdited(deliveryZoneState)) {
-        setchangeZoneDialogOpen(true);
-      } else {
-        if (deliveryZoneState.areaNumber === areaNumber) {
-          toggleDrawMode();
-          deactivateArea();
-        } else {
-          activateArea(areaNumber);
-        }
+      if (drawMode) {
+        toggleDrawMode();
       }
+      activateArea(areaNumber);
     }
   };
 
   const handleActivateAreaDialogReject = (event) => {
-    setchangeZoneDialogOpen(false);
+    setChangeZoneDialogOpen(false);
   };
 
   const handleActivateAreaDialogAccept = (event) => {
-    setchangeZoneDialogOpen(false);
-    if (deliveryZoneState.areaNumber === areaNumber) {
+    setChangeZoneDialogOpen(false);
+    if (drawMode) {
       toggleDrawMode();
+    }
+    if (activeArea.areaNumber === areaNumber) {
       deactivateArea();
     } else {
       activateArea(areaNumber);
     }
   };
 
-  const handleDeleteArea = (event) => {
-    setDeleteDialogOpen(true);
+  const handleAddPolygon = (event) => {
+    if (wasAreaEdited(areas, activeArea)) {
+      setCancelEditOpen(true);
+      return;
+    }
+    if (!drawMode) {
+      activateArea(areaNumber);
+      addPolygon();
+    }
+    toggleDrawMode();
   };
 
   const handleDeleteDialogReject = (event) => {
@@ -121,30 +139,47 @@ function PolygonEntry({
   };
 
   const handleDeleteDialogAccept = (event) => {
+    if (activeArea.areaNumber === areaNumber) {
+      deactivateArea();
+    }
     deleteArea(areaNumber);
+    setDeleteDialogOpen(false);
+  };
+
+  const handleAddAreaDialogReject = (event) => {
+    setCancelEditOpen(false);
+  };
+
+  const handleAddAreaDialogAccept = (event) => {
+    setCancelEditOpen(false);
+    activateArea(areaNumber);
+    addPolygon();
+    toggleDrawMode();
   };
 
   const onChangeOrderValue = (event) => {
     let value = event.target.value;
     if (!value) {
       setOrderValue(0);
+      setMinimumOrderValue(0);
     }
 
     value = Number(value);
     if (value > -1 && value < 100) {
       setOrderValue(value);
+      setMinimumOrderValue(value);
     }
   };
 
   return (
     <React.Fragment key={index}>
-      <Paper className={classes.polygonContainer}>
-        <CustomSwitch
-          color={color}
-          areaNumber={areaNumber}
-          currentAreaNumber={deliveryZoneState.areaNumber}
-          handleActivateArea={handleActivateArea}
-        />
+      <div
+        className={`${classes.polygonContainer} ${
+          activeArea.areaNumber === areaNumber ? classes.polygonSelected : classes.polygonHover
+        }`}
+        onClick={(event) => handleActivateArea(event, areaNumber)}
+      >
+        <div style={{ backgroundColor: color, flexBasis: '28px', alignSelf: 'stretch' }} />
         <Divider orientation="vertical" flexItem />
         <TextField
           className={classes.minimumOrderValueInput}
@@ -164,10 +199,13 @@ function PolygonEntry({
           }}
         />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
-        <IconButton size="small" onClick={handleDeleteArea}>
+        <IconButton size="small" onClick={handleAddPolygon}>
+          <Add />
+        </IconButton>
+        <IconButton size="small" onClick={(event) => setDeleteDialogOpen(true)}>
           <Delete />
         </IconButton>
-      </Paper>
+      </div>
       <CustomDialog
         open={changeZoneDialogOpen}
         title="Zone wechseln?"
@@ -182,6 +220,14 @@ function PolygonEntry({
         message="Sind Sie sicher, dass Sie die Zone löschen wollen?"
         handleReject={handleDeleteDialogReject}
         handleAccept={handleDeleteDialogAccept}
+      />
+      <CustomDialog
+        open={cancelEditOpen}
+        handleReject={handleAddAreaDialogReject}
+        handleAccept={handleAddAreaDialogAccept}
+        title="Bearbeitung abbrechen?"
+        message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
+          unwiederruflich gelöscht."
       />
     </React.Fragment>
   );
