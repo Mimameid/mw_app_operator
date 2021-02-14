@@ -17,7 +17,7 @@ function ActiveAreaLayer({ drawMode, activeArea }) {
                 pathOptions={{ color: activeArea.color }}
                 areaNumber={activeArea.areaNumber}
                 polygonIndex={polygonIndex}
-                pane="markerPane"
+                pane="shadowPane"
               />
             ) : (
               <Polygon
@@ -42,18 +42,6 @@ function ActiveAreaLayer({ drawMode, activeArea }) {
           pane="shadowPane"
         />
       )}
-      {activeArea.areaPolygons.map((polygon, polygonIndex) => {
-        return (
-          <Polyline
-            key={`${(activeArea.areaNumber + 1) * polygonIndex + new Date().getTime()}`}
-            positions={[polygon[0].slice(0, -1)]}
-            pathOptions={{ color: activeArea.color }}
-            areaNumber={activeArea.areaNumber}
-            polygonIndex={polygonIndex}
-            pane="markerPane"
-          />
-        );
-      })}
 
       <VertexMarkerLayer
         areaPolygons={activeArea.areaPolygons}

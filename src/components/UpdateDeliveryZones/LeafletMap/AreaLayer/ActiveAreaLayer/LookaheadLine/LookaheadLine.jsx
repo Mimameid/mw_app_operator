@@ -39,6 +39,7 @@ function LookaheadLine({ selectedPolygon, color }) {
             positions={[selectedPolygon[0][selectedPolygon[0].length - 2], mousePosition]}
             pathOptions={{ color: color }}
             eventHandlers={eventHandlers}
+            pane="markerPane"
           />
         </React.Fragment>
       ) : null}

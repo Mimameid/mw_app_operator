@@ -1,6 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addVertex, unselectVertex, activateArea, activatePolygon } from '../../../../store/deliveryZoneState/action';
+import {
+  addVertex,
+  unselectVertex,
+  activateArea,
+  deactivateArea,
+  activatePolygon,
+} from '../../../../store/deliveryZoneState/action';
 import AreaLayer from './AreaLayer';
 
 export const AreaLayerContainer = (props) => {
@@ -20,6 +26,7 @@ const mapDispatchToProps = (dispatch) => {
     unselectVertex: () => dispatch(unselectVertex()),
     activateArea: (areaNumber) => dispatch(activateArea(areaNumber)),
     activatePolygon: (polygonNumber) => dispatch(activatePolygon(polygonNumber)),
+    deactivateArea: () => dispatch(deactivateArea()),
   };
 };
 

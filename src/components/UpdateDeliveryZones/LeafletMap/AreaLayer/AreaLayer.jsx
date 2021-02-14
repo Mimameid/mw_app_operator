@@ -14,6 +14,7 @@ function AreaLayer({
   addVertex,
   unselectVertex,
   activateArea,
+  deactivateArea,
   activatePolygon,
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -26,6 +27,8 @@ function AreaLayer({
           const point = [event.latlng.lat, event.latlng.lng];
           addVertex(point);
         }
+      } else {
+        deactivateArea();
       }
       unselectVertex();
     },
