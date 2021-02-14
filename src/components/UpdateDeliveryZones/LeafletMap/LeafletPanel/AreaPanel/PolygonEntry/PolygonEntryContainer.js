@@ -5,7 +5,7 @@ import {
   activateArea,
   deactivateArea,
   deleteArea,
-  addPolygon,
+  addEmptyPolygon,
   setMinimumOrderValue,
 } from '../../../../../../store/deliveryZoneState/action';
 
@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleDrawMode: () => dispatch(toggleDrawMode()),
     activateArea: (areaNumber) => dispatch(activateArea(areaNumber)),
     deactivateArea: () => dispatch(deactivateArea()),
-    addPolygon: () => dispatch(addPolygon()),
+    addEmptyPolygon: () => dispatch(addEmptyPolygon()),
     deleteArea: (areaNumber) => dispatch(deleteArea(areaNumber)),
     setMinimumOrderValue: (value) => dispatch(setMinimumOrderValue(value)),
   };

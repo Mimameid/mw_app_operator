@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
   },
   deleteIconAnimation: {
-    color: '#2a9d8f',
+    color: theme.palette.primary.main,
     animationDuration: '0.7s',
     animationIterationCount: 'infinite',
     animationName: '$pulse',
@@ -43,13 +43,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SaveDrawer({
-  drawMode,
-  areas,
-  activeArea,
-
+  plzOpen,
   setParentRadius,
   toggleDrawMode,
   saveArea,
+
+  drawMode,
+  areas,
+  activeArea,
 }) {
   const classes = useStyles();
   const iconButtonSize = 'small';
@@ -61,8 +62,11 @@ function SaveDrawer({
     }
   };
   const handlePolygonMenuExit = (event) => {
-    setParentRadius('4px');
+    if (!plzOpen) {
+      setParentRadius('4px');
+    }
   };
+
   const handlePolygonMenuEnter = (event) => {
     setParentRadius('0 4px 4px 0');
   };

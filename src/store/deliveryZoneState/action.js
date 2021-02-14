@@ -9,6 +9,7 @@ import {
   DEACTIVATE_AREA,
   ACTIVATE_POLYGON,
   ADD_POLYGON,
+  ADD_EMPTY_POLYGON,
   REMOVE_POLYGON,
   ROTATE_POLYGON,
   ADD_VERTEX,
@@ -77,9 +78,17 @@ export function activatePolygon(polygonIndex) {
   };
 }
 
-export function addPolygon() {
+export function addPolygon(polygon) {
   return {
     type: ADD_POLYGON,
+
+    payload: polygon,
+  };
+}
+
+export function addEmptyPolygon() {
+  return {
+    type: ADD_EMPTY_POLYGON,
   };
 }
 

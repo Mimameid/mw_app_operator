@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { saveArea, toggleDrawMode, toggleDeleteMode } from '../../../../../store/deliveryZoneState/action';
+import { saveArea, toggleDrawMode } from '../../../../../store/deliveryZoneState/action';
 
 import SaveDrawer from './SaveDrawer';
 
@@ -17,7 +17,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleDrawMode: () => dispatch(toggleDrawMode()),
-    toggleDeleteMode: () => dispatch(toggleDeleteMode()),
     saveArea: () => dispatch(saveArea()),
   };
 };

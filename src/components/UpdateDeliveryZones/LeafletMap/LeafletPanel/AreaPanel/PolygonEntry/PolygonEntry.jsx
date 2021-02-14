@@ -54,12 +54,13 @@ const useStyles = (props) => {
 
         '& fieldset': {},
         '&:hover fieldset': {
-          borderColor: '#2a9d8f',
+          borderColor: theme.palette.primary.main,
+
           border: '1px solid',
           borderRadius: '2px',
         },
         '&.Mui-focused fieldset': {
-          borderColor: '#2a9d8f',
+          borderColor: theme.palette.primary.main,
           border: '1px solid',
           borderRadius: '2px',
         },
@@ -82,7 +83,7 @@ function PolygonEntry({
   activateArea,
   deactivateArea,
   deleteArea,
-  addPolygon,
+  addEmptyPolygon,
   setMinimumOrderValue,
 }) {
   const classes = useStyles({ color })();
@@ -129,7 +130,7 @@ function PolygonEntry({
     }
     if (!drawMode) {
       activateArea(areaNumber);
-      addPolygon();
+      addEmptyPolygon();
     }
     toggleDrawMode();
   };
@@ -153,7 +154,7 @@ function PolygonEntry({
   const handleAddAreaDialogAccept = (event) => {
     setCancelEditOpen(false);
     activateArea(areaNumber);
-    addPolygon();
+    addEmptyPolygon();
     toggleDrawMode();
   };
 

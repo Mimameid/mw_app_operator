@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'rotate(-15deg)',
   },
   editIconAnimation: {
-    color: '#2a9d8f',
+    color: theme.palette.primary.main,
     animationDuration: '0.7s',
     animationIterationCount: 'infinite',
     animationName: '$pulse',
@@ -66,6 +66,7 @@ function LeafletPanel({
   const classes = useStyles();
   const divRef = useRef(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [plzDialogOpen, setPLZDialogOpen] = useState(false);
   const [radius, setRadius] = useState('4px');
   const [plzOpen, setPLZOpen] = useState(false);
   const iconButtonSize = 'small';
@@ -102,6 +103,7 @@ function LeafletPanel({
 
   const handleRejectDialog = (event) => {
     setDialogOpen(false);
+    setPLZDialogOpen(false);
   };
 
   const handleAcceptDialog = (event) => {
@@ -111,6 +113,34 @@ function LeafletPanel({
       createArea();
     }
     toggleDrawMode();
+  };
+
+  const handleOpenPLZDrawer = (event) => {
+    if (drawMode) {
+      if (wasAreaEdited(areas, activeArea)) {
+        setPLZDialogOpen(true);
+      } else {
+        deactivateArea();
+        toggleDrawMode();
+        setPLZOpen(!plzOpen);
+      }
+    } else {
+      setPLZOpen(!plzOpen);
+    }
+    //stop propagation since the plzdrawer has an 'outside of element click" listener
+    event.stopPropagation();
+  };
+
+  const handlePLZAcceptDialog = (event) => {
+    if (drawMode) {
+      deactivateArea();
+      toggleDrawMode();
+    }
+    setPLZDialogOpen(false);
+    setPLZOpen(true);
+
+    //stop propagation since the plzdrawer has an 'outside of element click" listener
+    event.stopPropagation();
   };
 
   return (
@@ -125,12 +155,12 @@ function LeafletPanel({
           >
             <Edit />
           </IconButton>
-          {/* <IconButton className={classes.iconButton} onClick={() => setPLZOpen(!plzOpen)}>
+          <IconButton className={classes.iconButton} onClick={handleOpenPLZDrawer}>
             PLZ
-          </IconButton> */}
+          </IconButton>
         </Paper>
-        {/* <PLZDrawer open={plzOpen} setParentRadius={setRadius} /> */}
-        <SaveDrawer setParentRadius={setRadius} />
+        <PLZDrawer open={plzOpen} setPLZOpen={setPLZOpen} setParentRadius={setRadius} />
+        <SaveDrawer plzOpen={plzOpen} setParentRadius={setRadius} />
       </div>
       <CustomDialog
         open={dialogOpen}
@@ -139,6 +169,14 @@ function LeafletPanel({
         title="Bearbeitung abbrechen?"
         message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
           unwiederruflich gelöscht."
+      />
+      <CustomDialog
+        open={plzDialogOpen}
+        handleReject={handleRejectDialog}
+        handleAccept={handlePLZAcceptDialog}
+        title="Bearbeitung abbrechen?"
+        message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
+        unwiederruflich gelöscht."
       />
       <AreaPanel />
     </div>
