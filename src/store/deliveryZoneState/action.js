@@ -18,6 +18,7 @@ import {
   UNSELECT_VERTEX,
   UPDATE_VERTEX,
   SET_MINIMUM_ORDER_VALUE,
+  SET_DELIVERY_FEE,
 } from './types';
 
 import { getColor } from './utils';
@@ -140,6 +141,12 @@ export function updateVertex(coords) {
 export function setMinimumOrderValue(value) {
   return {
     type: SET_MINIMUM_ORDER_VALUE,
+    payload: value,
+  };
+}
+export function setDeliveryFee(value) {
+  return {
+    type: SET_DELIVERY_FEE,
     payload: value,
   };
 }

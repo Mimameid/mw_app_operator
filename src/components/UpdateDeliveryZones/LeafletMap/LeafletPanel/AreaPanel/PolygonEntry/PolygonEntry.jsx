@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { IconButton, Divider, TextField, InputAdornment } from '@material-ui/core';
+import { IconButton, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { Delete, Add } from '@material-ui/icons';
 
 import CustomDialog from '../../../../../common/CustomDialog/CustomDialog';
+import MinimumOrderValueInput from './MinimumOrderValueInput/MinimumOrderValueInput';
+import DeliveryFeeInput from './DeliveryFeeInput/DeliveryFeeInput';
 
 import { wasAreaEdited } from '../../../../../../utils/utils';
 
@@ -73,6 +75,7 @@ function PolygonEntry({
   color,
   index,
   minimumOrderValue,
+  deliveryFee,
   areaNumber,
 
   drawMode,
@@ -85,15 +88,18 @@ function PolygonEntry({
   deleteArea,
   addEmptyPolygon,
   setMinimumOrderValue,
+  setDeliveryFee,
 }) {
   const classes = useStyles({ color })();
   const [changeZoneDialogOpen, setChangeZoneDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [cancelEditOpen, setCancelEditOpen] = useState(false);
-  const [orderValue, setOrderValue] = useState(minimumOrderValue);
 
   const handleActivateArea = (event) => {
-    if (activeArea.areaNumber === areaNumber || event.target !== event.currentTarget) {
+    // if (activeArea.areaNumber === areaNumber || event.target !== event.currentTarget) {
+    //   return;
+    // }
+    if (activeArea.areaNumber === areaNumber) {
       return;
     }
 
@@ -158,20 +164,6 @@ function PolygonEntry({
     toggleDrawMode();
   };
 
-  const onChangeOrderValue = (event) => {
-    let value = event.target.value;
-    if (!value) {
-      setOrderValue(0);
-      setMinimumOrderValue(0);
-    }
-
-    value = Number(value);
-    if (value > -1 && value < 100) {
-      setOrderValue(value);
-      setMinimumOrderValue(value);
-    }
-  };
-
   return (
     <React.Fragment key={index}>
       <div
@@ -182,23 +174,9 @@ function PolygonEntry({
       >
         <div style={{ backgroundColor: color, flexBasis: '28px', alignSelf: 'stretch' }} />
         <Divider orientation="vertical" flexItem />
-        <TextField
-          className={classes.minimumOrderValueInput}
-          size="small"
-          value={orderValue}
-          onChange={onChangeOrderValue}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="end" style={{ marginLeft: 0 }}>
-                €
-              </InputAdornment>
-            ),
-          }}
-          inputProps={{
-            maxLength: 2,
-            style: { textAlign: 'right' },
-          }}
-        />
+        <DeliveryFeeInput setDeliveryFee={setDeliveryFee} deliveryFee={deliveryFee} />
+        <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
+        <MinimumOrderValueInput setMinimumOrderValue={setMinimumOrderValue} minimumOrderValue={minimumOrderValue} />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
         <IconButton size="small" onClick={handleAddPolygon}>
           <Add />

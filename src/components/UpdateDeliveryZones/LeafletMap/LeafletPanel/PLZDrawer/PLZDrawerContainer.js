@@ -10,8 +10,6 @@ export const PLZDrawerContainer = (props) => {
 
 const mapStateToProps = (state) => ({
   drawMode: state.deliveryZoneState.drawMode,
-  activeArea: state.deliveryZoneState.activeArea,
-  areas: state.deliveryZoneState.areas,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Edit } from '@material-ui/icons';
+import { Edit, GetApp } from '@material-ui/icons';
 
 import L from 'leaflet';
 
@@ -27,6 +27,13 @@ const useStyles = makeStyles((theme) => ({
   buttonsContainer: {
     display: 'inline-block',
   },
+
+  exportButtonContainer: {
+    position: 'fixed',
+    top: '1px',
+    marginTop: '10px',
+  },
+
   iconButton: {
     padding: theme.spacing(1),
     fontSize: theme.typography.body1.fontSize,
@@ -81,6 +88,12 @@ function LeafletPanel({
     L.DomEvent.disableClickPropagation(divRef.current);
   }, [drawMode]);
 
+  useEffect(() => {
+    if (activeArea.areaNumber > -1) {
+      setPLZOpen(false);
+    }
+  }, [activeArea.areaNumber]);
+
   const handleAddButton = (event) => {
     if (areas.length < 1) {
       createArea();
@@ -101,6 +114,22 @@ function LeafletPanel({
     }
   };
 
+  const handleExportData = (event) => {
+    const exportData = areas.map((area, areaIndex) => ({
+      areaPolygons: area.areaPolygons,
+      deliveryFee: area.deliveryFee,
+      minimumOrderValue: area.minimumOrderValue,
+    }));
+
+    var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportData));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', 'locations.json');
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  };
+
   const handleRejectDialog = (event) => {
     setDialogOpen(false);
     setPLZDialogOpen(false);
@@ -116,24 +145,23 @@ function LeafletPanel({
   };
 
   const handleOpenPLZDrawer = (event) => {
-    if (drawMode) {
-      if (wasAreaEdited(areas, activeArea)) {
-        setPLZDialogOpen(true);
-      } else {
-        deactivateArea();
-        toggleDrawMode();
-        setPLZOpen(!plzOpen);
-      }
+    if (wasAreaEdited(areas, activeArea)) {
+      setPLZDialogOpen(true);
     } else {
+      deactivateArea();
+      if (drawMode) {
+        toggleDrawMode();
+      }
       setPLZOpen(!plzOpen);
     }
+
     //stop propagation since the plzdrawer has an 'outside of element click" listener
     event.stopPropagation();
   };
 
   const handlePLZAcceptDialog = (event) => {
+    deactivateArea();
     if (drawMode) {
-      deactivateArea();
       toggleDrawMode();
     }
     setPLZDialogOpen(false);
@@ -162,6 +190,19 @@ function LeafletPanel({
         <PLZDrawer open={plzOpen} setPLZOpen={setPLZOpen} setParentRadius={setRadius} />
         <SaveDrawer plzOpen={plzOpen} setParentRadius={setRadius} />
       </div>
+
+      <AreaPanel />
+      <Paper className={classes.exportButtonContainer} style={{ borderRadius: radius }}>
+        <IconButton
+          className={classes.iconButton}
+          onClick={handleExportData}
+          size={iconButtonSize}
+          disabled={areas.length < 1}
+        >
+          <GetApp />
+        </IconButton>
+      </Paper>
+
       <CustomDialog
         open={dialogOpen}
         handleReject={handleRejectDialog}
@@ -178,7 +219,6 @@ function LeafletPanel({
         message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
         unwiederruflich gelöscht."
       />
-      <AreaPanel />
     </div>
   );
 }

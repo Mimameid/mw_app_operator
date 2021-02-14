@@ -9,7 +9,6 @@ import {
   unselectVertex,
   updateVertex,
   removeVertex,
-  deactivateArea,
 } from '../../../../../../store/deliveryZoneState/action';
 import VertexMarker from './VertexMarker';
 
@@ -31,7 +30,6 @@ const mapDispatchToProps = (dispatch) => {
     removeVertex: () => dispatch(removeVertex()),
     saveArea: () => dispatch(saveArea()),
     rotatePolygon: () => dispatch(rotatePolygon()),
-    deactivateArea: () => dispatch(deactivateArea()),
     activatePolygon: (index) => dispatch(activatePolygon(index)),
   };
 };

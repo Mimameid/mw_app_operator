@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { Paper, TextField, Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { wasAreaEdited } from '../../../../../utils/utils';
 import useClickOutsideElement from '../../../../../hooks/useClickOutsideElement';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   plzInput: {
     maxWidth: '64px',
     padding: '6px 6px 5px 6px',
+    direction: 'ltr',
   },
 }));
 
@@ -29,9 +29,6 @@ function PLZDrawer({
   open,
   setParentRadius,
   setPLZOpen,
-
-  areas,
-  activeArea,
 
   createArea,
   saveArea,
@@ -84,11 +81,6 @@ function PLZDrawer({
         });
     }
   };
-
-  let enablePanel = true;
-  if (activeArea.areaNumber > -1) {
-    enablePanel = !wasAreaEdited(areas, activeArea);
-  }
 
   return (
     <div className={classes.sliderContainer}>

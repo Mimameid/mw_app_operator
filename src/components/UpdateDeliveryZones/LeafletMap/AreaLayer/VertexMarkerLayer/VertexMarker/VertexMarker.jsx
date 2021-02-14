@@ -1,7 +1,6 @@
 import React from 'react';
 import { CircleMarker, Popup, useMapEvents } from 'react-leaflet';
 import { IconButton, Divider } from '@material-ui/core';
-
 import { Edit, Delete } from '@material-ui/icons';
 
 function VertexMarker({
@@ -13,7 +12,6 @@ function VertexMarker({
 
   drawMode,
 
-  deactivateArea,
   toggleDrawMode,
   saveArea,
   activatePolygon,

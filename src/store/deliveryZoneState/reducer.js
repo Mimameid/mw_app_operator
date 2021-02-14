@@ -18,6 +18,7 @@ import {
   UNSELECT_VERTEX,
   UPDATE_VERTEX,
   SET_MINIMUM_ORDER_VALUE,
+  SET_DELIVERY_FEE,
 } from './types';
 
 import { getDifference } from './utils';
@@ -33,6 +34,7 @@ const initialState = {
     areaPolygons: [], // the coordinates of a geojson multipolygon
     selectedPolygonIndex: -1, // stores which of the polygons of the area is currently being edited
     minimumOrderValue: 0,
+    deliveryFee: 0,
     color: null,
   },
   //vertex to edit
@@ -91,6 +93,7 @@ function deliveryZoneReducer(state = initialState, action) {
               areaNumber: state.activeArea.areaNumber,
               areaPolygons: newAreaPolygons,
               minimumOrderValue: state.activeArea.minimumOrderValue,
+              deliveryFee: state.activeArea.deliveryFee,
               color: state.activeArea.color,
             },
             ...newAreas.slice(index),
@@ -102,6 +105,7 @@ function deliveryZoneReducer(state = initialState, action) {
               areaNumber: state.activeArea.areaNumber,
               areaPolygons: newAreaPolygons,
               minimumOrderValue: state.activeArea.minimumOrderValue,
+              deliveryFee: state.activeArea.deliveryFee,
               color: state.activeArea.color,
             },
           ];
@@ -134,6 +138,7 @@ function deliveryZoneReducer(state = initialState, action) {
           areaPolygons: [[[]]],
           selectedPolygonIndex: 0,
           minimumOrderValue: 0,
+          deliveryFee: 0,
           color: action.payload,
         },
       };
@@ -152,6 +157,7 @@ function deliveryZoneReducer(state = initialState, action) {
         areaNumber: area.areaNumber,
         selectedPolygonIndex: 0,
         minimumOrderValue: area.minimumOrderValue,
+        deliveryFee: area.deliveryFee,
         color: area.color,
       };
 
@@ -169,6 +175,7 @@ function deliveryZoneReducer(state = initialState, action) {
           areaPolygons: [[[]]],
           selectedPolygonIndex: -1,
           minimumOrderValue: 0,
+          deliveryFee: 0,
           color: null,
         },
       };
@@ -326,6 +333,7 @@ function deliveryZoneReducer(state = initialState, action) {
           areaNumber: state.activeArea.areaNumber,
           areaPolygons: state.activeArea.areaPolygons,
           minimumOrderValue: action.payload,
+          deliveryFee: state.activeArea.deliveryFee,
           color: state.activeArea.color,
         },
         ...newAreas.slice(index),
@@ -337,6 +345,33 @@ function deliveryZoneReducer(state = initialState, action) {
         activeArea: {
           ...state.activeArea,
           minimumOrderValue: action.payload,
+        },
+      };
+    }
+
+    case SET_DELIVERY_FEE: {
+      const index = state.areas.findIndex((area) => area.areaNumber === state.activeArea.areaNumber);
+      let newAreas = state.areas.slice();
+      newAreas.splice(index, 1);
+
+      newAreas = [
+        ...newAreas.slice(0, index),
+        {
+          areaNumber: state.activeArea.areaNumber,
+          areaPolygons: state.activeArea.areaPolygons,
+          minimumOrderValue: state.activeArea.minimumOrderValue,
+          deliveryFee: action.payload,
+          color: state.activeArea.color,
+        },
+        ...newAreas.slice(index),
+      ];
+
+      return {
+        ...state,
+        areas: newAreas,
+        activeArea: {
+          ...state.activeArea,
+          deliveryFee: action.payload,
         },
       };
     }

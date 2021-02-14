@@ -7,6 +7,7 @@ import {
   deleteArea,
   addEmptyPolygon,
   setMinimumOrderValue,
+  setDeliveryFee,
 } from '../../../../../../store/deliveryZoneState/action';
 
 import PolygonEntry from './PolygonEntry';
@@ -30,6 +31,7 @@ const mapDispatchToProps = (dispatch) => {
     addEmptyPolygon: () => dispatch(addEmptyPolygon()),
     deleteArea: (areaNumber) => dispatch(deleteArea(areaNumber)),
     setMinimumOrderValue: (value) => dispatch(setMinimumOrderValue(value)),
+    setDeliveryFee: (value) => dispatch(setDeliveryFee(value)),
   };
 };
 

@@ -22,6 +22,7 @@ function AreaPanel({ areas, areaNumber }) {
           <PolygonEntry
             color={area.color}
             minimumOrderValue={area.minimumOrderValue}
+            deliveryFee={area.deliveryFee}
             areaNumber={area.areaNumber}
             currentAreaNumber={areaNumber}
           />
