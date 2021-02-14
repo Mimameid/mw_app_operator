@@ -9,6 +9,7 @@ import {
   DEACTIVATE_AREA,
   ACTIVATE_POLYGON,
   ADD_POLYGON,
+  ADD_EMPTY_POLYGON,
   REMOVE_POLYGON,
   ROTATE_POLYGON,
   ADD_VERTEX,
@@ -84,7 +85,6 @@ function deliveryZoneReducer(state = initialState, action) {
         if (index > -1) {
           newAreas = state.areas.slice();
           newAreas.splice(index, 1);
-
           newAreas = [
             ...newAreas.slice(0, index),
             {
@@ -106,7 +106,6 @@ function deliveryZoneReducer(state = initialState, action) {
             },
           ];
         }
-
         return {
           ...state,
           areas: newAreas,
@@ -173,10 +172,22 @@ function deliveryZoneReducer(state = initialState, action) {
           color: null,
         },
       };
-
-    case ADD_POLYGON:
+    case ADD_POLYGON: {
+      const newPolygons = [...state.activeArea.areaPolygons];
+      newPolygons[state.activeArea.selectedPolygonIndex][0] = action.payload[0];
+      return {
+        ...state,
+        activeArea: {
+          ...state.activeArea,
+          areaPolygons: newPolygons,
+          selectedPolygonIndex: newPolygons.length - 1,
+        },
+      };
+    }
+    case ADD_EMPTY_POLYGON:
       const newPolygons = [...state.activeArea.areaPolygons];
       newPolygons.push([[]]);
+
       return {
         ...state,
         activeArea: {
