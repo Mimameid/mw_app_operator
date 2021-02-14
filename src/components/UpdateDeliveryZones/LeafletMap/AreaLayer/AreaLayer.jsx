@@ -28,7 +28,9 @@ function AreaLayer({
           addVertex(point);
         }
       } else {
-        deactivateArea();
+        if (!wasAreaEdited(areas, activeArea)) {
+          deactivateArea();
+        }
       }
       unselectVertex();
     },
