@@ -116,7 +116,10 @@ function LeafletPanel({
 
   const handleExportData = (event) => {
     const exportData = areas.map((area, areaIndex) => ({
-      areaPolygons: area.areaPolygons,
+      areaPolygons: {
+        type: 'MultiPolygon',
+        coordinatees: area.areaPolygons,
+      },
       deliveryFee: area.deliveryFee,
       minimumOrderValue: area.minimumOrderValue,
     }));
