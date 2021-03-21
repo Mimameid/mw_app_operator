@@ -118,7 +118,15 @@ function LeafletPanel({
     const exportData = areas.map((area, areaIndex) => ({
       areaPolygons: {
         type: 'MultiPolygon',
+        // convert lat/lng to lng/lat order to conform with geojson specification
         coordinatees: area.areaPolygons,
+        moordinates: area.areaPolygons.map((polygon, index) => {
+          return polygon.map((ring, index) => {
+            return ring.map((vertex, index) => {
+              return (vertex = [vertex[1], vertex[0]]);
+            });
+          });
+        }),
       },
       deliveryFee: area.deliveryFee,
       minimumOrderValue: area.minimumOrderValue,
