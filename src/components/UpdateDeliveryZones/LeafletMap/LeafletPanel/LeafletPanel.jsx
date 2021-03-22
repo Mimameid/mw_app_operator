@@ -119,8 +119,7 @@ function LeafletPanel({
       areaPolygons: {
         type: 'MultiPolygon',
         // convert lat/lng to lng/lat order to conform with geojson specification
-        coordinatees: area.areaPolygons,
-        moordinates: area.areaPolygons.map((polygon, index) => {
+        coordinates: area.areaPolygons.map((polygon, index) => {
           return polygon.map((ring, index) => {
             return ring.map((vertex, index) => {
               return (vertex = [vertex[1], vertex[0]]);
