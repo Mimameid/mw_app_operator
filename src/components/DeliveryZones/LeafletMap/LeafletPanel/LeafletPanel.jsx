@@ -116,7 +116,7 @@ function LeafletPanel({
 
   const handleExportData = (event) => {
     const exportData = areas.map((area, areaIndex) => ({
-      areaPolygons: {
+      area: {
         type: 'MultiPolygon',
         // convert lat/lng to lng/lat order to conform with geojson specification
         coordinates: area.areaPolygons.map((polygon, index) => {
@@ -127,8 +127,8 @@ function LeafletPanel({
           });
         }),
       },
-      deliveryFee: area.deliveryFee,
-      minimumOrderValue: area.minimumOrderValue,
+      delivery_fee: area.deliveryFee,
+      minimum_order_value: area.minimumOrderValue,
     }));
 
     var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportData));

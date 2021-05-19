@@ -54,7 +54,7 @@ function DeliveryFeeInput({ setDeliveryFee, deliveryFee }) {
 
   return (
     <React.Fragment>
-      <img src={DeliveryIcon} alt="" width="18" height="18" />
+      <img src={DeliveryIcon} alt="Delivery Icon" width="18" height="18" />
       <TextField
         className={classes.deliveryFeeInput}
         size="small"
