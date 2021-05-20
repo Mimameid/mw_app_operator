@@ -57,27 +57,28 @@ function PLZDrawer({
     setError(false);
     // TODO: see #e75f50
     if (value > 9999 && value < 100000) {
-      fetch('./assets/plz_to_location_name.json')
+      const url = new URL('areas/' + value, process.env.REACT_APP_API_URL);
+      const options = {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      setDisabled(true);
+      fetch(url.href, options)
         .then((response) => {
+          setDisabled(false);
+
           return response.json();
         })
         .then((data) => {
-          if (value in data) {
-            setDisabled(true);
-            fetch('./assets/plz_to_polygon_mapping_germany.json')
-              .then((response) => {
-                return response.json();
-              })
-              .then((data) => {
-                createArea();
-                addPolygon(data[value]);
-                saveArea();
-                setDisabled(false);
-                setPLZOpen(false);
-              });
-          } else {
-            setError(true);
-          }
+          createArea();
+          addPolygon(data['area']);
+          saveArea();
+          setDisabled(false);
+          setPLZOpen(false);
         });
     }
   };

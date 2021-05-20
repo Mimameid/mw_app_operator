@@ -4,7 +4,7 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanelContainer';
 import AreaLayer from './AreaLayer/AreaLayerContainer';
 
-function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
+function LeafletMap({ areas, drawMode, disableWidthChanged, widthChanged }) {
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -29,11 +29,13 @@ function LeafletMap({ drawMode, disableWidthChanged, widthChanged }) {
     map.invalidateSize();
   };
 
+  const center = areas.length < 1;
+
   return (
     <div style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}>
       <MapContainer
-        center={[50.8, 8.77]}
-        zoom={14}
+        center={center ? [50.8, 8.77] : areas[0].areaPolygons[0][0][0]}
+        zoom={center ? 6 : 10}
         style={{ height: '100%', width: '100%' }}
         doubleClickZoom={false}
         zoomControl={true}
