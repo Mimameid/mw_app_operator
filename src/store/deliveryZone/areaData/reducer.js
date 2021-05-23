@@ -162,7 +162,6 @@ function areaDataReducer(state = initialState, action) {
     case ADD_EMPTY_POLYGON:
       const newPolygons = [...state.activeArea.areaPolygons];
       newPolygons.push([[]]);
-
       return {
         ...state,
         activeArea: {
@@ -291,56 +290,56 @@ function areaDataReducer(state = initialState, action) {
       };
 
     case SET_MINIMUM_ORDER_VALUE: {
-      const index = state.areas.findIndex((area) => area.areaNumber === state.activeArea.areaNumber);
-      let newAreas = state.areas.slice();
-      newAreas.splice(index, 1);
+      const area = state.areas.find((area) => area.areaNumber === parseInt(action.payload.areaNumber));
+      const index = state.areas.findIndex((area) => area.areaNumber === action.payload.areaNumber);
 
-      newAreas = [
-        ...newAreas.slice(0, index),
-        {
-          areaNumber: state.activeArea.areaNumber,
-          areaPolygons: state.activeArea.areaPolygons,
-          minimumOrderValue: action.payload,
-          deliveryFee: state.activeArea.deliveryFee,
-          color: state.activeArea.color,
-        },
-        ...newAreas.slice(index),
-      ];
+      let newAreas = state.areas.slice();
+      newAreas[index] = {
+        ...area,
+        minimumOrderValue: action.payload.value,
+      };
+
+      if (state.activeArea.areaNumber === action.payload.areaNumber) {
+        return {
+          ...state,
+          areas: newAreas,
+          activeArea: {
+            ...state.activeArea,
+            deliveryFee: action.payload,
+          },
+        };
+      }
 
       return {
         ...state,
         areas: newAreas,
-        activeArea: {
-          ...state.activeArea,
-          minimumOrderValue: action.payload,
-        },
       };
     }
 
     case SET_DELIVERY_FEE: {
-      const index = state.areas.findIndex((area) => area.areaNumber === state.activeArea.areaNumber);
-      let newAreas = state.areas.slice();
-      newAreas.splice(index, 1);
+      const area = state.areas.find((area) => area.areaNumber === parseInt(action.payload.areaNumber));
+      const index = state.areas.findIndex((area) => area.areaNumber === action.payload.areaNumber);
 
-      newAreas = [
-        ...newAreas.slice(0, index),
-        {
-          areaNumber: state.activeArea.areaNumber,
-          areaPolygons: state.activeArea.areaPolygons,
-          minimumOrderValue: state.activeArea.minimumOrderValue,
-          deliveryFee: action.payload,
-          color: state.activeArea.color,
-        },
-        ...newAreas.slice(index),
-      ];
+      let newAreas = state.areas.slice();
+      newAreas[index] = {
+        ...area,
+        deliveryFee: action.payload.value,
+      };
+
+      if (state.activeArea.areaNumber === action.payload.areaNumber) {
+        return {
+          ...state,
+          areas: newAreas,
+          activeArea: {
+            ...state.activeArea,
+            deliveryFee: action.payload,
+          },
+        };
+      }
 
       return {
         ...state,
         areas: newAreas,
-        activeArea: {
-          ...state.activeArea,
-          deliveryFee: action.payload,
-        },
       };
     }
     default:

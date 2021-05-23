@@ -17,7 +17,7 @@ export const VertexMarkerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  vertexSelected: state.deliveryZone.vertexSelected,
+  vertexSelected: state.deliveryZone.areaData.vertexSelected,
   draw: state.deliveryZone.mode.draw,
 });
 

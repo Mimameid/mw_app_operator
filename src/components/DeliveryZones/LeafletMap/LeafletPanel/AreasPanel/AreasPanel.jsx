@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Divider, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
-import PolygonEntry from './PolygonEntry/PolygonEntryContainer';
+import AreaEntry from './AreaEntry/AreaEntryContainer';
 
 const useStyles = makeStyles((theme) => ({
   areasContainer: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AreaPanel({ areas, areaNumber, draw }) {
+function AreasPanel({ areas, areaNumber, draw }) {
   const classes = useStyles();
   const panelRef = useRef();
 
@@ -24,7 +24,7 @@ function AreaPanel({ areas, areaNumber, draw }) {
     <Paper className={classes.areasContainer} ref={panelRef}>
       {areas.map((area, index) => (
         <React.Fragment key={index}>
-          <PolygonEntry
+          <AreaEntry
             color={area.color}
             minimumOrderValue={area.minimumOrderValue}
             deliveryFee={area.deliveryFee}
@@ -38,4 +38,4 @@ function AreaPanel({ areas, areaNumber, draw }) {
   );
 }
 
-export default AreaPanel;
+export default AreasPanel;

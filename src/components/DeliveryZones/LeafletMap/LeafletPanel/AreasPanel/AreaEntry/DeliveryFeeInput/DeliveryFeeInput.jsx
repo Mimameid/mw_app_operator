@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { makeStyles } from '@material-ui/styles';
 import { TextField, InputAdornment } from '@material-ui/core';
@@ -34,23 +34,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DeliveryFeeInput({ setDeliveryFee, deliveryFee }) {
+function DeliveryFeeInput({ onChangeDeliveryFee, deliveryFee }) {
   const classes = useStyles();
-  const [orderValue, setOrderValue] = useState(deliveryFee);
-
-  const onChangeOrderValue = (event) => {
-    let value = event.target.value;
-    if (!value) {
-      setOrderValue(0);
-      setDeliveryFee(0);
-    }
-
-    value = Number(value);
-    if (value > -1 && value < 100) {
-      setOrderValue(value);
-      setDeliveryFee(value);
-    }
-  };
 
   return (
     <React.Fragment>
@@ -58,8 +43,8 @@ function DeliveryFeeInput({ setDeliveryFee, deliveryFee }) {
       <TextField
         className={classes.deliveryFeeInput}
         size="small"
-        value={orderValue}
-        onChange={onChangeOrderValue}
+        value={deliveryFee}
+        onChange={onChangeDeliveryFee}
         InputProps={{
           startAdornment: (
             <InputAdornment position="end" style={{ marginLeft: 0 }}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { IconButton, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { Delete, Add } from '@material-ui/icons';
@@ -6,8 +6,6 @@ import { Delete, Add } from '@material-ui/icons';
 import CustomDialog from '../../../../../common/CustomDialog/CustomDialog';
 import MinimumOrderValueInput from './MinimumOrderValueInput/MinimumOrderValueInput';
 import DeliveryFeeInput from './DeliveryFeeInput/DeliveryFeeInput';
-
-import { wasAreaEdited } from '../../../../../../utils/utils';
 
 const useStyles = (props) => {
   return makeStyles((theme) => ({
@@ -31,9 +29,15 @@ const useStyles = (props) => {
     polygonSelected: {
       backgroundColor: props.color + '77',
     },
-    polygonHover: {
+    entryHighlight: {
+      backgroundColor: props.color + '77',
+    },
+    colorArea: {
+      backgroundColor: props.color,
+      flexBasis: '28px',
+      alignSelf: 'stretch',
       '&:hover': {
-        backgroundColor: props.color + '77',
+        cursor: 'pointer',
       },
     },
 
@@ -71,18 +75,17 @@ const useStyles = (props) => {
   }));
 };
 
-function PolygonEntry({
+function AreaEntry({
   color,
   index,
   minimumOrderValue,
   deliveryFee,
   areaNumber,
 
-  drawMode,
-  areas,
+  draw,
   activeArea,
 
-  toggleDrawMode,
+  toggleDraw,
   activateArea,
   deactivateArea,
   deleteArea,
@@ -91,9 +94,8 @@ function PolygonEntry({
   setDeliveryFee,
 }) {
   const classes = useStyles({ color })();
-  const [changeZoneDialogOpen, setChangeZoneDialogOpen] = useState(false);
+  const polygonContainer = useRef();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [cancelEditOpen, setCancelEditOpen] = useState(false);
 
   const handleActivateArea = (event) => {
     // if (activeArea.areaNumber === areaNumber || event.target !== event.currentTarget) {
@@ -103,42 +105,18 @@ function PolygonEntry({
       return;
     }
 
-    if (wasAreaEdited(areas, activeArea)) {
-      setChangeZoneDialogOpen(true);
-    } else {
-      if (drawMode) {
-        toggleDrawMode();
-      }
-      activateArea(areaNumber);
+    if (draw) {
+      toggleDraw();
     }
-  };
-
-  const handleActivateAreaDialogReject = (event) => {
-    setChangeZoneDialogOpen(false);
-  };
-
-  const handleActivateAreaDialogAccept = (event) => {
-    setChangeZoneDialogOpen(false);
-    if (drawMode) {
-      toggleDrawMode();
-    }
-    if (activeArea.areaNumber === areaNumber) {
-      deactivateArea();
-    } else {
-      activateArea(areaNumber);
-    }
+    activateArea(areaNumber);
   };
 
   const handleAddPolygon = (event) => {
-    if (wasAreaEdited(areas, activeArea)) {
-      setCancelEditOpen(true);
-      return;
-    }
-    if (!drawMode) {
-      activateArea(areaNumber);
-      addEmptyPolygon();
-    }
-    toggleDrawMode();
+    event.stopPropagation();
+
+    activateArea(areaNumber);
+    addEmptyPolygon();
+    toggleDraw();
   };
 
   const handleDeleteDialogReject = (event) => {
@@ -153,32 +131,54 @@ function PolygonEntry({
     setDeleteDialogOpen(false);
   };
 
-  const handleAddAreaDialogReject = (event) => {
-    setCancelEditOpen(false);
+  const handleMouseOver = (event) => {
+    polygonContainer.current.classList.add(classes.entryHighlight);
+  };
+  const handleMouseLeave = (event) => {
+    polygonContainer.current.classList.remove(classes.entryHighlight);
   };
 
-  const handleAddAreaDialogAccept = (event) => {
-    setCancelEditOpen(false);
-    activateArea(areaNumber);
-    addEmptyPolygon();
-    toggleDrawMode();
+  const onChangeDeliveryFee = (event) => {
+    let value = event.target.value;
+    if (!value) {
+      value = 0;
+    }
+    value = Number(value);
+    if (value > -1 && value < 100) {
+      setDeliveryFee({ value: value, areaNumber: areaNumber });
+    }
+  };
+  const onChangeOrderValue = (event) => {
+    let value = event.target.value;
+    if (!value) {
+      value = 0;
+    }
+
+    value = Number(value);
+    if (value > -1 && value < 100) {
+      setMinimumOrderValue({ value: value, areaNumber: areaNumber });
+    }
   };
 
   return (
     <React.Fragment key={index}>
       <div
-        className={`${classes.polygonContainer} ${
-          activeArea.areaNumber === areaNumber ? classes.polygonSelected : classes.polygonHover
-        }`}
-        onClick={(event) => handleActivateArea(event, areaNumber)}
+        className={`${classes.polygonContainer} ${activeArea.areaNumber === areaNumber ? classes.polygonSelected : ''}`}
+        ref={polygonContainer}
       >
-        <div style={{ backgroundColor: color, flexBasis: '28px', alignSelf: 'stretch' }} />
+        <div
+          className={classes.colorArea}
+          onClick={(event) => handleActivateArea(event, areaNumber)}
+          onMouseOver={handleMouseOver}
+          onMouseLeave={handleMouseLeave}
+        />
+
         <Divider orientation="vertical" flexItem />
-        <DeliveryFeeInput setDeliveryFee={setDeliveryFee} deliveryFee={deliveryFee} />
+        <DeliveryFeeInput onChangeDeliveryFee={onChangeDeliveryFee} deliveryFee={deliveryFee} />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
-        <MinimumOrderValueInput setMinimumOrderValue={setMinimumOrderValue} minimumOrderValue={minimumOrderValue} />
+        <MinimumOrderValueInput onChangeOrderValue={onChangeOrderValue} minimumOrderValue={minimumOrderValue} />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
-        <IconButton size="small" onClick={handleAddPolygon}>
+        <IconButton className={classes.editIcon} size="small" onClick={handleAddPolygon}>
           <Add />
         </IconButton>
         <IconButton size="small" onClick={(event) => setDeleteDialogOpen(true)}>
@@ -186,30 +186,14 @@ function PolygonEntry({
         </IconButton>
       </div>
       <CustomDialog
-        open={changeZoneDialogOpen}
-        title="Zone wechseln?"
-        message="Die aktuelle Zone wurde nicht gespeichert. Wenn Sie die Zone wechseln, werden alle Veränderungen
-        unwiederruflich gelöscht."
-        handleReject={handleActivateAreaDialogReject}
-        handleAccept={handleActivateAreaDialogAccept}
-      />
-      <CustomDialog
         open={deleteDialogOpen}
         title="Zone löschen?"
         message="Sind Sie sicher, dass Sie die Zone löschen wollen?"
         handleReject={handleDeleteDialogReject}
         handleAccept={handleDeleteDialogAccept}
       />
-      <CustomDialog
-        open={cancelEditOpen}
-        handleReject={handleAddAreaDialogReject}
-        handleAccept={handleAddAreaDialogAccept}
-        title="Bearbeitung abbrechen?"
-        message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
-          unwiederruflich gelöscht."
-      />
     </React.Fragment>
   );
 }
 
-export default PolygonEntry;
+export default AreaEntry;

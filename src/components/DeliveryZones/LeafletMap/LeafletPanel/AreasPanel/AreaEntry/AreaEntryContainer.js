@@ -1,31 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  toggleDrawMode,
   activateArea,
   deactivateArea,
   deleteArea,
   addEmptyPolygon,
   setMinimumOrderValue,
   setDeliveryFee,
-} from '../../../../../../store/deliveryZoneState/action';
+} from '../../../../../../store/deliveryZone/areaData/action';
+import { toggleDraw } from '../../../../../../store/deliveryZone/mode/action';
 
-import PolygonEntry from './PolygonEntry';
+import AreaEntry from './AreaEntry';
 
-export const PolygonEntryContainer = (props) => {
-  return <PolygonEntry {...props} />;
+export const AreaEntryContainer = (props) => {
+  return <AreaEntry {...props} />;
 };
 
 const mapStateToProps = (state) => ({
-  drawMode: state.deliveryZoneState.drawMode,
+  draw: state.deliveryZone.mode.draw,
 
-  areas: state.deliveryZoneState.areas,
-  activeArea: state.deliveryZoneState.activeArea,
+  areas: state.deliveryZone.areaData.areas,
+  activeArea: state.deliveryZone.areaData.activeArea,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleDrawMode: () => dispatch(toggleDrawMode()),
+    toggleDraw: () => dispatch(toggleDraw()),
     activateArea: (areaNumber) => dispatch(activateArea(areaNumber)),
     deactivateArea: () => dispatch(deactivateArea()),
     addEmptyPolygon: () => dispatch(addEmptyPolygon()),
@@ -35,4 +35,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PolygonEntryContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AreaEntryContainer);

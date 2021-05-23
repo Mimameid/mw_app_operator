@@ -32,29 +32,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MinimumOrderValueInput({ setMinimumOrderValue, minimumOrderValue }) {
+function MinimumOrderValueInput({ onChangeOrderValue, minimumOrderValue }) {
   const classes = useStyles();
-  const [orderValue, setOrderValue] = useState(minimumOrderValue);
-
-  const onChangeOrderValue = (event) => {
-    let value = event.target.value;
-    if (!value) {
-      setOrderValue(0);
-      setMinimumOrderValue(0);
-    }
-
-    value = Number(value);
-    if (value > -1 && value < 100) {
-      setOrderValue(value);
-      setMinimumOrderValue(value);
-    }
-  };
 
   return (
     <TextField
       className={classes.minimumOrderValueInput}
       size="small"
-      value={orderValue}
+      value={minimumOrderValue}
       onChange={onChangeOrderValue}
       InputProps={{
         startAdornment: (

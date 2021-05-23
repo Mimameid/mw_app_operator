@@ -6,7 +6,7 @@ import { Add, GetApp } from '@material-ui/icons';
 import L from 'leaflet';
 
 import { wasAreaEdited } from '../../../../utils/utils.js';
-import AreaPanel from './AreaPanel/AreaPanelContainer';
+import AreasPanel from './AreasPanel/AreasPanelContainer';
 import SaveDrawer from './SaveDrawer/SaveDrawerContainer';
 import PLZDrawer from './PLZDrawer/PLZDrawerContainer';
 import CustomDialog from '../../../common/CustomDialog/CustomDialog';
@@ -194,7 +194,7 @@ function LeafletPanel({
         <SaveDrawer plzOpen={plzOpen} setParentRadius={setRadius} />
       </div>
 
-      <AreaPanel />
+      <AreasPanel />
       <Paper className={classes.exportButtonContainer} style={{ borderRadius: radius }}>
         <IconButton
           className={classes.iconButton}

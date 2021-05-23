@@ -90,7 +90,7 @@ function VertexMarker({
         fillOpacity: 1,
         radius: 7,
       }}
-      pane="popupPane"
+      pane="markerPane"
       center={coordinates}
       eventHandlers={eventHandlers}
     >
