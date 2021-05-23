@@ -4,10 +4,10 @@ import { Polygon, Polyline } from 'react-leaflet';
 import LookaheadLine from './LookaheadLine/LookaheadLine';
 import VertexMarkerLayer from '../VertexMarkerLayer/VertexMarkerLayer';
 
-function ActiveAreaLayer({ drawMode, activeArea }) {
+function ActiveAreaLayer({ draw, activeArea }) {
   return (
     <React.Fragment>
-      {drawMode ? (
+      {draw ? (
         <React.Fragment>
           {activeArea.areaPolygons.map((polygon, polygonIndex) =>
             polygonIndex === activeArea.selectedPolygonIndex ? (

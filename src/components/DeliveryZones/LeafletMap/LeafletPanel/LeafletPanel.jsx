@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Edit, GetApp } from '@material-ui/icons';
+import { Add, GetApp } from '@material-ui/icons';
 
 import L from 'leaflet';
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     right: 10,
     top: 200,
-    zIndex: 1000,
+    zIndex: 400,
     direction: 'rtl',
     '& :hover': {
       cursor: 'default',
@@ -38,9 +38,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     fontSize: theme.typography.body1.fontSize,
   },
-  editIcon: {
-    transform: 'rotate(-15deg)',
-  },
+
   editIconAnimation: {
     color: theme.palette.primary.main,
     animationDuration: '0.7s',
@@ -50,23 +48,23 @@ const useStyles = makeStyles((theme) => ({
   },
   '@keyframes pulse': {
     '0%': {
-      transform: 'rotate(-15deg) scale(0.9)',
+      transform: 'scale(0.9)',
     },
     '50%': {
-      transform: 'rotate(-15deg) scale(1.1)',
+      transform: 'scale(1.1)',
     },
     '100%': {
-      transform: 'rotate(-15deg) scale(0.9)',
+      transform: 'scale(0.9)',
     },
   },
 }));
 
 function LeafletPanel({
-  drawMode,
+  draw,
   areas,
   activeArea,
 
-  toggleDrawMode,
+  toggleDraw,
   createArea,
   deactivateArea,
 }) {
@@ -81,12 +79,7 @@ function LeafletPanel({
   useEffect(() => {
     // this prevents map events being triggered before ui events (on custom (non leaflet) elements)
     L.DomEvent.disableClickPropagation(divRef.current);
-  }, []);
-
-  useEffect(() => {
-    // this prevents map events being triggered before ui events (on custom (non leaflet) elements)
-    L.DomEvent.disableClickPropagation(divRef.current);
-  }, [drawMode]);
+  }, [draw]);
 
   useEffect(() => {
     if (activeArea.areaNumber > -1) {
@@ -97,19 +90,19 @@ function LeafletPanel({
   const handleAddButton = (event) => {
     if (areas.length < 1) {
       createArea();
-      toggleDrawMode();
+      toggleDraw();
       return;
     }
 
     if (wasAreaEdited(areas, activeArea)) {
       setDialogOpen(true);
     } else {
-      if (!drawMode) {
+      if (!draw) {
         createArea();
-        toggleDrawMode();
+        toggleDraw();
       } else {
         deactivateArea();
-        toggleDrawMode();
+        toggleDraw();
       }
     }
   };
@@ -148,10 +141,10 @@ function LeafletPanel({
   const handleAcceptDialog = (event) => {
     deactivateArea();
     setDialogOpen(false);
-    if (!drawMode) {
+    if (!draw) {
       createArea();
     }
-    toggleDrawMode();
+    toggleDraw();
   };
 
   const handleOpenPLZDrawer = (event) => {
@@ -159,8 +152,8 @@ function LeafletPanel({
       setPLZDialogOpen(true);
     } else {
       deactivateArea();
-      if (drawMode) {
-        toggleDrawMode();
+      if (draw) {
+        toggleDraw();
       }
       setPLZOpen(!plzOpen);
     }
@@ -171,8 +164,8 @@ function LeafletPanel({
 
   const handlePLZAcceptDialog = (event) => {
     deactivateArea();
-    if (drawMode) {
-      toggleDrawMode();
+    if (draw) {
+      toggleDraw();
     }
     setPLZDialogOpen(false);
     setPLZOpen(true);
@@ -186,12 +179,12 @@ function LeafletPanel({
       <div style={{ direction: 'rtl' }}>
         <Paper className={classes.buttonsContainer} style={{ borderRadius: radius }}>
           <IconButton
-            className={`${classes.iconButton} ${classes.editIcon} ${drawMode ? classes.editIconAnimation : null}`}
+            className={`${classes.iconButton} ${draw ? classes.editIconAnimation : null}`}
             onClick={handleAddButton}
             size={iconButtonSize}
             disabled={areas.length > MAX_AREAS - 1}
           >
-            <Edit />
+            <Add />
           </IconButton>
           <IconButton className={classes.iconButton} onClick={handleOpenPLZDrawer}>
             PLZ

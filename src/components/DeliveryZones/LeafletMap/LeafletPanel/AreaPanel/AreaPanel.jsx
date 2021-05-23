@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Divider, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
@@ -6,17 +6,22 @@ import PolygonEntry from './PolygonEntry/PolygonEntryContainer';
 
 const useStyles = makeStyles((theme) => ({
   areasContainer: {
+    position: 'relative',
     marginTop: '10px',
     width: '200px',
-    backgroundColor: 'white',
   },
 }));
 
-function AreaPanel({ areas, areaNumber }) {
+function AreaPanel({ areas, areaNumber, draw }) {
   const classes = useStyles();
+  const panelRef = useRef();
+
+  useEffect(() => {
+    panelRef.current.style.display = draw ? 'none' : 'block';
+  }, [draw]);
 
   return (
-    <Paper className={classes.areasContainer}>
+    <Paper className={classes.areasContainer} ref={panelRef}>
       {areas.map((area, index) => (
         <React.Fragment key={index}>
           <PolygonEntry

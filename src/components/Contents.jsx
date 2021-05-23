@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import routes from '../routes';
 
 function Contents() {
-  const loggedIn = useSelector((state) => state.userState.loggedIn);
+  const loggedIn = useSelector((state) => state.userState.authState.loggedIn);
 
   return (
     <React.Fragment>

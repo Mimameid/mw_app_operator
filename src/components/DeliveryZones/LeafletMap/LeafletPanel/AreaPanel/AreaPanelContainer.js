@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activateArea } from '../../../../../store/deliveryZoneState/action';
+import { activateArea } from '../../../../../store/deliveryZone/areaData/action';
 
 import AreaPanel from './AreaPanel';
 
@@ -9,8 +9,9 @@ export const AreaPanelContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  areas: state.deliveryZoneState.areas,
-  areaNumber: state.deliveryZoneState.areas,
+  areas: state.deliveryZone.areaData.areas,
+  areaNumber: state.deliveryZone.areaData.areas,
+  draw: state.deliveryZone.mode.draw,
 });
 
 const mapDispatchToProps = (dispatch) => {

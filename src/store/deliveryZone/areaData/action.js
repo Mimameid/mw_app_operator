@@ -1,7 +1,4 @@
 import {
-  TOGGLE_DRAWMODE,
-  TOGGLE_SELECTMODE,
-  TOGGLE_DELETEMODE,
   CREATE_AREA,
   DELETE_AREA,
   SAVE_AREA,
@@ -22,22 +19,6 @@ import {
 } from './types';
 
 import { getColor } from './utils';
-
-export function toggleDrawMode() {
-  return {
-    type: TOGGLE_DRAWMODE,
-  };
-}
-export function toggleSelectMode() {
-  return {
-    type: TOGGLE_SELECTMODE,
-  };
-}
-export function toggleDeleteMode() {
-  return {
-    type: TOGGLE_DELETEMODE,
-  };
-}
 
 export function saveArea() {
   return {
@@ -150,3 +131,5 @@ export function setDeliveryFee(value) {
     payload: value,
   };
 }
+
+export function createAreaFromUserData() {}

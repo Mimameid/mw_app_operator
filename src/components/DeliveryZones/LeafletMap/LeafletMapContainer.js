@@ -9,8 +9,8 @@ export const LeafletMapContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  drawMode: state.deliveryZoneState.drawMode,
-  areas: state.deliveryZoneState.areas,
+  draw: state.deliveryZone.mode.draw,
+  areas: state.deliveryZone.areaData.areas,
   widthChanged: state.drawerState.widthChanged,
 });
 

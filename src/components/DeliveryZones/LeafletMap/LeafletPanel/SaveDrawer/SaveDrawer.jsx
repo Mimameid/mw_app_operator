@@ -45,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
 function SaveDrawer({
   plzOpen,
   setParentRadius,
-  toggleDrawMode,
+  toggleDraw,
   saveArea,
 
-  drawMode,
+  draw,
   areas,
   activeArea,
 }) {
@@ -57,8 +57,8 @@ function SaveDrawer({
 
   const saveAreaHandler = (event) => {
     saveArea();
-    if (drawMode) {
-      toggleDrawMode();
+    if (draw) {
+      toggleDraw();
     }
   };
   const handlePolygonMenuExit = (event) => {

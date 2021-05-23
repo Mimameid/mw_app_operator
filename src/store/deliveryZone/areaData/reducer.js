@@ -1,7 +1,4 @@
 import {
-  TOGGLE_DRAWMODE,
-  TOGGLE_SELECTMODE,
-  TOGGLE_DELETEMODE,
   CREATE_AREA,
   DELETE_AREA,
   SAVE_AREA,
@@ -24,9 +21,6 @@ import {
 import { getDifference } from './utils';
 
 const initialState = {
-  drawMode: false,
-  deleteMode: false,
-  selectMode: false,
   areas: [],
   areaNumberCounter: -1,
   activeArea: {
@@ -42,34 +36,8 @@ const initialState = {
   vertexIndex: -1,
 };
 
-function deliveryZoneReducer(state = initialState, action) {
+function areaDataReducer(state = initialState, action) {
   switch (action.type) {
-    case TOGGLE_DRAWMODE: {
-      let newState;
-      if (state.selectMode) {
-        newState = {
-          ...state,
-          drawMode: !state.drawMode,
-        };
-      } else {
-        newState = {
-          ...state,
-          drawMode: !state.drawMode,
-        };
-      }
-      return newState;
-    }
-    case TOGGLE_SELECTMODE:
-      return {
-        ...state,
-        selectMode: !state.selectMode,
-      };
-    case TOGGLE_DELETEMODE:
-      return {
-        ...state,
-        deleteMode: !state.deleteMode,
-      };
-
     case REMOVE_POLYGON:
       return {
         ...state,
@@ -380,4 +348,4 @@ function deliveryZoneReducer(state = initialState, action) {
   }
 }
 
-export default deliveryZoneReducer;
+export default areaDataReducer;

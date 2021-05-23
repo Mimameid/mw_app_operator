@@ -6,7 +6,7 @@ import CustomDialog from '../../../common/CustomDialog/CustomDialog';
 import { wasAreaEdited } from '../../../../utils/utils';
 
 function AreaLayer({
-  drawMode,
+  draw,
   areas,
   activeArea,
   vertexSelected,
@@ -22,7 +22,7 @@ function AreaLayer({
 
   useMapEvents({
     click: (event) => {
-      if (drawMode) {
+      if (draw) {
         if (!vertexSelected) {
           const point = [event.latlng.lat, event.latlng.lng];
           addVertex(point);
@@ -80,11 +80,11 @@ function AreaLayer({
         area.areaPolygons.map((polygon, polygonIndex) =>
           area.areaNumber !== activeArea.areaNumber ? (
             <Polygon
-              // className={!drawMode ? classes.polygon : classes.polygonDrawMode}
+              // className={!draw ? classes.polygon : classes.polygondraw}
               key={`${(area.areaNumber + 1) * polygonIndex + new Date().getTime()}`}
               positions={polygon}
               pathOptions={{ color: area.color }}
-              eventHandlers={!drawMode ? eventHandlers : null}
+              eventHandlers={!draw ? eventHandlers : null}
               areaNumber={area.areaNumber}
               polygonIndex={polygonIndex}
             ></Polygon>

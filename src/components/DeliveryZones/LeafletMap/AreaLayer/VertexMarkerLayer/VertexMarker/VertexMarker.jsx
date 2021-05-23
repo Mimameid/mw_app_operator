@@ -10,9 +10,9 @@ function VertexMarker({
   color,
   numberVertices,
 
-  drawMode,
+  draw,
 
-  toggleDrawMode,
+  toggleDraw,
   saveArea,
   activatePolygon,
   rotatePolygon,
@@ -30,12 +30,12 @@ function VertexMarker({
     },
   });
 
-  const eventHandlersDrawMode = {
+  const eventHandlersdraw = {
     click(event) {
       // if first (last) vertex is clicked save and end
       if (numberVertices > 3 && (index[3] === 0 || index[3] === numberVertices - 1)) {
         saveArea();
-        toggleDrawMode();
+        toggleDraw();
       }
     },
   };
@@ -66,7 +66,7 @@ function VertexMarker({
     selectVertex(index);
     activatePolygon(index[1]);
     rotatePolygon();
-    toggleDrawMode();
+    toggleDraw();
     unselectVertex();
   };
 
@@ -76,9 +76,9 @@ function VertexMarker({
     unselectVertex();
   };
 
-  isActive = isActive && !drawMode;
+  isActive = isActive && !draw;
   let eventHandlers = isActive ? eventHandlersActive : null;
-  eventHandlers = drawMode ? eventHandlersDrawMode : eventHandlers;
+  eventHandlers = draw ? eventHandlersdraw : eventHandlers;
 
   return (
     <CircleMarker
@@ -90,7 +90,7 @@ function VertexMarker({
         fillOpacity: 1,
         radius: 7,
       }}
-      pane="markerPane"
+      pane="popupPane"
       center={coordinates}
       eventHandlers={eventHandlers}
     >

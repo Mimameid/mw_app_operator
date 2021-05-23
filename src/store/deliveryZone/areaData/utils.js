@@ -1,6 +1,6 @@
 import polygonClipping from 'polygon-clipping';
 
-import store from '../store';
+import store from '../../store';
 
 export function getColor() {
   let colors = [
@@ -18,7 +18,7 @@ export function getColor() {
   ];
 
   let usedColors = [];
-  for (let area of store.getState().deliveryZoneState.areas) {
+  for (let area of store.getState().deliveryZone.areaData.areas) {
     usedColors.push(area.color);
   }
 

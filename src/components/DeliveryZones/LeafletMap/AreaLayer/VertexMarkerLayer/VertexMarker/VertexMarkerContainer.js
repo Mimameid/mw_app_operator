@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  toggleDrawMode,
   saveArea,
   activatePolygon,
   rotatePolygon,
@@ -9,7 +8,8 @@ import {
   unselectVertex,
   updateVertex,
   removeVertex,
-} from '../../../../../../store/deliveryZoneState/action';
+} from '../../../../../../store/deliveryZone/areaData/action';
+import { toggleDraw } from '../../../../../../store/deliveryZone/mode/action';
 import VertexMarker from './VertexMarker';
 
 export const VertexMarkerContainer = (props) => {
@@ -17,13 +17,13 @@ export const VertexMarkerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  vertexSelected: state.deliveryZoneState.vertexSelected,
-  drawMode: state.deliveryZoneState.drawMode,
+  vertexSelected: state.deliveryZone.vertexSelected,
+  draw: state.deliveryZone.mode.draw,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleDrawMode: () => dispatch(toggleDrawMode()),
+    toggleDraw: () => dispatch(toggleDraw()),
     selectVertex: (index) => dispatch(selectVertex(index)),
     updateVertex: (coords) => dispatch(updateVertex(coords)),
     unselectVertex: () => dispatch(unselectVertex()),
