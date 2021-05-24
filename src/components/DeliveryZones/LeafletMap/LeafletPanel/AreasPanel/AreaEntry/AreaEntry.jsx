@@ -83,6 +83,8 @@ function AreaEntry({
   areaNumber,
 
   draw,
+  edited,
+  areas,
   activeArea,
 
   toggleDraw,
@@ -96,19 +98,31 @@ function AreaEntry({
   const classes = useStyles({ color })();
   const polygonContainer = useRef();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [changeZoneDialogOpen, setChangeZoneDialogOpen] = useState(false);
 
   const handleActivateArea = (event) => {
     // if (activeArea.areaNumber === areaNumber || event.target !== event.currentTarget) {
     //   return;
     // }
-    if (activeArea.areaNumber === areaNumber) {
-      return;
-    }
+    // if (activeArea.areaNumber === areaNumber) {
+    //   return;
+    // }
 
-    if (draw) {
-      toggleDraw();
+    if (edited) {
+      if (activeArea.areaNumber === areaNumber) {
+        return;
+      }
+      setChangeZoneDialogOpen(true);
+    } else {
+      if (draw) {
+        toggleDraw();
+      }
+      if (activeArea.areaNumber === areaNumber) {
+        deactivateArea();
+      } else {
+        activateArea(areaNumber);
+      }
     }
-    activateArea(areaNumber);
   };
 
   const handleAddPolygon = (event) => {
@@ -129,6 +143,22 @@ function AreaEntry({
     }
     deleteArea(areaNumber);
     setDeleteDialogOpen(false);
+  };
+
+  const handleActivateAreaDialogReject = (event) => {
+    setChangeZoneDialogOpen(false);
+  };
+
+  const handleActivateAreaDialogAccept = (event) => {
+    setChangeZoneDialogOpen(false);
+    if (draw) {
+      toggleDraw();
+    }
+    if (activeArea.areaNumber === areaNumber) {
+      deactivateArea();
+    } else {
+      activateArea(areaNumber);
+    }
   };
 
   const handleMouseOver = (event) => {
@@ -185,6 +215,14 @@ function AreaEntry({
           <Delete />
         </IconButton>
       </div>
+      <CustomDialog
+        open={changeZoneDialogOpen}
+        title="Zone wechseln?"
+        message="Die aktuelle Zone wurde nicht gespeichert. Wenn Sie die Zone wechseln, werden alle Veränderungen
+        unwiederruflich gelöscht."
+        handleReject={handleActivateAreaDialogReject}
+        handleAccept={handleActivateAreaDialogAccept}
+      />
       <CustomDialog
         open={deleteDialogOpen}
         title="Zone löschen?"

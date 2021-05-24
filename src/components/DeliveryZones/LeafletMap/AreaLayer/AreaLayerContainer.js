@@ -15,6 +15,8 @@ export const AreaLayerContainer = (props) => {
 
 const mapStateToProps = (state) => ({
   draw: state.deliveryZone.mode.draw,
+  edited: state.deliveryZone.mode.edited,
+
   areas: state.deliveryZone.areaData.areas,
   vertexSelected: state.deliveryZone.areaData.vertexSelected,
   activeArea: state.deliveryZone.areaData.activeArea,

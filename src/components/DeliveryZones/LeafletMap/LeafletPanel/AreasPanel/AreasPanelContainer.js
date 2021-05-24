@@ -9,9 +9,11 @@ export const AreasPanelContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
+  edited: state.deliveryZone.mode.edited,
+  draw: state.deliveryZone.mode.draw,
+
   areas: state.deliveryZone.areaData.areas,
   areaNumber: state.deliveryZone.areaData.activeArea.areaNumber,
-  draw: state.deliveryZone.mode.draw,
 });
 
 const mapDispatchToProps = (dispatch) => {

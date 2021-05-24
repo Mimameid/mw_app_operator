@@ -1,11 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Add, GetApp } from '@material-ui/icons';
+import { Add, Block, GetApp } from '@material-ui/icons';
 
 import L from 'leaflet';
 
-import { wasAreaEdited } from '../../../../utils/utils.js';
 import AreasPanel from './AreasPanel/AreasPanelContainer';
 import SaveDrawer from './SaveDrawer/SaveDrawerContainer';
 import PLZDrawer from './PLZDrawer/PLZDrawerContainer';
@@ -39,22 +38,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body1.fontSize,
   },
 
-  editIconAnimation: {
+  canelIcon: {
     color: theme.palette.primary.main,
-    animationDuration: '0.7s',
+    animationDuration: '0.9s',
     animationIterationCount: 'infinite',
     animationName: '$pulse',
     animationTimingFunction: 'linear',
   },
   '@keyframes pulse': {
     '0%': {
-      transform: 'scale(0.9)',
+      transform: 'rotate(-15deg) scale(0.95)',
     },
     '50%': {
-      transform: 'scale(1.1)',
+      transform: 'rotate(-15deg) scale(1.05)',
     },
     '100%': {
-      transform: 'scale(0.9)',
+      transform: 'rotate(-15deg) scale(0.95)',
     },
   },
 }));
@@ -62,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
 function LeafletPanel({
   draw,
   areas,
+  edited,
   activeArea,
 
   toggleDraw,
@@ -88,22 +88,18 @@ function LeafletPanel({
   }, [activeArea.areaNumber]);
 
   const handleAddButton = (event) => {
-    if (areas.length < 1) {
-      createArea();
-      toggleDraw();
-      return;
-    }
+    createArea();
+    toggleDraw();
+  };
 
-    if (wasAreaEdited(areas, activeArea)) {
+  const handleCancelButton = (event) => {
+    if (edited) {
       setDialogOpen(true);
     } else {
-      if (!draw) {
-        createArea();
-        toggleDraw();
-      } else {
-        deactivateArea();
+      if (draw) {
         toggleDraw();
       }
+      deactivateArea();
     }
   };
 
@@ -139,16 +135,16 @@ function LeafletPanel({
   };
 
   const handleAcceptDialog = (event) => {
-    deactivateArea();
-    setDialogOpen(false);
-    if (!draw) {
-      createArea();
+    if (draw) {
+      toggleDraw();
     }
-    toggleDraw();
+    deactivateArea();
+
+    setDialogOpen(false);
   };
 
   const handleOpenPLZDrawer = (event) => {
-    if (wasAreaEdited(areas, activeArea)) {
+    if (edited) {
       setPLZDialogOpen(true);
     } else {
       deactivateArea();
@@ -179,12 +175,12 @@ function LeafletPanel({
       <div style={{ direction: 'rtl' }}>
         <Paper className={classes.buttonsContainer} style={{ borderRadius: radius }}>
           <IconButton
-            className={`${classes.iconButton} ${draw ? classes.editIconAnimation : null}`}
-            onClick={handleAddButton}
+            className={`${classes.iconButton} ${draw || edited ? classes.canelIcon : null}`}
+            onClick={edited || draw ? handleCancelButton : handleAddButton}
             size={iconButtonSize}
             disabled={areas.length > MAX_AREAS - 1}
           >
-            <Add />
+            {edited || draw ? <Block /> : <Add />}
           </IconButton>
           <IconButton className={classes.iconButton} onClick={handleOpenPLZDrawer}>
             PLZ

@@ -11,6 +11,8 @@ export const SaveDrawerContainer = (props) => {
 
 const mapStateToProps = (state) => ({
   draw: state.deliveryZone.mode.draw,
+  edited: state.deliveryZone.mode.edited,
+
   activeArea: state.deliveryZone.areaData.activeArea,
   areas: state.deliveryZone.areaData.areas,
 });

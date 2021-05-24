@@ -1,9 +1,12 @@
-import { TOGGLE_DRAW, TOGGLE_SELECT, TOGGLE_DELETE } from './types';
+import { TOGGLE_DRAW, TOGGLE_SELECT, TOGGLE_DELETE, SET_EDITED, RESET_CHANGED } from './types';
 
 const initialState = {
   draw: false,
   delete: false,
   select: false,
+  edited: false,
+  // determines if the deliveyArea was changed at all
+  changed: false,
 };
 
 function modeReducer(state = initialState, action) {
@@ -32,6 +35,17 @@ function modeReducer(state = initialState, action) {
       return {
         ...state,
         delete: !state.delete,
+      };
+    case SET_EDITED:
+      return {
+        ...state,
+        edited: action.payload,
+        changed: true,
+      };
+    case RESET_CHANGED:
+      return {
+        ...state,
+        changed: false,
       };
     default:
       return state;

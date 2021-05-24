@@ -3,11 +3,12 @@ import { Polygon, useMapEvents } from 'react-leaflet';
 
 import ActiveAreaLayer from './ActiveAreaLayer/ActiveAreaLayerContainer';
 import CustomDialog from '../../../common/CustomDialog/CustomDialog';
-import { wasAreaEdited } from '../../../../utils/utils';
+import useDispatchAreaEdited from '../../../../hooks/useDispatchAreaEdited';
 
 function AreaLayer({
   draw,
   areas,
+  edited,
   activeArea,
   vertexSelected,
 
@@ -17,6 +18,7 @@ function AreaLayer({
   deactivateArea,
   activatePolygon,
 }) {
+  useDispatchAreaEdited(areas, activeArea);
   const [dialogOpen, setDialogOpen] = useState(false);
   const areaNumberRef = useRef(null);
 
@@ -28,7 +30,7 @@ function AreaLayer({
           addVertex(point);
         }
       } else {
-        if (activeArea && !wasAreaEdited(areas, activeArea)) {
+        if (activeArea && !edited) {
           deactivateArea();
         }
       }
@@ -53,10 +55,10 @@ function AreaLayer({
     },
     mousedown(event) {
       if (activeArea.areaNumber !== event.target.options.areaNumber) {
-        if (wasAreaEdited(areas, activeArea)) {
+        areaNumberRef.current = event.target.options;
+        if (edited) {
           setDialogOpen(true);
         } else {
-          areaNumberRef.current = event.target.options;
           activateArea(areaNumberRef.current.areaNumber);
           activatePolygon(areaNumberRef.current.polygonIndex);
         }

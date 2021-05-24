@@ -1,14 +1,14 @@
 import React from 'react';
+import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import useDrawerWidth from '../../hooks/useDrawerWidth';
 
-import { Link, useLocation } from 'react-router-dom';
-
-import { Divider, Drawer, List, ListItem, ListItemIcon, IconButton, ListItemText } from '@material-ui/core';
+import { Divider, Drawer, List, IconButton } from '@material-ui/core';
 import { DoubleArrowRounded } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { nanoid } from 'nanoid';
+import NavigationLinkContainer from './NavigationLink/NavigationLinkContainer';
+
 import routes from '../../routes';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,18 +16,6 @@ const useStyles = makeStyles((theme) => ({
     width: 200,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-  },
-  navLink: {
-    color: theme.palette.text.secondary,
-    textDecoration: 'none',
-    '& :hover': {
-      textDecoration: 'underline',
-      textDecorationColor: theme.palette.primary.main,
-    },
-  },
-  navLinkSelected: {
-    textDecoration: 'underline',
-    textDecorationColor: theme.palette.primary.main,
   },
   drawerOpen: {
     width: 200,
@@ -50,10 +38,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NavigationDrawer() {
-  const classes = useStyles();
   const dispatch = useDispatch();
+  const classes = useStyles();
   const [open, setOpen] = useDrawerWidth();
-  const location = useLocation();
 
   const handleDrawerControl = () => {
     setOpen(!open);
@@ -90,19 +77,8 @@ function NavigationDrawer() {
       open={true}
     >
       <List>
-        {routes.map(({ name, exact, path, component, IconComponent }) => (
-          <Link
-            key={nanoid()}
-            className={`${classes.navLink} ${location.pathname.includes(path) ? classes.navLinkSelected : null}`}
-            to={path}
-          >
-            <ListItem button>
-              <ListItemIcon>
-                <IconComponent />
-              </ListItemIcon>
-              <ListItemText primary={name} />
-            </ListItem>
-          </Link>
+        {routes.map((data) => (
+          <NavigationLinkContainer key={nanoid()} {...data} />
         ))}
       </List>
 

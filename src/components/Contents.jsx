@@ -12,18 +12,20 @@ function Contents() {
 
   return (
     <React.Fragment>
-      {loggedIn ? (
-        <Router>
-          <NavigationDrawer />
-          <Switch>
-            {routes.map(({ exact, path, Component }) => (
-              <Route key={nanoid()} exact={exact} path={path} component={Component}></Route>
-            ))}
-          </Switch>
-        </Router>
-      ) : (
-        <LoginContainer />
-      )}
+      <Router>
+        {loggedIn ? (
+          <React.Fragment>
+            <NavigationDrawer />
+            <Switch>
+              {routes.map(({ exact, path, Component }) => (
+                <Route key={nanoid()} exact={exact} path={path} component={Component}></Route>
+              ))}
+            </Switch>
+          </React.Fragment>
+        ) : (
+          <LoginContainer />
+        )}
+      </Router>
     </React.Fragment>
   );
 }

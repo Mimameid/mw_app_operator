@@ -147,6 +147,7 @@ function areaDataReducer(state = initialState, action) {
           color: null,
         },
       };
+
     case ADD_POLYGON: {
       const newPolygons = [...state.activeArea.areaPolygons];
       newPolygons[state.activeArea.selectedPolygonIndex][0] = action.payload[0];
@@ -202,7 +203,6 @@ function areaDataReducer(state = initialState, action) {
         },
       };
     }
-
     case ADD_VERTEX: {
       const newAreaPolygons = [...state.activeArea.areaPolygons];
       let selectedPolygon = newAreaPolygons[state.activeArea.selectedPolygonIndex];
@@ -272,7 +272,6 @@ function areaDataReducer(state = initialState, action) {
       };
     case UPDATE_VERTEX:
       const newAreaPolygons = [...state.activeArea.areaPolygons];
-
       let ring = newAreaPolygons[state.vertexIndex[1]][state.vertexIndex[2]];
       // if selected vertex is last or first element of the array update first AND last element (linear ring)
       if (state.vertexIndex[3] === 0 || state.vertexIndex[3] === ring.length - 1) {
@@ -288,7 +287,6 @@ function areaDataReducer(state = initialState, action) {
           areaPolygons: newAreaPolygons,
         },
       };
-
     case SET_MINIMUM_ORDER_VALUE: {
       const area = state.areas.find((area) => area.areaNumber === parseInt(action.payload.areaNumber));
       const index = state.areas.findIndex((area) => area.areaNumber === action.payload.areaNumber);
@@ -315,7 +313,6 @@ function areaDataReducer(state = initialState, action) {
         areas: newAreas,
       };
     }
-
     case SET_DELIVERY_FEE: {
       const area = state.areas.find((area) => area.areaNumber === parseInt(action.payload.areaNumber));
       const index = state.areas.findIndex((area) => area.areaNumber === action.payload.areaNumber);

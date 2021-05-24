@@ -12,13 +12,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AreasPanel({ areas, areaNumber, draw }) {
+function AreasPanel({ draw, edited, areas, areaNumber }) {
   const classes = useStyles();
   const panelRef = useRef();
 
   useEffect(() => {
-    panelRef.current.style.display = draw ? 'none' : 'block';
-  }, [draw]);
+    panelRef.current.style.display = edited || draw ? 'none' : 'block';
+  }, [draw, edited]);
 
   return (
     <Paper className={classes.areasContainer} ref={panelRef}>

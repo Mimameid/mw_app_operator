@@ -3,8 +3,6 @@ import { Paper, IconButton, Slide } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Save } from '@material-ui/icons';
 
-import { wasAreaEdited } from '../../../../../utils/utils';
-
 const useStyles = makeStyles((theme) => ({
   sliderContainer: {
     zIndex: 1000,
@@ -21,24 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   iconButton: {
     padding: theme.spacing(1),
-  },
-  deleteIconAnimation: {
     color: theme.palette.primary.main,
-    animationDuration: '0.7s',
-    animationIterationCount: 'infinite',
-    animationName: '$pulse',
-    animationTimingFunction: 'linear',
-  },
-  '@keyframes pulse': {
-    '0%': {
-      transform: 'scale(0.9)',
-    },
-    '50%': {
-      transform: 'scale(1.1)',
-    },
-    '100%': {
-      transform: 'scale(0.9)',
-    },
   },
 }));
 
@@ -49,6 +30,7 @@ function SaveDrawer({
   saveArea,
 
   draw,
+  edited,
   areas,
   activeArea,
 }) {
@@ -73,7 +55,7 @@ function SaveDrawer({
 
   let enablePanel = true;
   if (activeArea.areaNumber > -1) {
-    enablePanel = !wasAreaEdited(areas, activeArea);
+    enablePanel = !edited;
   }
 
   return (

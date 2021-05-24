@@ -27,7 +27,6 @@ function deliveryAreaSuccess() {
 export function fetchDeliveryArea() {
   return (dispatch) => {
     dispatch(deliveryAreaRequest());
-    console.log('trha');
 
     const url = new URL('owners/deliveryAreas', process.env.REACT_APP_API_URL);
 

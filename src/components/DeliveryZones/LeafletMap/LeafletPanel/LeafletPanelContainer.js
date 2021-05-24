@@ -11,6 +11,7 @@ export const LeafletPanelContainer = (props) => {
 
 const mapStateToProps = (state) => ({
   draw: state.deliveryZone.mode.draw,
+  edited: state.deliveryZone.mode.edited,
 
   areas: state.deliveryZone.areaData.areas,
   activeArea: state.deliveryZone.areaData.activeArea,

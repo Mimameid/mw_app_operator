@@ -1,26 +1,7 @@
-export function wasAreaEdited(areas, activeArea) {
-  let currentPolygons = activeArea.areaPolygons;
-
-  // check if the current polygon is an existing one
-  let selectedArea = areas.find((area) => area.areaNumber === activeArea.areaNumber);
-  if (selectedArea) {
-    // Check if arrays are equal
-    if (JSON.stringify(selectedArea.areaPolygons) === JSON.stringify(currentPolygons)) {
-      return false;
-    } else {
-      // TODO: see task #e508ja
-      return true;
-    }
-  } else {
-    // handle new area
-    if (currentPolygons.length > 0) {
-      return currentPolygons[0][0].length > 3;
-    } else {
-      return false;
-    }
-  }
-}
-
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
 export const debounce = (func, wait, immediate) => {
   let timeout;
   return (...myArgs) => {
