@@ -1,10 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { Grid } from '@material-ui/core';
-import NavigationDrawer from './components/NavigationDrawer/NavigationDrawer';
-import UpdateDeliveryZone from './components/UpdateDeliveryZones/UpdateDeliveryZone';
+import Contents from './components/Contents';
 
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import theme from './theme/theme';
@@ -16,10 +13,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <CssBaseline>
-          <NavigationDrawer />
-          <Grid container direction="column">
-            <UpdateDeliveryZone />
-          </Grid>
+          <Contents />
         </CssBaseline>
       </Provider>
     </ThemeProvider>

@@ -7,7 +7,7 @@ function drawerReducer(state = initialState, action) {
     case SET_WIDTH:
       return {
         ...state,
-        width: action.payload.width,
+        width: action.payload,
         widthChanged: true,
       };
     case DISABLE_WIDTH_CHANGED:

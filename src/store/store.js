@@ -1,7 +1,11 @@
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
+import { loadState, saveState } from './localStorage';
+import { throttle } from '../utils/utils';
 
-const initialState = {};
+const initialState = loadState();
+const middleware = [thunk];
 
 // dev tools middleware
 /* eslint-disable no-underscore-dangle */
@@ -10,6 +14,13 @@ if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'production') {
   devTools = (a) => a;
 }
 
-const store = createStore(rootReducer, initialState, devTools);
+const store = createStore(rootReducer, initialState, compose(applyMiddleware(...middleware), devTools));
+store.subscribe(
+  throttle(() => {
+    // specify reducers that shall be stored (currently the whole store is persisted)
+    saveState(store.getState());
+  }),
+  1000,
+);
 
 export default store;
