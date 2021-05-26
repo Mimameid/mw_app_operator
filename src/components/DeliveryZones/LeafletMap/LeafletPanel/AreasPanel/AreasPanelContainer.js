@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { activateArea } from '../../../../../store/deliveryZone/areaData/action';
+import { activateArea } from '../../../../../store/deliveryZone/areaData/actions';
 
 import AreasPanel from './AreasPanel';
 

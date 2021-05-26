@@ -1,4 +1,5 @@
 import {
+  SET_AREAS,
   CREATE_AREA,
   DELETE_AREA,
   SAVE_AREA,
@@ -129,6 +130,36 @@ export function setDeliveryFee(value) {
   return {
     type: SET_DELIVERY_FEE,
     payload: value,
+  };
+}
+export function setAreas(areaData) {
+  return {
+    type: SET_AREAS,
+    payload: areaData,
+  };
+}
+
+export function loadAreas(data) {
+  return (dispatch) => {
+    let areaNumberCounter = 0;
+    const areas = data.map((entry, areaIndex) => {
+      return {
+        areaNumber: areaNumberCounter++,
+        // convert lng/lat to lat/lng order to conform with leaflet specification
+        areaPolygons: entry.area.coordinates.map((polygon, index) => {
+          return polygon.map((ring, index) => {
+            return ring.map((vertex, index) => {
+              return (vertex = [vertex[1], vertex[0]]);
+            });
+          });
+        }),
+
+        deliveryFee: entry.delivery_fee,
+        minimumOrderValue: entry.minimum_order_value,
+        color: getColor(),
+      };
+    });
+    dispatch(setAreas({ areas, areaNumberCounter }));
   };
 }
 

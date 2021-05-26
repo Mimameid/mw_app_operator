@@ -6,7 +6,7 @@ import {
   activateArea,
   deactivateArea,
   activatePolygon,
-} from '../../../../store/deliveryZone/areaData/action';
+} from '../../../../store/deliveryZone/areaData/actions';
 import AreaLayer from './AreaLayer';
 
 export const AreaLayerContainer = (props) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setLoggedIn } from '../../store/userState/authState/action';
+import { setLoggedIn } from '../../store/userState/auth/actions';
 
 import Login from './Login.jsx';
 

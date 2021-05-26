@@ -33,6 +33,8 @@ function PLZDrawer({
   createArea,
   saveArea,
   addPolygon,
+  setStatusError,
+  setStatusRequest,
 }) {
   const classes = useStyles();
   const [error, setError] = useState(false);
@@ -55,8 +57,8 @@ function PLZDrawer({
   const onChangePLZ = (event) => {
     let value = event.target.value;
     setError(false);
-    // TODO: see #e75f50
-    if (value > 9999 && value < 100000) {
+    const plzRegex = /^([0]{1}[1-9]{1}|[1-9]{1}[0-9]{1})[0-9]{3}$/;
+    if (value.match(plzRegex)) {
       const url = new URL('areas/' + value, process.env.REACT_APP_API_URL);
       const options = {
         method: 'GET',
@@ -67,13 +69,19 @@ function PLZDrawer({
         },
       };
       setDisabled(true);
+
       fetch(url.href, options)
         .then((response) => {
           setDisabled(false);
-
           return response.json();
         })
         .then((data) => {
+          if (data.length < 1) {
+            setStatusError('PLZ existiert nicht!');
+            setPLZOpen(false);
+            return;
+          }
+
           createArea();
           addPolygon(data['area']);
           saveArea();

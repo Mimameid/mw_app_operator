@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useAuthenticate } from '../../hooks/useAuthenticate';
+import { useFetchDeliveryAreas } from '../../hooks/useFetchDeliveryAreas';
 
 import { Grid } from '@material-ui/core';
 import LeafletMap from './LeafletMap/LeafletMapContainer';
 
 function DeliveryZones() {
-  useAuthenticate();
+  useFetchDeliveryAreas();
   const drawerState = useSelector((state) => state.drawerState);
 
   return (

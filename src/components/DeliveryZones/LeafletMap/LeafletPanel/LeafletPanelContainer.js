@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deactivateArea, createArea } from '../../../../store/deliveryZone/areaData/action';
-import { toggleDraw, toggleDelete } from '../../../../store/deliveryZone/mode/action';
+import { deactivateArea, createArea } from '../../../../store/deliveryZone/areaData/actions';
+import { submitDeliveryAreas } from '../../../../store/userState/deliveryAreas/actions';
+import { toggleDraw, toggleDelete } from '../../../../store/deliveryZone/mode/actions';
 
 import LeafletPanel from './LeafletPanel';
 
@@ -23,6 +24,7 @@ const mapDispatchToProps = (dispatch) => {
     toggleDelete: () => dispatch(toggleDelete()),
     createArea: () => dispatch(createArea()),
     deactivateArea: () => dispatch(deactivateArea()),
+    submitDeliveryAreas: (value) => dispatch(submitDeliveryAreas(value)),
   };
 };
 

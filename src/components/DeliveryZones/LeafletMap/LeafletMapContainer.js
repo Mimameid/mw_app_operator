@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { disableWidthChanged } from '../../../store/drawerState/action';
+import { disableWidthChanged } from '../../../store/drawerState/actions';
 
 import LeafletMap from './LeafletMap';
 

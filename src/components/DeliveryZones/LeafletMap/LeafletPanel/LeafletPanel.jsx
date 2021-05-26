@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Paper, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Add, Block, GetApp } from '@material-ui/icons';
+import { Add, Block, CloudUpload } from '@material-ui/icons';
 
 import L from 'leaflet';
 
@@ -67,6 +67,7 @@ function LeafletPanel({
   toggleDraw,
   createArea,
   deactivateArea,
+  submitDeliveryAreas,
 }) {
   const classes = useStyles();
   const divRef = useRef(null);
@@ -75,7 +76,6 @@ function LeafletPanel({
   const [radius, setRadius] = useState('4px');
   const [plzOpen, setPLZOpen] = useState(false);
   const iconButtonSize = 'small';
-
   useEffect(() => {
     // this prevents map events being triggered before ui events (on custom (non leaflet) elements)
     L.DomEvent.disableClickPropagation(divRef.current);
@@ -103,30 +103,8 @@ function LeafletPanel({
     }
   };
 
-  const handleExportData = (event) => {
-    const exportData = areas.map((area, areaIndex) => ({
-      area: {
-        type: 'MultiPolygon',
-        // convert lat/lng to lng/lat order to conform with geojson specification
-        coordinates: area.areaPolygons.map((polygon, index) => {
-          return polygon.map((ring, index) => {
-            return ring.map((vertex, index) => {
-              return (vertex = [vertex[1], vertex[0]]);
-            });
-          });
-        }),
-      },
-      delivery_fee: area.deliveryFee,
-      minimum_order_value: area.minimumOrderValue,
-    }));
-
-    var dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportData));
-    var downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute('href', dataStr);
-    downloadAnchorNode.setAttribute('download', 'locations.json');
-    document.body.appendChild(downloadAnchorNode); // required for firefox
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+  const handleSubmitData = (event) => {
+    submitDeliveryAreas(areas);
   };
 
   const handleRejectDialog = (event) => {
@@ -194,11 +172,11 @@ function LeafletPanel({
       <Paper className={classes.exportButtonContainer} style={{ borderRadius: radius }}>
         <IconButton
           className={classes.iconButton}
-          onClick={handleExportData}
+          onClick={handleSubmitData}
           size={iconButtonSize}
           disabled={areas.length < 1}
         >
-          <GetApp />
+          <CloudUpload />
         </IconButton>
       </Paper>
 

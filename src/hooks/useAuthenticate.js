@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { authenticate } from '../store/userState/authState/action';
+import { authenticate } from '../store/userState/auth/actions';
 
 export function useAuthenticate() {
   const dispatch = useDispatch();

@@ -6,7 +6,7 @@ const initialState = {
   errorMessage: '',
 };
 
-function userStateReducer(state = initialState, action) {
+function authReducer(state = initialState, action) {
   switch (action.type) {
     case LOGGEDIN_SUCCESS:
       return { ...state, statusCode: action.payload, loggedIn: true };
@@ -26,4 +26,4 @@ function userStateReducer(state = initialState, action) {
   }
 }
 
-export default userStateReducer;
+export default authReducer;

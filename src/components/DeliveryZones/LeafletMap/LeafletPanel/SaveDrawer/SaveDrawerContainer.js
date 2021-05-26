@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { saveArea } from '../../../../../store/deliveryZone/areaData/action';
-import { toggleDraw } from '../../../../../store/deliveryZone/mode/action';
+import { saveArea } from '../../../../../store/deliveryZone/areaData/actions';
+import { toggleDraw } from '../../../../../store/deliveryZone/mode/actions';
 
 import SaveDrawer from './SaveDrawer';
 

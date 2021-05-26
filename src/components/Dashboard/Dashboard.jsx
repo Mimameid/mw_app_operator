@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
 
-import { useFetchUserData } from '../../hooks/useFetchUserData';
+// import { useFetchUserData } from '../../hooks/useFetchUserData';
+import { useAuthenticate } from '../../hooks/useAuthenticate';
 
 function Dashboard() {
-  const [userData, fetchUserData] = useFetchUserData();
+  // const [userData, fetchUserData] = useFetchUserData();
+  useAuthenticate();
 
   useEffect(() => {
-    fetchUserData();
-  }, [fetchUserData]);
+    // fetchUserData();
+    // console.log(userData);
+  }, []);
 
-  console.log(userData);
   return <div></div>;
 }
 

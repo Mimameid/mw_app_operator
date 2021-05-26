@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { setLoggedIn } from '../../../store/userState/authState/action';
-import { toggleDraw, resetChanged } from '../../../store/deliveryZone/mode/action';
-import { deactivateArea } from '../../../store/deliveryZone/areaData/action';
+import { setLoggedIn } from '../../../store/userState/auth/actions';
+import { toggleDraw, resetChanged } from '../../../store/deliveryZone/mode/actions';
+import { deactivateArea } from '../../../store/deliveryZone/areaData/actions';
 
 import NavigationLink from './NavigationLink';
 
