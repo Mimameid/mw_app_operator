@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import authState from './authState/reducer';
-import deliveryAreaState from './deliveryAreaState/reducer';
+import auth from './auth/reducer';
+import deliveryAreas from './deliveryAreas/reducer';
 
-export default combineReducers({ authState, deliveryAreaState });
+export default combineReducers({ auth, deliveryAreas });
