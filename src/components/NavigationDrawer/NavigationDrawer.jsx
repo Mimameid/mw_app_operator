@@ -3,8 +3,8 @@ import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
 import useDrawerWidth from '../../hooks/useDrawerWidth';
 
-import { Divider, Drawer, List, IconButton } from '@material-ui/core';
-import { DoubleArrowRounded } from '@material-ui/icons';
+import { ListItem, ListItemIcon, ListItemText, Divider, Drawer, List, IconButton } from '@material-ui/core';
+import { DoubleArrowRounded, ExitToApp } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 
 import NavigationLinkContainer from './NavigationLink/NavigationLinkContainer';
@@ -13,6 +13,7 @@ import routes from '../../routes';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
+    position: 'relative',
     width: 200,
     flexShrink: 0,
     whiteSpace: 'nowrap',
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
+    overflowX: 'hidden',
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
@@ -34,6 +36,19 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('sm')]: {
       width: theme.spacing(7) + 1,
     },
+  },
+  logoutButtonContainer: {
+    position: 'absolute',
+    width: '100%',
+    bottom: '50px',
+  },
+  logoutButton: {
+    // padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+
+    color: theme.palette.text.secondary,
+
+    fontSize: theme.typography.htmlFontSize,
+    fontFamily: theme.typography.fontFamily,
   },
 }));
 
@@ -83,9 +98,17 @@ function NavigationDrawer() {
       </List>
 
       <Divider />
-      <div style={{ marginTop: 'auto', textAlign: 'right', flexDirection: 'row-reverse' }}>
-        <button onClick={logout}>Logout</button>
+      <div className={classes.logoutButtonContainer}>
+        <Divider />
+        <ListItem className={classes.logoutButton} button onClick={logout}>
+          <ListItemIcon>
+            <ExitToApp style={{ transform: 'rotate(-180deg)' }} />
+          </ListItemIcon>
+          <ListItemText primary={'Logout'} />
+        </ListItem>
+        <Divider />
       </div>
+
       <div style={{ marginTop: 'auto', textAlign: 'right', flexDirection: 'row-reverse' }}>
         <IconButton onClick={handleDrawerControl}>
           <DoubleArrowRounded style={{ transform: open ? 'rotate(-180deg)' : 'rotate(0deg)' }} />

@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: 'underline',
     textDecorationColor: theme.palette.primary.main,
   },
+  selectedIcon: {
+    color: theme.palette.primary.main,
+  },
 }));
 
 function NavigationLink({
@@ -37,7 +40,6 @@ function NavigationLink({
   const location = useLocation();
   const history = useHistory();
   const [transitionDialogOpen, setTransitionDialogOpen] = useState(false);
-
   const routeTransitionHandler = (event) => {
     if (changed) {
       event.preventDefault();
@@ -60,16 +62,17 @@ function NavigationLink({
     history.push(path);
   };
 
+  const selected = location.pathname === path;
   return (
     <React.Fragment>
       <Link
-        className={`${classes.navLink} ${location.pathname.includes(path) ? classes.navLinkSelected : null}`}
+        className={`${classes.navLink} ${selected ? classes.navLinkSelected : null}`}
         to={path}
         onClick={routeTransitionHandler}
       >
         <ListItem button>
           <ListItemIcon>
-            <IconComponent />
+            <IconComponent className={selected ? classes.selectedIcon : ''} />
           </ListItemIcon>
           <ListItemText primary={name} />
         </ListItem>

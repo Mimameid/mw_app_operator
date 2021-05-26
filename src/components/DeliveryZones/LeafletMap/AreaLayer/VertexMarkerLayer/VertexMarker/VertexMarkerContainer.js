@@ -8,8 +8,8 @@ import {
   unselectVertex,
   updateVertex,
   removeVertex,
-} from '../../../../../../store/deliveryZone/areaData/action';
-import { toggleDraw } from '../../../../../../store/deliveryZone/mode/action';
+} from '../../../../../../store/deliveryZone/areaData/actions';
+import { toggleDraw } from '../../../../../../store/deliveryZone/mode/actions';
 import VertexMarker from './VertexMarker';
 
 export const VertexMarkerContainer = (props) => {

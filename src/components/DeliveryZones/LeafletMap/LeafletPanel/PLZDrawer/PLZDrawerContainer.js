@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createArea, addPolygon, saveArea } from '../../../../../store/deliveryZone/areaData/action';
+import { createArea, addPolygon, saveArea } from '../../../../../store/deliveryZone/areaData/actions';
+import { setStatusRequest, setStatusError } from '../../../../../store/statusCode/actions';
 
 import PLZDrawer from './PLZDrawer';
 
@@ -17,6 +18,8 @@ const mapDispatchToProps = (dispatch) => {
     createArea: () => dispatch(createArea()),
     addPolygon: (polygon) => dispatch(addPolygon(polygon)),
     saveArea: () => dispatch(saveArea()),
+    setStatusRequest: (message) => dispatch(setStatusRequest(message)),
+    setStatusError: (message) => dispatch(setStatusError(message)),
   };
 };
 

@@ -1,4 +1,5 @@
 import {
+  SET_AREAS,
   CREATE_AREA,
   DELETE_AREA,
   SAVE_AREA,
@@ -96,6 +97,22 @@ function areaDataReducer(state = initialState, action) {
       }
       return state;
     }
+    case SET_AREAS:
+      return {
+        areas: action.payload.areas,
+        areaNumberCounter: action.payload.areaNumberCounter,
+        activeArea: {
+          areaNumber: -1, // stores which of the areas is currently selected
+          areaPolygons: [], // the coordinates of a geojson multipolygon
+          selectedPolygonIndex: -1, // stores which of the polygons of the area is currently being edited
+          minimumOrderValue: 0,
+          deliveryFee: 0,
+          color: null,
+        },
+        //vertex to edit
+        vertexSelected: false, // quadruple with areaNumber, polygonIndex, ringIndex and vertexIndex to find the vertex in areaPolygons
+        vertexIndex: -1,
+      };
     case CREATE_AREA:
       const areaNumber = state.areaNumberCounter + 1;
       return {

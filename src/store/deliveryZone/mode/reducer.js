@@ -40,7 +40,7 @@ function modeReducer(state = initialState, action) {
       return {
         ...state,
         edited: action.payload,
-        changed: true,
+        changed: state.edited ? true : state.changed,
       };
     case RESET_CHANGED:
       return {

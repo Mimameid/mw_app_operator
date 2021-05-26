@@ -2,7 +2,8 @@ import polygonClipping from 'polygon-clipping';
 
 import store from '../../store';
 
-export function getColor() {
+function getColorCreator() {
+  let usedColors = [];
   let colors = [
     '#2f4f4f',
     '#8b4513',
@@ -16,18 +17,25 @@ export function getColor() {
     '#ff00ff',
     '#ff0000',
   ];
-
-  let usedColors = [];
-  for (let area of store.getState().deliveryZone.areaData.areas) {
-    usedColors.push(area.color);
-  }
-
-  for (let color of colors) {
-    if (!usedColors.includes(color)) {
-      return color;
+  return () => {
+    if (colors.length < 1) {
+      // this doesn't make sense, the use isn't allowed to create more than 11 areas currently
+      colors = usedColors.slice();
+      usedColors = [];
+      for (let area of store.getState().deliveryZone.areaData.areas) {
+        const index = colors.indexOf(area.color);
+        colors.splice(index, 1);
+        usedColors.push(area.color);
+      }
     }
-  }
+
+    const color = colors.pop();
+    usedColors.push(color);
+    return color;
+  };
 }
+
+export const getColor = getColorCreator();
 
 export function getDifference(areas, activeArea) {
   if (areas.length < 1) {

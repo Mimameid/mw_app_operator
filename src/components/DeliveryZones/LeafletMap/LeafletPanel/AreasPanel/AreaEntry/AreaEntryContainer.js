@@ -7,8 +7,8 @@ import {
   addEmptyPolygon,
   setMinimumOrderValue,
   setDeliveryFee,
-} from '../../../../../../store/deliveryZone/areaData/action';
-import { toggleDraw } from '../../../../../../store/deliveryZone/mode/action';
+} from '../../../../../../store/deliveryZone/areaData/actions';
+import { toggleDraw } from '../../../../../../store/deliveryZone/mode/actions';
 
 import AreaEntry from './AreaEntry';
 

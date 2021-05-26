@@ -90,8 +90,7 @@ class MySnackBar extends React.Component {
       this.timer = setTimeout(() => this.setState({ open: false }), 3000);
 
       this.newSnack = this.createSnackInfo();
-      console.log(this.props);
-      console.log(open);
+
       if (open) {
         // immediately begin dismissing current message
         // to start showing new one
@@ -127,7 +126,7 @@ class MySnackBar extends React.Component {
     }
     const { classes } = this.props;
     let contentClassName = '';
-    console.log(currentSnack);
+
     switch (currentSnack.statusName) {
       case 'error':
         contentClassName = classes.snackbarContentError;
