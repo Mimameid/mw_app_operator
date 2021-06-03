@@ -104,7 +104,7 @@ function NavigationDrawer() {
           <ListItemIcon>
             <ExitToApp style={{ transform: 'rotate(-180deg)' }} />
           </ListItemIcon>
-          <ListItemText primary={'Logout'} />
+          <ListItemText primary={'Abmelden'} />
         </ListItem>
         <Divider />
       </div>

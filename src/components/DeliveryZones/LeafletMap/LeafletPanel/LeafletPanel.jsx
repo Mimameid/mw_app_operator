@@ -38,9 +38,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body1.fontSize,
   },
 
-  canelIcon: {
+  cancelIcon: {
     color: theme.palette.primary.main,
-    animationDuration: '0.9s',
+    animationDuration: '1.1s',
     animationIterationCount: 'infinite',
     animationName: '$pulse',
     animationTimingFunction: 'linear',
@@ -153,7 +153,7 @@ function LeafletPanel({
       <div style={{ direction: 'rtl' }}>
         <Paper className={classes.buttonsContainer} style={{ borderRadius: radius }}>
           <IconButton
-            className={`${classes.iconButton} ${draw || edited ? classes.canelIcon : null}`}
+            className={`${classes.iconButton} ${draw || edited ? classes.cancelIcon : null}`}
             onClick={edited || draw ? handleCancelButton : handleAddButton}
             size={iconButtonSize}
             disabled={areas.length > MAX_AREAS - 1}

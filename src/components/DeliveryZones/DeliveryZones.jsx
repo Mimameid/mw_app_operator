@@ -1,13 +1,17 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useFetchDeliveryAreas } from '../../hooks/useFetchDeliveryAreas';
+import { useOnBeforeUnload } from '../../hooks/useOnBeforeUnload';
 
 import { Grid } from '@material-ui/core';
 import LeafletMap from './LeafletMap/LeafletMapContainer';
 
 function DeliveryZones() {
-  useFetchDeliveryAreas();
   const drawerState = useSelector((state) => state.drawerState);
+  useFetchDeliveryAreas();
+  useOnBeforeUnload(handleUnload);
+
+  function handleUnload() {}
 
   return (
     <Grid

@@ -1,4 +1,4 @@
-import { TOGGLE_DRAW, TOGGLE_SELECT, TOGGLE_DELETE, SET_EDITED, RESET_CHANGED } from './types';
+import { TOGGLE_DRAW, TOGGLE_SELECT, TOGGLE_DELETE, SET_EDITED, SET_DELETED, RESET_CHANGED } from './types';
 
 export function toggleDraw() {
   return {
@@ -21,6 +21,12 @@ export function setEdited(value) {
     payload: value,
   };
 }
+export function setDeleted() {
+  return {
+    type: SET_DELETED,
+  };
+}
+
 export function resetChanged(value) {
   return {
     type: RESET_CHANGED,

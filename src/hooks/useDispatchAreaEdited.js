@@ -16,8 +16,11 @@ function useDispatchAreaEdited(areas, activeArea) {
         if (JSON.stringify(selectedArea.areaPolygons) === JSON.stringify(currentPolygons)) {
           return false;
         } else {
+          if (currentPolygons[activeArea.selectedPolygonIndex][0].length > 3) {
+            return true;
+          }
           // TODO: see task #e508ja
-          return true;
+          return false;
         }
       } else {
         // handle new area

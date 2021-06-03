@@ -2,6 +2,7 @@ import { DELIVERY_AREAS_REQUEST, DELIVERY_AREAS_SUCCESS, DELIVERY_AREAS_ERROR } 
 
 import { setLoggedIn } from '../auth/actions';
 import { loadAreas } from '../../deliveryZone/areaData/actions';
+import { resetChanged } from '../../deliveryZone/mode/actions';
 import { setStatusSuccess } from '../../statusCode/actions';
 import STATUS_CODE from '../../../constants';
 
@@ -57,6 +58,7 @@ export function fetchDeliveryAreas() {
       })
       .then((data) => {
         dispatch(loadAreas(data));
+        dispatch(resetChanged());
         dispatch(deliveryAreasSuccess());
       })
       .catch((error) => {
@@ -92,6 +94,7 @@ export function submitDeliveryAreas(areas) {
         if (response.ok) {
           dispatch(setStatusSuccess('Liefergebiete erfolgreich aktualisiert.'));
           dispatch(deliveryAreasSuccess());
+          dispatch(resetChanged());
         } else {
           dispatch(deliveryAreasError());
         }

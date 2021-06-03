@@ -19,7 +19,8 @@ import {
   SET_DELIVERY_FEE,
 } from './types';
 
-import { getColor } from './utils';
+import { setDeleted } from '../mode/actions';
+import { colors } from './utils';
 
 export function saveArea() {
   return {
@@ -30,14 +31,20 @@ export function saveArea() {
 export function createArea() {
   return {
     type: CREATE_AREA,
-    payload: getColor(),
+    payload: colors.getColor(),
   };
 }
 
 export function deleteArea(areaNumber) {
-  return {
-    type: DELETE_AREA,
-    payload: areaNumber,
+  return (dispatch, getState) => {
+    if (!getState().deliveryZone.mode.deleted) {
+      dispatch(setDeleted());
+    }
+
+    dispatch({
+      type: DELETE_AREA,
+      payload: areaNumber,
+    });
   };
 }
 
@@ -141,6 +148,7 @@ export function setAreas(areaData) {
 
 export function loadAreas(data) {
   return (dispatch) => {
+    colors.resetColors();
     let areaNumberCounter = 0;
     const areas = data.map((entry, areaIndex) => {
       return {
@@ -156,7 +164,7 @@ export function loadAreas(data) {
 
         deliveryFee: entry.delivery_fee,
         minimumOrderValue: entry.minimum_order_value,
-        color: getColor(),
+        color: colors.getColor(),
       };
     });
     dispatch(setAreas({ areas, areaNumberCounter }));

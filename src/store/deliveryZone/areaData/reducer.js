@@ -236,11 +236,13 @@ function areaDataReducer(state = initialState, action) {
           outerRing.push(action.payload);
           outerRing.push(action.payload);
         }
+
         selectedPolygon[0] = outerRing;
-        newAreaPolygons[state.selectedPolygonIndex] = selectedPolygon;
+        newAreaPolygons[state.activeArea.selectedPolygonIndex] = selectedPolygon;
       } else {
         selectedPolygon[0] = [action.payload];
       }
+
       return {
         ...state,
         activeArea: {
