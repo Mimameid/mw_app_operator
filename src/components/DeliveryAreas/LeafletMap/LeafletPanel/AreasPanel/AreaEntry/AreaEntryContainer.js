@@ -7,8 +7,8 @@ import {
   addEmptyPolygon,
   setMinimumOrderValue,
   setDeliveryFee,
-} from '../../../../../../store/deliveryZone/areaData/actions';
-import { toggleDraw } from '../../../../../../store/deliveryZone/mode/actions';
+} from '../../../../../../store/deliveryAreas/areaData/actions';
+import { toggleDraw } from '../../../../../../store/deliveryAreas/mode/actions';
 
 import AreaEntry from './AreaEntry';
 
@@ -17,11 +17,11 @@ export const AreaEntryContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
-  edited: state.deliveryZone.mode.edited,
+  draw: state.deliveryAreas.mode.draw,
+  edited: state.deliveryAreas.mode.edited,
 
-  areas: state.deliveryZone.areaData.areas,
-  activeArea: state.deliveryZone.areaData.activeArea,
+  areas: state.deliveryAreas.areaData.areas,
+  activeArea: state.deliveryAreas.areaData.activeArea,
 });
 
 const mapDispatchToProps = (dispatch) => {

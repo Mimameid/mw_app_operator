@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { setLoggedIn } from '../../../store/userState/auth/actions';
-import { toggleDraw, resetChanged } from '../../../store/deliveryZone/mode/actions';
-import { deactivateArea } from '../../../store/deliveryZone/areaData/actions';
+import { toggleDraw, resetChanged } from '../../../store/deliveryAreas/mode/actions';
+import { deactivateArea } from '../../../store/deliveryAreas/areaData/actions';
 
 import NavigationLink from './NavigationLink';
 
@@ -11,8 +11,8 @@ export const NavigationLinkContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
-  changed: state.deliveryZone.mode.changed,
+  draw: state.deliveryAreas.mode.draw,
+  changed: state.deliveryAreas.mode.changed,
 });
 
 const mapDispatchToProps = (dispatch) => {

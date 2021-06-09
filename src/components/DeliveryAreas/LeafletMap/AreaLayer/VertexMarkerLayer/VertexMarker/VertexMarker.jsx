@@ -34,7 +34,6 @@ function VertexMarker({
     click(event) {
       // if first (last) vertex is clicked save and end
       if (numberVertices > 3 && (index[3] === 0 || index[3] === numberVertices - 1)) {
-        console.log('here');
         saveArea();
         toggleDraw();
       }

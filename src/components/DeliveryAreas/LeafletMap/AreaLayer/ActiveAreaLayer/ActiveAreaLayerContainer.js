@@ -8,8 +8,8 @@ export const ActiveAreaLayerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  activeArea: state.deliveryZone.areaData.activeArea,
-  draw: state.deliveryZone.mode.draw,
+  activeArea: state.deliveryAreas.areaData.activeArea,
+  draw: state.deliveryAreas.mode.draw,
 });
 
 const mapDispatchToProps = {};

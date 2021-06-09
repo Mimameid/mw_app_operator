@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setEdited } from '../store/deliveryZone/mode/actions';
+import { setEdited } from '../store/deliveryAreas/mode/actions';
 
 function useDispatchAreaEdited(areas, activeArea) {
   const dispatch = useDispatch();

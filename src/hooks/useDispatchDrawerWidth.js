@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 
-function useDrawerWidth() {
+function useDispatchDrawerWidth() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
@@ -14,4 +14,4 @@ function useDrawerWidth() {
   return [open, setOpen];
 }
 
-export default useDrawerWidth;
+export default useDispatchDrawerWidth;

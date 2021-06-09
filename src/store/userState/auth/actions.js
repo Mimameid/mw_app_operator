@@ -9,10 +9,10 @@ function authenticationRequest() {
   };
 }
 
-function authenticationError(errorMessage) {
+function authenticationError(statusMessage) {
   return {
     type: LOGGEDIN_ERROR,
-    payload: { statusCode: STATUS_CODE.ERROR, errorMessage },
+    payload: { statusCode: STATUS_CODE.ERROR, statusMessage },
   };
 }
 

@@ -8,8 +8,8 @@ import {
   unselectVertex,
   updateVertex,
   removeVertex,
-} from '../../../../../../store/deliveryZone/areaData/actions';
-import { toggleDraw } from '../../../../../../store/deliveryZone/mode/actions';
+} from '../../../../../../store/deliveryAreas/areaData/actions';
+import { toggleDraw } from '../../../../../../store/deliveryAreas/mode/actions';
 import VertexMarker from './VertexMarker';
 
 export const VertexMarkerContainer = (props) => {
@@ -17,8 +17,8 @@ export const VertexMarkerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  vertexSelected: state.deliveryZone.areaData.vertexSelected,
-  draw: state.deliveryZone.mode.draw,
+  vertexSelected: state.deliveryAreas.areaData.vertexSelected,
+  draw: state.deliveryAreas.mode.draw,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch } from 'react-redux';
-import useDrawerWidth from '../../hooks/useDrawerWidth';
+import useDispatchDrawerWidth from '../../hooks/useDispatchDrawerWidth';
 
 import { ListItem, ListItemIcon, ListItemText, Divider, Drawer, List, IconButton } from '@material-ui/core';
 import { DoubleArrowRounded, ExitToApp } from '@material-ui/icons';
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 function NavigationDrawer() {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const [open, setOpen] = useDrawerWidth();
+  const [open, setOpen] = useDispatchDrawerWidth();
 
   const handleDrawerControl = () => {
     setOpen(!open);

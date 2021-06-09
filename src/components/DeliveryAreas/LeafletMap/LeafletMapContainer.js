@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { disableWidthChanged } from '../../../store/drawerState/actions';
+import { disableWidthChanged } from '../../../store/drawer/actions';
 
 import LeafletMap from './LeafletMap';
 
@@ -9,9 +9,9 @@ export const LeafletMapContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
-  areas: state.deliveryZone.areaData.areas,
-  widthChanged: state.drawerState.widthChanged,
+  draw: state.deliveryAreas.mode.draw,
+  areas: state.deliveryAreas.areaData.areas,
+  widthChanged: state.drawer.widthChanged,
 });
 
 const mapDispatchToProps = (dispatch) => {

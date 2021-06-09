@@ -6,8 +6,8 @@ import { useOnBeforeUnload } from '../../hooks/useOnBeforeUnload';
 import { Grid } from '@material-ui/core';
 import LeafletMap from './LeafletMap/LeafletMapContainer';
 
-function DeliveryZones() {
-  const drawerState = useSelector((state) => state.drawerState);
+function DeliveryAreas() {
+  const drawer = useSelector((state) => state.drawer);
   useFetchDeliveryAreas();
   useOnBeforeUnload(handleUnload);
 
@@ -18,7 +18,7 @@ function DeliveryZones() {
       container
       direction="column"
       alignItems="stretch"
-      style={{ marginLeft: drawerState.width, height: '100vh', width: `calc(100vw - ${drawerState.width}px` }}
+      style={{ marginLeft: drawer.width, height: '100vh', width: `calc(100vw - ${drawer.width}px` }}
     >
       <Grid item xs={12} style={{ maxWidth: '100%' }}>
         <LeafletMap />
@@ -27,4 +27,4 @@ function DeliveryZones() {
   );
 }
 
-export default DeliveryZones;
+export default DeliveryAreas;

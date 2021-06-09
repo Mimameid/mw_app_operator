@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { saveArea } from '../../../../../store/deliveryZone/areaData/actions';
-import { toggleDraw } from '../../../../../store/deliveryZone/mode/actions';
+import { saveArea } from '../../../../../store/deliveryAreas/areaData/actions';
+import { toggleDraw } from '../../../../../store/deliveryAreas/mode/actions';
 
 import SaveDrawer from './SaveDrawer';
 
@@ -10,11 +10,11 @@ export const SaveDrawerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
-  edited: state.deliveryZone.mode.edited,
+  draw: state.deliveryAreas.mode.draw,
+  edited: state.deliveryAreas.mode.edited,
 
-  activeArea: state.deliveryZone.areaData.activeArea,
-  areas: state.deliveryZone.areaData.areas,
+  activeArea: state.deliveryAreas.areaData.activeArea,
+  areas: state.deliveryAreas.areaData.areas,
 });
 
 const mapDispatchToProps = (dispatch) => {

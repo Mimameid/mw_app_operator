@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createArea, addPolygon, saveArea } from '../../../../../store/deliveryZone/areaData/actions';
+import { createArea, addPolygon, saveArea } from '../../../../../store/deliveryAreas/areaData/actions';
 import { setStatusRequest, setStatusError } from '../../../../../store/statusCode/actions';
 
 import PLZDrawer from './PLZDrawer';
@@ -10,7 +10,7 @@ export const PLZDrawerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
+  draw: state.deliveryAreas.mode.draw,
 });
 
 const mapDispatchToProps = (dispatch) => {

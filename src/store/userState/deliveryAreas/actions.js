@@ -1,29 +1,26 @@
 import { DELIVERY_AREAS_REQUEST, DELIVERY_AREAS_SUCCESS, DELIVERY_AREAS_ERROR } from './types';
 
 import { setLoggedIn } from '../auth/actions';
-import { loadAreas } from '../../deliveryZone/areaData/actions';
-import { resetChanged } from '../../deliveryZone/mode/actions';
-import { setStatusSuccess } from '../../statusCode/actions';
-import STATUS_CODE from '../../../constants';
+import { loadAreas } from '../../deliveryAreas/areaData/actions';
+import { resetChanged } from '../../deliveryAreas/mode/actions';
 
 function deliveryAreasRequest() {
   return {
     type: DELIVERY_AREAS_REQUEST,
-    payload: STATUS_CODE.REQUEST,
   };
 }
 
-function deliveryAreasError(errorMessage) {
+function deliveryAreasError(statusMessage) {
   return {
     type: DELIVERY_AREAS_ERROR,
-    payload: { statusCode: STATUS_CODE.ERROR, errorMessage },
+    payload: statusMessage,
   };
 }
 
-function deliveryAreasSuccess() {
+function deliveryAreasSuccess(statusMessage) {
   return {
     type: DELIVERY_AREAS_SUCCESS,
-    payload: STATUS_CODE.SUCCESS,
+    payload: statusMessage,
   };
 }
 
@@ -51,19 +48,19 @@ export function fetchDeliveryAreas() {
         } else {
           if (response.status === 401) {
             dispatch(setLoggedIn(false));
+            throw Error(response.status + 'Not authorized');
           }
 
-          dispatch(deliveryAreasError());
+          dispatch(deliveryAreasError('Fehler beim laden der Liefergebiete'));
+          throw Error(response.status + 'Error');
         }
       })
       .then((data) => {
         dispatch(loadAreas(data));
         dispatch(resetChanged());
-        dispatch(deliveryAreasSuccess());
+        dispatch(deliveryAreasSuccess('Liefergebiete erfolgreich geladen.'));
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 }
 
@@ -92,15 +89,13 @@ export function submitDeliveryAreas(areas) {
     fetch(url.href, options)
       .then((response) => {
         if (response.ok) {
-          dispatch(setStatusSuccess('Liefergebiete erfolgreich aktualisiert.'));
-          dispatch(deliveryAreasSuccess());
+          dispatch(deliveryAreasSuccess('Liefergebiete erfolgreich aktualisiert.'));
           dispatch(resetChanged());
         } else {
           dispatch(deliveryAreasError());
+          throw Error(response.status + '');
         }
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   };
 }

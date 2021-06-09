@@ -6,7 +6,7 @@ import {
   activateArea,
   deactivateArea,
   activatePolygon,
-} from '../../../../store/deliveryZone/areaData/actions';
+} from '../../../../store/deliveryAreas/areaData/actions';
 import AreaLayer from './AreaLayer';
 
 export const AreaLayerContainer = (props) => {
@@ -14,12 +14,12 @@ export const AreaLayerContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
-  edited: state.deliveryZone.mode.edited,
+  draw: state.deliveryAreas.mode.draw,
+  edited: state.deliveryAreas.mode.edited,
 
-  areas: state.deliveryZone.areaData.areas,
-  vertexSelected: state.deliveryZone.areaData.vertexSelected,
-  activeArea: state.deliveryZone.areaData.activeArea,
+  areas: state.deliveryAreas.areaData.areas,
+  vertexSelected: state.deliveryAreas.areaData.vertexSelected,
+  activeArea: state.deliveryAreas.areaData.activeArea,
 });
 
 const mapDispatchToProps = (dispatch) => {

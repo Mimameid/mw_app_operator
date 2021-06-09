@@ -98,7 +98,7 @@ function AreaEntry({
   const classes = useStyles({ color })();
   const polygonContainer = useRef();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [changeZoneDialogOpen, setChangeZoneDialogOpen] = useState(false);
+  const [changeAreaDialogOpen, setChangeAreaDialogOpen] = useState(false);
 
   const handleActivateArea = (event) => {
     // if (activeArea.areaNumber === areaNumber || event.target !== event.currentTarget) {
@@ -112,7 +112,7 @@ function AreaEntry({
       if (activeArea.areaNumber === areaNumber) {
         return;
       }
-      setChangeZoneDialogOpen(true);
+      setChangeAreaDialogOpen(true);
     } else {
       if (draw) {
         toggleDraw();
@@ -146,11 +146,11 @@ function AreaEntry({
   };
 
   const handleActivateAreaDialogReject = (event) => {
-    setChangeZoneDialogOpen(false);
+    setChangeAreaDialogOpen(false);
   };
 
   const handleActivateAreaDialogAccept = (event) => {
-    setChangeZoneDialogOpen(false);
+    setChangeAreaDialogOpen(false);
     if (draw) {
       toggleDraw();
     }
@@ -216,17 +216,17 @@ function AreaEntry({
         </IconButton>
       </div>
       <CustomDialog
-        open={changeZoneDialogOpen}
-        title="Zone wechseln?"
-        message="Die aktuelle Zone wurde nicht gespeichert. Wenn Sie die Zone wechseln, werden alle Veränderungen
+        open={changeAreaDialogOpen}
+        title="Gebiet wechseln?"
+        message="Das aktuelle Gebiet wurde nicht gespeichert. Wenn Sie das Gebiet wechseln, werden alle Veränderungen
         unwiederruflich gelöscht."
         handleReject={handleActivateAreaDialogReject}
         handleAccept={handleActivateAreaDialogAccept}
       />
       <CustomDialog
         open={deleteDialogOpen}
-        title="Zone löschen?"
-        message="Sind Sie sicher, dass Sie die Zone löschen wollen?"
+        title="Gebiet löschen?"
+        message="Sind Sie sicher, dass Sie das Gebietlöschen wollen?"
         handleReject={handleDeleteDialogReject}
         handleAccept={handleDeleteDialogAccept}
       />

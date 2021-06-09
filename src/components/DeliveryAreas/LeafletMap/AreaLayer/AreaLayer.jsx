@@ -96,8 +96,8 @@ function AreaLayer({
       <ActiveAreaLayer />
       <CustomDialog
         open={dialogOpen}
-        title="Zone wechseln?"
-        message="Die aktuelle Zone wurde nicht gespeichert. Wenn Sie die Zone wechseln, werden alle Veränderungen
+        title="Gebiet wechseln?"
+        message="Das aktuelle Gebiet wurde nicht gespeichert. Wenn Sie das Gebiet wechseln, werden alle Veränderungen
         unwiederruflich gelöscht."
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}

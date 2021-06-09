@@ -37,7 +37,7 @@ export function createArea() {
 
 export function deleteArea(areaNumber) {
   return (dispatch, getState) => {
-    if (!getState().deliveryZone.mode.deleted) {
+    if (!getState().deliveryAreas.mode.deleted) {
       dispatch(setDeleted());
     }
 

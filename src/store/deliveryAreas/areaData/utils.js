@@ -28,7 +28,7 @@ function getColor() {
     // this doesn't make sense, the use isn't allowed to create more than 11 areas currently
     availableColors = usedColors.slice();
     usedColors = [];
-    for (let area of store.getState().deliveryZone.areaData.areas) {
+    for (let area of store.getState().deliveryAreas.areaData.areas) {
       const index = availableColors.indexOf(area.color);
       availableColors.splice(index, 1);
       usedColors.push(area.color);

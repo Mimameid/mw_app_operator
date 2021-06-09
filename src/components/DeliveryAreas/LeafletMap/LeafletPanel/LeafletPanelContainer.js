@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deactivateArea, createArea } from '../../../../store/deliveryZone/areaData/actions';
+import { deactivateArea, createArea } from '../../../../store/deliveryAreas/areaData/actions';
 import { submitDeliveryAreas } from '../../../../store/userState/deliveryAreas/actions';
-import { toggleDraw, toggleDelete } from '../../../../store/deliveryZone/mode/actions';
+import { toggleDraw, toggleDelete } from '../../../../store/deliveryAreas/mode/actions';
 
 import LeafletPanel from './LeafletPanel';
 
@@ -11,11 +11,11 @@ export const LeafletPanelContainer = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  draw: state.deliveryZone.mode.draw,
-  edited: state.deliveryZone.mode.edited,
+  draw: state.deliveryAreas.mode.draw,
+  edited: state.deliveryAreas.mode.edited,
 
-  areas: state.deliveryZone.areaData.areas,
-  activeArea: state.deliveryZone.areaData.activeArea,
+  areas: state.deliveryAreas.areaData.areas,
+  activeArea: state.deliveryAreas.areaData.activeArea,
 });
 
 const mapDispatchToProps = (dispatch) => {

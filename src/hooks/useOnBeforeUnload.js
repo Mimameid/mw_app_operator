@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 export function useOnBeforeUnload() {
-  const changed = useSelector((state) => state.deliveryZone.mode.changed);
+  const changed = useSelector((state) => state.deliveryAreas.mode.changed);
 
   useEffect(() => {
     function handler(event) {
