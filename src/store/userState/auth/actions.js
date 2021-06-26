@@ -1,6 +1,6 @@
 import { LOGGEDIN_REQUEST, LOGGEDIN_SUCCESS, LOGGEDIN_ERROR, SET_LOGGEDIN } from './types';
 
-import STATUS_CODE from '../../../constants';
+import STATUS_CODE from 'constants';
 
 function authenticationRequest() {
   return {

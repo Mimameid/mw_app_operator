@@ -1,7 +1,7 @@
 import { STATUS_REQUEST, STATUS_ERROR, STATUS_SUCCESS } from './types';
 import { DELIVERY_AREAS_ERROR } from '../userState/deliveryAreas/types';
-import { RESTAURANT_DATA_ERROR } from '../restaurant/fetchRestaurantData/types';
-import STATUS_CODE from '../../constants';
+import { RESTAURANT_DATA_ERROR } from '../../features/menus/fetchRestaurantData/types';
+import STATUS_CODE from 'constants';
 
 const initialState = { statusCode: 0, statusMessage: '', count: 0 };
 

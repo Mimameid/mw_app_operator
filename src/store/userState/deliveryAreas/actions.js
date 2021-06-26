@@ -1,8 +1,8 @@
 import { DELIVERY_AREAS_REQUEST, DELIVERY_AREAS_SUCCESS, DELIVERY_AREAS_ERROR } from './types';
 
 import { setLoggedIn } from '../auth/actions';
-import { loadAreas } from '../../deliveryAreas/areaData/actions';
-import { resetChanged } from '../../deliveryAreas/mode/actions';
+import { loadAreas } from 'features/deliveryAreas/slices/areaData/actions';
+import { resetChanged } from 'features/deliveryAreas/slices/mode/actions';
 
 function deliveryAreasRequest() {
   return {
@@ -48,11 +48,11 @@ export function fetchDeliveryAreas() {
         } else {
           if (response.status === 401) {
             dispatch(setLoggedIn(false));
-            throw Error(response.status + 'Not authorized');
+            throw Error(response.status + ' Not authorized');
           }
 
           dispatch(deliveryAreasError('Fehler beim laden der Liefergebiete'));
-          throw Error(response.status + 'Error');
+          throw Error(response.status);
         }
       })
       .then((data) => {

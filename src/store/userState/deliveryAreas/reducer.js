@@ -1,5 +1,5 @@
 import { DELIVERY_AREAS_REQUEST, DELIVERY_AREAS_SUCCESS, DELIVERY_AREAS_ERROR } from './types';
-import STATUS_CODE from '../../../constants';
+import STATUS_CODE from 'constants';
 
 const initialState = {
   statusCode: 0,

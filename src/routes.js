@@ -1,12 +1,12 @@
-import DeliveryAreas from './components/DeliveryAreas/DeliveryAreas';
-import Menu from './components/Menu/Menu';
-import DashboardPanel from './components/Dashboard/Dashboard';
+import DeliveryAreas from './pages/DeliveryAreas';
+import Menu from 'pages/Menu';
+import DashboardPanel from 'pages/Dashboard';
 
 import { Dashboard, Map, RestaurantMenu } from '@material-ui/icons';
 
 const routes = [
   { path: '/', exact: true, name: 'Dashboard', Component: DashboardPanel, IconComponent: Dashboard },
-  { path: '/menu', name: 'Menü', Component: Menu, IconComponent: RestaurantMenu },
-  { path: '/deliveryAreas/', name: 'Liefergebiete', Component: DeliveryAreas, IconComponent: Map },
+  { path: '/menus', name: 'Menü', Component: Menu, IconComponent: RestaurantMenu },
+  { path: '/areas/', name: 'Liefergebiete', Component: DeliveryAreas, IconComponent: Map },
 ];
 export default routes;

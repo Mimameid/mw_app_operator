@@ -1,15 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import NavigationDrawer from './NavigationDrawer/NavigationDrawer';
-import LoginContainer from './Login/LoginContainer';
-import MySnackbarContainer from './SnackBar/MySnackbarContainer';
-
-import { nanoid } from 'nanoid';
+import { nanoid } from '@reduxjs/toolkit';
 import { useSelector } from 'react-redux';
 import routes from '../routes';
 
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import NavigationDrawer from 'features/drawer/components/NavigationDrawer';
+import Login from 'pages/Login';
+import MySnackbarContainer from 'features/statusCode/components/MySnackbarContainer';
+
 function Contents() {
-  const loggedIn = useSelector((state) => state.userState.auth.loggedIn);
+  const loggedIn = useSelector(({ userState }) => userState.auth.loggedIn);
 
   return (
     <React.Fragment>
@@ -24,7 +24,7 @@ function Contents() {
             </Switch>
           </React.Fragment>
         ) : (
-          <LoginContainer />
+          <Login />
         )}
       </Router>
       <MySnackbarContainer />

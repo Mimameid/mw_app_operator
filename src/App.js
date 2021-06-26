@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Contents from './components/Contents';
 
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './theme/theme';
 
 import store from './store/store';
