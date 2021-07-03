@@ -7,16 +7,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Modal, Button, Grid, Paper, Box } from '@material-ui/core';
+import { Modal, Button, Grid, Paper, Box, makeStyles } from '@material-ui/core';
 import FormTextField from 'common/components/form/FormTextField';
 import FormPriceField from 'common/components/form/FormPriceField';
 import FormSelectField from 'common/components/form/FormSelectField';
-import { makeStyles } from '@material-ui/core/styles';
+import FormCheckbox from 'common/components/form/FormCheckboxField';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
   },
   header: {
     paddingLeft: theme.spacing(2),
@@ -59,9 +58,12 @@ const schema = yup.object({
     .string('Geben Sie einen Preis ein.')
     .trim()
     .matches(/\d+,\d{2}/, 'Der Preis muss eine Dezimalzahl sein.')
-
     .required('Preis ist erforderlich.'),
   type: yup
+    .string('Wählen Sie einen Typen aus.')
+    .oneOf(types, 'Type muss aus der vorgegeben Liste ausgewählt werden')
+    .required('Typ ist erforderlich'),
+  isAvailable: yup
     .string('Wählen Sie einen Typen aus.')
     .oneOf(types, 'Type muss aus der vorgegeben Liste ausgewählt werden')
     .required('Typ ist erforderlich'),
@@ -74,6 +76,7 @@ function CreateDishModal({ open, setOpen }) {
     mode: 'onTouched',
     defaultValues: {
       type: 'Burger',
+      available: 'true',
     },
     resolver: yupResolver(schema),
   });
@@ -107,6 +110,9 @@ function CreateDishModal({ open, setOpen }) {
             </Grid>
             <Grid item>
               <FormPriceField name="price" label="Preis" control={control} fullWidth />
+            </Grid>
+            <Grid item>
+              <FormCheckbox name="available" label="Verfügbar" control={control} fullWidth />
             </Grid>
             <Grid container item className={classes.buttonLayout}>
               <Grid item xs={6}>

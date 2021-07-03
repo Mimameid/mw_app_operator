@@ -2,11 +2,9 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRestaurantData } from 'features/menus/fetchRestaurantData/actions';
 
-import { Grid, Divider, Typography } from '@material-ui/core';
+import { Grid, Divider, Typography, makeStyles } from '@material-ui/core';
 import Menus from 'features/menus/menus/components/Menus';
 import MenuCard from 'features/menus/menus/components/MenuCard';
-
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = (props) => {
   return makeStyles((theme) => ({

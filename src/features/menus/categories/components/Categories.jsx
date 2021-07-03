@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
 
-import { Divider, Paper } from '@material-ui/core';
-import MenuCategory from './MenuCategory';
+import { Divider, Paper, makeStyles } from '@material-ui/core';
+import Category from './Category';
 import AddDishModal from 'features/menus/dishes/components/AddDishModal';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
@@ -17,17 +15,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MenuCategories() {
+function Categories() {
   const classes = useStyles();
-  const categories = useSelector((state) => Object.values(state.menus.menus.activeMenu.categories));
+  const categoriesIds = useSelector((state) => state.menus.menus.activeMenu.categories);
   const [addDishOpen, setAddDishOpen] = useState(false);
 
   return (
     <Paper className={classes.listContainer} elevation={3}>
-      {categories
-        ? categories.map((category, index) => (
-            <React.Fragment key={nanoid()}>
-              <MenuCategory category={category} setAddDishOpen={setAddDishOpen} />
+      {categoriesIds
+        ? categoriesIds.map((categoryId, index) => (
+            <React.Fragment key={categoryId}>
+              <Category categoryId={categoryId} setAddDishOpen={setAddDishOpen} />
               <Divider />
             </React.Fragment>
           ))
@@ -37,4 +35,4 @@ function MenuCategories() {
   );
 }
 
-export default MenuCategories;
+export default Categories;

@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Paper, IconButton } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Paper, IconButton, makeStyles } from '@material-ui/core';
 import { Add, Block, CloudUpload } from '@material-ui/icons';
 
 import L from 'leaflet';

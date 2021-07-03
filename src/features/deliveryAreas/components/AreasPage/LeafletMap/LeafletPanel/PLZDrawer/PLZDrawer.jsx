@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
-import { Paper, TextField, Slide } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 
+import { Paper, TextField, Slide, makeStyles } from '@material-ui/core';
 import useClickOutsideElement from 'common/hooks/useClickOutsideElement';
 
 const useStyles = makeStyles((theme) => ({

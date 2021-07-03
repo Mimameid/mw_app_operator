@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeSelectAffectedCategories } from 'features/menus/categories/categoriesSlice';
-import { deleteDish } from '../dishesSlice';
+import { makeSelectAffectedChoices } from 'features/menus/choices/choicesSlice';
+import { deleteSub } from '../subsSlice';
 
 import {
   Checkbox,
@@ -12,29 +12,28 @@ import {
   ListItemSecondaryAction,
   ListItemText,
 } from '@material-ui/core';
+import EditSubModal from './EditSubModal';
 import WarningDialog from 'common/components/other/WarningDialog';
-import EditDishModal from './EditDishModal';
-// import EditCategoryModal from './EditCategoryModal';
 import { Delete, Edit } from '@material-ui/icons';
 
-function DishItem({ dish, checked, handleToggle }) {
+function SubItem({ sub, checked, handleToggle }) {
   const dispatch = useDispatch();
-  const selectAffectedCategories = useMemo(makeSelectAffectedCategories, []);
-  const affectedCategories = useSelector((state) => selectAffectedCategories(state, dish.id));
+  const selectAffectedChoices = useMemo(makeSelectAffectedChoices, []);
+  const affectedChoices = useSelector((state) => selectAffectedChoices(state, sub.id));
 
-  const [editDishOpen, setEditDishOpen] = useState(false);
+  const [editSubOpen, setEditSubOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
-  function handleEditDish() {
-    if (affectedCategories.length > 0) {
+  function handleEditSub() {
+    if (affectedChoices.length > 0) {
       setEditDialogOpen(true);
       return;
     }
-    setEditDishOpen(true);
+    setEditSubOpen(true);
   }
 
-  function handleDeleteDish() {
+  function handleDeleteSub() {
     setDeleteDialogOpen(true);
   }
 
@@ -50,18 +49,18 @@ function DishItem({ dish, checked, handleToggle }) {
   const handleAcceptDialog = (event) => {
     if (editDialogOpen) {
       setEditDialogOpen(false);
-      setEditDishOpen(true);
+      setEditSubOpen(true);
     }
 
     if (deleteDialogOpen) {
-      dispatch(deleteDish(dish.id));
+      dispatch(deleteSub(sub.id));
       setDeleteDialogOpen(false);
     }
   };
 
   return (
     <React.Fragment>
-      <ListItem dense button onClick={handleToggle(dish.id)}>
+      <ListItem dense button onClick={handleToggle(sub.id)}>
         <ListItemIcon>
           <Checkbox
             color="primary"
@@ -70,47 +69,47 @@ function DishItem({ dish, checked, handleToggle }) {
             tabIndex={-1}
             disableRipple
             size="small"
-            inputProps={{ 'aria-labelledby': dish.id }}
+            inputProps={{ 'aria-labelledby': sub.id }}
           />
         </ListItemIcon>
         <Grid container justify="flex-start">
           <Grid item xs={8}>
-            <ListItemText primary={dish.name} secondary={dish.desc} />
+            <ListItemText primary={sub.name} />
           </Grid>
           <Grid item xs={4}>
-            <ListItemText primary={dish.price + '€'} secondary={dish.type} />
+            <ListItemText primary={sub.price + '€'} />
           </Grid>
         </Grid>
 
         <ListItemSecondaryAction>
-          <IconButton edge="end" aria-label="edit" onClick={handleEditDish}>
+          <IconButton edge="end" aria-label="edit" onClick={handleEditSub}>
             <Edit fontSize="small" />
           </IconButton>
-          <IconButton edge="end" aria-label="delete" onClick={handleDeleteDish}>
+          <IconButton edge="end" aria-label="delete" onClick={handleDeleteSub}>
             <Delete fontSize="small" />
           </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
-      <EditDishModal open={editDishOpen} setOpen={setEditDishOpen} dish={dish} />
+      <EditSubModal open={editSubOpen} setOpen={setEditSubOpen} sub={sub} />
       <WarningDialog
         open={deleteDialogOpen}
-        title="Speise löschen?"
+        title="Option löschen?"
         message={
-          affectedCategories.length > 0
-            ? 'Das Löschen der Speise löscht die Speise in sämtlichen Kategorien und sämtlichen Menüs in denen die Kategorie vorkommt. Betroffene Kategorien: ' +
-              affectedCategories.toString() +
+          affectedChoices.length > 0
+            ? 'Das Löschen der Option löscht die Option in sämtlichen Extras. Betroffene Extras: ' +
+              affectedChoices.toString() +
               '.'
             : 'Sind Sie sicher, dass Sie die Speise löschen wollen?'
         }
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
-      />{' '}
+      />
       <WarningDialog
         open={editDialogOpen}
-        title="Speise bearbeiten?"
+        title="Option bearbeiten?"
         message={
-          'Das Bearbeiten der Speise ändert die Speise in sämtlichen Kategorien und sämtlichen Menüs in denen die Kategorie vorkommt. Betroffene Kategorien: ' +
-          affectedCategories.toString() +
+          'Das Bearbeiten der Option ändert die Option in sämtlichen Extras und sämtlichen Menüs in denen das Extra vorkommt. Betroffene Extras: ' +
+          affectedChoices.toString() +
           '.'
         }
         handleReject={handleRejectDialog}
@@ -120,4 +119,4 @@ function DishItem({ dish, checked, handleToggle }) {
   );
 }
 
-export default DishItem;
+export default SubItem;

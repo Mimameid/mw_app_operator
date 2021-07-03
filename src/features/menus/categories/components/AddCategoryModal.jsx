@@ -3,15 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { addCategory } from 'features/menus/menus/menusSlice';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
 import CreateCategoryModal from './CreateCategoryModal';
 import CategoryItem from './CategoryItem';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
   },
   formContainer: {
     position: 'absolute',
@@ -39,10 +37,16 @@ const useStyles = makeStyles((theme) => ({
 function AddCategoryModal({ open, setOpen }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const categories = useSelector((state) => state.menus.categories.byId);
-  const [createCategoryOpen, setCreateCategoryOpen] = useState(false);
 
+  const categoriesArray = useSelector((state) => {
+    const categoriesArray = Object.values(state.menus.categories.byId);
+    categoriesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return categoriesArray;
+  });
+
+  const [createCategoryOpen, setCreateCategoryOpen] = useState(false);
   const [checked, setChecked] = useState([]);
+
   const handleClose = () => {
     setChecked([]);
     setOpen(false);
@@ -67,12 +71,11 @@ function AddCategoryModal({ open, setOpen }) {
 
   function handleAddCategories(event) {
     for (let elem of checked) {
-      dispatch(addCategory(categories[elem]));
+      dispatch(addCategory(elem));
     }
     handleClose();
   }
 
-  let categoriesArray = Object.values(categories);
   return (
     <React.Fragment>
       <Modal className={classes.backdrop} open={open} onClose={handleClose}>

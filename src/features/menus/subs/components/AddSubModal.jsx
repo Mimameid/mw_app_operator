@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
-import { addDish } from 'features/menus/categories/categoriesSlice';
+import { addSub } from 'features/menus/choices/choicesSlice';
 
-import { Box, Button, Divider, Grid, List, ListSubheader, Modal, Paper, makeStyles } from '@material-ui/core';
-import DishItem from './DishItem';
-import CreateDishModal from './CreateDishModal';
+import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
+import SubItem from './SubItem';
+import CreateSubModal from './CreateSubModal';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -48,29 +47,17 @@ const useStyles = makeStyles((theme) => ({
   buttonsContainer: { paddingTop: theme.spacing(1) },
 }));
 
-function AddDishModal({ open, setOpen }) {
+function AddSubModal({ open, setOpen }) {
   const classes = useStyles();
 
   const dispatch = useDispatch();
-  const [dishesArray, dishByType] = useSelector((state) => {
-    let dishesArray = Object.values(state.menus.dishes.byId);
-    const dishByType = {};
-
-    for (let dish of dishesArray) {
-      if (!dishByType[dish.type]) {
-        dishByType[dish.type] = [];
-      }
-      dishByType[dish.type].push(dish);
-    }
-
-    for (let type of Object.keys(dishByType)) {
-      dishByType[type].sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    return [dishesArray, dishByType];
+  const subsArray = useSelector((state) => {
+    let subsArray = Object.values(state.menus.subs.byId);
+    subsArray.sort((a, b) => a.name.localeCompare(b.name));
+    return subsArray;
   });
-  const [createDishOpen, setCreateDishOpen] = useState(false);
 
+  const [createSubOpen, setCreateSubOpen] = useState(false);
   const [checked, setChecked] = useState([]);
 
   const handleClose = () => {
@@ -79,7 +66,7 @@ function AddDishModal({ open, setOpen }) {
   };
 
   function handleCreateDish(event) {
-    setCreateDishOpen(true);
+    setCreateSubOpen(true);
   }
 
   const handleToggle = (value) => () => {
@@ -95,9 +82,9 @@ function AddDishModal({ open, setOpen }) {
     setChecked(newChecked);
   };
 
-  function handleAddDishes(event) {
-    for (let dishId of checked) {
-      dispatch(addDish(dishId));
+  function handleAddChoices(event) {
+    for (let subId of checked) {
+      dispatch(addSub(subId));
     }
 
     handleClose();
@@ -110,7 +97,7 @@ function AddDishModal({ open, setOpen }) {
           <Grid className={classes.buttonsContainer} container justify="space-between">
             <Grid item>
               <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
-                Speisen
+                Optionen
               </Box>
             </Grid>
             <Grid item>
@@ -122,28 +109,17 @@ function AddDishModal({ open, setOpen }) {
 
           <Paper variant="outlined" square>
             <List className={classes.list} subheader={<li />}>
-              {dishesArray.length === 0 ? (
+              {subsArray.length === 0 ? (
                 <Box color="text.secondary" fontStyle="italic" p={1}>
-                  Keine Speisen verfügbar. Bitte erstellen Sie eine neue Speise...
+                  Keine Option verfügbar. Bitte erstellen Sie eine neue Option...
                 </Box>
               ) : (
                 <React.Fragment>
-                  {Object.keys(dishByType).map((type, index) => (
-                    <li key={nanoid()} className={classes.listSection}>
-                      <ul className={classes.ul}>
-                        <ListSubheader className={classes.listHeader}>{type}</ListSubheader>
-                        {dishByType[type].map((dish, index) => (
-                          <React.Fragment key={nanoid()}>
-                            <DishItem
-                              dish={dish}
-                              checked={checked.indexOf(dish.id) !== -1}
-                              handleToggle={handleToggle}
-                            />
-                            {index < dishesArray.length - 1 ? <Divider /> : dishesArray.length < 5 ? <Divider /> : null}
-                          </React.Fragment>
-                        ))}
-                      </ul>
-                    </li>
+                  {subsArray.map((sub, index) => (
+                    <React.Fragment key={sub.id}>
+                      <SubItem sub={sub} checked={checked.indexOf(sub.id) !== -1} handleToggle={handleToggle} />
+                      {index < subsArray.length - 1 ? <Divider /> : subsArray.length < 5 ? <Divider /> : null}
+                    </React.Fragment>
                   ))}
                 </React.Fragment>
               )}
@@ -156,16 +132,16 @@ function AddDishModal({ open, setOpen }) {
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="primary" onClick={handleAddDishes}>
+              <Button variant="contained" color="primary" onClick={handleAddChoices}>
                 Hinzufügen
               </Button>
             </Grid>
           </Grid>
         </Paper>
       </Modal>
-      <CreateDishModal open={createDishOpen} setOpen={setCreateDishOpen} />
+      <CreateSubModal open={createSubOpen} setOpen={setCreateSubOpen} />
     </React.Fragment>
   );
 }
 
-export default AddDishModal;
+export default AddSubModal;

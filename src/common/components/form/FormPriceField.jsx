@@ -80,8 +80,7 @@ const maskInput = (newValue, previousValue, cursorPosition) => {
 function FormPriceField({ control, name, ...props }) {
   const {
     field: { ref, ...inputProps },
-    fieldState: { invalid, isTouched, isDirty, error },
-    formState: { touchedFields, dirtyFields },
+    fieldState: { error },
   } = useController({
     name,
     control,

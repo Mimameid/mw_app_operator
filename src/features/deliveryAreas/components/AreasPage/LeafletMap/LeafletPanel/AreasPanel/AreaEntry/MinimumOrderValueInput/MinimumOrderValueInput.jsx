@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField, InputAdornment } from '@material-ui/core';
+import { TextField, InputAdornment, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   minimumOrderValueInput: {

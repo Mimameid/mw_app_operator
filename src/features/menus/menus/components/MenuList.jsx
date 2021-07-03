@@ -2,15 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 
-import { Box, Divider, Grid, List, ListSubheader, Paper } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader, Paper, makeStyles } from '@material-ui/core';
 import MenuItem from './MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
-  listContainer: {
-    margin: '0 ' + theme.spacing(1) + 'px',
-    marginBottom: theme.spacing(1),
-  },
   list: {
     paddingBottom: 0,
   },
@@ -31,7 +26,7 @@ function MenuList() {
   }
 
   return (
-    <Paper className={classes.listContainer} elevation={3}>
+    <Paper elevation={3}>
       <List className={classes.list}>
         <ListSubheader>
           <Grid container>
@@ -41,7 +36,7 @@ function MenuList() {
             <Grid item xs={2}>
               Name
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={2}>
               Beschreibung
             </Grid>
             <Grid item xs={2}>

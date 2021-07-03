@@ -1,8 +1,6 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
-import { TextField, InputAdornment } from '@material-ui/core';
-
+import { TextField, InputAdornment, makeStyles } from '@material-ui/core';
 import DeliveryIcon from 'assets/delivery_icon.png';
 
 const useStyles = makeStyles((theme) => ({

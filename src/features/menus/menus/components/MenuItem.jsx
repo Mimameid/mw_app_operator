@@ -62,7 +62,7 @@ function MenuItem({ menu, selected }) {
           <Grid item xs={2}>
             {menu.name}
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             {menu.desc}
           </Grid>
           <Grid item xs={2}>
@@ -71,7 +71,7 @@ function MenuItem({ menu, selected }) {
           <Grid item xs={2}>
             {new Date(menu.created).toLocaleDateString('DE-de')}
           </Grid>
-          <Grid className={selected ? null : classes.hidden} item xs={1}>
+          <Grid className={selected ? null : classes.hidden} item xs={2}>
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>

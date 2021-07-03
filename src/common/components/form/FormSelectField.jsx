@@ -2,13 +2,12 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 import { nanoid } from '@reduxjs/toolkit';
 
-import { Select, MenuItem, FormControl, InputLabel } from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 
 function FormSelectField({ control, name, items, ...props }) {
   const {
     field: { ref, ...inputProps },
-    fieldState: { invalid, isTouched, isDirty, error },
-    formState: { touchedFields, dirtyFields },
+    fieldState: { error },
   } = useController({
     name,
     control,
@@ -16,7 +15,7 @@ function FormSelectField({ control, name, items, ...props }) {
 
   return (
     <FormControl fullWidth>
-      <InputLabel>Typ</InputLabel>
+      <InputLabel>{props.label}</InputLabel>
       <Select inputRef={ref} error={!!error} {...inputProps} {...props}>
         {items.map((item) => (
           <MenuItem key={nanoid()} value={item}>
@@ -24,6 +23,7 @@ function FormSelectField({ control, name, items, ...props }) {
           </MenuItem>
         ))}
       </Select>
+      <FormHelperText error={error}>{error ? error.message : null}</FormHelperText>
     </FormControl>
   );
 }

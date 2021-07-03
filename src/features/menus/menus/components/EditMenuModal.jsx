@@ -7,14 +7,12 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Modal, Button, Grid, Paper } from '@material-ui/core';
+import { Modal, Button, Grid, Paper, makeStyles } from '@material-ui/core';
 import FormTextField from 'common/components/form/FormTextField';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
   },
   formContainer: {
     position: 'absolute',

@@ -1,6 +1,6 @@
 import { RESTAURANT_DATA_REQUEST, RESTAURANT_DATA_SUCCESS, RESTAURANT_DATA_ERROR } from './types';
-import { setMenus } from 'features/menus/menus/menusSlice';
-import { setDishes } from 'features/menus/dishes/dishesSlice';
+// import { setMenus } from 'features/menus/menus/menusSlice';
+// import { setDishes } from 'features/menus/dishes/dishesSlice';
 
 import { setLoggedIn } from 'store/userState/auth/actions';
 

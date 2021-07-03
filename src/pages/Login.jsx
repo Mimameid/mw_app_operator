@@ -6,10 +6,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Button, Grid, IconButton, InputAdornment, Paper } from '@material-ui/core';
+import { Button, Grid, IconButton, InputAdornment, Paper, makeStyles } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import FormTextField from 'common/components/form/FormTextField';
-import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   loginContainer: {

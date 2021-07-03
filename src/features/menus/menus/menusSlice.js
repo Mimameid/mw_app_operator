@@ -1,6 +1,5 @@
-import { createAction, createReducer, isAnyOf, createSelector, current } from '@reduxjs/toolkit';
-import { addDish, removeDish, deleteCategory, editCategory, selectCategory } from '../categories/categoriesSlice';
-import { deleteDish } from '../dishes/dishesSlice';
+import { createAction, createReducer, isAnyOf, createSelector } from '@reduxjs/toolkit';
+import { addDish, removeDish, deleteCategory, selectCategory } from '../categories/categoriesSlice';
 
 // actions
 const setMenus = createAction('menus/setMenus');
@@ -31,7 +30,7 @@ const menusReducer = createReducer(initialState, (builder) => {
         id: state.idCounter,
         name: action.payload.name,
         desc: action.payload.description,
-        categories: {},
+        categories: [],
         created: Date.now(),
       };
     })
@@ -47,51 +46,40 @@ const menusReducer = createReducer(initialState, (builder) => {
       state.activeMenu = state.byId[action.payload];
     })
     .addCase(addCategory, (state, action) => {
-      state.activeMenu.categories[action.payload.id] = action.payload;
+      const newCategory = action.payload;
+      const currentMenuCategories = state.activeMenu.categories;
+
+      if (currentMenuCategories.indexOf(newCategory) < 0) {
+        currentMenuCategories.push(newCategory);
+      }
     })
     .addCase(removeCategory, (state, action) => {
-      delete state.activeMenu.categories[action.payload];
+      const index = state.activeMenu.categories.indexOf(action.payload);
+      state.activeMenu.categories.splice(index, 1);
     })
     .addCase(selectCategory, (state, action) => {
       state.activeCategoryId = action.payload;
     })
+
     // extra reducers
-    .addCase(addDish, (state, action) => {
-      state.activeMenu.categories[state.activeCategoryId].dishes[action.payload.id] = action.payload;
-    })
-    .addCase(removeDish, (state, action) => {
-      delete state.activeMenu.categories[state.activeCategoryId].dishes[action.payload.id];
-    })
     .addCase(deleteCategory, (state, action) => {
       const menus = Object.values(state.byId);
       for (let menu of menus) {
-        delete menu.categories[action.payload];
-      }
-      // delete from active menu if not stored yet
-      delete state.activeMenu.categories[action.payload];
-    })
-    .addCase(editCategory, (state, action) => {
-      state.activeMenu.categories[action.payload.id].name = action.payload.name;
-      state.activeMenu.categories[action.payload.id].name = action.payload.name;
-
-      state.byId[action.payload.id].name = state.byId[action.payload.id].desc = action.payload.description;
-    })
-    .addCase(deleteDish, (state, action) => {
-      const menus = Object.values(state.byId);
-      for (let menu of menus) {
-        const categories = Object.values(menu.categories);
-        for (let category of categories) {
-          delete category.dishes[action.payload];
+        const index = menu.categories.indexOf(action.payload);
+        if (index > -1) {
+          menu.categories.splice(index, 1);
         }
       }
-      delete state.activeMenu.categories[state.activeCategoryId].dishes[action.payload];
+
+      // delete from active menu if not stored yet
+      const index = state.activeMenu.categories.indexOf(action.payload);
+      if (index > -1) {
+        state.activeMenu.categories.splice(index, 1);
+      }
     })
-    .addMatcher(
-      isAnyOf(createMenu, editMenu, addCategory, removeCategory, addDish, deleteDish, removeDish),
-      (state, action) => {
-        state.byId[state.activeMenu.id] = state.activeMenu;
-      },
-    );
+    .addMatcher(isAnyOf(createMenu, editMenu, addCategory, removeCategory, deleteCategory), (state, action) => {
+      state.byId[state.activeMenu.id] = state.activeMenu;
+    });
 });
 
 // selectors
@@ -104,7 +92,7 @@ const makeSelectAffectedMenus = () =>
 
       let affectedMenus = [];
       for (let menu of menusArray) {
-        if (Object.keys(menu.categories).includes(categoryId.toString())) {
+        if (menu.categories.includes(categoryId)) {
           affectedMenus.push(menu.name);
         }
       }

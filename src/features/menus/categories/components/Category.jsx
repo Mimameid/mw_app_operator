@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeCategory, makeSelectAffectedMenus } from 'features/menus/menus/menusSlice';
 import { selectCategory } from 'features/menus/categories/categoriesSlice';
 
-import { Box, Grid, Button, Paper, IconButton } from '@material-ui/core';
-import CategoryDishes from 'features/menus/dishes/components/CategoryDishes';
+import { Box, Grid, Button, Paper, IconButton, Collapse, makeStyles } from '@material-ui/core';
+import Dishes from 'features/menus/dishes/components/Dishes';
 import WarningDialog from 'common/components/other/WarningDialog';
 import EditCategoryModal from './EditCategoryModal';
-import { Add, Delete, Edit } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/core/styles';
+import { Add, Delete, Edit, ExpandLess, ExpandMore } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   containerPadding: {
@@ -17,20 +16,21 @@ const useStyles = makeStyles((theme) => ({
   buttonsContainer: {
     paddingLeft: theme.spacing(2),
   },
+  pointerCursor: {
+    cursor: 'pointer',
+  },
 }));
 
-function MenuCategory({ category, setAddDishOpen }) {
+function Category({ categoryId, setAddDishOpen }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selectAffectedMenus = useMemo(makeSelectAffectedMenus, []);
-  const affectedMenus = useSelector((state) => selectAffectedMenus(state, category.id));
+  const affectedMenus = useSelector((state) => selectAffectedMenus(state, categoryId));
+  const category = useSelector((state) => state.menus.categories.byId[categoryId]);
 
+  const [show, setShow] = useState(true);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
-
-  function handleEditCategory(event) {
-    setEditCategoryOpen(true);
-  }
 
   function handleEditCategory() {
     if (affectedMenus.length > 0) {
@@ -50,21 +50,37 @@ function MenuCategory({ category, setAddDishOpen }) {
   };
 
   function handleRemoveCategory(event) {
-    dispatch(removeCategory(category.id));
+    dispatch(removeCategory(categoryId));
   }
 
   function handleAddDishes() {
-    dispatch(selectCategory(category.id));
+    dispatch(selectCategory(categoryId));
     setAddDishOpen(true);
+  }
+
+  function handleClickCollapse() {
+    setShow(!show);
   }
 
   return (
     <Paper elevation={0}>
       <Grid className={classes.containerPadding} direction="row" container>
-        <Grid item>
-          <Box color="primary.main" fontSize="subtitle1.fontSize" ml={0.5} mt={0.5}>
+        <Grid className={classes.pointerCursor} item onClick={handleClickCollapse}>
+          <Box
+            display="inline-block"
+            color="primary.main"
+            fontSize="subtitle1.fontSize"
+            fontWeight="fontWeightBold"
+            ml={0.5}
+            mt={0.5}
+          >
             {category.name}
           </Box>
+          {category.dishes.length > 0 ? (
+            <IconButton aria-label="edit" size="small">
+              {show ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+            </IconButton>
+          ) : null}
         </Grid>
         <Grid className={classes.buttonsContainer} item>
           <Grid container>
@@ -86,7 +102,9 @@ function MenuCategory({ category, setAddDishOpen }) {
       </Grid>
       <Grid className={classes.containerPadding} direction="column" container>
         <Grid item>
-          <CategoryDishes dishes={category.dishes} />
+          <Collapse in={show}>
+            <Dishes dishIds={category.dishes} />
+          </Collapse>
         </Grid>
       </Grid>
       <EditCategoryModal open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />
@@ -105,4 +123,4 @@ function MenuCategory({ category, setAddDishOpen }) {
   );
 }
 
-export default MenuCategory;
+export default Category;

@@ -1,19 +1,10 @@
 /* eslint-disable react/no-did-update-set-state */
 
 import React from 'react';
-
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Slide from '@material-ui/core/Slide';
-
 import STATUS_CODE from 'constants';
 
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import ErrorIcon from '@material-ui/icons/Error';
-import InfoIcon from '@material-ui/icons/Info';
-import WarningIcon from '@material-ui/icons/Warning';
-
-import { withStyles } from '@material-ui/core/styles';
+import { Snackbar, SnackbarContent, Slide, withStyles } from '@material-ui/core';
+import { CheckCircle, Error, Info, Warning } from '@material-ui/icons';
 
 function TransitionDown(props) {
   return <Slide {...props} direction="left" />;
@@ -24,19 +15,19 @@ function getOptions(type) {
   let statusName;
   switch (type) {
     case STATUS_CODE.ERROR:
-      Icon = ErrorIcon;
+      Icon = Error;
       statusName = 'error';
       break;
     case STATUS_CODE.WARNING:
-      Icon = WarningIcon;
+      Icon = Warning;
       statusName = 'warning';
       break;
     case STATUS_CODE.SUCCESS:
-      Icon = CheckCircleIcon;
+      Icon = CheckCircle;
       statusName = 'success';
       break;
     case STATUS_CODE.INFO:
-      Icon = InfoIcon;
+      Icon = Info;
       statusName = 'info';
       break;
     default:

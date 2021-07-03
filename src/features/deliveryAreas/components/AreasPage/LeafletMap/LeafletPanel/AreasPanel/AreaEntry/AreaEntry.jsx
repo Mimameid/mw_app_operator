@@ -1,11 +1,10 @@
 import React, { useRef, useState } from 'react';
-import { IconButton, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Delete, Add } from '@material-ui/icons';
 
+import { IconButton, Divider, makeStyles } from '@material-ui/core';
 import CustomDialog from 'common/components/other/CustomDialog';
 import MinimumOrderValueInput from './MinimumOrderValueInput/MinimumOrderValueInput';
 import DeliveryFeeInput from './DeliveryFeeInput/DeliveryFeeInput';
+import { Delete, Add } from '@material-ui/icons';
 
 const useStyles = (props) => {
   return makeStyles((theme) => ({

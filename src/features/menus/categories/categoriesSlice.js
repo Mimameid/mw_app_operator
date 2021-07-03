@@ -1,4 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
+import { deleteDish } from '../dishes/dishesSlice';
 
 const initialState = {
   idCounter: 0,
@@ -20,7 +21,7 @@ const categoriesSlice = createSlice({
         id: state.idCounter,
         name: action.payload.name,
         desc: action.payload.description,
-        dishes: {},
+        dishes: [],
         created: Date.now(),
       };
     },
@@ -35,11 +36,30 @@ const categoriesSlice = createSlice({
       state.activeCategoryId = action.payload;
     },
     addDish(state, action) {
-      state.byId[state.activeCategoryId].dishes[action.payload.id] = action.payload;
+      const newDish = action.payload;
+      const currentCategoryDishes = state.byId[state.activeCategoryId].dishes;
+
+      if (currentCategoryDishes.indexOf(newDish) < 0) {
+        currentCategoryDishes.push(newDish);
+      }
     },
     removeDish(state, action) {
-      delete state.byId[action.payload.categoryId].dishes[action.payload.dishId];
+      const currentCategory = state.byId[state.activeCategoryId];
+      const index = currentCategory.dishes.indexOf(action.payload);
+
+      currentCategory.dishes.splice(index, 1);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(deleteDish, (state, action) => {
+      const categories = Object.values(state.byId);
+      for (let category of categories) {
+        const index = category.dishes.indexOf(action.payload);
+        if (index > -1) {
+          category.dishes.splice(index, 1);
+        }
+      }
+    });
   },
 });
 
@@ -52,7 +72,7 @@ export const makeSelectAffectedCategories = () =>
       let affectedCategories = [];
       const categoriesArray = Object.values(byId);
       for (let category of categoriesArray) {
-        if (Object.keys(category.dishes).includes(dishId.toString())) {
+        if (category.dishes.includes(dishId)) {
           affectedCategories.push(category.name);
         }
       }

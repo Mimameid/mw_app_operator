@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
 import { Link, useLocation, useHistory } from 'react-router-dom';
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 
 import CustomDialog from 'common/components/other/CustomDialog';
 
