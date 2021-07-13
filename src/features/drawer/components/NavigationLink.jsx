@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 import { ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 
-import CustomDialog from 'common/components/other/CustomDialog';
+import CustomDialog from 'common/components/dialogs/CustomDialog';
 
 const useStyles = makeStyles((theme) => ({
   navLink: {

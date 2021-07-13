@@ -1,21 +1,17 @@
-import { createAction, createReducer, isAnyOf, createSelector } from '@reduxjs/toolkit';
-import { addDish, removeDish, deleteCategory, selectCategory } from '../categories/categoriesSlice';
+import { createAction, createReducer, createSelector } from '@reduxjs/toolkit';
+import { addDish, removeDish, deleteCategory } from '../categories/categoriesSlice';
 
 // actions
 const setMenus = createAction('menus/setMenus');
 const createMenu = createAction('menus/createMenu');
 const deleteMenu = createAction('menus/deleteMenu');
 const editMenu = createAction('menus/editMenu');
-const selectMenu = createAction('menus/selectMenu');
 const addCategory = createAction('menus/addCategory');
 const removeCategory = createAction('menus/removeCategory');
 
 // reducer
 const initialState = {
-  idCounter: 0,
   byId: {},
-  activeMenu: null, // the one currently visualized in the UI
-  activeCategoryId: 0,
 };
 
 const menusReducer = createReducer(initialState, (builder) => {
@@ -25,9 +21,8 @@ const menusReducer = createReducer(initialState, (builder) => {
       state.idCounter = action.payload.idCounter;
     })
     .addCase(createMenu, (state, action) => {
-      state.idCounter++;
-      state.activeMenu = {
-        id: state.idCounter,
+      state.byId[action.payload.id] = {
+        id: action.payload.id,
         name: action.payload.name,
         desc: action.payload.description,
         categories: [],
@@ -36,31 +31,25 @@ const menusReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteMenu, (state, action) => {
       delete state.byId[action.payload];
-      state.activeMenu = null;
     })
     .addCase(editMenu, (state, action) => {
-      state.activeMenu.name = action.payload.name;
-      state.activeMenu.desc = action.payload.description;
-    })
-    .addCase(selectMenu, (state, action) => {
-      state.activeMenu = state.byId[action.payload];
+      const menu = state.byId[action.payload.id];
+      menu.name = action.payload.name;
+      menu.desc = action.payload.description;
     })
     .addCase(addCategory, (state, action) => {
-      const newCategory = action.payload;
-      const currentMenuCategories = state.activeMenu.categories;
+      const newCategory = action.payload.categoryId;
+      const currentMenuCategories = state.byId[action.payload.menuId].categories;
 
       if (currentMenuCategories.indexOf(newCategory) < 0) {
         currentMenuCategories.push(newCategory);
       }
     })
     .addCase(removeCategory, (state, action) => {
-      const index = state.activeMenu.categories.indexOf(action.payload);
-      state.activeMenu.categories.splice(index, 1);
+      const currentMenu = state.byId[action.payload.menuId];
+      const index = currentMenu.categories.indexOf(action.payload.categoryId);
+      currentMenu.categories.splice(index, 1);
     })
-    .addCase(selectCategory, (state, action) => {
-      state.activeCategoryId = action.payload;
-    })
-
     // extra reducers
     .addCase(deleteCategory, (state, action) => {
       const menus = Object.values(state.byId);
@@ -70,20 +59,11 @@ const menusReducer = createReducer(initialState, (builder) => {
           menu.categories.splice(index, 1);
         }
       }
-
-      // delete from active menu if not stored yet
-      const index = state.activeMenu.categories.indexOf(action.payload);
-      if (index > -1) {
-        state.activeMenu.categories.splice(index, 1);
-      }
-    })
-    .addMatcher(isAnyOf(createMenu, editMenu, addCategory, removeCategory, deleteCategory), (state, action) => {
-      state.byId[state.activeMenu.id] = state.activeMenu;
     });
 });
 
 // selectors
-const makeSelectAffectedMenus = () =>
+export const makeSelectAffectedMenus = () =>
   createSelector(
     (state) => state.menus.menus.byId,
     (_, categoryId) => categoryId,
@@ -93,7 +73,7 @@ const makeSelectAffectedMenus = () =>
       let affectedMenus = [];
       for (let menu of menusArray) {
         if (menu.categories.includes(categoryId)) {
-          affectedMenus.push(menu.name);
+          affectedMenus.push([menu.id, menu.name]);
         }
       }
 
@@ -101,17 +81,17 @@ const makeSelectAffectedMenus = () =>
     },
   );
 
-export {
-  setMenus,
-  createMenu,
-  deleteMenu,
-  editMenu,
-  selectMenu,
-  addCategory,
-  removeCategory,
-  selectCategory,
-  addDish,
-  removeDish,
-  makeSelectAffectedMenus,
-};
+export const selectMenuIdsToNames = createSelector(
+  (state) => state.menus.menus.byId,
+  (byId) => {
+    const menuArray = Object.values(byId);
+    const menuIdToNames = menuArray.map((elem, _) => {
+      return [elem.id, elem.name];
+    });
+
+    return menuIdToNames;
+  },
+);
+
+export { setMenus, createMenu, deleteMenu, editMenu, addCategory, removeCategory, addDish, removeDish };
 export default menusReducer;

@@ -16,6 +16,15 @@ if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'production') {
 }
 
 const store = createStore(rootReducer, initialState, compose(applyMiddleware(...middleware), devTools));
+
+if (process.env.NODE_ENV !== 'production') {
+  if (module.hot) {
+    module.hot.accept('./rootReducer', () => {
+      store.replaceReducer(rootReducer);
+    });
+  }
+}
+
 store.subscribe(
   throttle(() => {
     // specify reducers that shall be stored (currently the whole store is persisted)

@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  idCounter: 0,
   byId: {},
 };
 
@@ -14,12 +13,10 @@ const subsSlice = createSlice({
       state.idCounter = action.payload.idCounter;
     },
     createSub(state, action) {
-      state.idCounter++;
-      state.byId[state.idCounter] = {
-        id: state.idCounter,
+      state.byId[action.payload.id] = {
+        id: action.payload.id,
         name: action.payload.name,
         price: action.payload.price,
-        isSelected: action.payload.isSelected,
         created: Date.now(),
       };
     },
@@ -32,10 +29,21 @@ const subsSlice = createSlice({
 
       sub.name = newSub.name;
       sub.price = newSub.price;
-      sub.isSelected = newSub.isSelected;
     },
   },
 });
+
+export const selectSubIdsToNames = createSelector(
+  (state) => state.menus.subs.byId,
+  (byId) => {
+    const subsArray = Object.values(byId);
+    const subIdsToNames = subsArray.map((elem, _) => {
+      return [elem.id, elem.name];
+    });
+
+    return subIdsToNames;
+  },
+);
 
 export const { setSubs, createSub, deleteSub, editSub } = subsSlice.actions;
 export default subsSlice.reducer;

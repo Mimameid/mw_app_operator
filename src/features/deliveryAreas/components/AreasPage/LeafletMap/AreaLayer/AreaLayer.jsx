@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Polygon, useMapEvents } from 'react-leaflet';
 
 import ActiveAreaLayer from './ActiveAreaLayer/ActiveAreaLayerContainer';
-import CustomDialog from 'common/components/other/CustomDialog';
+import CustomDialog from 'common/components/dialogs/CustomDialog';
 import useDispatchAreaEdited from 'features/deliveryAreas/hooks/useDispatchAreaEdited';
 
 function AreaLayer({

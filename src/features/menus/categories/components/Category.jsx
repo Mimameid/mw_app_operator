@@ -1,60 +1,58 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCategory, makeSelectAffectedMenus } from 'features/menus/menus/menusSlice';
-import { selectCategory } from 'features/menus/categories/categoriesSlice';
+import { removeCategory } from 'features/menus/menus/menusSlice';
 
-import { Box, Grid, Button, Paper, IconButton, Collapse, makeStyles } from '@material-ui/core';
-import Dishes from 'features/menus/dishes/components/Dishes';
-import WarningDialog from 'common/components/other/WarningDialog';
-import EditCategoryModal from './EditCategoryModal';
-import { Add, Delete, Edit, ExpandLess, ExpandMore } from '@material-ui/icons';
+import { Box, Grid, Button, Paper, IconButton, Collapse, makeStyles, ListSubheader } from '@material-ui/core';
+import CategoryDishes from 'features/menus/categories/components/CategoryDishes';
+
+import { Add, Delete, Edit, Remove } from '@material-ui/icons';
+import EditCategory from './EditCategory';
+import AddDishModal from 'features/menus/categories/components/AddDishModal/AddDishModal';
 
 const useStyles = makeStyles((theme) => ({
   containerPadding: {
     padding: theme.spacing(1),
+    paddingBottom: '0',
+  },
+  listHeader: {
+    backgroundColor: theme.palette.primary.main,
+    borderBottom: '1px solid ' + theme.palette.primary.main,
+    color: theme.palette.common.white,
+  },
+  subtitle: {
+    marginTop: '-4px',
+    padding: theme.spacing(1),
+    paddingTop: '0',
+
+    lineHeight: '24px',
   },
   buttonsContainer: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(1),
   },
   pointerCursor: {
     cursor: 'pointer',
   },
 }));
 
-function Category({ categoryId, setAddDishOpen }) {
+function Category({ categoryId, menu }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const selectAffectedMenus = useMemo(makeSelectAffectedMenus, []);
-  const affectedMenus = useSelector((state) => selectAffectedMenus(state, categoryId));
+
   const category = useSelector((state) => state.menus.categories.byId[categoryId]);
 
   const [show, setShow] = useState(true);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
+  const [addDishOpen, setAddDishOpen] = useState(false);
 
   function handleEditCategory() {
-    if (affectedMenus.length > 0) {
-      setEditDialogOpen(true);
-      return;
-    }
     setEditCategoryOpen(true);
   }
 
-  const handleRejectDialog = (event) => {
-    setEditDialogOpen(false);
-  };
-
-  const handleAcceptDialog = (event) => {
-    setEditDialogOpen(false);
-    setEditCategoryOpen(true);
-  };
-
   function handleRemoveCategory(event) {
-    dispatch(removeCategory(categoryId));
+    dispatch(removeCategory({ categoryId, menuId: menu.id }));
   }
 
   function handleAddDishes() {
-    dispatch(selectCategory(categoryId));
     setAddDishOpen(true);
   }
 
@@ -64,61 +62,57 @@ function Category({ categoryId, setAddDishOpen }) {
 
   return (
     <Paper elevation={0}>
-      <Grid className={classes.containerPadding} direction="row" container>
-        <Grid className={classes.pointerCursor} item onClick={handleClickCollapse}>
-          <Box
-            display="inline-block"
-            color="primary.main"
-            fontSize="subtitle1.fontSize"
-            fontWeight="fontWeightBold"
-            ml={0.5}
-            mt={0.5}
-          >
-            {category.name}
-          </Box>
-          {category.dishes.length > 0 ? (
-            <IconButton aria-label="edit" size="small">
-              {show ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
-            </IconButton>
-          ) : null}
-        </Grid>
-        <Grid className={classes.buttonsContainer} item>
-          <Grid container>
-            <Grid item>
-              <IconButton aria-label="edit" size="small" onClick={handleEditCategory}>
-                <Edit fontSize="small" />
+      <ListSubheader className={classes.listHeader}>
+        <Grid className={classes.containerPadding} direction="row" container>
+          <Grid className={classes.pointerCursor} item onClick={handleClickCollapse}>
+            {category.dishes.length > 0 ? (
+              <IconButton aria-label="edit" color="inherit" size="small">
+                {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
               </IconButton>
-              <IconButton aria-label="edit" size="small" onClick={handleRemoveCategory}>
-                <Delete fontSize="small" />
-              </IconButton>
-            </Grid>
-            <Grid item className={classes.buttonsContainer}>
-              <Button size="small" variant="outlined" color="primary" endIcon={<Add />} onClick={handleAddDishes}>
-                Speise
-              </Button>
+            ) : null}
+            <Box display="inline-block" fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
+              {category.name}
+            </Box>
+          </Grid>
+          <Grid className={classes.buttonsContainer} item>
+            <Grid container>
+              <Grid item>
+                <IconButton aria-label="edit" color="inherit" size="small" onClick={handleEditCategory}>
+                  <Edit fontSize="small" />
+                </IconButton>
+                {menu ? (
+                  <IconButton aria-label="edit" color="inherit" size="small" onClick={handleRemoveCategory}>
+                    <Delete fontSize="small" />
+                  </IconButton>
+                ) : null}
+              </Grid>
+              <Grid item className={classes.buttonsContainer}>
+                <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddDishes}>
+                  Speise
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Grid className={classes.containerPadding} direction="column" container>
-        <Grid item>
-          <Collapse in={show}>
-            <Dishes dishIds={category.dishes} />
-          </Collapse>
-        </Grid>
-      </Grid>
-      <EditCategoryModal open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />
-      <WarningDialog
-        open={editDialogOpen}
-        title="Kategorie bearbeiten?"
-        message={
-          'Das Bearbeiten der Kategorie ändert die Kategorie in sämtlichen Menüs. Betroffene Menüs: ' +
-          affectedMenus.toString() +
-          '.'
-        }
-        handleReject={handleRejectDialog}
-        handleAccept={handleAcceptDialog}
-      />
+        <Box className={classes.subtitle} fontSize="subtitle2.fontSize" fontStyle="italic">
+          {category.desc}
+        </Box>
+      </ListSubheader>
+      {category.dishes.length > 0 ? (
+        <Collapse in={show}>
+          <Grid className={classes.containerPadding} direction="column" container>
+            <Grid item>
+              <CategoryDishes category={category} />
+            </Grid>
+          </Grid>
+        </Collapse>
+      ) : (
+        <Box color="text.secondary" fontStyle="italic" p={1}>
+          Keine Speisen verfügbar. Bitte fügen Sie eine Speise hinzu...
+        </Box>
+      )}
+      <EditCategory open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />
+      <AddDishModal open={addDishOpen} setOpen={setAddDishOpen} categoryId={categoryId} />
     </Paper>
   );
 }

@@ -4,7 +4,6 @@ import { deleteDish } from '../dishes/dishesSlice';
 const initialState = {
   idCounter: 0,
   byId: {},
-  activeCategoryId: 0,
 };
 
 const categoriesSlice = createSlice({
@@ -16,9 +15,8 @@ const categoriesSlice = createSlice({
       state.idCounter = action.payload.idCounter;
     },
     createCategory(state, action) {
-      state.idCounter++;
-      state.byId[state.idCounter] = {
-        id: state.idCounter,
+      state.byId[action.payload.id] = {
+        id: action.payload.id,
         name: action.payload.name,
         desc: action.payload.description,
         dishes: [],
@@ -32,20 +30,17 @@ const categoriesSlice = createSlice({
       state.byId[action.payload.id].name = action.payload.name;
       state.byId[action.payload.id].desc = action.payload.description;
     },
-    selectCategory(state, action) {
-      state.activeCategoryId = action.payload;
-    },
     addDish(state, action) {
-      const newDish = action.payload;
-      const currentCategoryDishes = state.byId[state.activeCategoryId].dishes;
+      const newDish = action.payload.dishId;
+      const currentCategoryDishes = state.byId[action.payload.categoryId].dishes;
 
       if (currentCategoryDishes.indexOf(newDish) < 0) {
         currentCategoryDishes.push(newDish);
       }
     },
     removeDish(state, action) {
-      const currentCategory = state.byId[state.activeCategoryId];
-      const index = currentCategory.dishes.indexOf(action.payload);
+      const currentCategory = state.byId[action.payload.categoryId];
+      const index = currentCategory.dishes.indexOf(action.payload.dishId);
 
       currentCategory.dishes.splice(index, 1);
     },
@@ -69,17 +64,30 @@ export const makeSelectAffectedCategories = () =>
     (state) => state.menus.categories.byId,
     (_, dishId) => dishId,
     (byId, dishId) => {
-      let affectedCategories = [];
       const categoriesArray = Object.values(byId);
+
+      let affectedCategories = [];
       for (let category of categoriesArray) {
         if (category.dishes.includes(dishId)) {
-          affectedCategories.push(category.name);
+          affectedCategories.push([category.id, category.name]);
         }
       }
 
       return affectedCategories;
     },
   );
+
+export const selectCategoryIdsToNames = createSelector(
+  (state) => state.menus.categories.byId,
+  (byId) => {
+    const categoryArray = Object.values(byId);
+    const categoryIdsToNames = categoryArray.map((elem, _) => {
+      return [elem.id, elem.name];
+    });
+
+    return categoryIdsToNames;
+  },
+);
 
 export const { setCategories, createCategory, deleteCategory, editCategory, selectCategory, addDish, removeDish } =
   categoriesSlice.actions;

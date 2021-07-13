@@ -1,13 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeSelectAffectedCategories, removeDish } from 'features/menus/categories/categoriesSlice';
-import { selectDish } from 'features/menus/dishes/dishesSlice';
+import { removeDish } from 'features/menus/categories/categoriesSlice';
 
-import { Box, Button, Collapse, Grid, IconButton, makeStyles } from '@material-ui/core';
-import EditDishModal from './EditDishModal';
-import WarningDialog from 'common/components/other/WarningDialog';
-import { Add, Delete, Edit, ExpandLess, ExpandMore } from '@material-ui/icons';
-import Choices from 'features/menus/choices/components/Choices';
+import { Avatar, Box, Button, Chip, Collapse, Grid, IconButton, makeStyles } from '@material-ui/core';
+import DishChoices from 'features/menus/dishes/components/DishChoices';
+import EditDish from './EditDish';
+import AddChoiceModal from 'features/menus/dishes/components/AddChoiceModal/AddChoiceModal';
+import { Add, Delete, Edit, Remove } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   horizontalLayout: {
@@ -28,42 +27,69 @@ const useStyles = makeStyles((theme) => ({
   pointerCursor: {
     cursor: 'pointer',
   },
+  halal: {
+    margin: '2px 2px 0 2px',
+    color: theme.palette.food_tags.halal.main,
+    backgroundColor: theme.palette.food_tags.halal.light,
+  },
+  vegan: {
+    margin: '2px 2px 0 2px',
+    color: theme.palette.food_tags.vegan.main,
+    backgroundColor: theme.palette.food_tags.vegan.light,
+  },
+  vegetarian: {
+    margin: '2px 2px 0 2px',
+    color: theme.palette.food_tags.vegetarian.main,
+    backgroundColor: theme.palette.food_tags.vegetarian.light,
+  },
+  kosher: {
+    margin: '2px 2px 0 2px',
+    color: theme.palette.food_tags.kosher.main,
+    backgroundColor: theme.palette.food_tags.kosher.light,
+  },
+  gluten: {
+    margin: '2px 2px 0 2px',
+    color: theme.palette.food_tags.gluten.main,
+    backgroundColor: theme.palette.food_tags.gluten.light,
+  },
 }));
 
-function Dish({ dishId, setAddChoiceOpen }) {
+function Dish({ dishId, category }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const dish = useSelector((state) => state.menus.dishes.byId[dishId]);
-  const selectAffectedCategories = useMemo(makeSelectAffectedCategories, []);
-  const affectedCategories = useSelector((state) => selectAffectedCategories(state, dish.id));
 
-  const [show, setShow] = useState(false);
-  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [show, setShow] = useState(true);
   const [editDishOpen, setEditDishOpen] = useState(false);
+  const [addChoiceOpen, setAddChoiceOpen] = useState(false);
+
+  const getTagClass = (tag) => {
+    console.log(tag);
+    switch (tag) {
+      case 'Vegan':
+        return classes.vegan;
+      case 'Vegetarisch':
+        return classes.vegetarian;
+      case 'Halal':
+        return classes.halal;
+      case 'Koscher':
+        return classes.kosher;
+      case 'Glutenfrei':
+        return classes.gluten;
+      default:
+        return null;
+    }
+  };
 
   function handleEditDish() {
-    if (affectedCategories.length > 0) {
-      setEditDialogOpen(true);
-      return;
-    }
     setEditDishOpen(true);
   }
 
-  const handleRejectDialog = (event) => {
-    setEditDialogOpen(false);
-  };
-
-  const handleAcceptDialog = (event) => {
-    setEditDialogOpen(false);
-    setEditDishOpen(true);
-  };
-
   const handleRemoveDish = (event) => {
-    dispatch(removeDish(dishId));
+    dispatch(removeDish({ dishId, categoryId: category.id }));
   };
 
   function handleAddChoices() {
-    dispatch(selectDish(dishId));
     setAddChoiceOpen(true);
   }
 
@@ -75,24 +101,26 @@ function Dish({ dishId, setAddChoiceOpen }) {
     <Grid className={classes.horizontalLayout} direction="column" container>
       <Grid item>
         <Box className={classes.pointerCursor} display="inline" pr={1} onClick={handleClickCollapse}>
-          <Box className={classes.title} display="inline" fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
-            {dish.name}
-          </Box>
           <Box display="inline">
             {dish.choices.length > 0 ? (
               <IconButton aria-label="edit" size="small">
-                {show ? <ExpandLess fontSize="small" /> : <ExpandMore fontSize="small" />}
+                {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
               </IconButton>
             ) : null}
+          </Box>
+          <Box className={classes.title} display="inline" fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
+            {dish.name}
           </Box>
         </Box>
 
         <IconButton aria-label="edit dish" size="small" onClick={handleEditDish}>
           <Edit fontSize="small" />
         </IconButton>
-        <IconButton aria-label="delete dish" size="small" onClick={handleRemoveDish}>
-          <Delete fontSize="small" />
-        </IconButton>
+        {category ? (
+          <IconButton aria-label="delete dish" size="small" onClick={handleRemoveDish}>
+            <Delete fontSize="small" />
+          </IconButton>
+        ) : null}
 
         <Button
           className={classes.marginLeft}
@@ -102,7 +130,7 @@ function Dish({ dishId, setAddChoiceOpen }) {
           endIcon={<Add />}
           onClick={handleAddChoices}
         >
-          Extras
+          Optiongruppe
         </Button>
         <Box
           className={classes.floatRight}
@@ -121,27 +149,22 @@ function Dish({ dishId, setAddChoiceOpen }) {
         </Box>
       </Grid>
       <Grid item>
-        <Box color="primary.main" fontWeight="fontWeightBold">
+        <Box display="inline" color="primary.main" fontWeight="fontWeightBold">
           {dish.price}€
+        </Box>
+        <Box className={classes.floatRight} color="text.secondary" fontSize="subtitle2.fontSize" fontStyle="italic">
+          {dish.tags.map((tag, _) => {
+            return <Chip className={getTagClass(tag)} key={tag} label={tag} size="small" />;
+          })}
         </Box>
       </Grid>
       <Grid item>
         <Collapse in={show}>
-          <Choices choiceIds={dish.choices} />
+          <DishChoices dish={dish} />
         </Collapse>
       </Grid>
-      <EditDishModal open={editDishOpen} setOpen={setEditDishOpen} dish={dish} />
-      <WarningDialog
-        open={editDialogOpen}
-        title="Speise bearbeiten?"
-        message={
-          'Das Bearbeiten der Speise ändert die Speise in sämtlichen Kategorien und sämtlichen Menüs in denen die Kategorie vorkommt. Betroffene Kategorien: ' +
-          affectedCategories.toString() +
-          '.'
-        }
-        handleReject={handleRejectDialog}
-        handleAccept={handleAcceptDialog}
-      />
+      <EditDish open={editDishOpen} setOpen={setEditDishOpen} dish={dish} />
+      <AddChoiceModal open={addChoiceOpen} setOpen={setAddChoiceOpen} dishId={dishId} />
     </Grid>
   );
 }

@@ -3,9 +3,7 @@ import { deleteChoice } from '../choices/choicesSlice';
 
 // slice
 const initialState = {
-  idCounter: 0,
   byId: {},
-  activeDishId: 0,
 };
 
 const dishesSlice = createSlice({
@@ -14,16 +12,16 @@ const dishesSlice = createSlice({
   reducers: {
     setDishes(state, action) {
       state.byId = action.payload.dishes;
-      state.idCounter = action.payload.idCounter;
     },
     createDish(state, action) {
-      state.idCounter++;
-      state.byId[state.idCounter] = {
-        id: state.idCounter,
+      state.byId[action.payload.id] = {
+        id: action.payload.id,
         name: action.payload.name,
-        desc: action.payload.description,
+        desc: action.payload.desc,
         type: action.payload.type,
         price: action.payload.price,
+        tags: action.payload.tags,
+        available: action.payload.available,
         choices: [],
         created: Date.now(),
       };
@@ -32,28 +30,28 @@ const dishesSlice = createSlice({
       delete state.byId[action.payload];
     },
     editDish(state, action) {
+      console.log(action.payload);
       const newDish = action.payload;
       const dish = state.byId[newDish.id];
 
       dish.name = newDish.name;
-      dish.desc = newDish.description;
+      dish.desc = newDish.desc;
       dish.type = newDish.type;
       dish.price = newDish.price;
-    },
-    selectDish(state, action) {
-      state.activeDishId = action.payload;
+      dish.tags = newDish.tags;
+      dish.available = newDish.available;
     },
     addChoice(state, action) {
-      const newChoice = action.payload;
-      const currentDishChoices = state.byId[state.activeDishId].choices;
+      const newChoice = action.payload.choiceId;
+      const currentDishChoices = state.byId[action.payload.dishId].choices;
 
       if (currentDishChoices.indexOf(newChoice) < 0) {
         currentDishChoices.push(newChoice);
       }
     },
     removeChoice(state, action) {
-      const currentDish = state.byId[state.activeDishId];
-      const index = currentDish.choices.indexOf(action.payload);
+      const currentDish = state.byId[action.payload.dishId];
+      const index = currentDish.choices.indexOf(action.payload.choiceId);
 
       currentDish.choices.splice(index, 1);
     },
@@ -81,13 +79,25 @@ export const makeSelectAffectedDishes = () =>
       const dishesArray = Object.values(byId);
       for (let dish of dishesArray) {
         if (dish.choices.includes(choiceId)) {
-          affectedDishes.push(dish.name);
+          affectedDishes.push([dish.id, dish.name]);
         }
       }
 
       return affectedDishes;
     },
   );
+
+export const selectDishIdsToNames = createSelector(
+  (state) => state.menus.dishes.byId,
+  (byId) => {
+    const dishesArray = Object.values(byId);
+    const dishIdsToNames = dishesArray.map((elem, _) => {
+      return [elem.id, elem.name];
+    });
+
+    return dishIdsToNames;
+  },
+);
 
 export const { setDishes, createDish, deleteDish, editDish, selectDish, addChoice, removeChoice } = dishesSlice.actions;
 export default dishesSlice.reducer;

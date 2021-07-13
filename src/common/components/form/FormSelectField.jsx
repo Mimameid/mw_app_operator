@@ -16,14 +16,26 @@ function FormSelectField({ control, name, items, ...props }) {
   return (
     <FormControl fullWidth>
       <InputLabel>{props.label}</InputLabel>
-      <Select inputRef={ref} error={!!error} {...inputProps} {...props}>
+      <Select
+        inputRef={ref}
+        error={!!error}
+        {...inputProps}
+        {...props}
+        MenuProps={{
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left',
+          },
+          getContentAnchorEl: null,
+        }}
+      >
         {items.map((item) => (
           <MenuItem key={nanoid()} value={item}>
             {item}
           </MenuItem>
         ))}
       </Select>
-      <FormHelperText error={error}>{error ? error.message : null}</FormHelperText>
+      <FormHelperText error={!!error}>{error ? error.message : null}</FormHelperText>
     </FormControl>
   );
 }

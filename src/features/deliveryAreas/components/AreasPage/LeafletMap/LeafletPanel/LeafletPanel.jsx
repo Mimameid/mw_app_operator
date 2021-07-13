@@ -7,7 +7,7 @@ import L from 'leaflet';
 import AreasPanel from './AreasPanel/AreasPanelContainer';
 import SaveDrawer from './SaveDrawer/SaveDrawerContainer';
 import PLZDrawer from './PLZDrawer/PLZDrawerContainer';
-import CustomDialog from 'common/components/other/CustomDialog';
+import CustomDialog from 'common/components/dialogs/CustomDialog';
 
 const MAX_AREAS = 11;
 

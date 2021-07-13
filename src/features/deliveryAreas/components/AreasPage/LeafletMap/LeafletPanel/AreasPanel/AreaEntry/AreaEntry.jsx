@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import { IconButton, Divider, makeStyles } from '@material-ui/core';
-import CustomDialog from 'common/components/other/CustomDialog';
+import CustomDialog from 'common/components/dialogs/CustomDialog';
 import MinimumOrderValueInput from './MinimumOrderValueInput/MinimumOrderValueInput';
 import DeliveryFeeInput from './DeliveryFeeInput/DeliveryFeeInput';
 import { Delete, Add } from '@material-ui/icons';

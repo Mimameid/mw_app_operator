@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchRestaurantData } from 'features/menus/fetchRestaurantData/actions';
 
-import { Grid, Divider, Typography, makeStyles } from '@material-ui/core';
-import Menus from 'features/menus/menus/components/Menus';
-import MenuCard from 'features/menus/menus/components/MenuCard';
+import { Grid, makeStyles } from '@material-ui/core';
+import Overview from 'features/menus/views/components/Overview/Overview';
+import ItemView from 'features/menus/views/components/ItemView/ItemView';
 
 const useStyles = (props) => {
   return makeStyles((theme) => ({
@@ -40,19 +40,12 @@ function Menu() {
 
   return (
     <Grid className={classes.menuContainer} container direction="column">
-      <Grid className={classes.titleContainer} item>
-        <Typography variant="h3" component="h1">
-          Menü
-        </Typography>
-      </Grid>
-      <Divider className={classes.divider} />
-
       <Grid className={classes.menuListContainer} item>
-        <Menus />
+        <Overview />
       </Grid>
 
       <Grid className={classes.menuListContainer} item>
-        <MenuCard />
+        <ItemView />
       </Grid>
     </Grid>
   );

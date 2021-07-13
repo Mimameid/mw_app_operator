@@ -2,9 +2,7 @@ import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { deleteSub } from '../subs/subsSlice';
 
 const initialState = {
-  idCounter: 0,
   byId: {},
-  activeChoiceId: 0,
 };
 
 const choicesSlice = createSlice({
@@ -16,11 +14,10 @@ const choicesSlice = createSlice({
       state.idCounter = action.payload.idCounter;
     },
     createChoice(state, action) {
-      state.idCounter++;
-      state.byId[state.idCounter] = {
-        id: state.idCounter,
+      state.byId[action.payload.id] = {
+        id: action.payload.id,
         name: action.payload.name,
-        desc: action.payload.description,
+        desc: action.payload.desc,
         maxAllowed: action.payload.maxAllowed,
         minRequired: action.payload.minRequired,
         subs: [],
@@ -35,24 +32,21 @@ const choicesSlice = createSlice({
       const choice = state.byId[newChoice.id];
 
       choice.name = newChoice.name;
-      choice.desc = newChoice.description;
+      choice.desc = newChoice.desc;
       choice.maxAllowed = newChoice.maxAllowed;
       choice.minRequired = newChoice.minRequired;
     },
-    selectChoice(state, action) {
-      state.activeChoiceId = action.payload;
-    },
     addSub(state, action) {
-      const newSub = action.payload;
-      const currentChoiceSubs = state.byId[state.activeChoiceId].subs;
+      const newSub = action.payload.subId;
+      const currentChoiceSubs = state.byId[action.payload.choiceId].subs;
 
       if (currentChoiceSubs.indexOf(newSub) < 0) {
         currentChoiceSubs.push(newSub);
       }
     },
     removeSub(state, action) {
-      const currentChoice = state.byId[state.activeChoiceId];
-      const index = currentChoice.subs.indexOf(action.payload);
+      const currentChoice = state.byId[action.payload.choiceId];
+      const index = currentChoice.subs.indexOf(action.payload.subId);
 
       currentChoice.subs.splice(index, 1);
     },
@@ -80,7 +74,7 @@ export const makeSelectAffectedChoices = () =>
       const choicesArray = Object.values(byId);
       for (let choice of choicesArray) {
         if (choice.subs.includes(subId)) {
-          affectedChoices.push(choice.name);
+          affectedChoices.push([choice.id, choice.name]);
         }
       }
 
@@ -88,6 +82,17 @@ export const makeSelectAffectedChoices = () =>
     },
   );
 
-export const { setChoices, createChoice, deleteChoice, editChoice, selectChoice, addSub, removeSub } =
-  choicesSlice.actions;
+export const selectChoiceIdsToNames = createSelector(
+  (state) => state.menus.choices.byId,
+  (byId) => {
+    const choicesArray = Object.values(byId);
+    const choiceIdsToNames = choicesArray.map((elem, _) => {
+      return [elem.id, elem.name];
+    });
+
+    return choiceIdsToNames;
+  },
+);
+
+export const { setChoices, createChoice, deleteChoice, editChoice, addSub, removeSub } = choicesSlice.actions;
 export default choicesSlice.reducer;
