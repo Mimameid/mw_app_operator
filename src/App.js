@@ -1,9 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Contents from './components/Contents';
+import Frame from './features/frame/components/Frame';
 
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import { ThemeProvider } from '@material-ui/core/styles';
 import theme from './theme/theme';
 
 import store from './store/store';
@@ -13,7 +13,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <CssBaseline>
-          <Contents />
+          <Frame />
         </CssBaseline>
       </Provider>
     </ThemeProvider>

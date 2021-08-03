@@ -3,18 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@hookform/resolvers": "^2.5.2",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
-    "@material-ui/styles": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@material-ui/styles": "^4.11.4",
+    "@nivo/bar": "^0.73.1",
+    "@nivo/bump": "^0.73.0",
+    "@nivo/calendar": "^0.73.0",
+    "@nivo/core": "^0.73.0",
+    "@nivo/line": "^0.73.0",
+    "@nivo/pie": "^0.73.0",
+    "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
-    "formik": "^2.2.6",
     "leaflet": "^1.7.1",
-    "nanoid": "^3.1.22",
     "polygon-clipping": "^0.15.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.8.4",
     "react-leaflet": "^3.1.0",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",
@@ -38,18 +46,11 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "source-map-explorer": "^2.5.2"
   }

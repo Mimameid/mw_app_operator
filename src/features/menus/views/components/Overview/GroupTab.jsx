@@ -1,0 +1,44 @@
+import React from 'react';
+
+import { Box, Tab } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  tab: {
+    // bug fix of material ui tabs responsiveness
+    minWidth: '90px',
+    padding: '14px 12px',
+  },
+  selected: {
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.primary.main,
+    opacity: 1,
+
+    borderRadius: '6px 6px 0 0',
+    boxShadow: theme.shadows[12],
+  },
+  addButton: {
+    marginLeft: theme.spacing(1),
+    marginBottom: '2px',
+    verticalAlign: 'middle',
+
+    color: theme.palette.common.white,
+  },
+}));
+
+function GroupTab({ selected, label, value, ...props }) {
+  const classes = useStyles();
+
+  return (
+    <React.Fragment>
+      <Tab
+        className={`${classes.tab} ${selected ? classes.selected : null}`}
+        value={value}
+        label={<Box>{label}</Box>}
+        {...props}
+      />
+    </React.Fragment>
+  );
+}
+
+export default GroupTab;

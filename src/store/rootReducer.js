@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
 
-import drawerState from './drawerState/reducer';
-import deliveryZone from './deliveryZone';
-import userState from './userState';
-import statusCode from './statusCode/reducer';
+import frame from 'features/frame/slice';
+import deliveryAreas from 'features/deliveryAreas/slices';
+import menus from 'features/menus';
+import restaurant from 'features/restaurant/slices';
+import snackbar from 'features/snackbar/slice';
+import userState from 'features/user';
 
-export default combineReducers({ drawerState, deliveryZone, userState, statusCode });
+export default combineReducers({ frame, deliveryAreas, menus, userState, snackbar, restaurant });
