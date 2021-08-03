@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addChoice } from 'features/menus/dishes/dishesSlice';
+import { addChoices } from 'features/menus/dishes/actions';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
-import ChoiceModal from '../../../choices/components/ChoiceModal';
+import { Box, Button, Divider, Grid, List, Modal, Paper } from '@material-ui/core';
+import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
 import ChoiceItem from './ChoiceItem';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -12,39 +13,27 @@ const useStyles = makeStyles((theme) => ({
   },
   formContainer: {
     position: 'absolute',
-    width: '40%',
+    width: '432px',
     left: '50%',
     top: '50%',
-    padding: theme.spacing(2),
+    padding: theme.spacing(4),
 
     transform: 'translate(-50%, -50%)',
     zIndex: 1000,
   },
   header: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(3),
   },
   list: {
     position: 'relative',
     overflow: 'auto',
     maxHeight: 320,
-    height: 304,
-    padding: 0,
-
-    backgroundColor: theme.palette.background.paper,
-  },
-  listSection: {
-    backgroundColor: 'inherit',
-  },
-  ul: {
-    backgroundColor: 'inherit',
+    height: '304px',
     padding: 0,
   },
-  listHeader: {
-    backgroundColor: theme.palette.primary.main,
-    borderBottom: '1px solid ' + theme.palette.primary.main,
-    color: theme.palette.common.white,
+  buttonLayout: {
+    marginTop: theme.spacing(3),
   },
-  buttonsContainer: { paddingTop: theme.spacing(1) },
 }));
 
 function AddChoiceModal({ open, setOpen, dishId }) {
@@ -82,11 +71,8 @@ function AddChoiceModal({ open, setOpen, dishId }) {
     setChecked(newChecked);
   };
 
-  function handleAddChoices(event) {
-    for (let choiceId of checked) {
-      dispatch(addChoice({ choiceId, dishId }));
-    }
-
+  async function handleAddChoices(event) {
+    await dispatch(addChoices({ dishId, choices: checked }));
     handleClose();
   }
 
@@ -94,7 +80,7 @@ function AddChoiceModal({ open, setOpen, dishId }) {
     <React.Fragment>
       <Modal className={classes.backdrop} open={open} onClose={handleClose}>
         <Paper className={classes.formContainer}>
-          <Grid className={classes.buttonsContainer} container justify="space-between">
+          <Grid container justifyContent="space-between">
             <Grid item>
               <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
                 Optiongruppe
@@ -129,7 +115,7 @@ function AddChoiceModal({ open, setOpen, dishId }) {
               )}
             </List>
           </Paper>
-          <Grid className={classes.buttonsContainer} container justify="flex-end" spacing={1}>
+          <Grid className={classes.buttonLayout} container justifyContent="flex-end" spacing={2}>
             <Grid item>
               <Button variant="contained" onClick={handleClose}>
                 Abbrechen

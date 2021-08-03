@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeSelectAffectedChoices } from 'features/menus/choices/choicesSlice';
-import { deleteSub } from '../subsSlice';
+import { makeSelectAffectedChoices } from 'features/menus/choices/slice';
+import { deleteSub } from '../actions';
 
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 

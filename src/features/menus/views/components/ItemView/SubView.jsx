@@ -15,7 +15,7 @@ function SubView() {
           <Sub subId={activeSubId} />
         </React.Fragment>
       ) : (
-        <EmptyView message="Wählen sie eine Option aus der Liste aus, um sie anzuzeigen..." />
+        <EmptyView message="Wählen Sie eine Option aus der Liste aus, um sie anzuzeigen..." />
       )}
     </Paper>
   );

@@ -1,36 +1,52 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCategory } from 'features/menus/menus/menusSlice';
+import { removeCategory } from 'features/menus/menus/actions';
 
-import { Box, Grid, Button, Paper, IconButton, Collapse, makeStyles, ListSubheader } from '@material-ui/core';
+import { Box, Grid, Button, Paper, IconButton, Collapse } from '@material-ui/core';
 import CategoryDishes from 'features/menus/categories/components/CategoryDishes';
-
 import { Add, Delete, Edit, Remove } from '@material-ui/icons';
 import EditCategory from './EditCategory';
 import AddDishModal from 'features/menus/categories/components/AddDishModal/AddDishModal';
+import TruncatedBox from 'features/menus/common/components/TruncatedBox';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
-  containerPadding: {
-    padding: theme.spacing(1),
-    paddingBottom: '0',
-  },
-  listHeader: {
+  headerContainer: {
+    padding: theme.spacing(2),
+
     backgroundColor: theme.palette.primary.main,
     borderBottom: '1px solid ' + theme.palette.primary.main,
     color: theme.palette.common.white,
   },
+  collapseIconContainer: {
+    width: '24px',
+    marginLeft: theme.spacing(-1),
+    paddingTop: '3px',
+    alignSelf: 'flex-start',
+  },
+  collapseIcon: {
+    cursor: 'pointer',
+    '&:hover': {
+      background: 'none',
+    },
+  },
+  title: {
+    cursor: 'pointer',
+
+    userSelect: 'none',
+  },
   subtitle: {
     marginTop: '-4px',
-    padding: theme.spacing(1),
-    paddingTop: '0',
+    paddingTop: theme.spacing(1),
 
     lineHeight: '24px',
   },
   buttonsContainer: {
     paddingLeft: theme.spacing(1),
   },
-  pointerCursor: {
-    cursor: 'pointer',
+
+  contentContainer: {
+    padding: theme.spacing(2),
   },
 }));
 
@@ -62,57 +78,52 @@ function Category({ categoryId, menu }) {
 
   return (
     <Paper elevation={0}>
-      <ListSubheader className={classes.listHeader}>
-        <Grid className={classes.containerPadding} direction="row" container>
-          <Grid className={classes.pointerCursor} item onClick={handleClickCollapse}>
-            {category.dishes.length > 0 ? (
-              <IconButton aria-label="edit" color="inherit" size="small">
-                {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
-              </IconButton>
-            ) : null}
-            <Box display="inline-block" fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
+      <Box className={classes.headerContainer} display="flex">
+        <Box className={classes.collapseIconContainer} onClick={handleClickCollapse}>
+          <IconButton className={classes.collapseIcon} disableRipple aria-label="edit" color="inherit" size="small">
+            {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
+          </IconButton>
+        </Box>
+        <Box>
+          <Grid container alignItems="center">
+            <TruncatedBox
+              className={classes.title}
+              fontSize="subtitle1.fontSize"
+              fontWeight="fontWeightBold"
+              onClick={handleClickCollapse}
+            >
               {category.name}
-            </Box>
-          </Grid>
-          <Grid className={classes.buttonsContainer} item>
-            <Grid container>
-              <Grid item>
-                <IconButton aria-label="edit" color="inherit" size="small" onClick={handleEditCategory}>
-                  <Edit fontSize="small" />
+            </TruncatedBox>
+            <Grid className={classes.buttonsContainer} item>
+              <IconButton aria-label="edit" color="inherit" size="small" onClick={handleEditCategory}>
+                <Edit fontSize="small" />
+              </IconButton>
+              {menu ? (
+                <IconButton aria-label="edit" color="inherit" size="small" onClick={handleRemoveCategory}>
+                  <Delete fontSize="small" />
                 </IconButton>
-                {menu ? (
-                  <IconButton aria-label="edit" color="inherit" size="small" onClick={handleRemoveCategory}>
-                    <Delete fontSize="small" />
-                  </IconButton>
-                ) : null}
-              </Grid>
-              <Grid item className={classes.buttonsContainer}>
-                <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddDishes}>
-                  Speise
-                </Button>
-              </Grid>
+              ) : null}
+            </Grid>
+            <Grid item className={classes.buttonsContainer}>
+              <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddDishes}>
+                Speise
+              </Button>
             </Grid>
           </Grid>
-        </Grid>
-        <Box className={classes.subtitle} fontSize="subtitle2.fontSize" fontStyle="italic">
-          {category.desc}
+          <TruncatedBox className={classes.subtitle} fontSize="subtitle2.fontSize" fontStyle="italic">
+            {category.desc}
+          </TruncatedBox>
         </Box>
-      </ListSubheader>
-      {category.dishes.length > 0 ? (
-        <Collapse in={show}>
-          <Grid className={classes.containerPadding} direction="column" container>
-            <Grid item>
-              <CategoryDishes category={category} />
-            </Grid>
-          </Grid>
-        </Collapse>
-      ) : (
-        <Box color="text.secondary" fontStyle="italic" p={1}>
-          Keine Speisen verfügbar. Bitte fügen Sie eine Speise hinzu...
+      </Box>
+
+      <Collapse in={show}>
+        <Box className={classes.contentContainer}>
+          <CategoryDishes category={category} />
         </Box>
-      )}
+      </Collapse>
+
       <EditCategory open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />
-      <AddDishModal open={addDishOpen} setOpen={setAddDishOpen} categoryId={categoryId} />
+      <AddDishModal open={addDishOpen} setOpen={setAddDishOpen} categoryId={category.id} />
     </Paper>
   );
 }

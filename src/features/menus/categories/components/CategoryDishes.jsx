@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Divider, Paper, makeStyles } from '@material-ui/core';
+import { Paper, Box, Divider } from '@material-ui/core';
 import Dish from '../../dishes/components/Dish';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {
-    marginBottom: theme.spacing(1),
+    padding: 0,
   },
   list: {
     paddingBottom: 0,
@@ -21,11 +22,15 @@ function CategoryDishes({ category }) {
       {dishIds.map((dishId, index) => (
         <React.Fragment key={dishId}>
           <Dish dishId={dishId} category={category} />
-          <Divider />
+          {index < dishIds.length - 1 ? <Divider /> : null}
         </React.Fragment>
       ))}
     </Paper>
-  ) : null;
+  ) : (
+    <Box color="text.secondary" fontStyle="italic">
+      Keine Speisen verfügbar. Bitte fügen Sie eine Speise hinzu...
+    </Box>
+  );
 }
 
 export default CategoryDishes;

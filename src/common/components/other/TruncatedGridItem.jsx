@@ -1,16 +1,20 @@
 import React from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   wrap: {
+    overflow: 'hidden',
+    maxWidth: '480px',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
+
     textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    wordBreak: 'break-all',
     '&:hover': {
-      overflow: 'visible',
       whiteSpace: 'normal',
+      overflow: 'visible',
     },
   },
 }));

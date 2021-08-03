@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
 import { loadState, saveState } from './localStorage';
-import { throttle } from 'utils/utils';
+import { throttle } from 'common/utils/utils';
 
 // const initialState = loadState();
 const initialState = { userState: loadState() };
@@ -29,6 +29,7 @@ store.subscribe(
   throttle(() => {
     // specify reducers that shall be stored (currently the whole store is persisted)
     // saveState(store.getState());
+
     saveState(store.getState().userState);
   }),
   1000,

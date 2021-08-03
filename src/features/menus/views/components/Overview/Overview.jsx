@@ -2,19 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectGroup } from '../../viewsSlice';
 
-import { Paper, Box, Tabs, makeStyles, Fab } from '@material-ui/core';
+import { Paper, Box, Tabs } from '@material-ui/core';
 import GroupTab from './GroupTab';
 import MenuOverview from './MenuOverview/MenuOverview';
 import CategoryOverview from './CategoryOverview/CategoryOverview';
 import DishOverview from './DishOverview/DishOverview';
 import ChoiceOverview from './ChoiceOverview/ChoiceOverview';
 import SubOverview from './SubOverview/SubOverview';
-import MenuModal from 'features/menus/menus/components/MenuModal';
-import CategoryModal from 'features/menus/categories/components/CategoryModal';
-import DishModal from 'features/menus/dishes/components/DishModal';
-import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
-import SubModal from 'features/menus/subs/components/SubModal';
-import { Add } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -32,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[12],
   },
   listContainer: {
-    height: '265px',
+    height: '264px',
     overflow: 'auto',
 
     boxShadow: theme.shadows[3],
@@ -40,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   fab: {
     position: 'absolute',
     bottom: '12px',
-    right: '12px',
+    right: '14px',
 
     zIndex: 10,
   },
@@ -52,11 +47,6 @@ function Overview() {
   const dispatch = useDispatch();
 
   const [value, setValue] = useState(0);
-  const [menuModalOpen, setMenuModalOpen] = useState(false);
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-  const [dishModalOpen, setDishModalOpen] = useState(false);
-  const [choiceModalOpen, setChoiceModalOpen] = useState(false);
-  const [subModalOpen, setSubModalOpen] = useState(false);
 
   const handleChange = (event, newValue) => {
     dispatch(selectGroup(newValue));
@@ -80,29 +70,6 @@ function Overview() {
     }
   };
 
-  const handleAddButton = (event) => {
-    event.stopPropagation();
-    switch (value) {
-      case 0:
-        setMenuModalOpen(true);
-        break;
-      case 1:
-        setCategoryModalOpen(true);
-        break;
-      case 2:
-        setDishModalOpen(true);
-        break;
-      case 3:
-        setChoiceModalOpen(true);
-        break;
-      case 4:
-        setSubModalOpen(true);
-        break;
-      default:
-        return;
-    }
-  };
-
   return (
     <Paper className={classes.container} elevation={0}>
       <Tabs
@@ -122,15 +89,7 @@ function Overview() {
           <GroupTab key={index} selected={index === value} value={index} label={tabName} />
         ))}
       </Tabs>
-      <Fab className={classes.fab} color="primary" size="small" onClick={handleAddButton}>
-        <Add />
-      </Fab>
       <Box className={classes.listContainer}>{renderList(value)}</Box>
-      <MenuModal open={menuModalOpen} onClose={() => setMenuModalOpen(false)} />
-      <CategoryModal open={categoryModalOpen} onClose={() => setCategoryModalOpen(false)} />
-      <DishModal open={dishModalOpen} onClose={() => setDishModalOpen(false)} />
-      <ChoiceModal open={choiceModalOpen} onClose={() => setChoiceModalOpen(false)} />
-      <SubModal open={subModalOpen} onClose={() => setSubModalOpen(false)} />
     </Paper>
   );
 }

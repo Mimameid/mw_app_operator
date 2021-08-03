@@ -15,7 +15,7 @@ function ChoiceView() {
           <Choice choiceId={activeChoiceId} />
         </React.Fragment>
       ) : (
-        <EmptyView message="Wählen sie eine Auswahlgruppe aus der Liste aus, um sie anzuzeigen..." />
+        <EmptyView message="Wählen Sie eine Optiongruppe aus der Liste aus, um sie anzuzeigen..." />
       )}
     </Paper>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { makeSelectAffectedChoices } from 'features/menus/choices/choicesSlice';
+import { makeSelectAffectedChoices } from 'features/menus/choices/slice';
 
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 import SubModal from './SubModal';

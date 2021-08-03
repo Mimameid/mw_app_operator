@@ -1,5 +1,6 @@
 import {
   SET_AREAS,
+  SET_AREAS_VERSION,
   CREATE_AREA,
   DELETE_AREA,
   SAVE_AREA,
@@ -29,9 +30,11 @@ export function saveArea() {
 }
 
 export function createArea() {
-  return {
-    type: CREATE_AREA,
-    payload: colors.getColor(),
+  return (dispatch, getState) => {
+    dispatch({
+      type: CREATE_AREA,
+      payload: colors.getColor(getState().deliveryAreas.areaData.areas),
+    });
   };
 }
 
@@ -133,16 +136,25 @@ export function setMinimumOrderValue(value) {
     payload: value,
   };
 }
+
 export function setDeliveryFee(value) {
   return {
     type: SET_DELIVERY_FEE,
     payload: value,
   };
 }
+
 export function setAreas(areaData) {
   return {
     type: SET_AREAS,
     payload: areaData,
+  };
+}
+
+export function setAreasVersion(version) {
+  return {
+    type: SET_AREAS_VERSION,
+    payload: version,
   };
 }
 

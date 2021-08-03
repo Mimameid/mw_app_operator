@@ -1,9 +1,10 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+import { nanoid } from 'common/constants';
 
-import { Box, Grid, List, ListSubheader, makeStyles, Divider } from '@material-ui/core';
+import { Box, Grid, List, ListSubheader, Divider } from '@material-ui/core';
 import MenuOverviewItem from './MenuOverviewItem';
+import { useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
 function MenuOverview() {
   const classes = useStyles();
   const menus = useSelector((state) => state.menus.menus.byId);
+
   const selectedMenuId = useSelector((state) => state.menus.views.itemId);
 
   return (

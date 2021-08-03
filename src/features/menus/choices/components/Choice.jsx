@@ -1,53 +1,65 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeChoice } from 'features/menus/dishes/dishesSlice';
+import { removeChoice } from 'features/menus/dishes/actions';
 
-import { Box, Card, CardContent, CardHeader, IconButton, makeStyles } from '@material-ui/core';
+import { Box, Button, Collapse, Grid, IconButton, Paper } from '@material-ui/core';
 import ChoiceSubs from './ChoiceSubs';
 import AddSubModal from 'features/menus/choices/components/AddSubModal/AddSubModal';
 import EditChoice from './EditChoice';
-import { Add, Delete, Edit } from '@material-ui/icons';
+import TruncatedBox from 'features/menus/common/components/TruncatedBox';
+import { Add, Delete, Edit, Remove } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    width: '100%',
-    overflow: 'initial',
-    marginTop: theme.spacing(4),
-  },
   headerContainer: {
-    width: '96%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: theme.spacing(-4),
+    padding: theme.spacing(2),
 
-    color: theme.palette.common.white,
     backgroundColor: theme.palette.primary.main,
-
-    borderRadius: theme.spacing(2),
-  },
-  headerTitle: {
-    fontSize: theme.typography.subtitle1.fontSize,
-    fontWeight: theme.typography.fontWeightBold,
-  },
-  headerSubtitle: {
+    borderBottom: '1px solid ' + theme.palette.primary.main,
     color: theme.palette.common.white,
-    ...theme.typography.body2,
   },
-  headerActions: {
-    backgroundColor: 'white',
+  collapseIconContainer: {
+    width: '24px',
+    marginLeft: theme.spacing(-1),
+    paddingTop: '3px',
+    alignSelf: 'flex-start',
+  },
+  collapseIcon: {
+    cursor: 'pointer',
+    '&:hover': {
+      background: 'none',
+    },
+  },
+  title: {
+    cursor: 'pointer',
+
+    userSelect: 'none',
+  },
+  subtitle: {
+    marginTop: '-4px',
+    paddingTop: theme.spacing(1),
+
+    lineHeight: '24px',
+  },
+  buttonsContainer: {
+    paddingLeft: theme.spacing(1),
+  },
+  contentContainer: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
 }));
-
 function Choice({ choiceId, dish }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const choice = useSelector((state) => state.menus.choices.byId[choiceId]);
 
-  const [editDishOpen, setEditDishOpen] = useState(false);
+  const [show, setShow] = useState(true);
+  const [editChoiceOpen, setEditChoiceOpen] = useState(false);
   const [addSubOpen, setAddSubOpen] = useState(false);
 
-  function handleEditDish() {
-    setEditDishOpen(true);
+  function handleEditChoice() {
+    setEditChoiceOpen(true);
   }
 
   const handleRemoveChoice = (event) => {
@@ -57,46 +69,57 @@ function Choice({ choiceId, dish }) {
   function handleAddSubs() {
     setAddSubOpen(true);
   }
+  function handleClickCollapse() {
+    setShow(!show);
+  }
 
   return (
-    <Box display="flex">
-      <Card className={classes.card} elevation={3}>
-        <CardHeader
-          className={classes.headerContainer}
-          title={
-            <Box className={classes.headerTitle}>
+    <Paper elevation={0}>
+      <Box className={classes.headerContainer} display="flex">
+        <Box className={classes.collapseIconContainer} onClick={handleClickCollapse}>
+          <IconButton className={classes.collapseIcon} disableRipple aria-label="edit" color="inherit" size="small">
+            {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
+          </IconButton>
+        </Box>
+        <Box>
+          <Grid container alignItems="center">
+            <TruncatedBox
+              className={classes.title}
+              fontSize="subtitle1.fontSize"
+              fontWeight="fontWeightBold"
+              onClick={handleClickCollapse}
+            >
               {choice.name}
-              <IconButton aria-label="edit choice" size="small" onClick={handleEditDish}>
+            </TruncatedBox>
+            <Grid className={classes.buttonsContainer} item>
+              <IconButton aria-label="edit" color="inherit" size="small" onClick={handleEditChoice}>
                 <Edit fontSize="small" />
               </IconButton>
               {dish ? (
-                <IconButton aria-label="delete choice" size="small" onClick={handleRemoveChoice}>
+                <IconButton aria-label="edit" color="inherit" size="small" onClick={handleRemoveChoice}>
                   <Delete fontSize="small" />
                 </IconButton>
               ) : null}
-            </Box>
-          }
-          subheader={<Box className={classes.headerSubtitle}>{choice.desc}</Box>}
-          action={
-            <IconButton aria-label="settings" size="small" onClick={handleAddSubs}>
-              <Add fontSize="small" />
-            </IconButton>
-          }
-        />
-
-        <CardContent>
-          {choice.subs.length > 0 ? (
-            <ChoiceSubs choice={choice} />
-          ) : (
-            <Box color="text.secondary" fontStyle="italic" p={1}>
-              Bitte fügen Sie eine Option hinzu...
-            </Box>
-          )}
-        </CardContent>
-        <EditChoice open={editDishOpen} setOpen={setEditDishOpen} choice={choice} />
-        <AddSubModal open={addSubOpen} setOpen={setAddSubOpen} choiceId={choiceId} />
-      </Card>
-    </Box>
+            </Grid>
+            <Grid item className={classes.buttonsContainer}>
+              <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddSubs}>
+                Option
+              </Button>
+            </Grid>
+          </Grid>
+          <TruncatedBox className={classes.subtitle} fontSize="subtitle2.fontSize" fontStyle="italic">
+            {choice.desc}
+          </TruncatedBox>
+        </Box>
+      </Box>
+      <Collapse in={show}>
+        <Box className={classes.contentContainer}>
+          <ChoiceSubs choice={choice} />
+        </Box>
+      </Collapse>
+      <EditChoice open={editChoiceOpen} setOpen={setEditChoiceOpen} choice={choice} />
+      <AddSubModal open={addSubOpen} setOpen={setAddSubOpen} choiceId={choiceId} />
+    </Paper>
   );
 }
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+import { nanoid } from 'common/constants';
 
-import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader } from '@material-ui/core';
 import SubOverviewItem from './SubOverviewItem';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -27,24 +28,19 @@ function SubOverview() {
     <List className={classes.list}>
       <ListSubheader className={classes.listHeader}>
         <Grid container>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             ID
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             Name
           </Grid>
-          <Grid item xs={2}>
-            Beschreibung
-          </Grid>
-          <Grid item xs={2}>
-            Optionen
-          </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={3}>
             Erstellt
           </Grid>
+          <Grid item xs={3}></Grid>
         </Grid>
       </ListSubheader>
-      <Divider className={classes.divider} />
+      <Divider />
       {Object.values(subs).length === 0 ? (
         <Box color="text.secondary" fontStyle="italic" p={1}>
           Keine Optiongruppe verfügbar. Bitte fügen Sie ein Optiongrupp hinzu...

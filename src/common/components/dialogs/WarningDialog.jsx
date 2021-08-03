@@ -1,16 +1,12 @@
 import React from 'react';
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  makeStyles,
-} from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
+  dialog: {
+    padding: theme.spacing(4),
+  },
   warningIcon: {
     marginTop: theme.spacing(1),
 
@@ -40,6 +36,9 @@ function WarningDialog({ open, title, message, handleReject, handleAccept, disab
 
   return (
     <Dialog
+      PaperProps={{
+        style: { padding: '20px' },
+      }}
       open={open}
       onClose={handleReject}
       aria-labelledby="alert-dialog-title"

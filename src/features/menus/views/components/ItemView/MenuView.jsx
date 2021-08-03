@@ -15,7 +15,7 @@ function MenuView() {
           <Menu />
         </React.Fragment>
       ) : (
-        <EmptyView message="Wählen sie ein Menü aus der Liste aus, um sie anzuzeigen..." />
+        <EmptyView message="Wählen Sie ein Menü aus der Liste aus, um es anzuzeigen..." />
       )}
     </Paper>
   );

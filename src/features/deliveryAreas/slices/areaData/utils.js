@@ -1,7 +1,5 @@
 import polygonClipping from 'polygon-clipping';
 
-import store from 'store/store';
-
 const _colors = [
   '#2f4f4f',
   '#8b4513',
@@ -23,12 +21,12 @@ function resetColors() {
   usedColors = [];
 }
 
-function getColor() {
+function getColor(areas) {
   if (availableColors.length < 1) {
     // this doesn't make sense, the use isn't allowed to create more than 11 areas currently
     availableColors = usedColors.slice();
     usedColors = [];
-    for (let area of store.getState().deliveryAreas.areaData.areas) {
+    for (let area of areas) {
       const index = availableColors.indexOf(area.color);
       availableColors.splice(index, 1);
       usedColors.push(area.color);

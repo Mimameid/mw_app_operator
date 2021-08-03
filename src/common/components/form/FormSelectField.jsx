@@ -1,6 +1,6 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
-import { nanoid } from '@reduxjs/toolkit';
+import { nanoid } from 'common/constants';
 
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 

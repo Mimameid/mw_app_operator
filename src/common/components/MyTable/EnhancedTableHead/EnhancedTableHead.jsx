@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { makeStyles, TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
+import { TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   visuallyHidden: {

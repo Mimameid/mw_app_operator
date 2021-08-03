@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 
-import {
-  Checkbox,
-  Grid,
-  IconButton,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-} from '@material-ui/core';
+import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import EditChoice from 'features/menus/choices/components/EditChoice';
 import DeleteChoice from 'features/menus/choices/components/DeleteChoice';
 import { DeleteForever, Edit } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles((theme) => ({
+  textContainer: {
+    display: 'block',
+    overflow: 'hidden',
+    paddingRight: theme.spacing(2),
+    maxWidth: '220px',
+
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+  },
+  checkBoxContainer: {
+    minWidth: '32px',
+  },
+}));
 
 function ChoiceItem({ choice, checked, handleToggle }) {
+  const classes = useStyles();
   const [editChoiceOpen, setEditChoiceOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
@@ -28,7 +37,7 @@ function ChoiceItem({ choice, checked, handleToggle }) {
   return (
     <React.Fragment>
       <ListItem dense button onClick={handleToggle(choice.id)}>
-        <ListItemIcon>
+        <ListItemIcon className={classes.checkBoxContainer}>
           <Checkbox
             color="primary"
             edge="start"
@@ -39,20 +48,23 @@ function ChoiceItem({ choice, checked, handleToggle }) {
             inputProps={{ 'aria-labelledby': choice.id }}
           />
         </ListItemIcon>
-        <Grid container justify="flex-start">
+        <Grid container justifyContent="flex-start">
           <Grid item xs={8}>
-            <ListItemText primary={choice.name} secondary={choice.desc} />
+            <ListItemText
+              primary={<span className={classes.textContainer}>{choice.name}</span>}
+              secondary={<span className={classes.textContainer}>{choice.desc}</span>}
+            />
           </Grid>
         </Grid>
 
-        <ListItemSecondaryAction>
+        <Box display="flex">
           <IconButton edge="end" aria-label="edit" onClick={handleEditDish}>
             <Edit fontSize="small" />
           </IconButton>
           <IconButton edge="end" aria-label="delete" onClick={handleDeleteDish}>
             <DeleteForever fontSize="small" color="error" />
           </IconButton>
-        </ListItemSecondaryAction>
+        </Box>
       </ListItem>
       <EditChoice open={editChoiceOpen} setOpen={setEditChoiceOpen} choice={choice} />
       <DeleteChoice trigger={triggerDelete} setTrigger={setTriggerDelete} choiceId={choice.id} />

@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
 
-import subs from './subs/subsSlice';
-import choices from './choices/choicesSlice';
-import dishes from './dishes/dishesSlice';
-import categories from './categories/categoriesSlice';
-import menus from './menus/menusSlice';
+import subs from './subs/slice';
+import choices from './choices/slice';
+import dishes from './dishes/slice';
+import categories from './categories/slice';
+import menus from './menus/slice';
 import views from './views/viewsSlice';
 
-import fetchRestaurantData from './fetchRestaurantData/reducer';
-
-export default combineReducers({ subs, choices, dishes, categories, menus, views, fetchRestaurantData });
+export default combineReducers({ subs, choices, dishes, categories, menus, views });

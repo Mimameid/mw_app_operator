@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Divider } from '@material-ui/core';
+import { Box, Divider } from '@material-ui/core';
 import Sub from '../../subs/components/Sub';
 
 function ChoiceSubs({ choice }) {
@@ -10,11 +10,15 @@ function ChoiceSubs({ choice }) {
       {subIds.map((subId, index) => (
         <React.Fragment key={subId}>
           <Sub subId={subId} choice={choice} />
-          <Divider />
+          {index < subIds.length - 1 ? <Divider /> : null}
         </React.Fragment>
       ))}
     </React.Fragment>
-  ) : null;
+  ) : (
+    <Box color="text.secondary" fontStyle="italic" p={2}>
+      Keine Option verfügbar. Bitte fügen Sie eine Option hinzu...
+    </Box>
+  );
 }
 
 export default ChoiceSubs;

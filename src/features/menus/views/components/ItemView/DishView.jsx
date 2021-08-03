@@ -15,7 +15,7 @@ function DishView() {
           <Dish dishId={activeDishId} />
         </React.Fragment>
       ) : (
-        <EmptyView message="Wählen sie eine Speise aus der Liste aus, um sie anzuzeigen..." />
+        <EmptyView message="Wählen Sie eine Speise aus der Liste aus, um sie anzuzeigen..." />
       )}
     </Paper>
   );

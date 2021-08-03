@@ -5,12 +5,11 @@ import { TextField } from '@material-ui/core';
 
 function FormTextField({ control, name, ...props }) {
   const {
-    field: { ref, value, ...inputProps },
+    field: { ref, ...inputProps },
     fieldState: { error },
   } = useController({
     name,
     control,
-    defaultValue: '',
   });
 
   return (

@@ -3,7 +3,7 @@ import { Box } from '@material-ui/core';
 
 function EmptyView({ message }) {
   return (
-    <Box color="text.secondary" fontStyle="italic" p={1}>
+    <Box color="text.secondary" fontStyle="italic" p={2}>
       {message}
     </Box>
   );

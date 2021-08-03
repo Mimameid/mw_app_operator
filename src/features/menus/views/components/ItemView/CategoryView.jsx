@@ -15,7 +15,7 @@ function CategoryView() {
           <Category categoryId={activeCategoryId} />
         </React.Fragment>
       ) : (
-        <EmptyView message="Wählen sie eine Kategorie aus der Liste aus, um sie anzuzeigen..." />
+        <EmptyView message="Wählen Sie eine Kategorie aus der Liste aus, um sie anzuzeigen..." />
       )}
     </Paper>
   );

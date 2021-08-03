@@ -1,35 +1,65 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setLoggedIn } from 'store/userState/auth/actions';
+import { login } from 'features/user/auth/authSlice';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Button, Grid, IconButton, InputAdornment, Paper, makeStyles } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { Grid, IconButton, InputAdornment, Paper, Box, Typography } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import FormTextField from 'common/components/form/FormTextField';
+import LoadingButton from 'common/components/buttons/LoadingButton';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
-  loginContainer: {
+  container: {
+    position: 'relative',
+  },
+  loginOuter: {
     position: 'absolute',
-    width: '300px',
-    left: '50%',
+    width: '100%',
     top: '50%',
-    transform: 'translate(-50%, -50%)',
+    left: '50%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingLeft: theme.spacing(4),
+    paddingRight: theme.spacing(4),
+
+    transform: 'translate(-50%, -55%)',
     zIndex: 1000,
   },
-  form: {
-    padding: '20px',
+  loginContainer: {
+    padding: theme.spacing(4),
+    paddingBottom: theme.spacing(6),
+  },
+  headerContainer: {
+    marginBottom: theme.spacing(8),
+  },
+  loginText: {
+    marginBottom: theme.spacing(1),
   },
   submitButton: {
-    marginTop: '30px',
+    marginTop: theme.spacing(2),
+
+    fontWeight: 'bold',
   },
   bottomWave: {
     position: 'absolute',
     bottom: '0',
     width: '100vw',
     pointerEvents: 'none',
+
+    zIndex: 1,
+  },
+  alert: {
+    marginTop: theme.spacing(1),
+  },
+  [theme.breakpoints.up(600)]: {
+    loginOuter: {
+      maxWidth: '600px',
+    },
   },
 }));
 
@@ -43,75 +73,85 @@ const schema = yup.object({
 
 function Login() {
   const classes = useStyles();
-  const { handleSubmit, control } = useForm({ mode: 'onTouched', resolver: yupResolver(schema) });
+  const { handleSubmit, control } = useForm({
+    mode: 'onTouched',
+    defaultValues: { username: '', password: '' },
+    resolver: yupResolver(schema),
+  });
   const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const submit = async (data) => {
-    const url = new URL('owners/login', process.env.REACT_APP_API_URL);
-
-    const options = {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data), // body data type must match "Content-Type" header
-    };
-
-    // Default options are marked with *
-
-    const response = await fetch(url.href, options);
-    if (response.ok) {
-      dispatch(setLoggedIn(true));
-    } else {
-      //  TODO: Handle error properly
-    }
+    setLoading(true);
+    await dispatch(login(data));
+    setLoading(false);
   };
 
   return (
-    <div className={classes.container}>
-      <Paper className={classes.loginContainer}>
-        <form onSubmit={handleSubmit(submit)}>
-          <Grid container className={classes.form} spacing={2} direction="column">
-            <Grid item>
-              <FormTextField fullWidth name="username" label="Benutzername" control={control} />
+    <div classes={classes.mainContainer}>
+      <div className={classes.loginOuter}>
+        <Paper className={classes.loginContainer}>
+          <Box className={classes.headerContainer}>
+            <div>
+              <Typography className={classes.loginText} variant="h4">
+                Log in
+              </Typography>
+              <Typography variant="body2">Loggen Sie sich in Ihre persönliche Plattform ein</Typography>
+            </div>
+          </Box>
+          <form onSubmit={handleSubmit(submit)}>
+            <Grid container className={classes.form} spacing={2} direction="column">
+              <Grid item>
+                <FormTextField fullWidth name="username" variant="outlined" label="Benutzername" control={control} />
+              </Grid>
+              <Grid item>
+                <FormTextField
+                  fullWidth
+                  name="password"
+                  label="Passwort"
+                  autoComplete="new-password"
+                  variant="outlined"
+                  type={showPassword ? 'password' : 'text'}
+                  control={control}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onMouseDown={() => {
+                            setShowPassword(!showPassword);
+                          }}
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <LoadingButton
+                  className={classes.submitButton}
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  loading={loading}
+                  fullWidth
+                >
+                  Log in
+                </LoadingButton>
+              </Grid>
+              <Grid item>
+                <Alert className={classes.alert} severity="info">
+                  Ihre Zugangsdaten haben Sie von uns erhalten.
+                </Alert>
+              </Grid>
             </Grid>
-            <Grid item>
-              <FormTextField
-                fullWidth
-                name="password"
-                label="Passwort"
-                type={showPassword ? 'password' : 'text'}
-                control={control}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onMouseDown={() => {
-                          setShowPassword(!showPassword);
-                        }}
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item className={classes.submitButton}>
-              <Button color="primary" variant="contained" fullWidth type="submit">
-                Submit
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
+          </form>
+        </Paper>
+      </div>
       <div className={classes.bottomWave}>
         <svg
           id="wave"

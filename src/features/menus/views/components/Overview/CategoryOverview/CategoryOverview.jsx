@@ -1,9 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from '@reduxjs/toolkit';
+import { nanoid } from 'common/constants';
 
-import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader } from '@material-ui/core';
 import CategoryOverviewItem from './CategoryOverviewItem';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   list: {

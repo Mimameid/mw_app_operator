@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
-import { editDish } from 'features/menus/dishes/dishesSlice';
+import { setAvailable } from 'features/menus/dishes/actions';
 
-import { Grid, IconButton, ListItem, makeStyles, Switch } from '@material-ui/core';
+import { Grid, IconButton, ListItem, Switch } from '@material-ui/core';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import EditDish from 'features/menus/dishes/components/EditDish';
 import DeleteDish from 'features/menus/dishes/components/DeleteDish';
 import { DeleteForever, Edit } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   noHover: {
@@ -20,17 +21,6 @@ const useStyles = makeStyles((theme) => ({
   },
   hidden: {
     visibility: 'hidden',
-  },
-  wrap: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      overflow: 'visible',
-      whiteSpace: 'normal',
-    },
   },
 }));
 
@@ -54,7 +44,7 @@ function DishOverviewItem({ dish, selected }) {
   }
 
   function handleDisableDish(event) {
-    dispatch(editDish({ ...dish, available: event.target.checked }));
+    dispatch(setAvailable({ dishId: dish.id, available: event.target.checked }));
   }
 
   return (

@@ -1,6 +1,6 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     primary: {
       light: '#64cfbf',
@@ -8,8 +8,13 @@ const theme = createMuiTheme({
       dark: '#006e62',
       contrastText: '#fff',
     },
+    text: { primary: 'rgb(23, 43, 77)' },
     background: {
+      default: '#f4f5f7',
       footer: '#0C1324',
+    },
+    avatar: {
+      default: '#d81f2c',
     },
     action: {
       hoverOpacity: 0.15,
@@ -44,10 +49,23 @@ const theme = createMuiTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 728,
+      sm: 700, // due to Tabs component not wrappong properly if changed
       md: 960,
       lg: 1280,
       xl: 1920,
+    },
+  },
+  typography: {
+    fontFamily:
+      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'",
+    h4: {
+      fontWeight: 600,
+      fontSize: '1.8725rem',
+    },
+  },
+  mixins: {
+    toolbar: {
+      minHeight: 64,
     },
   },
 });

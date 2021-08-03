@@ -1,33 +1,25 @@
 import React from 'react';
 
-import { Grid, makeStyles } from '@material-ui/core';
+import { Box, Grid, Paper } from '@material-ui/core';
 import Choice from '../../choices/components/Choice';
 
-const useStyles = makeStyles((theme) => ({
-  listContainer: {
-    margin: theme.spacing(1),
-    marginTop: theme.spacing(2),
-  },
-  list: {
-    paddingBottom: 0,
-  },
-}));
-
 function DishChoices({ dish }) {
-  const classes = useStyles();
-
   const choiceIds = dish.choices;
   return choiceIds.length > 0 ? (
-    <div className={classes.listContainer}>
-      <Grid container spacing={2}>
-        {choiceIds.map((choiceId, index) => (
-          <Grid item xs={4} key={choiceId}>
+    <Grid container spacing={2}>
+      {choiceIds.map((choiceId, index) => (
+        <Grid item xs={6} key={choiceId}>
+          <Paper variant="outlined" square>
             <Choice choiceId={choiceId} dish={dish} />
-          </Grid>
-        ))}
-      </Grid>
-    </div>
-  ) : null;
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+  ) : (
+    <Box color="text.secondary" fontStyle="italic">
+      Keine Optiongruppe verfügbar. Bitte fügen Sie eine Optiongruppe hinzu...
+    </Box>
+  );
 }
 
 export default DishChoices;

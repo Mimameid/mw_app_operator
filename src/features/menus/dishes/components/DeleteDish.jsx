@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeSelectAffectedCategories } from 'features/menus/categories/categoriesSlice';
-import { deleteDish } from '../dishesSlice';
+import { makeSelectAffectedCategories } from 'features/menus/categories/slice';
+import { deleteDish } from '../actions';
 
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 

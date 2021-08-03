@@ -1,17 +1,9 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  Checkbox,
-  ListItemText,
-  makeStyles,
-  Chip,
-} from '@material-ui/core';
+import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Checkbox, ListItemText } from '@material-ui/core';
+import TruncatedChip from 'features/menus/common/components/TruncatedChip';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   chips: {
@@ -34,7 +26,7 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
   });
 
   // all values and current values have to be identical otherwise it will be shown as distinugish values, even though they have the same value
-  inputProps.value = inputProps.value.map((item, _) => {
+  inputProps.value = inputProps.value.map((item) => {
     for (let menuIdToName of items) {
       if (item[0] === menuIdToName[0]) {
         return menuIdToName;
@@ -63,7 +55,7 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
           return (
             <div className={classes.chips}>
               {selected.map((item, _) => {
-                return <Chip className={classes.chip} key={item[0]} label={item[1]} size="small" />;
+                return <TruncatedChip className={classes.chip} key={item[0]} label={item[1]} size="small" />;
               })}
             </div>
           );

@@ -1,5 +1,6 @@
 import {
   SET_AREAS,
+  SET_AREAS_VERSION,
   CREATE_AREA,
   DELETE_AREA,
   SAVE_AREA,
@@ -35,6 +36,7 @@ const initialState = {
   //vertex to edit
   vertexSelected: false, // quadruple with areaNumber, polygonIndex, ringIndex and vertexIndex to find the vertex in areaPolygons
   vertexIndex: -1,
+  version: null,
 };
 
 function areaDataReducer(state = initialState, action) {
@@ -112,6 +114,11 @@ function areaDataReducer(state = initialState, action) {
         //vertex to edit
         vertexSelected: false, // quadruple with areaNumber, polygonIndex, ringIndex and vertexIndex to find the vertex in areaPolygons
         vertexIndex: -1,
+      };
+    case SET_AREAS_VERSION:
+      return {
+        ...state,
+        version: action.payload,
       };
     case CREATE_AREA:
       const areaNumber = state.areaNumberCounter + 1;

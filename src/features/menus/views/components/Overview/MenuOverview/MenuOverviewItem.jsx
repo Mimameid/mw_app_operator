@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteMenu } from 'features/menus/menus/menusSlice';
+import { deleteMenu } from 'features/menus/menus/actions';
 import { selectItem } from 'features/menus/views/viewsSlice';
 
-import { Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
+import { Grid, IconButton, ListItem } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 import MenuModal from 'features/menus/menus/components/MenuModal';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import { DeleteForever, Edit } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   noHover: {

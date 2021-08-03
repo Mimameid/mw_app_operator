@@ -9,9 +9,9 @@ import {
   FormHelperText,
   Checkbox,
   ListItemText,
-  makeStyles,
   Chip,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   chips: {

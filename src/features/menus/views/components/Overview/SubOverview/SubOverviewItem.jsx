@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
 
-import { Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
+import { Grid, IconButton, ListItem } from '@material-ui/core';
 import EditSub from 'features/menus/subs/components/EditSub';
 import DeleteSub from 'features/menus/subs/components/DeleteSub';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import { DeleteForever, Edit } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   noHover: {
@@ -49,22 +50,16 @@ function SubOverviewItem({ sub, selected }) {
         onClick={!selected ? handleSelectCategory : null}
       >
         <Grid container>
-          <TruncatedGridItem item xs={2}>
+          <TruncatedGridItem item xs={3}>
             {sub.id}
           </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          <TruncatedGridItem item xs={3}>
             {sub.name}
           </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
-            {sub.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
-            {sub.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          <TruncatedGridItem item xs={3}>
             {new Date(sub.created).toLocaleDateString('DE-de')}
           </TruncatedGridItem>
-          <Grid className={selected ? null : classes.hidden} item xs={2}>
+          <Grid className={selected ? null : classes.hidden} item xs={3}>
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>

@@ -1,25 +1,21 @@
 import React, { useEffect, useMemo } from 'react';
-import { nanoid } from '@reduxjs/toolkit';
+import { nanoid } from 'common/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  addDish,
-  makeSelectAffectedCategories,
-  removeDish,
-  selectCategoryIdsToNames,
-} from 'features/menus/categories/categoriesSlice';
-import { createDish, editDish } from '../dishesSlice';
+import { makeSelectAffectedCategories, selectCategoryIdsToNames } from 'features/menus/categories/slice';
+import { createDish, updateDish } from '../actions';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Modal, Button, Grid, Paper, Box, makeStyles } from '@material-ui/core';
+import { Modal, Button, Grid, Paper, Box } from '@material-ui/core';
 import FormTextField from 'common/components/form/FormTextField';
 import FormPriceField from 'common/components/form/FormPriceField';
 import FormSelectField from 'common/components/form/FormSelectField';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 import FormMultiSelectLabel from 'common/components/form/FormMultiSelectLabel';
+import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -27,21 +23,19 @@ const useStyles = makeStyles((theme) => ({
   },
   formContainer: {
     position: 'absolute',
-    width: '300px',
+    width: '432px',
     left: '50%',
     top: '50%',
+    padding: theme.spacing(4),
+
     transform: 'translate(-50%, -50%)',
     zIndex: 1000,
   },
   header: {
-    paddingLeft: theme.spacing(2),
-    paddingTop: theme.spacing(2),
-  },
-  form: {
-    padding: '20px',
+    paddingBottom: theme.spacing(2),
   },
   buttonLayout: {
-    marginTop: '30px',
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -66,12 +60,16 @@ const types = [
   'Kartoffelgericht',
   'Humus',
   'Falafel',
+  'BBQ',
 ];
-const labels = ['Vegetarisch', 'Vegan', 'Koscher', 'Halal', 'Glutenfrei'];
+const labels = ['Vegetarisch', 'Vegan', 'Halal', 'Glutenfrei'];
 
 const schema = yup.object({
-  name: yup.string('Geben Sie einen Namen ein.').required('Name ist erforderlich'),
-  desc: yup.string('Geben Sie eine Beschreibung ein.').required('Beschreibung ist erforderlich'),
+  name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
+  desc: yup
+    .string('Geben Sie eine Beschreibung ein.')
+    .max(255, 'Beschreibung zu lang.')
+    .required('Beschreibung ist erforderlich'),
   price: yup
     .string('Geben Sie einen Preis ein.')
     .trim()
@@ -86,7 +84,7 @@ const schema = yup.object({
     .required('Angabe der Verfügbarkeit ist erforderlich'),
 });
 
-function CreateDishModal({ open, onClose, dish }) {
+function DishModal({ open, onClose, dish }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const selectAffectedCategories = useMemo(makeSelectAffectedCategories, []);
@@ -96,6 +94,8 @@ function CreateDishModal({ open, onClose, dish }) {
   const { handleSubmit, control, reset, setValue } = useForm({
     mode: 'onTouched',
     defaultValues: {
+      name: '',
+      desc: '',
       type: 'Burger',
       available: true,
       price: '0,00',
@@ -123,21 +123,14 @@ function CreateDishModal({ open, onClose, dish }) {
   };
 
   const onSubmit = (data) => {
+    data.categories = data.categories.map((item) => item[0]);
     if (!dish) {
-      data.id = nanoid(12);
+      data.id = nanoid();
       dispatch(createDish(data));
     } else {
-      data.id = dish.id;
-      dispatch(editDish(data));
-
-      for (let categoryIdToName of affectedCategories) {
-        dispatch(removeDish({ dishId: data.id, categoryId: categoryIdToName[0] }));
-      }
+      dispatch(updateDish({ ...dish, ...data }));
     }
 
-    for (let categoryIdToName of data.categories) {
-      dispatch(addDish({ dishId: data.id, categoryId: categoryIdToName[0] }));
-    }
     handleClose();
   };
 
@@ -148,7 +141,7 @@ function CreateDishModal({ open, onClose, dish }) {
           Speise erstellen
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container className={classes.form} spacing={2} direction="column">
+          <Grid container spacing={2} direction="column">
             <Grid item>
               <FormTextField name="name" label="Name" control={control} fullWidth />
             </Grid>
@@ -178,13 +171,13 @@ function CreateDishModal({ open, onClose, dish }) {
               <FormCheckboxField name="available" label="Verfügbar" control={control} />
             </Grid>
 
-            <Grid container item className={classes.buttonLayout}>
-              <Grid item xs={6}>
+            <Grid className={classes.buttonLayout} container item justifyContent="flex-end" spacing={2}>
+              <Grid item>
                 <Button variant="contained" onClick={handleClose}>
                   Abbrechen
                 </Button>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item>
                 <Button color="primary" variant="contained" type="submit">
                   Speichern
                 </Button>
@@ -197,4 +190,4 @@ function CreateDishModal({ open, onClose, dish }) {
   );
 }
 
-export default CreateDishModal;
+export default DishModal;
