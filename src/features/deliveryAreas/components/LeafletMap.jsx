@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Paper } from '@material-ui/core';
+import { Paper, makeStyles } from '@material-ui/core';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanel';
 import AreaLayer from './AreaLayer/AreaLayerContainer';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {

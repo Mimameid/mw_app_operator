@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { TextField, InputAdornment } from '@material-ui/core';
+import { TextField, InputAdornment, makeStyles } from '@material-ui/core';
 import DeliveryIcon from 'assets/delivery_icon.png';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   deliveryFeeInput: {

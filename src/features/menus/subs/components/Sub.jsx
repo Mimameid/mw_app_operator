@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeSub } from 'features/menus/choices/actions';
 
-import { Box, Grid, IconButton } from '@material-ui/core';
+import { Box, Grid, IconButton, makeStyles } from '@material-ui/core';
 import { Delete, Edit } from '@material-ui/icons';
 import EditSub from './EditSub';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   smallPadding: {

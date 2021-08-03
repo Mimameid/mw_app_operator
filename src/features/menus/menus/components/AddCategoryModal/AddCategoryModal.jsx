@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 import { addCategories } from 'features/menus/menus/actions';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
 import CategoryModal from 'features/menus/categories/components/CategoryModal';
 import CategoryItem from './CategoryItem';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
 import { setAvailable } from 'features/menus/dishes/actions';
 
-import { Grid, IconButton, ListItem, Switch } from '@material-ui/core';
+import { Grid, IconButton, ListItem, Switch, makeStyles } from '@material-ui/core';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import EditDish from 'features/menus/dishes/components/EditDish';
 import DeleteDish from 'features/menus/dishes/components/DeleteDish';
 import { DeleteForever, Edit } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   noHover: {

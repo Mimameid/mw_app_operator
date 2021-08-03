@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Divider, Grid, List, ListSubheader } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import DishOverviewItem from './DishOverviewItem';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   list: {

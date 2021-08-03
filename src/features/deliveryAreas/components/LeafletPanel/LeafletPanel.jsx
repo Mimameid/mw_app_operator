@@ -4,13 +4,12 @@ import { toggleDraw } from 'features/deliveryAreas/slices/mode/actions';
 import { createArea, deactivateArea } from 'features/deliveryAreas/slices/areaData/actions';
 import L from 'leaflet';
 
-import { Paper, IconButton } from '@material-ui/core';
+import { Paper, IconButton, makeStyles } from '@material-ui/core';
 import AreasPanel from './AreasPanel/AreasPanelContainer';
 import SaveDrawer from './SaveDrawer';
 import PLZDrawer from './PLZDrawer';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { Add, Block } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
 
 const MAX_AREAS = 11;
 

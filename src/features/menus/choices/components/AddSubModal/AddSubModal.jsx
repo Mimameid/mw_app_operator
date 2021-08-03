@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSubs } from 'features/menus/choices/actions';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
 import SubItem from './SubItem';
 import CreateSubModal from 'features/menus/subs/components/SubModal';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

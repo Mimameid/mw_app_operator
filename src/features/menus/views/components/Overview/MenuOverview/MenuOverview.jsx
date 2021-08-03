@@ -1,10 +1,9 @@
 import React from 'react';
 import { nanoid } from 'common/constants';
 
-import { Box, Grid, List, ListSubheader, Divider } from '@material-ui/core';
+import { Box, Grid, List, ListSubheader, Divider, makeStyles } from '@material-ui/core';
 import MenuOverviewItem from './MenuOverviewItem';
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   list: {

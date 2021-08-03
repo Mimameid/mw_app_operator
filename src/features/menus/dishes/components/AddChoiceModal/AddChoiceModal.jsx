@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addChoices } from 'features/menus/dishes/actions';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
 import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
 import ChoiceItem from './ChoiceItem';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

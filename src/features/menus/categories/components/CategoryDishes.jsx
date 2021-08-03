@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { Paper, Box, Divider } from '@material-ui/core';
+import { Paper, Box, Divider, makeStyles } from '@material-ui/core';
 import Dish from '../../dishes/components/Dish';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   listContainer: {

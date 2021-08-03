@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAll } from 'features/menus/menus/actions';
 
-import { Box, Button, Grid, Toolbar } from '@material-ui/core';
+import { Box, Button, Grid, Toolbar, makeStyles } from '@material-ui/core';
 import Overview from 'features/menus/views/components/Overview/Overview';
 import ItemView from 'features/menus/views/components/ItemView/ItemView';
 import LoadingScreen from './LoadingScreen';
@@ -14,7 +14,6 @@ import DishModal from 'features/menus/dishes/components/DishModal';
 import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
 import SubModal from 'features/menus/subs/components/SubModal';
 import { Add } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {

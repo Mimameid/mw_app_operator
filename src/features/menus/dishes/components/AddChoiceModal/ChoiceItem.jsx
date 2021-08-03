@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 import EditChoice from 'features/menus/choices/components/EditChoice';
 import DeleteChoice from 'features/menus/choices/components/DeleteChoice';
 import { DeleteForever, Edit } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   textContainer: {

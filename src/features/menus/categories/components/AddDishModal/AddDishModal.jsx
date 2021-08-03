@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addDishes } from 'features/menus/categories/actions';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
 import DishItem from './DishItem';
 import DishModal from 'features/menus/dishes/components/DishModal';
-import { makeStyles } from '@material-ui/styles';
-
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,

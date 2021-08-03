@@ -2,13 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeCategory } from 'features/menus/menus/actions';
 
-import { Box, Grid, Button, Paper, IconButton, Collapse } from '@material-ui/core';
+import { Box, Grid, Button, Paper, IconButton, Collapse, makeStyles } from '@material-ui/core';
 import CategoryDishes from 'features/menus/categories/components/CategoryDishes';
 import { Add, Delete, Edit, Remove } from '@material-ui/icons';
 import EditCategory from './EditCategory';
 import AddDishModal from 'features/menus/categories/components/AddDishModal/AddDishModal';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   headerContainer: {

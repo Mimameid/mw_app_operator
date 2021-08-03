@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
-import { Divider, Paper } from '@material-ui/core';
+import { Divider, Paper, makeStyles } from '@material-ui/core';
 import AreaEntry from './AreaEntry/AreaEntryContainer';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   areasContainer: {

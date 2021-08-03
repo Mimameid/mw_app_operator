@@ -1,9 +1,17 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Checkbox, ListItemText } from '@material-ui/core';
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  FormHelperText,
+  Checkbox,
+  ListItemText,
+  makeStyles,
+} from '@material-ui/core';
 import TruncatedChip from 'features/menus/common/components/TruncatedChip';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   chips: {

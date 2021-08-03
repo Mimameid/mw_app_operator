@@ -7,11 +7,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Alert } from '@material-ui/lab';
-import { Grid, IconButton, InputAdornment, Paper, Box, Typography } from '@material-ui/core';
+import { Grid, IconButton, InputAdornment, Paper, makeStyles, Box, Typography } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import FormTextField from 'common/components/form/FormTextField';
 import LoadingButton from 'common/components/buttons/LoadingButton';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {

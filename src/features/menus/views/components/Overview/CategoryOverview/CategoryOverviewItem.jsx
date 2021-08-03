@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
 
-import { Grid, IconButton, ListItem } from '@material-ui/core';
+import { Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import EditCategory from 'features/menus/categories/components/EditCategory';
 import DeleteCategory from 'features/menus/categories/components/DeleteCategory';
 import { DeleteForever, Edit } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   noHover: {

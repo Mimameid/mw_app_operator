@@ -1,10 +1,9 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { Paper, TextField, Slide } from '@material-ui/core';
+import { Paper, TextField, Slide, makeStyles } from '@material-ui/core';
 import useClickOutsideElement from 'common/hooks/useClickOutsideElement';
 import { fetchArea } from 'features/deliveryAreas/slices/plzAreas/plzAreasSlice';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   sliderContainer: {

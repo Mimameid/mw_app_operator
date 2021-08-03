@@ -8,14 +8,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Modal, Button, Grid, Paper, Box } from '@material-ui/core';
+import { Modal, Button, Grid, Paper, Box, makeStyles } from '@material-ui/core';
 import FormTextField from 'common/components/form/FormTextField';
 import FormPriceField from 'common/components/form/FormPriceField';
 import FormSelectField from 'common/components/form/FormSelectField';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 import FormMultiSelectLabel from 'common/components/form/FormMultiSelectLabel';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {

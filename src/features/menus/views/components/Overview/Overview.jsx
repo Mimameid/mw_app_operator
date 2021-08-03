@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectGroup } from '../../viewsSlice';
 
-import { Paper, Box, Tabs } from '@material-ui/core';
+import { Paper, Box, Tabs, makeStyles } from '@material-ui/core';
 import GroupTab from './GroupTab';
 import MenuOverview from './MenuOverview/MenuOverview';
 import CategoryOverview from './CategoryOverview/CategoryOverview';
 import DishOverview from './DishOverview/DishOverview';
 import ChoiceOverview from './ChoiceOverview/ChoiceOverview';
 import SubOverview from './SubOverview/SubOverview';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   container: {

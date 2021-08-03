@@ -1,8 +1,8 @@
 import React from 'react';
 
 // import { Box, DataGrid, Divider, List, ListItem, ListSubheader, Paper } from '@material-ui/core';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, makeStyles } from '@material-ui/core';
+
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
 
 const useStyles = makeStyles((theme) => ({

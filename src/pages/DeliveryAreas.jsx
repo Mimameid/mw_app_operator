@@ -3,14 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeliveryAreas, updateDeliveryAreas } from 'features/user/deliveryAreas/deliveryAreasSlice';
 import { useOnBeforeUnload } from 'common/hooks/useOnBeforeUnload';
 
-import { Box, Toolbar } from '@material-ui/core';
+import { Box, Toolbar, makeStyles } from '@material-ui/core';
 import LeafletMap from 'features/deliveryAreas/components/LeafletMap';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/ContentHeader';
 import LoadingButton from 'common/components/buttons/LoadingButton';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { CloudUpload } from '@material-ui/icons';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {

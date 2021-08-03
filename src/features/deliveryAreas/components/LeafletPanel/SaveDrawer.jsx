@@ -1,11 +1,10 @@
 import React from 'react';
 
-import { Paper, IconButton, Slide } from '@material-ui/core';
+import { Paper, IconButton, Slide, makeStyles } from '@material-ui/core';
 import { Save } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDraw } from 'features/deliveryAreas/slices/mode/actions';
 import { saveArea } from 'features/deliveryAreas/slices/areaData/actions';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   sliderContainer: {

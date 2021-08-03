@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
+import { Box, CircularProgress, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   loadingContainer: {

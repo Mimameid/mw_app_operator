@@ -6,12 +6,11 @@ import { resetChanged, toggleDraw } from 'features/deliveryAreas/slices/mode/act
 import { deactivateArea } from 'features/deliveryAreas/slices/areaData/actions';
 import routes from 'routes';
 
-import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button } from '@material-ui/core';
+import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles } from '@material-ui/core';
 import NavigationLink from './NavigationLink';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { ExitToApp } from '@material-ui/icons';
 import { setDrawerOpen } from '../slice';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {

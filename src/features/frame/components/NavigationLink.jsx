@@ -5,9 +5,8 @@ import { deactivateArea } from 'features/deliveryAreas/slices/areaData/actions';
 
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
-import { Box, Button, ListItem } from '@material-ui/core';
+import { Box, Button, ListItem, makeStyles } from '@material-ui/core';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
-import { makeStyles } from '@material-ui/styles';
 
 const useStyles = makeStyles((theme) => ({
   listItem: {
