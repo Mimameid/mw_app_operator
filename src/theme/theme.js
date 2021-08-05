@@ -8,6 +8,7 @@ const theme = createTheme({
       dark: '#006e62',
       contrastText: '#fff',
     },
+    divider: 'rgba(0, 0, 0, 0.12)',
     text: { primary: 'rgb(23, 43, 77)' },
     background: {
       default: '#f4f5f7',

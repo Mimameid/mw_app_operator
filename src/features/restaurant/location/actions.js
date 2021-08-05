@@ -16,7 +16,6 @@ export const fetchRestaurant = createAsyncThunk('restaurant/fetchRestaurant', as
 
 export const queryPredictions = createAsyncThunk('location/queryAddress', async (query, thunkAPI) => {
   if (!query) {
-    console.log('ici');
     return Promise.resolve();
   }
 

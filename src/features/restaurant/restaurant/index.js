@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import { fetchRestaurant, queryPlace } from '../location/actions';
 
 const initialState = {
@@ -8,7 +8,15 @@ const initialState = {
   url: '',
   urlLogo: '',
   types: [],
-  opening_hours: {},
+  openingHours: {
+    monday: [],
+    tuesday: [],
+    wednesday: [],
+    thursday: [],
+    friday: [],
+    saturday: [],
+    sunday: [],
+  },
   location: {},
   details: {},
   locationState: {
@@ -24,10 +32,16 @@ const initialState = {
 const restaurantSlice = createSlice({
   name: 'restaurant',
   initialState,
-  reducers: {},
+  reducers: {
+    saveOpeningHours(state, action) {
+      console.log(action.payload);
+      state.openingHours = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchRestaurant.fulfilled, (state, action) => {
-      return action.payload;
+      console.log(current(state));
+      return { ...state, ...action.payload };
     });
     builder.addCase(queryPlace.fulfilled, (state, action) => {
       state.location = action.payload.address;
@@ -35,4 +49,5 @@ const restaurantSlice = createSlice({
   },
 });
 
+export const { saveOpeningHours } = restaurantSlice.actions;
 export default restaurantSlice.reducer;

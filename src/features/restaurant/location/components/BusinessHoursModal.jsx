@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { saveBusinessHours } from 'features/restaurant/slices/restaurant';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveOpeningHours } from 'features/restaurant/restaurant';
+import { weekdays } from '../constants';
 
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Box, IconButton, Modal, Paper, Switch, makeStyles, Button, Grid, Divider, TextField } from '@material-ui/core';
+import { Box, Collapse, IconButton, Modal, Paper, Switch, makeStyles, Button, Grid, Divider } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import FormTimeField from 'common/components/form/FormTimeField';
 import { Add, Delete } from '@material-ui/icons';
-import TimeField from 'react-simple-timefield';
 
 const useStyles = makeStyles((theme) => ({
   formContainer: {
@@ -29,39 +31,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const weekdays = {
-  monday: 'Montag',
-  tuesday: 'Dienstag',
-  wednesday: 'Mittwoch',
-  thursday: 'Donnerstag',
-  friday: 'Freitag',
-  saturday: 'Samstag',
-  sunday: 'Sonntag',
-};
-
 const weekdaySchema = yup
-  .array(yup.object({ open: yup.string().required(), close: yup.string().required() }))
-  .test('business hours test', 'Die angegebenen Zeiten überschneiden sich.', function () {
+  .array(yup.object({ start: yup.string().required(), end: yup.string().required() }))
+  .test('overlap test', 'Die angegebenen Zeiten überschneiden sich.', function () {
     for (let range of this.originalValue) {
-      const timeOpen = range.open.substring(0, 2) + range.open.substring(3, 5);
-      const timeClose = range.close.substring(0, 2) + range.close.substring(3, 5);
-      if (timeOpen >= timeClose) {
-        console.log(range);
+      const timeStart = range.start.substring(0, 2) + range.start.substring(3, 5);
+      let timeEnd = range.end.substring(0, 2) + range.end.substring(3, 5);
 
-        return false;
+      if ((timeStart) => timeEnd) {
+        timeEnd = parseInt(timeEnd) + 2400;
       }
+
       for (let otherRange of this.originalValue) {
-        const otherTimeOpen = otherRange.open.substring(0, 2) + otherRange.open.substring(3, 5);
-        const otherTimeClose = otherRange.close.substring(0, 2) + otherRange.close.substring(3, 5);
+        const otherTimeStart = otherRange.start.substring(0, 2) + otherRange.start.substring(3, 5);
+        let otherTimeEnd = otherRange.end.substring(0, 2) + otherRange.end.substring(3, 5);
+        if (otherTimeStart > otherTimeEnd) {
+          otherTimeEnd = parseInt(otherTimeEnd) + 2400;
+        }
+
         if (
-          (timeOpen > otherTimeOpen && timeOpen < otherTimeClose) ||
-          (timeClose > otherTimeOpen && timeClose < otherTimeClose)
+          (timeStart > otherTimeStart && timeStart < otherTimeEnd) ||
+          (timeEnd > otherTimeStart && timeEnd < otherTimeEnd)
         ) {
-          console.log(range);
           return false;
         }
       }
     }
+    return true;
+  })
+  .test('same value test', 'Start- und Endzeit dürfen nicht identisch sein.', function () {
+    for (let range of this.originalValue) {
+      const timeStart = range.start.substring(0, 2) + range.start.substring(3, 5);
+      let timeEnd = range.end.substring(0, 2) + range.end.substring(3, 5);
+      if (timeStart === timeEnd) {
+        return false;
+      }
+    }
+
     return true;
   });
 const schema = yup.object({
@@ -74,12 +80,15 @@ const schema = yup.object({
   sunday: weekdaySchema,
 });
 
-function BusinessHoursModal({ open, onClose, businessHours }) {
+function OpeningHoursModal({ open, onClose }) {
   const classes = useStyles();
+  const openingHours = useSelector((state) => state.restaurant.restaurant.openingHours);
+
   const dispatch = useDispatch();
 
-  const [state, setState] = useState(
-    businessHours ?? {
+  const { handleSubmit, control, formState, setValue, clearErrors } = useForm({
+    mode: 'onBlur',
+    defaultValues: openingHours ?? {
       monday: [],
       tuesday: [],
       wednesday: [],
@@ -88,18 +97,7 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
       saturday: [],
       sunday: [],
     },
-  );
-
-  const { handleSubmit, control, reset } = useForm({
-    defaultValues: businessHours ?? {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [],
-      friday: [],
-      saturday: [],
-      sunday: [],
-    },
+    resolver: yupResolver(schema),
   });
 
   const fieldArrays = {};
@@ -111,39 +109,12 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
     });
   }
 
-  const onActivate = (event) => {
-    if (event.target.checked) {
-      state[event.target.name].push({ open: '00:00', close: '00:00' });
-    } else {
-      state[event.target.name] = [];
-    }
-
-    setState({ ...state });
+  const onSubmit = (data) => {
+    dispatch(saveOpeningHours(data));
+    onClose();
   };
 
-  const addBusinessHours = (weekday) => {
-    state[weekday].push({ open: Date.now(), close: Date.now() });
-    setState({ ...state });
-  };
-  const removeBusinessHours = (weekday, index) => {
-    state[weekday].splice(index, 1);
-    setState({ ...state });
-  };
-
-  const onTimeChange = (weekday, index, time, open) => {
-    open = open ? 'open' : 'close';
-    state[weekday][index][open] = time;
-    setState({ ...state });
-  };
-
-  const onSubmit = () => {
-    // check validity
-    schema.validate(state).catch(function (err) {
-      console.log(err);
-    });
-    dispatch(saveBusinessHours(state));
-  };
-
+  const error = Object.entries(formState.errors)[0];
   return (
     <Modal className={classes.backdrop} open={open} onClose={onClose}>
       <Paper className={classes.formContainer}>
@@ -153,8 +124,14 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
         <Box className={classes.listContainer}>
           {Object.keys(weekdays).map((weekday) => (
             <React.Fragment key={weekday}>
-              <Box display="flex" p={1}>
-                <Box flexBasis="28%" flexGrow={0} flexShrink={0} fontSize="h6.fontSize">
+              <Box display="flex" p={2} minHeight={64}>
+                <Box
+                  flexBasis="28%"
+                  flexGrow={0}
+                  flexShrink={0}
+                  fontSize="h6.fontSize"
+                  color={formState.errors[weekday] ? 'error.main' : 'text.primary'}
+                >
                   {weekdays[weekday]}
                 </Box>
                 <Box pr={1} pl={1}>
@@ -162,13 +139,20 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
                     size="small"
                     color="primary"
                     name={weekday}
-                    checked={state[weekday].length > 0}
-                    onChange={onActivate}
+                    checked={fieldArrays[weekday].fields.length > 0}
+                    onChange={(event) => {
+                      if (event.target.checked) {
+                        fieldArrays[weekday].append({ start: '00:00', end: '00:00' });
+                      } else {
+                        setValue(weekday, []);
+                      }
+                      clearErrors(weekday);
+                    }}
                   />
                 </Box>
                 <Box display="flex" flexDirection="column" alignSelf="center">
-                  {state[weekday].length > 0 ? (
-                    state[weekday].map((opening_hours, index) => (
+                  {fieldArrays[weekday].fields.length > 0 ? (
+                    fieldArrays[weekday].fields.map((item, index) => (
                       <Box key={weekday + index} display="flex" justifyContent="space-between">
                         <Box
                           display="flex"
@@ -188,16 +172,7 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
                             pr={1}
                             pl={1}
                           >
-                            <TimeField
-                              value={0}
-                              onChange={(event, value) => onTimeChange(weekday, index, value, true)}
-                              input={
-                                <TextField
-                                  value={state[weekday][index].open}
-                                  inputProps={{ min: 0, style: { textAlign: 'center' } }}
-                                />
-                              }
-                            />
+                            <FormTimeField name={`${weekday}[${index}].start`} control={control} />
                           </Box>
                           <Box alignSelf="center" fontSize="body1.fontSize" pr={1} pl={1}>
                             -
@@ -211,27 +186,32 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
                             pr={1}
                             pl={1}
                           >
-                            <TimeField
-                              value={0}
-                              onChange={(event, value) => onTimeChange(weekday, index, value, false)}
-                              input={
-                                <TextField
-                                  value={state[weekday][index].close}
-                                  inputProps={{ min: 0, style: { textAlign: 'center' } }}
-                                />
-                              }
-                            />
+                            <FormTimeField name={`${weekday}[${index}].end`} control={control} />
                           </Box>
                         </Box>
                         <Box display="flex" flexBasis="20%" flexGrow={0} flexShrink={0}>
                           <Box alignSelf="center" fontSize="body1.fontSize">
-                            <IconButton size="small" onClick={() => removeBusinessHours(weekday, index)}>
+                            <IconButton
+                              size="small"
+                              onClick={() => {
+                                clearErrors(weekday);
+                                fieldArrays[weekday].remove(index);
+                              }}
+                            >
                               <Delete />
                             </IconButton>
                           </Box>
-                          {index === state[weekday].length - 1 && state[weekday].length < 3 ? (
+                          {index === fieldArrays[weekday].fields.length - 1 &&
+                          fieldArrays[weekday].fields.length < 3 ? (
                             <Box alignSelf="center" fontSize="body1.fontSize">
-                              <IconButton size="small" color="primary" onClick={() => addBusinessHours(weekday)}>
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                onClick={() => {
+                                  clearErrors(weekday);
+                                  fieldArrays[weekday].append({ start: '00:00', end: '00:00' });
+                                }}
+                              >
                                 <Add fontSize="small" />
                               </IconButton>
                             </Box>
@@ -244,9 +224,17 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
                   )}
                 </Box>
               </Box>
-              <Divider />
+              {weekday === 'sunday' ? null : <Divider />}
             </React.Fragment>
           ))}
+
+          <Alert className={classes.alert} severity={error ? 'error' : 'info'}>
+            <Collapse in={true}>
+              {error
+                ? 'Zeiten fehlerhaft: ' + error[1].message
+                : 'Achten Sie bitte darauf, dass die Zeiten sich nicht überschneiden.'}
+            </Collapse>
+          </Alert>
 
           <Grid className={classes.buttonLayout} container justifyContent="flex-end" spacing={2}>
             <Grid item>
@@ -255,7 +243,7 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
               </Button>
             </Grid>
             <Grid item>
-              <Button color="primary" variant="contained" onClick={onSubmit}>
+              <Button color="primary" variant="contained" onClick={handleSubmit(onSubmit)}>
                 Speichern
               </Button>
             </Grid>
@@ -266,4 +254,4 @@ function BusinessHoursModal({ open, onClose, businessHours }) {
   );
 }
 
-export default BusinessHoursModal;
+export default OpeningHoursModal;

@@ -5,21 +5,18 @@ import { Menu, MenuOpen } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDrawerOpen } from 'features/frame/slice';
 
-const useStyles = makeStyles((theme) => {
-  console.log(theme);
-  return {
-    container: {
-      display: 'flex',
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-    },
-    content: {
-      flexGrow: 1,
-    },
-    userDetails: {},
-  };
-});
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+  content: {
+    flexGrow: 1,
+  },
+  userDetails: {},
+}));
 
 function MyAppBar() {
   const classes = useStyles();

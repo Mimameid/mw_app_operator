@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   submitButton: {
+    height: '36px',
     marginTop: theme.spacing(2),
 
     fontWeight: 'bold',
