@@ -23,31 +23,32 @@ const viewsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(deleteMenu.fulfilled, (state, action) => {
-      if (state.group === 0 && state.itemId === action.payload) {
-        state.itemId = null;
-      }
-    });
-    builder.addCase(deleteCategory.fulfilled, (state, action) => {
-      if (state.group === 1 && state.itemId === action.payload) {
-        state.itemId = null;
-      }
-    });
-    builder.addCase(deleteDish.fulfilled, (state, action) => {
-      if (state.group === 2 && state.itemId === action.payload) {
-        state.itemId = null;
-      }
-    });
-    builder.addCase(deleteChoice.fulfilled, (state, action) => {
-      if (state.group === 3 && state.itemId === action.payload) {
-        state.itemId = null;
-      }
-    });
-    builder.addCase(deleteSub.fulfilled, (state, action) => {
-      if (state.group === 4 && state.itemId === action.payload) {
-        state.itemId = null;
-      }
-    });
+    builder
+      .addCase(deleteMenu.fulfilled, (state, action) => {
+        if (state.group === 0 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        if (state.group === 1 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      })
+      .addCase(deleteDish.fulfilled, (state, action) => {
+        if (state.group === 2 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      })
+      .addCase(deleteChoice.fulfilled, (state, action) => {
+        if (state.group === 3 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      })
+      .addCase(deleteSub.fulfilled, (state, action) => {
+        if (state.group === 4 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      });
   },
 });
 

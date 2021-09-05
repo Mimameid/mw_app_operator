@@ -1,6 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { createSub, deleteSub, updateSub } from './actions';
-import { fetchAll } from '../menus/actions';
+import { fetchAllMenus } from '../menus/actions';
 
 // slice
 const initialState = {
@@ -12,18 +12,19 @@ const dishesSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAll.fulfilled, (state, action) => {
-      state.byId = action.payload.subs;
-    });
-    builder.addCase(createSub.fulfilled, (state, action) => {
-      state.byId[action.payload.sub.id] = action.payload.sub;
-    });
-    builder.addCase(updateSub.fulfilled, (state, action) => {
-      state.byId[action.payload.sub.id] = action.payload.sub;
-    });
-    builder.addCase(deleteSub.fulfilled, (state, action) => {
-      delete state.byId[action.payload];
-    });
+    builder
+      .addCase(fetchAllMenus.fulfilled, (state, action) => {
+        state.byId = action.payload.subs;
+      })
+      .addCase(createSub.fulfilled, (state, action) => {
+        state.byId[action.payload.sub.id] = action.payload.sub;
+      })
+      .addCase(updateSub.fulfilled, (state, action) => {
+        state.byId[action.payload.sub.id] = action.payload.sub;
+      })
+      .addCase(deleteSub.fulfilled, (state, action) => {
+        delete state.byId[action.payload];
+      });
   },
 });
 

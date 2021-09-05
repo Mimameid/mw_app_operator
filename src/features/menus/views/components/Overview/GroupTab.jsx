@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.primary.main,
     opacity: 1,
 
-    borderRadius: '6px 6px 0 0',
+    borderRadius: '16px 16px 0 0',
     boxShadow: theme.shadows[12],
   },
   addButton: {

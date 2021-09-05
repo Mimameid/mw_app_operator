@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setEdited } from 'features/deliveryAreas/slices//mode/actions';
+import { setEdited } from 'features/mode/actions';
 
 function useDispatchAreaEdited(areas, activeArea) {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ function useDispatchAreaEdited(areas, activeArea) {
         }
       }
     }
+
     dispatch(setEdited(wasAreaEdited()));
   }, [areas, activeArea, dispatch]);
 }

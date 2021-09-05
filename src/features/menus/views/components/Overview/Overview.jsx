@@ -13,30 +13,18 @@ import SubOverview from './SubOverview/SubOverview';
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'relative',
+
+    overflow: 'hidden',
   },
   tabs: {
-    borderRadius: '6px 6px 0 0',
+    borderRadius: '16px 16px 0 0',
     boxShadow: theme.shadows[20],
-  },
-  tab: {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-
-    borderRadius: '6px 6px 0 0',
-    boxShadow: theme.shadows[12],
   },
   listContainer: {
     height: '264px',
     overflow: 'auto',
 
     boxShadow: theme.shadows[3],
-  },
-  fab: {
-    position: 'absolute',
-    bottom: '12px',
-    right: '14px',
-
-    zIndex: 10,
   },
 }));
 
@@ -70,7 +58,7 @@ function Overview() {
   };
 
   return (
-    <Paper className={classes.container} elevation={0}>
+    <Paper className={classes.container}>
       <Tabs
         className={classes.tabs}
         indicatorColor="primary"

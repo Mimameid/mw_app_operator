@@ -3,10 +3,14 @@ import { Grid, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   wrap: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  inner: {
     overflow: 'hidden',
-    maxWidth: '480px',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
+    maxWidth: '480px',
 
     textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
@@ -24,7 +28,7 @@ function TruncatedGridItem(props) {
   return (
     <React.Fragment>
       <Grid className={classes.wrap} {...props}>
-        {props.children}
+        <span className={classes.inner}>{props.children}</span>
       </Grid>
     </React.Fragment>
   );

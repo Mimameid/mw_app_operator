@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAll } from 'features/menus/menus/actions';
+import { fetchAllMenus } from 'features/menus/menus/actions';
 
 import { Box, Button, Grid, Toolbar, makeStyles } from '@material-ui/core';
 import Overview from 'features/menus/views/components/Overview/Overview';
@@ -29,10 +29,12 @@ const useStyles = makeStyles((theme) => ({
   menuContainer: {
     width: '100%',
     transition: 'margin 0.2s ease-in-out, width 0.2s ease-in-out',
+    backgroundColor: 'transparent',
   },
 
   menuListContainer: {
     paddingBottom: theme.spacing(3),
+    backgroundColor: 'transparent',
   },
 }));
 
@@ -49,7 +51,7 @@ function Menu({ name }) {
   const [subModalOpen, setSubModalOpen] = useState(false);
 
   useEffect(() => {
-    const promise = dispatch(fetchAll());
+    const promise = dispatch(fetchAllMenus());
     promise.then(() => {
       setDataLoaded(true);
     });
@@ -82,7 +84,7 @@ function Menu({ name }) {
       <Toolbar />
 
       <Box display="flex" justifyContent="space-between">
-        <ContentHeader name={name} info="Erstellen Sie ihre Menüs." />
+        <ContentHeader name={name} info="Erstellen Sie Ihre Menüs." />
         <Box alignSelf="flex-end">
           <Button
             className={classes.addNewButton}

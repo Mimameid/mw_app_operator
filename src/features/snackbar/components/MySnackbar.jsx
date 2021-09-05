@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import STATUS_CODE from 'common/constants';
+import { STATUS_CODE } from 'common/constants';
 
 import { Snackbar, Slide } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';

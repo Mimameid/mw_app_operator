@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createError, createFetchParams } from 'common/utils/utils';
 
-export const fetchAll = createAsyncThunk('menus/fetchAll', async () => {
+export const fetchAllMenus = createAsyncThunk('menus/fetchAllMenus', async () => {
   const fetchParams = createFetchParams('owner/menus', 'GET');
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {

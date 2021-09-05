@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { nanoid } from 'common/constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from 'features/user/auth/authSlice';
-import { resetChanged, toggleDraw } from 'features/deliveryAreas/slices/mode/actions';
-import { deactivateArea } from 'features/deliveryAreas/slices/areaData/actions';
+import { logout } from 'features/user/actions';
+import { reset } from 'features/mode/actions';
+import { setDrawerOpen } from 'features/frame/actions';
+import { deactivateArea } from 'features/deliveryAreas/areas/actions';
 import routes from 'routes';
 
 import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles } from '@material-ui/core';
 import NavigationLink from './NavigationLink';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { ExitToApp } from '@material-ui/icons';
-import { setDrawerOpen } from '../slice';
 
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   drawerOpen: {
-    width: 214,
+    width: theme.navigationDrawer.width,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -69,8 +69,8 @@ function NavigationDrawer() {
   const match = useMediaQuery('(min-width:960px)');
 
   const { draw, changed, open } = useSelector((state) => ({
-    draw: state.deliveryAreas.mode.draw,
-    changed: state.deliveryAreas.mode.changed,
+    draw: state.mode.draw,
+    changed: state.mode.changed,
     open: state.frame.drawerOpen,
   }));
 
@@ -94,11 +94,8 @@ function NavigationDrawer() {
   };
 
   const handleAcceptDialog = (event) => {
-    if (draw) {
-      dispatch(toggleDraw());
-    }
     dispatch(deactivateArea());
-    dispatch(resetChanged());
+    dispatch(reset());
 
     setTransitionDialogOpen(false);
     dispatch(logout());
@@ -107,7 +104,7 @@ function NavigationDrawer() {
   return (
     <Drawer
       className={`${classes.drawer} ${match ? (open ? classes.drawerOpen : classes.drawerClose) : null}`}
-      classes={{ paper: match ? (open ? classes.drawerOpen : classes.drawerClose) : null }}
+      classes={{ paper: open ? classes.drawerOpen : classes.drawerClose }}
       variant={match ? 'permanent' : 'temporary'}
       anchor={'left'}
       open={open}

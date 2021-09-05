@@ -1,14 +1,16 @@
 import React from 'react';
-import { nanoid } from 'common/constants';
-import { useSelector } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import routes from 'routes';
 
 import { makeStyles } from '@material-ui/core';
-import MyAppBar from 'features/frame/components/MyAppBar';
-import NavigationDrawer from 'features/frame/components/NavigationDrawer';
 import MySnackbar from 'features/snackbar/components/MySnackbar';
+import ProtectedPage from 'pages/ProtectedPage';
+import MyAppBar from './MyAppBar';
+import NavigationDrawer from './NavigationDrawer';
 import Login from 'pages/Login';
+import SignUp from 'pages/SignUp';
+import { useAuthenticate } from 'common/hooks/useAuthenticate';
+import LoadingScreen from 'pages/LoadingScreen';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -18,26 +20,45 @@ const useStyles = makeStyles((theme) => ({
 
 function Frame() {
   const classes = useStyles();
-  const loggedIn = useSelector(({ userState }) => userState.auth.loggedIn);
+  const { loggedIn, shopRegistered, loading } = useAuthenticate();
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <React.Fragment>
       <Router>
-        {loggedIn ? (
-          <div className={classes.container}>
-            <MyAppBar />
-            <NavigationDrawer />
-            <Switch>
-              {routes.map(({ exact, path, name, Component }) => (
-                <Route key={nanoid()} exact={exact} path={path}>
-                  <Component name={name} />
-                </Route>
-              ))}
-            </Switch>
-          </div>
-        ) : (
-          <Login />
-        )}
+        <Switch>
+          <Route exact={true} path="/login">
+            <Login loggedIn={loggedIn} />
+          </Route>
+          <Route exact={true} path="/signup">
+            <ProtectedPage loggedIn={loggedIn}>
+              <SignUp shopRegistered={shopRegistered} />
+            </ProtectedPage>
+          </Route>
+
+          <Route>
+            {shopRegistered ? (
+              <div className={classes.container}>
+                <MyAppBar />
+                <NavigationDrawer />
+                <Switch>
+                  {routes.map(({ exact, path, name, Component }) => (
+                    <Route key={name} exact={exact} path={path}>
+                      <ProtectedPage loggedIn={loggedIn}>
+                        <Component name={name} />
+                      </ProtectedPage>
+                    </Route>
+                  ))}
+                </Switch>
+              </div>
+            ) : (
+              <Redirect from="*" to="/signup" />
+            )}
+          </Route>
+        </Switch>
       </Router>
       <MySnackbar />
     </React.Fragment>

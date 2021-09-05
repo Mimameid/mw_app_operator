@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeliveryAreas, updateDeliveryAreas } from 'features/user/deliveryAreas/deliveryAreasSlice';
+import { deactivateArea, fetchAreas, updateAreas } from 'features/deliveryAreas/areas/actions';
+import { reset } from 'features/mode/actions';
 import { useOnBeforeUnload } from 'common/hooks/useOnBeforeUnload';
 
 import { Box, Toolbar, makeStyles } from '@material-ui/core';
-import LeafletMap from 'features/deliveryAreas/components/LeafletMap';
+import LeafletMap from 'features/deliveryAreas/areas/components/LeafletMap';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/ContentHeader';
 import LoadingButton from 'common/components/buttons/LoadingButton';
@@ -28,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 function DeliveryAreas({ name }) {
   const classes = useStyles();
-
   const dispatch = useDispatch();
-  const areaData = useSelector((state) => state.deliveryAreas.areaData);
+  const areas = useSelector((state) => state.deliveryAreas.areas);
   useOnBeforeUnload();
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -38,10 +38,15 @@ function DeliveryAreas({ name }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const promise = dispatch(fetchDeliveryAreas());
+    const promise = dispatch(fetchAreas());
     promise.then(() => {
       setDataLoaded(true);
     });
+
+    return () => {
+      dispatch(deactivateArea());
+      dispatch(reset());
+    };
   }, [dispatch]);
 
   const handleRejectDialog = (event) => {
@@ -51,7 +56,7 @@ function DeliveryAreas({ name }) {
   const handleAcceptDialog = async (event) => {
     setDialogOpen(false);
     setLoading(true);
-    await dispatch(updateDeliveryAreas(areaData));
+    await dispatch(updateAreas(areas));
     setLoading(false);
   };
 
@@ -60,7 +65,7 @@ function DeliveryAreas({ name }) {
       <Toolbar />
       <Box display="flex" flexDirection="column" flexGrow={1} alignItems="stretch">
         <Box display="flex" justifyContent="space-between">
-          <ContentHeader name={name} info="Erstellen Sie ihre Liefergebiete und setzen sie die Lieferkosten fest." />
+          <ContentHeader name={name} info="Erstellen Sie Ihre Liefergebiete und setzen sie die Lieferkosten fest." />
           <Box alignSelf="flex-end">
             <LoadingButton
               className={classes.uploadButton}
@@ -70,7 +75,7 @@ function DeliveryAreas({ name }) {
               variant="contained"
               color="primary"
               startIcon={<CloudUpload />}
-              disabled={areaData.areas.length < 1}
+              disabled={areas.areas.length < 1}
             >
               Speichern
             </LoadingButton>
@@ -84,7 +89,7 @@ function DeliveryAreas({ name }) {
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         title="Änderungen speichern?"
-        message="Sind Sie sicher, dass Sie ihre Änderungen speichern wollen?"
+        message="Sind Sie sicher, dass Sie Ihre Änderungen speichern wollen?"
       />
     </Box>
   ) : (

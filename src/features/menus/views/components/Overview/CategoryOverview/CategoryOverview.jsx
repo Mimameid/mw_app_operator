@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 
-import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import CategoryOverviewItem from './CategoryOverviewItem';
+import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -46,9 +47,7 @@ function CategoryOverview() {
       </ListSubheader>
       <Divider className={classes.divider} />
       {Object.values(categories).length === 0 ? (
-        <Box color="text.secondary" fontStyle="italic" p={1}>
-          Keine Kategorien verfügbar. Bitte fügen Sie eine Kategorie hinzu...
-        </Box>
+        <EmptyView>Keine Kategorien verfügbar. Bitte fügen Sie eine Kategorie hinzu...</EmptyView>
       ) : (
         Object.values(categories).map((category, index) => (
           <React.Fragment key={nanoid()}>

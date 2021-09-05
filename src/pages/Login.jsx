@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from 'features/user/auth/authSlice';
+import { Redirect } from 'react-router-dom';
+import { login } from 'features/user/actions';
+import { hasShop } from 'features/shop/shop/actions';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,9 +15,7 @@ import FormTextField from 'common/components/form/FormTextField';
 import LoadingButton from 'common/components/buttons/LoadingButton';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'relative',
-  },
+  root: { position: 'relative', minHeight: '100vh', width: '100vw' },
   loginOuter: {
     position: 'absolute',
     width: '100%',
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
   submitButton: {
-    height: '36px',
+    height: '46px',
     marginTop: theme.spacing(2),
 
     fontWeight: 'bold',
@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100vw',
     pointerEvents: 'none',
 
-    zIndex: 1,
+    zIndex: -1,
   },
   alert: {
     marginTop: theme.spacing(1),
@@ -64,33 +64,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const schema = yup.object({
-  username: yup.string('Geben Sie Ihren Benutzernamen ein').required('Benutzername ist erforderlich'),
+  email: yup.string('Geben Sie Ihren Benutzernamen ein').required('Benutzername ist erforderlich'),
   password: yup
     .string('Geben Sie Ihr Passwort ein.')
     .min(8, 'Passwort muss mind. 8 Zeichen lang sein.')
     .required('Passwort  ist erforderlich'),
 });
 
-function Login() {
+function Login({ loggedIn }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   const { handleSubmit, control } = useForm({
     mode: 'onTouched',
-    defaultValues: { username: '', password: '' },
+    defaultValues: { email: '', password: '' },
     resolver: yupResolver(schema),
   });
-  const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const submit = async (data) => {
     setLoading(true);
-    await dispatch(login(data));
-    setLoading(false);
+    dispatch(login(data)).then((data) => {
+      dispatch(hasShop()).then((data) => {
+        setLoading(false);
+      });
+    });
   };
 
+  if (loggedIn & !loading) {
+    return <Redirect to="/" />;
+  }
   return (
-    <div classes={classes.mainContainer}>
+    <div classes={classes.root}>
       <div className={classes.loginOuter}>
         <Paper className={classes.loginContainer}>
           <Box className={classes.headerContainer}>
@@ -104,7 +111,7 @@ function Login() {
           <form onSubmit={handleSubmit(submit)}>
             <Grid container className={classes.form} spacing={2} direction="column">
               <Grid item>
-                <FormTextField fullWidth name="username" variant="outlined" label="Benutzername" control={control} />
+                <FormTextField fullWidth name="email" variant="outlined" label="Email" control={control} />
               </Grid>
               <Grid item>
                 <FormTextField

@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: theme.palette.error.dark,
     },
   },
+  dialogActions: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 function WarningDialog({ open, title, message, handleReject, handleAccept, disabled }) {
@@ -60,7 +63,7 @@ function WarningDialog({ open, title, message, handleReject, handleAccept, disab
           {message}
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.dialogActions}>
         <Button onClick={handleReject} autoFocus>
           Abbrechen
         </Button>

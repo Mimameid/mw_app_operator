@@ -1,10 +1,30 @@
 import { combineReducers } from 'redux';
 
-import frame from 'features/frame/slice';
+import frame from 'features/frame';
+import mode from 'features/mode';
 import deliveryAreas from 'features/deliveryAreas/slices';
 import menus from 'features/menus';
-import restaurant from 'features/restaurant';
+import shop from 'features/shop';
 import snackbar from 'features/snackbar/slice';
-import userState from 'features/user';
+import user from 'features/user';
 
-export default combineReducers({ frame, deliveryAreas, menus, userState, snackbar, restaurant });
+const appReducer = combineReducers({
+  frame,
+  deliveryAreas,
+  menus,
+  user,
+  snackbar,
+  shop,
+  mode,
+});
+
+const rootReducer = (state, action) => {
+  // when a logout action is dispatched it will reset redux state
+  if (action.type === 'user/auth/rejected' || action.type === 'user/logout/fulfilled') {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
+export default rootReducer;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+import { Paper } from '@material-ui/core';
 import MenuView from './MenuView';
 import CategoryView from './CategoryView';
 import DishView from './DishView';
@@ -27,7 +28,7 @@ function ItemView() {
     }
   };
 
-  return renderView(group);
+  return <Paper style={{ overflow: 'hidden' }}>{renderView(group)}</Paper>;
 }
 
 export default ItemView;

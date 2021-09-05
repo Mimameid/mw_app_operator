@@ -10,3 +10,7 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+.leaflet-tile {
+  filter: contrast(0.93) grayscale(0.9) hue-rotate(20deg);
+}

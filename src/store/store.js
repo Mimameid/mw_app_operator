@@ -5,7 +5,7 @@ import { loadState, saveState } from './localStorage';
 import { throttle } from 'common/utils/utils';
 
 // const initialState = loadState();
-const initialState = { userState: loadState() };
+const initialState = {};
 const middleware = [thunk];
 
 // dev tools middleware
@@ -25,14 +25,14 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-store.subscribe(
-  throttle(() => {
-    // specify reducers that shall be stored (currently the whole store is persisted)
-    // saveState(store.getState());
+// store.subscribe(
+//   throttle(() => {
+//     // specify reducers that shall be stored (currently the whole store is persisted)
+//     // saveState(store.getState());
 
-    saveState(store.getState().userState);
-  }),
-  1000,
-);
+//     saveState(store.getState().user);
+//   }),
+//   1000,
+// );
 
 export default store;

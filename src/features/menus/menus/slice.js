@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { fetchAll, createMenu, updateMenu, deleteMenu, addCategories, removeCategory } from './actions';
+import { fetchAllMenus, createMenu, updateMenu, deleteMenu, addCategories, removeCategory } from './actions';
 import { createCategory, updateCategory } from '../categories/actions';
 
 // reducer
@@ -12,51 +12,52 @@ const slice = createSlice({
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchAll.fulfilled, (state, action) => {
-      state.byId = action.payload.menus;
-    });
-    builder.addCase(createMenu.fulfilled, (state, action) => {
-      state.byId[action.payload.id] = action.payload;
-    });
-    builder.addCase(updateMenu.fulfilled, (state, action) => {
-      state.byId[action.payload.id] = action.payload;
-    });
-    builder.addCase(deleteMenu.fulfilled, (state, action) => {
-      delete state.byId[action.payload];
-    });
-    builder.addCase(addCategories.fulfilled, (state, action) => {
-      const menu = state.byId[action.payload.menuId];
+    builder
+      .addCase(fetchAllMenus.fulfilled, (state, action) => {
+        state.byId = action.payload.menus;
+      })
+      .addCase(createMenu.fulfilled, (state, action) => {
+        state.byId[action.payload.id] = action.payload;
+      })
+      .addCase(updateMenu.fulfilled, (state, action) => {
+        state.byId[action.payload.id] = action.payload;
+      })
+      .addCase(deleteMenu.fulfilled, (state, action) => {
+        delete state.byId[action.payload];
+      })
+      .addCase(addCategories.fulfilled, (state, action) => {
+        const menu = state.byId[action.payload.menuId];
 
-      for (const categoryId of action.payload.categories) {
-        if (menu.categories.indexOf(categoryId) < 0) {
-          menu.categories.push(categoryId);
+        for (const categoryId of action.payload.categories) {
+          if (menu.categories.indexOf(categoryId) < 0) {
+            menu.categories.push(categoryId);
+          }
         }
-      }
-    });
-    builder.addCase(removeCategory.fulfilled, (state, action) => {
-      const menu = state.byId[action.payload.menuId];
-      const index = menu.categories.indexOf(action.payload.categoryId);
-      if (index > -1) {
-        menu.categories.splice(index, 1);
-      }
-    });
-    builder.addCase(createCategory.fulfilled, (state, action) => {
-      for (let menuId of action.payload.menus) {
-        state.byId[menuId].categories.push(action.payload.category.Id);
-      }
-    });
-    builder.addCase(updateCategory.fulfilled, (state, action) => {
-      const menus = Object.values(state.byId);
-      for (let menu of menus) {
-        const index = menu.categories.indexOf(action.payload.category.id);
+      })
+      .addCase(removeCategory.fulfilled, (state, action) => {
+        const menu = state.byId[action.payload.menuId];
+        const index = menu.categories.indexOf(action.payload.categoryId);
         if (index > -1) {
           menu.categories.splice(index, 1);
         }
-      }
-      for (let menuId of action.payload.menus) {
-        state.byId[menuId].categories.push(action.payload.category.id);
-      }
-    });
+      })
+      .addCase(createCategory.fulfilled, (state, action) => {
+        for (let menuId of action.payload.menus) {
+          state.byId[menuId].categories.push(action.payload.category.Id);
+        }
+      })
+      .addCase(updateCategory.fulfilled, (state, action) => {
+        const menus = Object.values(state.byId);
+        for (let menu of menus) {
+          const index = menu.categories.indexOf(action.payload.category.id);
+          if (index > -1) {
+            menu.categories.splice(index, 1);
+          }
+        }
+        for (let menuId of action.payload.menus) {
+          state.byId[menuId].categories.push(action.payload.category.id);
+        }
+      });
   },
 });
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { AppBar, Box, IconButton, Toolbar, Typography, makeStyles } from '@material-ui/core';
 import { Menu, MenuOpen } from '@material-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDrawerOpen } from 'features/frame/slice';
+import { setDrawerOpen } from 'features/frame/actions';
 
 const useStyles = makeStyles((theme) => ({
   container: {

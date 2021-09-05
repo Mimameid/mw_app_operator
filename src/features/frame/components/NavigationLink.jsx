@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleDraw, resetChanged } from 'features/deliveryAreas/slices/mode/actions';
-import { deactivateArea } from 'features/deliveryAreas/slices/areaData/actions';
+import { useSelector } from 'react-redux';
 
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
@@ -31,10 +29,9 @@ const useStyles = makeStyles((theme) => ({
 
 function NavigationLink({ name, path, IconComponent }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const { draw, changed, open } = useSelector((state) => ({
-    draw: state.deliveryAreas.mode.draw,
-    changed: state.deliveryAreas.mode.changed,
+
+  const { changed, open } = useSelector((state) => ({
+    changed: state.mode.changed || state.mode.draw,
     open: state.frame.drawerOpen,
   }));
   const location = useLocation();
@@ -43,7 +40,7 @@ function NavigationLink({ name, path, IconComponent }) {
   const [transitionDialogOpen, setTransitionDialogOpen] = useState(false);
 
   const routeTransitionHandler = (event) => {
-    if (changed || draw) {
+    if (changed && path !== history.location.pathname) {
       event.preventDefault();
       setTransitionDialogOpen(true);
     }
@@ -54,12 +51,6 @@ function NavigationLink({ name, path, IconComponent }) {
   };
 
   const handleAcceptDialog = (event) => {
-    if (draw) {
-      dispatch(toggleDraw());
-    }
-    dispatch(deactivateArea());
-    dispatch(resetChanged());
-
     setTransitionDialogOpen(false);
     history.push(path);
   };

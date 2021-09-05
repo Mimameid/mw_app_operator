@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme) => ({
   loadingContainer: {
     position: 'relative',
     height: '100vh',
-    width: '100vh',
+    width: '100vw',
   },
   loadingIcon: {
     position: 'absolute',

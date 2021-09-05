@@ -50,7 +50,7 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 700, // due to Tabs component not wrappong properly if changed
+      sm: 600, // due to Tabs component not wrappong properly if changed
       md: 960,
       lg: 1280,
       xl: 1920,
@@ -64,10 +64,16 @@ const theme = createTheme({
       fontSize: '1.8725rem',
     },
   },
+  shape: {
+    borderRadius: 16,
+  },
   mixins: {
     toolbar: {
       minHeight: 64,
     },
+  },
+  navigationDrawer: {
+    width: 214,
   },
 });
 

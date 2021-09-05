@@ -3,6 +3,7 @@ import { nanoid } from 'common/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedCategories, selectCategoryIdsToNames } from 'features/menus/categories/slice';
 import { createDish, updateDish } from '../actions';
+import { CUISINE_TYPES, CUISINE_LABELS } from 'common/constants';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -14,7 +15,7 @@ import FormPriceField from 'common/components/form/FormPriceField';
 import FormSelectField from 'common/components/form/FormSelectField';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
-import FormMultiSelectLabel from 'common/components/form/FormMultiSelectLabel';
+import FormTagMultiSelect from 'common/components/form/FormTagMultiSelect';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -38,31 +39,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const types = [
-  'Fleischgericht',
-  'Fischgericht',
-  'Burger',
-  'Pizza',
-  'Asiatisch',
-  'Sushi',
-  'Mexikanisch',
-  'Indisch',
-  'Suppe',
-  'Backware',
-  'Wrap',
-  'Salat',
-  'Döner',
-  'Vorspeise',
-  'Nudelgericht',
-  'Finger Food',
-  'Süßspeise',
-  'Kartoffelgericht',
-  'Humus',
-  'Falafel',
-  'BBQ',
-];
-const labels = ['Vegetarisch', 'Vegan', 'Halal', 'Glutenfrei'];
-
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup
@@ -74,9 +50,9 @@ const schema = yup.object({
     .trim()
     .matches(/\d+,\d{2}/, 'Der Preis muss eine Dezimalzahl sein.')
     .required('Preis ist erforderlich.'),
-  type: yup
+  cuisineType: yup
     .string('Wählen Sie einen Typen aus.')
-    .oneOf(types, 'Type muss aus der vorgegeben Liste ausgewählt werden')
+    .oneOf(CUISINE_TYPES, 'Typ muss aus der vorgegebenen Liste ausgewählt werden')
     .required('Typ ist erforderlich'),
   available: yup
     .boolean('Geben Sie an, ob die Speise verfügbar ist.')
@@ -95,11 +71,11 @@ function DishModal({ open, onClose, dish }) {
     defaultValues: {
       name: '',
       desc: '',
-      type: 'Burger',
+      cuisineType: 'Burger',
       available: true,
       price: '0,00',
       categories: [],
-      tags: [],
+      cuisineLabels: [],
     },
     resolver: yupResolver(schema),
   });
@@ -108,11 +84,11 @@ function DishModal({ open, onClose, dish }) {
     if (dish) {
       setValue('name', dish.name);
       setValue('desc', dish.desc);
-      setValue('type', dish.type);
+      setValue('cuisineType', dish.cuisineType);
       setValue('available', dish.available);
       setValue('price', dish.price);
       setValue('categories', affectedCategories);
-      setValue('tags', dish.tags);
+      setValue('cuisineLabels', dish.cuisineLabels);
     }
   }, [open, dish, affectedCategories, setValue]);
 
@@ -134,7 +110,7 @@ function DishModal({ open, onClose, dish }) {
   };
 
   return (
-    <Modal className={classes.backdrop} open={open} onClose={null}>
+    <Modal className={classes.backdrop} open={open} onClose={onClose}>
       <Paper className={classes.formContainer}>
         <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
           Speise erstellen
@@ -148,13 +124,13 @@ function DishModal({ open, onClose, dish }) {
               <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
             </Grid>
             <Grid item>
-              <FormSelectField name="type" label="Typ" items={types} control={control} fullWidth />
+              <FormSelectField name="cuisineType" label="Typ" items={CUISINE_TYPES} control={control} fullWidth />
             </Grid>
             <Grid item>
               <FormPriceField name="price" label="Preis" control={control} fullWidth />
             </Grid>
             <Grid item>
-              <FormMultiSelectLabel name="tags" label="Tag" items={labels} control={control} />
+              <FormTagMultiSelect name="cuisineLabels" label="Labels" items={CUISINE_LABELS} control={control} />
             </Grid>
             <Grid item>
               <FormMultiSelectGroup

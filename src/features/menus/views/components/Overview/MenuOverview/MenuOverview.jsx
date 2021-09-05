@@ -1,9 +1,10 @@
 import React from 'react';
 import { nanoid } from 'common/constants';
 
-import { Box, Grid, List, ListSubheader, Divider, makeStyles } from '@material-ui/core';
+import { Grid, List, ListSubheader, Divider, makeStyles } from '@material-ui/core';
 import MenuOverviewItem from './MenuOverviewItem';
 import { useSelector } from 'react-redux';
+import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -46,9 +47,7 @@ function MenuOverview() {
         </Grid>
       </ListSubheader>
       {Object.values(menus).length === 0 ? (
-        <Box color="text.secondary" fontStyle="italic" p={1}>
-          Keine Menüs verfügbar. Bitte fügen Sie ein Menü hinzu...
-        </Box>
+        <EmptyView>Keine Menüs verfügbar. Bitte fügen Sie ein Menü hinzu...</EmptyView>
       ) : (
         Object.values(menus).map((menu, index) => (
           <React.Fragment key={nanoid()}>

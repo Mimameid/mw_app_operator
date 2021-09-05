@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useAuthenticate } from 'common/hooks/useAuthenticate';
 
 import { Box, Grid, Paper, Toolbar, makeStyles } from '@material-ui/core';
 import MyResponsiveLine from 'features/dashboard/components/MyResponsiveLine';
@@ -22,10 +21,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Dashboard({ name }) {
   const classes = useStyles();
-  useAuthenticate();
 
   useEffect(() => {
-    // dispatch(fetchRestaurantData());
+    // dispatch(fetchShopData());
   }, []);
 
   const data1 = [
@@ -4509,7 +4507,7 @@ function Dashboard({ name }) {
     <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
       <Toolbar />
       <Box flexGrow={1}>
-        <ContentHeader name={name} info="Visuelle Analyse ihrer Daten." />
+        <ContentHeader name={name} info="Visuelle Analyse Ihrer Daten." />
       </Box>
       <Grid component={Box} container flexGrow={1} spacing={3}>
         <Grid item xs={8}>

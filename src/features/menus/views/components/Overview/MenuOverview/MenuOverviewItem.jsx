@@ -97,7 +97,7 @@ function MenuOverviewItem({ menu, selected }) {
       <WarningDialog
         open={dialogOpen}
         title="Menü löschen?"
-        message="Diese Vorgang kann nicht rückgängig gemacht werden."
+        message="Dieser Vorgang kann nicht rückgängig gemacht werden."
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         warning

@@ -87,8 +87,8 @@ function Dish({ dishId, category }) {
   const [editDishOpen, setEditDishOpen] = useState(false);
   const [addChoiceOpen, setAddChoiceOpen] = useState(false);
 
-  const getTagClass = (tag) => {
-    switch (tag) {
+  const getLabelClass = (label) => {
+    switch (label) {
       case 'Vegan':
         return classes.vegan;
       case 'Vegetarisch':
@@ -173,8 +173,8 @@ function Dish({ dishId, category }) {
             {dish.type}
           </Box>
           <Box color="text.secondary" fontSize="subtitle2.fontSize" fontStyle="italic" textAlign="right">
-            {dish.tags.map((tag, _) => {
-              return <Chip className={getTagClass(tag)} key={tag} label={tag} size="small" />;
+            {dish.cuisineLabels.map((label, _) => {
+              return <Chip className={getLabelClass(label)} key={label} label={label} size="small" />;
             })}
           </Box>
         </Box>

@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 
-import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import ChoiceOverviewItem from './ChoiceOverviewItem';
+import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
   list: {
@@ -46,9 +47,7 @@ function ChoiceOverview() {
       </ListSubheader>
       <Divider className={classes.divider} />
       {Object.values(choices).length === 0 ? (
-        <Box color="text.secondary" fontStyle="italic" p={1}>
-          Keine Optiongruppen verfügbar. Bitte fügen Sie eine Optiongruppe hinzu...
-        </Box>
+        <EmptyView>Keine Optiongruppen verfügbar. Bitte fügen Sie eine Optiongruppe hinzu...</EmptyView>
       ) : (
         Object.values(choices).map((choice, index) => (
           <React.Fragment key={nanoid()}>
