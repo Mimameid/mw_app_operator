@@ -54,7 +54,12 @@ function PLZTextField() {
     const promise = dispatch(fetchArea(dataRef.current.plz));
     promise
       .then((data) => {
-        map.flyTo(data.payload.data.area[0][0], 11);
+        if (data.payload) {
+          map.flyTo(data.payload.data.area[0][0], 12, {
+            animate: true,
+            duration: 1.5,
+          });
+        }
       })
       .finally(() => {
         setDisabled(false);

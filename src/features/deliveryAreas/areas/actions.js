@@ -77,6 +77,7 @@ export const fetchArea = createAsyncThunk('deliveryAreas/areas/fetchArea', async
 
   if (response.ok) {
     const data = await response.json();
+    console.log(data);
     if (data.length < 1) {
       return Promise.reject('PLZ existiert nicht!');
     }

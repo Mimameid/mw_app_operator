@@ -114,7 +114,7 @@ function SignUp({ shopRegistered }) {
     mode: 'onTouched',
     defaultValues: {
       name: '',
-      location: '',
+      address: '',
       phoneNumber: '',
       url: '',
       serviceTypes: [],
@@ -127,11 +127,11 @@ function SignUp({ shopRegistered }) {
   });
 
   useEffect(() => {
-    if (shopData) {
+    if (shopData.location.address) {
       setValue('address', shopData.location.address);
     }
     setSelected(false);
-  }, [shopData, setValue, selected]);
+  }, [shopData.location.address, setValue, selected]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -262,7 +262,7 @@ function SignUp({ shopRegistered }) {
               </Grid>
               <Grid item xs={12}>
                 <Alert className={classes.alert} severity="info">
-                  Ihre Zugangsdaten haben Sie von uns erhalten.
+                  Bitte geben Sie Ihre Shop Daten ein. Felder, die mit einem * markiert sind, sind erforderlich.
                 </Alert>
               </Grid>
             </Grid>

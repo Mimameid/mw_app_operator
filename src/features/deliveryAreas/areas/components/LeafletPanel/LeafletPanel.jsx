@@ -5,7 +5,7 @@ import L from 'leaflet';
 
 import { Paper, IconButton, makeStyles } from '@material-ui/core';
 import AreasPanel from './AreasPanel/AreasPanelContainer';
-import PLZTextField from '../../../plz/PLZTextField';
+import PLZTextField from './PLZTextField';
 import { Add, Block } from '@material-ui/icons';
 
 const MAX_AREAS = 11;

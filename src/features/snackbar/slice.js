@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { updateAreas } from 'features/deliveryAreas/areas/actions';
+import { fetchArea, updateAreas } from 'features/deliveryAreas/areas/actions';
 
 import { STATUS_CODE } from 'common/constants';
 import { updateShop } from 'features/shop/shop/actions';
@@ -33,7 +33,7 @@ const slice = createSlice({
       state.statusMessage = action.payload.message;
       state.count = state.count + 1;
     });
-    builder.addMatcher(isAnyOf(login.rejected), (state, action) => {
+    builder.addMatcher(isAnyOf(login.rejected, fetchArea.rejected), (state, action) => {
       state.statusCode = STATUS_CODE.ERROR;
       state.statusMessage = action.error.message;
       state.count = state.count + 1;
