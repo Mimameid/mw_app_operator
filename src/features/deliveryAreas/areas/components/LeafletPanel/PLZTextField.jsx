@@ -55,9 +55,9 @@ function PLZTextField() {
     promise
       .then((data) => {
         if (data.payload) {
-          map.flyTo(data.payload.data.area[0][0], 12, {
-            animate: true,
-            duration: 1.5,
+          map.flyTo(data.payload.data.area[0][0], 11, {
+            animatre: true,
+            duration: 0.75,
           });
         }
       })

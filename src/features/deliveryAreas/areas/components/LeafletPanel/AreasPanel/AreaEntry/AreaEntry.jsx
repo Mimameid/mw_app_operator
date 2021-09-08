@@ -10,6 +10,7 @@ import {
 } from 'features/deliveryAreas/areas/actions';
 import { setDraw } from 'features/mode/actions';
 
+import { useMap } from 'react-leaflet';
 import { IconButton, Divider, makeStyles } from '@material-ui/core';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import MinimumOrderValueInput from './MinimumOrderValueInput';
@@ -76,12 +77,11 @@ const useStyles = (props) => {
 function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber }) {
   const classes = useStyles({ color })();
   const dispatch = useDispatch();
-  const { activeArea } = useSelector((state) => ({
-    draw: state.mode.draw,
-
+  const { activeArea, areas } = useSelector((state) => ({
     areas: state.deliveryAreas.areas.areas,
     activeArea: state.deliveryAreas.areas.activeArea,
   }));
+  const map = useMap();
   const polygonContainer = useRef();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -90,6 +90,11 @@ function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber })
       dispatch(deactivateArea());
     } else {
       dispatch(activateArea({ areaNumber }));
+      const center = areas.find((area) => area.areaNumber === areaNumber).center;
+      map.flyTo(center, 11, {
+        animate: true,
+        duration: 0.75,
+      });
     }
   };
 

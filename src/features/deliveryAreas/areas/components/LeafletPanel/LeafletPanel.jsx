@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
 function LeafletPanel() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { draw } = useSelector((state) => state.mode.draw);
+  const draw = useSelector((state) => state.mode.draw);
   const { areas } = useSelector((state) => ({
     areas: state.deliveryAreas.areas,
   }));

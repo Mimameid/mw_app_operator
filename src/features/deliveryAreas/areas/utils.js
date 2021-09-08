@@ -1,17 +1,17 @@
 import polygonClipping from 'polygon-clipping';
 
 const _colors = [
-  '#2f4f4f',
-  '#8b4513',
-  '#ff69b4',
-  '#000080',
-  '#eee8aa',
-  '#00ffff',
-  '#6495ed',
-  '#228b22',
-  '#ffd700',
-  '#ff00ff',
-  '#ff0000',
+  '#ff4d49',
+  '#0055cf',
+  '#d7c930',
+  '#762caa',
+  '#ffa952',
+  '#c566ee',
+  '#745300',
+  '#e92199',
+  '#00b6aa',
+  '#a11c28',
+  '#01afe3',
 ];
 let availableColors = [];
 let usedColors = [];
@@ -61,4 +61,20 @@ export function getDifference(areas, activeArea) {
     }
   }
   return selectedPolygon;
+}
+
+export function getCenter(area) {
+  let sumX = 0;
+  let sumY = 0;
+  let count = 0;
+  for (const polygon of area) {
+    for (const ring of polygon) {
+      for (const vertex of ring) {
+        sumX += vertex[0];
+        sumY += vertex[1];
+        count++;
+      }
+    }
+  }
+  return [sumX / count, sumY / count];
 }

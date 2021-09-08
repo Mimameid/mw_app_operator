@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deactivateArea, fetchAreas, updateAreas } from 'features/deliveryAreas/areas/actions';
+import { fetchShop } from 'features/shop/shop/actions';
 import { reset } from 'features/mode/actions';
 import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
 
@@ -38,8 +39,9 @@ function DeliveryAreas({ name }) {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const promise = dispatch(fetchAreas());
-    promise.then(() => {
+    const promiseAreas = dispatch(fetchAreas());
+    const promiseShop = dispatch(fetchShop());
+    Promise.all([promiseAreas, promiseShop]).then(() => {
       setDataLoaded(true);
     });
 

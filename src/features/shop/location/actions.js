@@ -25,7 +25,6 @@ export const queryPredictions = createAsyncThunk('location/queryAddress', async 
       // TODO: Handle error (best way would be not to use the google api !library!, but rather try to use the google REST endpoint via fetch or XMLHTTPREQUEST...)
     },
   );
-
   return Promise.resolve({ predictions: results.predictions, timestamp, sessionToken });
 });
 
@@ -39,6 +38,7 @@ export const queryPlace = createAsyncThunk('location/queryPlace', async (place, 
       sessionToken = new window.google.maps.places.AutocompleteSessionToken();
       const formattedAddress = result.formatted_address;
       const address = formattedAddress.substring(0, formattedAddress.lastIndexOf(','));
+
       resolve({
         coords: { lat: result.geometry.location.lat(), lon: result.geometry.location.lng() },
         timestamp,

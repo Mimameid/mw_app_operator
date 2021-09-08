@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Paper, makeStyles } from '@material-ui/core';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { Paper, makeStyles, Box } from '@material-ui/core';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanel';
 import AreaLayer from './AreaLayer/AreaLayer';
+import ShopMarker from './ShopMarker';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,9 +25,10 @@ const useStyles = makeStyles((theme) => ({
 
 function LeafletMap() {
   const classes = useStyles();
-  const draw = useSelector((state) => state.mode.draw);
-  const areas = useSelector((state) => state.deliveryAreas.areas.areas);
-
+  const { draw, shop } = useSelector((state) => ({
+    draw: state.mode.draw,
+    shop: state.shop.shop,
+  }));
   const [map, setMap] = useState(null);
 
   useEffect(() => {
@@ -44,15 +46,13 @@ function LeafletMap() {
     map.invalidateSize();
   };
 
-  const center = areas.length < 1;
-
   return (
     <div className={classes.root}>
       <Paper className={classes.mapContainer} variant="elevation" elevation={3}>
         <MapContainer
           className={classes.map}
-          center={center ? [50.8, 8.77] : areas[0].areaPolygons[0][0][0]}
-          zoom={center ? 6 : 10}
+          center={[shop.location.coords.lat, shop.location.coords.lon]}
+          zoom={11}
           doubleClickZoom={false}
           zoomControl={true}
           whenCreated={onMapCreate}
@@ -61,6 +61,7 @@ function LeafletMap() {
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <ShopMarker draw={draw} shop={shop} />
           <LeafletPanel />
           <AreaLayer />
         </MapContainer>

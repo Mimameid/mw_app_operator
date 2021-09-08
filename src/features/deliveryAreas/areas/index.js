@@ -20,7 +20,7 @@ import {
   updateVertex,
 } from './actions';
 
-import { getDifference } from './utils';
+import { getCenter, getDifference } from './utils';
 import { colors } from './utils';
 
 const initialState = {
@@ -60,26 +60,30 @@ const areas = createReducer(initialState, (builder) => {
     .addCase(saveArea, (state) => {
       //check if inner ring has 4 elements (validity)
       if (state.activeArea.areaPolygons[state.activeArea.selectedPolygonIndex][0].length > 3) {
+        // preprocess
         let newAreaPolygons = getDifference(state.areas, state.activeArea);
         if (!newAreaPolygons.length) {
           return;
         }
 
-        const index = state.areas.findIndex((area) => area.areaNumber === state.activeArea.areaNumber);
         let newArea = {
           ...state.activeArea,
           areaPolygons: newAreaPolygons,
+          center: getCenter(newAreaPolygons),
         };
+
+        // update activeArea
+        state.activeArea.areaPolygons = newAreaPolygons;
+        state.activeArea.selectedPolygonIndex =
+          newAreaPolygons.length > state.activeArea.selectedPolygonIndex ? 0 : state.activeArea.selectedPolygonIndex;
+
+        // add activeArea to areas
+        const index = state.areas.findIndex((area) => area.areaNumber === state.activeArea.areaNumber);
         if (index > -1) {
           state.areas[index] = newArea;
         } else {
           state.areas.push(newArea);
         }
-        // deep copy areaPolygons (activated array should distinguish from the stored one)
-        // state.activeArea.areaPolygons = JSON.parse(JSON.stringify(newAreaPolygons));
-        state.activeArea.areaPolygons = newAreaPolygons;
-        state.activeArea.selectedPolygonIndex =
-          newAreaPolygons.length > state.activeArea.selectedPolygonIndex ? 0 : state.activeArea.selectedPolygonIndex;
       }
     })
     .addCase(activateArea, (state, action) => {
@@ -211,10 +215,10 @@ const areas = createReducer(initialState, (builder) => {
     })
     .addCase(fetchArea.fulfilled, (state, action) => {
       const areaNumber = state.areaNumberCounter + 1;
+
       const newPolygons = [[[]]];
       newPolygons[0][0] = action.payload.data['area'][0];
-
-      state.activeArea = {
+      let newArea = {
         areaNumber: areaNumber,
         areaPolygons: newPolygons,
         selectedPolygonIndex: 0,
@@ -222,8 +226,22 @@ const areas = createReducer(initialState, (builder) => {
         deliveryFee: 0,
         color: colors.getColor(state.areas),
       };
+
+      // preprocess
+      let newAreaPolygons = getDifference(state.areas, newArea);
+      if (!newAreaPolygons.length) {
+        return;
+      }
+
+      newArea = {
+        ...newArea,
+        areaPolygons: newAreaPolygons,
+        center: getCenter(newAreaPolygons),
+      };
+
       state.areaNumberCounter = areaNumber;
-      state.areas.push(state.activeArea);
+      state.activeArea = newArea;
+      state.areas.push(newArea);
     })
     .addCase(fetchAreas.fulfilled, (state, action) => {
       return {

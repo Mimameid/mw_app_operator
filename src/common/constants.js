@@ -1,6 +1,9 @@
 import { customAlphabet } from 'nanoid';
 import L from 'leaflet';
 import markerSVG from 'assets/marker_icon.svg';
+
+// import shopSVG from 'assets/favicon.ico';
+import shopSVG from 'assets/shopIcon.svg';
 export const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 12);
 
 export const CUISINE_TYPES = [
@@ -34,7 +37,12 @@ export const SERVICE_TYPES = ['Lieferung', 'Abholung', 'Lokal'];
 export const markerIcon = L.icon({
   iconUrl: markerSVG,
 
-  iconSize: [18, 18], // size of the icon
+  iconSize: [18, 18],
+});
+
+export const shopIcon = L.icon({
+  iconUrl: shopSVG,
+  iconSize: [36, 36],
 });
 
 export const STATUS_CODE = {
