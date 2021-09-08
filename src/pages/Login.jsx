@@ -87,6 +87,10 @@ function Login({ loggedIn }) {
   const submit = async (data) => {
     setLoading(true);
     dispatch(login(data)).then((data) => {
+      if (data.error) {
+        setLoading(false);
+        return;
+      }
       dispatch(hasShop()).then((data) => {
         setLoading(false);
       });

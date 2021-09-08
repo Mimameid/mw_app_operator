@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 // prevents to accidently close the page when there are changes
-export function useOnBeforeUnload() {
-  const changed = useSelector((state) => state.mode.changed || state.shop.shop.changed);
+export default function useOnBeforeUnload() {
+  const changed = useSelector((state) => state.mode.changed);
 
   useEffect(() => {
     function handler(event) {

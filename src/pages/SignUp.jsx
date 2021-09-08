@@ -15,7 +15,7 @@ import LoadingButton from 'common/components/buttons/LoadingButton';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import FormMultiSelect from 'common/components/form/FormMultiSelect';
 import FormSwitch from 'common/components/form/FormSwitch';
-import BusinessHours from 'features/shop/shop/components/BusinessHours';
+import OpeningHours from 'features/shop/shop/components/OpeningHours';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -245,7 +245,7 @@ function SignUp({ shopRegistered }) {
               </Grid>
               <Grid item xs={12}>
                 <Box pt={1}>
-                  <BusinessHours />
+                  <OpeningHours />
                 </Box>
               </Grid>
               <Grid item xs={12}>

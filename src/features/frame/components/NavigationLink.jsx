@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { reset } from 'features/mode/actions';
 
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NavigationLink({ name, path, IconComponent }) {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const { changed, open } = useSelector((state) => ({
     changed: state.mode.changed || state.mode.draw,
@@ -52,6 +54,7 @@ function NavigationLink({ name, path, IconComponent }) {
 
   const handleAcceptDialog = (event) => {
     setTransitionDialogOpen(false);
+    dispatch(reset());
     history.push(path);
   };
 
@@ -76,7 +79,7 @@ function NavigationLink({ name, path, IconComponent }) {
           handleAccept={handleAcceptDialog}
           title="Bearbeitung abbrechen?"
           message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
-      unwiederruflich gelöscht."
+          unwiederruflich gelöscht."
         />
       </ListItem>
     </React.Fragment>

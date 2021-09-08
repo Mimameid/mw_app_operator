@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deactivateArea, fetchAreas, updateAreas } from 'features/deliveryAreas/areas/actions';
 import { reset } from 'features/mode/actions';
-import { useOnBeforeUnload } from 'common/hooks/useOnBeforeUnload';
+import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
 
 import { Box, Toolbar, makeStyles } from '@material-ui/core';
 import LeafletMap from 'features/deliveryAreas/areas/components/LeafletMap';

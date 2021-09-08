@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchShop, updateShop } from 'features/shop/shop/actions';
-import { reset, setChanged } from 'features/mode/actions';
 import { CUISINE_TYPES, CUISINE_LABELS, SERVICE_TYPES } from 'common/constants';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { useOnBeforeUnload } from 'common/hooks/useOnBeforeUnload';
+import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
+import useDetectFormChange from 'common/hooks/useDetectFormChange';
 import { Box, Button, Grid, Paper, Toolbar, Avatar, makeStyles } from '@material-ui/core';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
-import BusinessHours from 'features/shop/shop/components/BusinessHours';
+import OpeningHours from 'features/shop/shop/components/OpeningHours';
 import FormSwitch from 'common/components/form/FormSwitch';
 import FormMultiSelect from 'common/components/form/FormMultiSelect';
 import FormTextField from 'common/components/form/FormTextField';
@@ -92,6 +92,7 @@ function Shop({ name }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const shopData = useSelector((state) => state.shop.shop);
+
   useOnBeforeUnload();
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -99,19 +100,10 @@ function Shop({ name }) {
 
   const { handleSubmit, control, setValue, formState } = useForm({
     mode: 'onTouched',
-    defaultValues: {
-      name: '',
-      location: '',
-      phoneNumber: '',
-      url: '',
-      serviceTypes: [],
-      cuisineTypes: [],
-      cuisineLabels: [],
-      isActive: true,
-      isKosher: false,
-    },
+    defaultValues: shopData,
     resolver: yupResolver(schema),
   });
+  useDetectFormChange(formState);
 
   useEffect(() => {
     const promise = dispatch(fetchShop());
@@ -134,18 +126,6 @@ function Shop({ name }) {
     }
     setSelected(false);
   }, [shopData, setValue, selected]);
-
-  useEffect(() => {
-    if (Object.keys(formState.dirtyFields).length) {
-      dispatch(setChanged(true));
-    }
-  }, [formState, dispatch]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(reset());
-    };
-  }, [dispatch]);
 
   const onSubmit = (data) => {
     dispatch(updateShop(data));
@@ -251,7 +231,7 @@ function Shop({ name }) {
                   <Grid container item spacing={3} justifyContent="space-around">
                     <Grid item xs={12} sm={6}>
                       <Box>
-                        <BusinessHours />
+                        <OpeningHours />
                       </Box>
                     </Grid>
                     <Grid item xs={12} sm={6}>
