@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useController } from 'react-hook-form';
 import { queryPredictions } from 'features/shop/location/actions';
@@ -9,6 +9,8 @@ import { Close } from '@material-ui/icons';
 
 function Autocomplete({ control, name, onSelect, ...props }) {
   const dispatch = useDispatch();
+  const containerRef = useRef(null);
+
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
@@ -23,14 +25,9 @@ function Autocomplete({ control, name, onSelect, ...props }) {
     dispatch(queryPredictions(event.target.value));
   };
 
-  const onBlur = (event) => {
-    inputProps.onBlur(event);
-    // setVisibility('none');
+  const onBlur = (e) => {
+    onSelect();
     setOpen(false);
-  };
-
-  const handleClickAway = (e) => {
-    onBlur();
   };
 
   const selectHandler = () => {
@@ -39,15 +36,18 @@ function Autocomplete({ control, name, onSelect, ...props }) {
   };
 
   return (
-    <ClickAwayListener onClickAway={handleClickAway} mouseEvent="onMouseDown">
-      <Box style={{ position: 'relative' }} width={'100%'}>
+    <ClickAwayListener onClickAway={onBlur} mouseEvent="onMouseDown">
+      <Box ref={containerRef} style={{ position: 'relative' }} width={'100%'}>
         <TextField
           inputRef={ref}
           inputProps={{ spellCheck: 'false' }}
           autoComplete="new-password"
           {...inputProps}
           onChange={onChange}
-          onFocus={() => setOpen(true)}
+          onBlur={onBlur}
+          onFocus={() => {
+            setOpen(true);
+          }}
           error={!!error}
           helperText={error ? error.message : null}
           {...props}

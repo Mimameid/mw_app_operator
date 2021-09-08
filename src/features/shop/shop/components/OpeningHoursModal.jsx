@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveOpeningHours } from 'features/shop/shop/actions';
-
 import { weekdays } from '../constants';
 
 import { useFieldArray, useForm } from 'react-hook-form';

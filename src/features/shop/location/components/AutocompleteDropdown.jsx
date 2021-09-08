@@ -56,7 +56,7 @@ function AutocompleteDropdown({ open, onSelect }) {
   const dispatch = useDispatch();
   const predictions = useSelector((state) => state.shop.location.predictions);
 
-  const handleClickPrediction = (item) => {
+  const handleClickPrediction = (e, item) => {
     dispatch(queryPlace(item));
     onSelect();
   };
@@ -68,7 +68,7 @@ function AutocompleteDropdown({ open, onSelect }) {
           {predictions.length && predictions
             ? predictions.map((item, index) => {
                 return (
-                  <li key={index} onClick={() => handleClickPrediction(item)}>
+                  <li key={index} onMouseDown={(e) => handleClickPrediction(e, item)}>
                     <Grid container alignItems="center" wrap="nowrap">
                       <Grid item style={{ marginRight: '14px' }}>
                         <RoomIcon />
