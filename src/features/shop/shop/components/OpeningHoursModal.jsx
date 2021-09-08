@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveOpeningHours } from 'features/shop/shop/actions';
+
 import { weekdays } from '../constants';
 
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -82,21 +83,12 @@ const schema = yup.object({
 
 function OpeningHoursModal({ open, onClose }) {
   const classes = useStyles();
-  const openingHours = useSelector((state) => state.shop.shop.openingHours);
-
   const dispatch = useDispatch();
+  const openingHours = useSelector((state) => state.shop.shop.openingHours);
 
   const { handleSubmit, control, formState, setValue, clearErrors } = useForm({
     mode: 'onBlur',
-    defaultValues: openingHours ?? {
-      monday: [],
-      tuesday: [],
-      wednesday: [],
-      thursday: [],
-      friday: [],
-      saturday: [],
-      sunday: [],
-    },
+    defaultValue: openingHours,
     resolver: yupResolver(schema),
   });
 
@@ -152,8 +144,8 @@ function OpeningHoursModal({ open, onClose }) {
                 </Box>
                 <Box display="flex" flexDirection="column" alignSelf="center">
                   {fieldArrays[weekday].fields.length > 0 ? (
-                    fieldArrays[weekday].fields.map((item, index) => (
-                      <Box key={weekday + index} display="flex" justifyContent="space-between">
+                    fieldArrays[weekday].fields.map((field, index) => (
+                      <Box key={field.id} display="flex" justifyContent="space-between">
                         <Box
                           display="flex"
                           flexBasis="80%"

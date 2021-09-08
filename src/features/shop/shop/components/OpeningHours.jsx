@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { weekdays } from '../constants';
 
 import { Box, makeStyles } from '@material-ui/core';
-import BusinessHoursModal from './BusinessHoursModal';
+import OpeningHoursModal from './OpeningHoursModal';
 import { useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
@@ -62,7 +62,7 @@ function OpeningHours() {
           </Box>
         ))}
       </Box>
-      <BusinessHoursModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <OpeningHoursModal open={modalOpen} onClose={() => setModalOpen(false)} />
     </Box>
   );
 }

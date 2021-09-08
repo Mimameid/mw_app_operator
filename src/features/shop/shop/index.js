@@ -4,7 +4,6 @@ import { queryPlace } from '../location/actions';
 
 const initialState = {
   name: '',
-  resId: '',
   isActive: false,
   isKosher: false,
   url: '',
@@ -22,16 +21,14 @@ const initialState = {
     sunday: [],
   },
   location: {},
-  details: {},
-  // timestamp: '',
-  // created: ''
   // logo: '',
 };
 
 const shopReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(saveOpeningHours, (state, action) => {
-      state.openingHours = action.payload;
+      // This throws an error if not deep copied....and I don't know why
+      state.openingHours = JSON.parse(JSON.stringify(action.payload));
     })
     .addCase(updateShop.fulfilled, (state, action) => {
       return { ...state, ...action.payload.data };

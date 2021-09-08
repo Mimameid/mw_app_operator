@@ -16,6 +16,7 @@ export const hasShop = createAsyncThunk('shop/shop/hasShop', async (thunkAPI) =>
 export const fetchShop = createAsyncThunk('shop/shop/fetchShop', async (thunkAPI) => {
   const fetchParams = createFetchParams('owner/shop', 'GET');
   const response = await fetch(fetchParams.url.href, fetchParams.options);
+
   if (response.ok) {
     const data = await response.json();
     return Promise.resolve(data);
