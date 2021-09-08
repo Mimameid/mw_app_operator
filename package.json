@@ -21,7 +21,7 @@
     "polygon-clipping": "^0.15.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-hook-form": "^7.8.4",
+    "react-hook-form": "^7.15.0",
     "react-input-date-mask": "^2.0.0",
     "react-leaflet": "^3.1.0",
     "react-redux": "^7.2.3",
