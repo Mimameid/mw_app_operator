@@ -43,7 +43,7 @@ const slice = createSlice({
       })
       .addCase(createCategory.fulfilled, (state, action) => {
         for (let menuId of action.payload.menus) {
-          state.byId[menuId].categories.push(action.payload.category.Id);
+          state.byId[menuId].categories.push(action.payload.category.id);
         }
       })
       .addCase(updateCategory.fulfilled, (state, action) => {
