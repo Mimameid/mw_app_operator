@@ -125,7 +125,14 @@ function Shop({ name }) {
       setValue('isKosher', shopData.isKosher);
     }
     setSelected(false);
-  }, [shopData, setValue, selected]);
+  }, [shopData, setValue]);
+
+  useEffect(() => {
+    if (shopData.location.address) {
+      setValue('address', shopData.location.address);
+    }
+    setSelected(false);
+  }, [selected, shopData.location.address, setValue]);
 
   const onSubmit = (data) => {
     dispatch(updateShop(data));

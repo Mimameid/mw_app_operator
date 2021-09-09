@@ -129,6 +129,8 @@ function SignUp({ shopRegistered }) {
   useEffect(() => {
     if (shopData.location.address) {
       setValue('address', shopData.location.address);
+    } else {
+      setValue('address', '');
     }
     setSelected(false);
   }, [shopData.location.address, setValue, selected]);

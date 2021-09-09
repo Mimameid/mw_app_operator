@@ -93,7 +93,7 @@ function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber })
       const center = areas.find((area) => area.areaNumber === areaNumber).center;
       map.flyTo(center, 11, {
         animate: true,
-        duration: 0.75,
+        duration: 0.5,
       });
     }
   };

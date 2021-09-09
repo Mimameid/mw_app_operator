@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { createError, createFetchParams } from 'common/utils/utils';
-import { colors } from 'features/deliveryAreas/areas/utils';
+import { colors, getCenter } from 'features/deliveryAreas/areas/utils';
 
 export const setAreas = createAction('areas/setAreas');
 export const setVersion = createAction('areas/setVersion');
@@ -28,20 +28,23 @@ export const fetchAreas = createAsyncThunk('deliveryAreas/areas/fetchAreas', asy
     colors.resetColors();
     let areaNumberCounter = 0;
     const areas = data.areas.map((entry, areaIndex) => {
+      const areaPolygons = entry.area.coordinates.map((polygon, index) => {
+        return polygon.map((ring, index) => {
+          return ring.map((vertex, index) => {
+            return (vertex = [vertex[1], vertex[0]]);
+          });
+        });
+      });
+
       return {
         areaNumber: areaNumberCounter++,
         // convert lng/lat to lat/lng order to conform with leaflet specification
-        areaPolygons: entry.area.coordinates.map((polygon, index) => {
-          return polygon.map((ring, index) => {
-            return ring.map((vertex, index) => {
-              return (vertex = [vertex[1], vertex[0]]);
-            });
-          });
-        }),
+        areaPolygons: areaPolygons,
 
         deliveryFee: entry.deliveryFee,
         minimumOrderValue: entry.minimumOrderValue,
         color: colors.getColor(),
+        center: getCenter(areaPolygons),
       };
     });
     return Promise.resolve({ areas, areaNumberCounter, version: data.version });
