@@ -25,12 +25,14 @@ function DishItem({ dish, checked, handleToggle }) {
   const [editDishOpen, setEditDishOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
-  function handleEditDish() {
+  function handleEditDish(event) {
     setEditDishOpen(true);
+    event.stopPropagation();
   }
 
-  function handleDeleteDish() {
+  function handleDeleteDish(event) {
     setTriggerDelete(true);
+    event.stopPropagation();
   }
 
   return (

@@ -25,12 +25,14 @@ function SubItem({ sub, checked, handleToggle }) {
   const [editSubOpen, setEditSubOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
-  function handleEditSub() {
+  function handleEditSub(event) {
     setEditSubOpen(true);
+    event.stopPropagation();
   }
 
-  function handleDeleteSub() {
+  function handleDeleteSub(event) {
     setTriggerDelete(true);
+    event.stopPropagation();
   }
 
   return (

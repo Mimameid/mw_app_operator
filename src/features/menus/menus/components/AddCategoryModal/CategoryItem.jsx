@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Box, Checkbox, IconButton, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
 import EditCategory from '../../../categories/components/EditCategory';
@@ -25,12 +25,14 @@ function CategoryItem({ category, checked, handleToggle }) {
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
-  function handleEditCategory() {
+  function handleEditCategory(event) {
     setEditCategoryOpen(true);
+    event.stopPropagation();
   }
 
-  function handleDeleteCategory() {
+  function handleDeleteCategory(event) {
     setTriggerDelete(true);
+    event.stopPropagation();
   }
 
   return (

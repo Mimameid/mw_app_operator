@@ -102,7 +102,7 @@ function AddCategoryModal({ open, setOpen, menu }) {
               ) : (
                 <React.Fragment>
                   {categoriesArray.map((category, index) => (
-                    <React.Fragment key={nanoid()}>
+                    <React.Fragment key={category.id}>
                       <CategoryItem
                         category={category}
                         checked={checked.indexOf(category.id) !== -1}

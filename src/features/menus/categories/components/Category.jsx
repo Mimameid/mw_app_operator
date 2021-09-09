@@ -53,6 +53,9 @@ function Category({ categoryId, menu }) {
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const categories = useSelector((state) => state.menus.categories);
+  console.log(categories);
+  console.log(categoryId);
   const category = useSelector((state) => state.menus.categories.byId[categoryId]);
 
   const [show, setShow] = useState(true);
@@ -75,6 +78,7 @@ function Category({ categoryId, menu }) {
     setShow(!show);
   }
 
+  console.log(category);
   return (
     <Paper elevation={0}>
       <Box className={classes.headerContainer} display="flex">
