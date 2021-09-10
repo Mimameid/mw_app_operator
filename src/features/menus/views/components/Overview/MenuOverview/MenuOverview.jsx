@@ -1,5 +1,6 @@
 import React from 'react';
 import { nanoid } from 'common/constants';
+import { selectActiveMenu } from 'features/menus/menus/slice';
 
 import { Grid, List, ListSubheader, Divider, makeStyles } from '@material-ui/core';
 import MenuOverviewItem from './MenuOverviewItem';
@@ -22,6 +23,7 @@ const useStyles = makeStyles((theme) => ({
 function MenuOverview() {
   const classes = useStyles();
   const menus = useSelector((state) => state.menus.menus.byId);
+  const activeMenu = useSelector(selectActiveMenu);
 
   const selectedMenuId = useSelector((state) => state.menus.views.itemId);
 
@@ -44,6 +46,9 @@ function MenuOverview() {
           <Grid item xs={2}>
             Erstellt
           </Grid>
+          <Grid item xs={2}>
+            Aktiv
+          </Grid>
         </Grid>
       </ListSubheader>
       {Object.values(menus).length === 0 ? (
@@ -51,7 +56,7 @@ function MenuOverview() {
       ) : (
         Object.values(menus).map((menu, index) => (
           <React.Fragment key={nanoid()}>
-            <MenuOverviewItem menu={menu} selected={menu.id === selectedMenuId} />
+            <MenuOverviewItem menu={menu} activeMenuId={activeMenu?.id} selected={menu.id === selectedMenuId} />
             <Divider />
           </React.Fragment>
         ))

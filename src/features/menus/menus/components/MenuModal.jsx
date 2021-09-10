@@ -51,6 +51,7 @@ function MenuModal({ open, onClose, menu }) {
     defaultValues: {
       name: '',
       desc: '',
+      active: false,
     },
     resolver: yupResolver(schema),
   });

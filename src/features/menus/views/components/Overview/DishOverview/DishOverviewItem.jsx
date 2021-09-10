@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
 import { setAvailable } from 'features/menus/dishes/actions';
 
-import { Grid, IconButton, ListItem, Switch, makeStyles } from '@material-ui/core';
+import { Grid, IconButton, ListItem, Switch, makeStyles, Box } from '@material-ui/core';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import EditDish from 'features/menus/dishes/components/EditDish';
 import DeleteDish from 'features/menus/dishes/components/DeleteDish';
@@ -63,7 +63,7 @@ function DishOverviewItem({ dish, selected }) {
           <TruncatedGridItem item xs={2}>
             {dish.desc}
           </TruncatedGridItem>
-          <TruncatedGridItem item xs={1}>
+          <TruncatedGridItem item xs={2}>
             {dish.choices.length}
           </TruncatedGridItem>
           <TruncatedGridItem item xs={2}>
@@ -78,14 +78,14 @@ function DishOverviewItem({ dish, selected }) {
               inputProps={{ 'aria-label': 'dish available checkbox' }}
             />
           </TruncatedGridItem>
-          <Grid className={selected ? null : classes.hidden} item xs={2}>
+          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
             <IconButton aria-label="edit" size="small" onClick={handleDeleteDish}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
-          </Grid>
+          </Box>
         </Grid>
       </ListItem>
       <EditDish open={editModalOpen} setOpen={setEditModalOpen} dish={dish} />

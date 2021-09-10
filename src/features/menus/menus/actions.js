@@ -67,3 +67,15 @@ export const removeCategory = createAsyncThunk('menus/removeCategory', async (da
     return createError('Fehler beim Entfernen der Kategorie.', response.status);
   }
 });
+
+export const setActive = createAsyncThunk('menus/setActive', async (data, thunkAPI) => {
+  console.log(data);
+  const fetchParams = createFetchParams('owner/menus/menus/active', 'PUT', data);
+  const response = await fetch(fetchParams.url.href, fetchParams.options);
+
+  if (response.ok) {
+    return Promise.resolve(data);
+  } else {
+    return createError('Fehler beim Ändern der Verfügbarkeit.', response.status);
+  }
+});

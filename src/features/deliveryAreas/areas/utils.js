@@ -5,13 +5,13 @@ const _colors = [
   '#01afe3',
   '#ff4d49',
   '#d7c930',
+  '#e92199',
+  '#745300',
   '#762caa',
   '#ffa952',
   '#00b6aa',
-  '#e92199',
-  '#745300',
-  '#0055cf',
   '#a11c28',
+  '#0055cf',
 ];
 let availableColors = [];
 let usedColors = [];

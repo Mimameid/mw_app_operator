@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
 
-import { Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
+import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import EditSub from 'features/menus/subs/components/EditSub';
 import DeleteSub from 'features/menus/subs/components/DeleteSub';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
@@ -58,14 +58,14 @@ function SubOverviewItem({ sub, selected }) {
           <TruncatedGridItem item xs={3}>
             {new Date(sub.created).toLocaleDateString('DE-de')}
           </TruncatedGridItem>
-          <Grid className={selected ? null : classes.hidden} item xs={3}>
+          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
             <IconButton aria-label="edit" size="small" onClick={handleDeleteDish}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
-          </Grid>
+          </Box>
         </Grid>
       </ListItem>
       <EditSub open={editModalOpen} setOpen={setEditModalOpen} sub={sub} />

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/viewsSlice';
 
-import { Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
+import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
 import EditCategory from 'features/menus/categories/components/EditCategory';
 import DeleteCategory from 'features/menus/categories/components/DeleteCategory';
@@ -75,14 +75,14 @@ function CategoryOverviewItem({ category, selected }) {
           <TruncatedGridItem item xs={2}>
             {new Date(category.created).toLocaleDateString('DE-de')}
           </TruncatedGridItem>
-          <Grid className={selected ? null : classes.hidden} item xs={2}>
+          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={handleEditCategory}>
               <Edit fontSize="small" />
             </IconButton>
             <IconButton aria-label="edit" size="small" onClick={handleDeleteCategory}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
-          </Grid>
+          </Box>
         </Grid>
       </ListItem>
       <EditCategory open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />

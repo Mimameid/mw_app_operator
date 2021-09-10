@@ -36,7 +36,7 @@ function DishOverview() {
           <Grid item xs={2}>
             Beschreibung
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             OG
           </Grid>
           <Grid item xs={2}>

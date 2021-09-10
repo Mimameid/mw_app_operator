@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { fetchAllMenus, createMenu, updateMenu, deleteMenu, addCategories, removeCategory } from './actions';
+import { fetchAllMenus, createMenu, updateMenu, deleteMenu, addCategories, removeCategory, setActive } from './actions';
 import { createCategory, updateCategory } from '../categories/actions';
 
 // reducer
@@ -18,6 +18,13 @@ const slice = createSlice({
       })
       .addCase(createMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
+      })
+      .addCase(setActive.fulfilled, (state, action) => {
+        const menu = state.byId[action.payload.menuId];
+        menu.active = action.payload.active;
+
+        const activeMenu = state.byId[action.payload.activeMenuId];
+        if (activeMenu) activeMenu.active = false;
       })
       .addCase(updateMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
@@ -89,6 +96,14 @@ export const selectMenuIdsToNames = createSelector(
     });
 
     return menuIdToNames;
+  },
+);
+
+export const selectActiveMenu = createSelector(
+  (state) => state.menus.menus.byId,
+  (byId) => {
+    const menusArray = Object.values(byId);
+    return menusArray.find((menu) => menu.active === true);
   },
 );
 
