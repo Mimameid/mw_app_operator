@@ -100,7 +100,6 @@ function DishModal({ open, onClose, dish }) {
   const onSubmit = (data) => {
     data.categories = data.categories.map((item) => item[0]);
     if (!dish) {
-      data.id = nanoid();
       dispatch(createDish(data));
     } else {
       dispatch(updateDish({ ...dish, ...data }));

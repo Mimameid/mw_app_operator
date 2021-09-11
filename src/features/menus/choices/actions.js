@@ -3,12 +3,13 @@ import { createError, createFetchParams } from 'common/utils/utils';
 
 export const createChoice = createAsyncThunk('choices/createChoice', async (data, thunkAPI) => {
   let { dishes, ...choice } = data;
-  choice = { ...choice, subs: [], created: new Date().toISOString() };
+  choice = { ...choice, subs: [] };
 
   const fetchParams = createFetchParams('owner/menus/choices', 'POST', { dishes, choice });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
-    return Promise.resolve({ dishes, choice });
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Speichern der Optiongruppe.', response.status);
   }
@@ -21,7 +22,9 @@ export const updateChoice = createAsyncThunk('dishes/updateChoice', async (data,
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 
   if (response.ok) {
-    return Promise.resolve({ dishes, choice });
+    const data = await response.json();
+    console.log(data);
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Aktualisieren der Optiongruppe.', response.status);
   }

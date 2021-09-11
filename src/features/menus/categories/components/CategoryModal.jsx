@@ -73,7 +73,6 @@ function CategoryModal({ open, onClose, category }) {
   const onSubmit = async (data) => {
     data.menus = data.menus.map((item) => item[0]);
     if (!category) {
-      data.id = nanoid();
       dispatch(createCategory(data));
     } else {
       dispatch(updateCategory({ ...category, ...data }));

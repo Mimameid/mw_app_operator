@@ -93,7 +93,6 @@ function ChoiceModal({ open, onClose, choice }) {
   const onSubmit = (data) => {
     data.dishes = data.dishes.map((item) => item[0]);
     if (!choice) {
-      data.id = nanoid();
       dispatch(createChoice(data));
     } else {
       dispatch(updateChoice({ ...choice, ...data }));

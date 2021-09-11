@@ -77,7 +77,6 @@ function SubModal({ open, onClose, sub }) {
   const onSubmit = (data) => {
     data.choices = data.choices.map((item) => item[0]);
     if (!sub) {
-      data.id = nanoid();
       dispatch(createSub(data));
     } else {
       dispatch(updateSub({ ...sub, ...data }));

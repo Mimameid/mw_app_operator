@@ -70,7 +70,6 @@ function MenuModal({ open, onClose, menu }) {
 
   const onSubmit = (data) => {
     if (!menu) {
-      data.id = nanoid();
       dispatch(createMenu(data));
     } else {
       dispatch(updateMenu({ ...menu, ...data }));

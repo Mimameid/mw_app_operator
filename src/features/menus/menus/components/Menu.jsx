@@ -85,7 +85,7 @@ function Menu() {
                 >
                   {menu.name}
                 </TruncatedBox>
-                <Grid className={classes.buttonsContainer} item>
+                <Grid item className={classes.buttonsContainer}>
                   <IconButton aria-label="edit" size="small" onClick={handleUpdateMenu}>
                     <Edit fontSize="small" />
                   </IconButton>
@@ -103,7 +103,6 @@ function Menu() {
                 </Grid>
                 {activeMenu?.id === menu.id ? (
                   <Box
-                    item
                     className={classes.buttonsContainer}
                     color={'green'}
                     fontStyle={'italic'}

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { nanoid } from 'common/constants';
 import { addCategories } from 'features/menus/menus/actions';
 
 import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';

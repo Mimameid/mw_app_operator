@@ -13,12 +13,13 @@ export const fetchAllMenus = createAsyncThunk('menus/fetchAllMenus', async () =>
 });
 
 export const createMenu = createAsyncThunk('menus/createMenu', async (menu, thunkAPI) => {
-  menu = { ...menu, categories: [], created: new Date().toISOString() };
+  menu = { ...menu, categories: [] };
 
-  const fetchParams = createFetchParams('owner/menus/menus', 'PUT', menu);
+  const fetchParams = createFetchParams('owner/menus/menus', 'POST', menu);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
-    return Promise.resolve(menu);
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Speichern des Menüs.', response.status);
   }
@@ -27,8 +28,10 @@ export const createMenu = createAsyncThunk('menus/createMenu', async (menu, thun
 export const updateMenu = createAsyncThunk('menus/updateMenu', async (menu, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/menus', 'PUT', menu);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
+
   if (response.ok) {
-    return Promise.resolve(menu);
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Aktualisieren des Menüs.', response.status);
   }

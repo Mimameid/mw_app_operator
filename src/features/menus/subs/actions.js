@@ -3,12 +3,12 @@ import { createError, createFetchParams } from 'common/utils/utils';
 
 export const createSub = createAsyncThunk('subs/createSub', async (data, thunkAPI) => {
   let { choices, ...sub } = data;
-  sub = { ...sub, created: new Date().toISOString() };
 
   const fetchParams = createFetchParams('owner/menus/subs', 'POST', { choices, sub });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
-    return Promise.resolve({ choices, sub });
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Speichern der Option.', response.status);
   }
@@ -20,7 +20,8 @@ export const updateSub = createAsyncThunk('dishes/updateSub', async (data, thunk
   const fetchParams = createFetchParams('owner/menus/subs', 'PUT', { choices, sub });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
-    return Promise.resolve({ choices, sub });
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Aktualisieren der Speise.', response.status);
   }
