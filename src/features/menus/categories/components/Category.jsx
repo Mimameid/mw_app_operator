@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
 function Category({ categoryId, menu }) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
   const category = useSelector((state) => state.menus.categories.byId[categoryId]);
 
   const [show, setShow] = useState(true);

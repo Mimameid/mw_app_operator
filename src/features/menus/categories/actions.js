@@ -3,12 +3,13 @@ import { createError, createFetchParams } from 'common/utils/utils';
 
 export const createCategory = createAsyncThunk('categories/createCategory', async (data, thunkAPI) => {
   let { menus, ...category } = data;
-  category = { ...category, dishes: [], created: new Date().toISOString() };
+  category = { ...category, dishes: [] };
 
   const fetchParams = createFetchParams('owner/menus/categories', 'POST', { menus, category });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
-    return Promise.resolve({ menus, category });
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Speichern der Kategorie.', response.status);
   }
@@ -16,10 +17,13 @@ export const createCategory = createAsyncThunk('categories/createCategory', asyn
 
 export const updateCategory = createAsyncThunk('categories/updateCategory', async (data, thunkAPI) => {
   let { menus, ...category } = data;
+
   const fetchParams = createFetchParams('owner/menus/categories', 'PUT', { menus, category });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
+
   if (response.ok) {
-    return Promise.resolve({ menus, category });
+    const data = await response.json();
+    return Promise.resolve(data);
   } else {
     return createError('Fehler beim Aktualisieren der Kategorie.', response.status);
   }

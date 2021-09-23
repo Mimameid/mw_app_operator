@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { weekdays } from '../constants';
+import { weekdays } from 'common/constants';
 
 import { Box, makeStyles } from '@material-ui/core';
 import OpeningHoursModal from './OpeningHoursModal';

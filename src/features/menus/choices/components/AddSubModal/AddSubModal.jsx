@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSubs } from 'features/menus/choices/actions';
 
-import { Box, Button, Divider, Grid, List, Modal, Paper, makeStyles } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Paper, makeStyles } from '@material-ui/core';
 import SubItem from './SubItem';
 import CreateSubModal from 'features/menus/subs/components/SubModal';
+import ResponsiveModal from 'common/components/other/ResponsiveModal';
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -53,7 +54,7 @@ function AddSubModal({ open, setOpen, choiceId }) {
     setOpen(false);
   };
 
-  function handleCreateDish(event) {
+  function handleCreateSub(event) {
     setSubModalOpen(true);
   }
 
@@ -78,8 +79,9 @@ function AddSubModal({ open, setOpen, choiceId }) {
 
   return (
     <React.Fragment>
-      <Modal className={classes.backdrop} open={open} onClose={handleClose}>
-        <Paper className={classes.formContainer}>
+      <ResponsiveModal
+        open={open}
+        header={
           <Grid container justifyContent="space-between">
             <Grid item>
               <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
@@ -87,44 +89,35 @@ function AddSubModal({ open, setOpen, choiceId }) {
               </Box>
             </Grid>
             <Grid item>
-              <Button variant="contained" color="primary" onClick={handleCreateDish}>
+              <Button variant="contained" color="primary" onClick={handleCreateSub}>
                 Erstellen
               </Button>
             </Grid>
           </Grid>
-
-          <Paper variant="outlined" square>
-            <List className={classes.list} subheader={<li />}>
-              {subsArray.length === 0 ? (
-                <Box color="text.secondary" fontStyle="italic" p={1}>
-                  Keine Optionen verfügbar. Bitte erstellen Sie eine neue Option...
-                </Box>
-              ) : (
-                <React.Fragment>
-                  {subsArray.map((sub, index) => (
-                    <React.Fragment key={sub.id}>
-                      <SubItem sub={sub} checked={checked.indexOf(sub.id) !== -1} handleToggle={handleToggle} />
-                      {index < subsArray.length - 1 ? <Divider /> : subsArray.length < 5 ? <Divider /> : null}
-                    </React.Fragment>
-                  ))}
-                </React.Fragment>
-              )}
-            </List>
-          </Paper>
-          <Grid className={classes.buttonLayout} container justifyContent="flex-end" spacing={2}>
-            <Grid item>
-              <Button variant="contained" onClick={handleClose}>
-                Abbrechen
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button variant="contained" color="primary" onClick={handleAddChoices}>
-                Hinzufügen
-              </Button>
-            </Grid>
-          </Grid>
+        }
+        acceptLabel={'Hinzufügen'}
+        onCancel={handleClose}
+        onAccept={handleAddChoices}
+      >
+        <Paper variant="outlined" square>
+          <List className={classes.list} subheader={<li />}>
+            {subsArray.length === 0 ? (
+              <Box color="text.secondary" fontStyle="italic" p={1}>
+                Keine Optionen verfügbar. Bitte erstellen Sie eine neue Option...
+              </Box>
+            ) : (
+              <React.Fragment>
+                {subsArray.map((sub, index) => (
+                  <React.Fragment key={sub.id}>
+                    <SubItem sub={sub} checked={checked.indexOf(sub.id) !== -1} handleToggle={handleToggle} />
+                    {index < subsArray.length - 1 ? <Divider /> : subsArray.length < 5 ? <Divider /> : null}
+                  </React.Fragment>
+                ))}
+              </React.Fragment>
+            )}
+          </List>
         </Paper>
-      </Modal>
+      </ResponsiveModal>
       <CreateSubModal open={subModalOpen} onClose={() => setSubModalOpen(false)} />
     </React.Fragment>
   );

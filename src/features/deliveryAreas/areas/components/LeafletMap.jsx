@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Paper, makeStyles, Box } from '@material-ui/core';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Paper, makeStyles } from '@material-ui/core';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanel';
 import AreaLayer from './AreaLayer/AreaLayer';
 import ShopMarker from './ShopMarker';

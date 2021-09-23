@@ -20,7 +20,11 @@ const useStyles = makeStyles((theme) => ({
 
 function DishOverview() {
   const classes = useStyles();
-  const dishes = useSelector((state) => state.menus.dishes.byId);
+  const dishesArray = useSelector((state) => {
+    let dishesArray = Object.values(state.menus.dishes.byId);
+    dishesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return dishesArray;
+  });
   const selectedDishId = useSelector((state) => state.menus.views.itemId);
 
   return (
@@ -36,7 +40,7 @@ function DishOverview() {
           <Grid item xs={2}>
             Beschreibung
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={2}>
             OG
           </Grid>
           <Grid item xs={2}>
@@ -48,10 +52,10 @@ function DishOverview() {
         </Grid>
       </ListSubheader>
       <Divider className={classes.divider} />
-      {Object.values(dishes).length === 0 ? (
+      {dishesArray.length === 0 ? (
         <EmptyView>Keine Speisen verfügbar. Bitte fügen Sie eine Speise hinzu...</EmptyView>
       ) : (
-        Object.values(dishes).map((dish, index) => (
+        dishesArray.map((dish, index) => (
           <React.Fragment key={dish.id}>
             <DishOverviewItem dish={dish} selected={dish.id === selectedDishId} />
             <Divider />

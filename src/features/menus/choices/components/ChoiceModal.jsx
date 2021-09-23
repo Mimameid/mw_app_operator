@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import { nanoid } from 'common/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedDishes, selectDishIdsToNames } from 'features/menus/dishes/slice';
 import { createChoice, updateChoice } from '../actions';
@@ -8,32 +7,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Modal, Button, Grid, Paper, Box, makeStyles } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import FormTextField from 'common/components/form/FormTextField';
 import FormSelectField from 'common/components/form/FormSelectField';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  formContainer: {
-    position: 'absolute',
-    width: '432px',
-    left: '50%',
-    top: '50%',
-    padding: theme.spacing(4),
-
-    transform: 'translate(-50%, -50%)',
-    zIndex: 1000,
-  },
-  header: {
-    paddingBottom: theme.spacing(2),
-  },
-  buttonLayout: {
-    marginTop: theme.spacing(3),
-  },
-}));
+import ResponsiveModal from 'common/components/other/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
@@ -57,7 +35,6 @@ const schema = yup.object({
 });
 
 function ChoiceModal({ open, onClose, choice }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const selectAffectedDishes = useMemo(makeSelectAffectedDishes, []);
   const affectedDishes = useSelector((state) => selectAffectedDishes(state, choice ? choice.id : null));
@@ -93,7 +70,6 @@ function ChoiceModal({ open, onClose, choice }) {
   const onSubmit = (data) => {
     data.dishes = data.dishes.map((item) => item[0]);
     if (!choice) {
-      data.id = nanoid();
       dispatch(createChoice(data));
     } else {
       dispatch(updateChoice({ ...choice, ...data }));
@@ -102,63 +78,50 @@ function ChoiceModal({ open, onClose, choice }) {
   };
 
   return (
-    <Modal className={classes.backdrop} open={open} onClose={null}>
-      <Paper className={classes.formContainer}>
-        <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
-          Optiongruppe erstellen
-        </Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid container spacing={2} direction="column">
-            <Grid item>
-              <FormTextField name="name" label="Name" control={control} fullWidth />
-            </Grid>
-            <Grid item>
-              <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
-            </Grid>
-            <Grid item>
-              <FormSelectField
-                name="minRequired"
-                label="Minimal Erforderlich"
-                items={['0', '1', '2', '3', '4', '5', '6']}
-                control={control}
-                fullWidth
-              />
-            </Grid>
-            <Grid item>
-              <FormSelectField
-                name="maxAllowed"
-                label="Maximal Erlaubt"
-                items={['Keine Einschränkung', '1', '2', '3', '4', '5', '6']}
-                control={control}
-                fullWidth
-              />
-            </Grid>
-            <Grid item>
-              <FormMultiSelectGroup
-                name="dishes"
-                group="Speisen"
-                label="Zur Speise hinzufügen"
-                items={dishIdsToNames}
-                control={control}
-                fullWidth
-              />
-            </Grid>
-            <Grid className={classes.buttonLayout} container item justifyContent="flex-end" spacing={2}>
-              <Grid item>
-                <Button variant="contained" onClick={handleClose}>
-                  Abbrechen
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button color="primary" variant="contained" type="submit">
-                  Speichern
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
-    </Modal>
+    <ResponsiveModal
+      open={open}
+      header={choice ? 'Optiongruppe bearbeiten' : 'Optiongruppe erstellen'}
+      acceptLabel={'Speichern'}
+      onCancel={handleClose}
+      onAccept={handleSubmit(onSubmit)}
+    >
+      <Grid container spacing={2} direction="column">
+        <Grid item>
+          <FormTextField name="name" label="Name" control={control} fullWidth />
+        </Grid>
+        <Grid item>
+          <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
+        </Grid>
+        <Grid item>
+          <FormSelectField
+            name="minRequired"
+            label="Minimal Erforderlich"
+            items={['0', '1', '2', '3', '4', '5', '6']}
+            control={control}
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <FormSelectField
+            name="maxAllowed"
+            label="Maximal Erlaubt"
+            items={['Keine Einschränkung', '1', '2', '3', '4', '5', '6']}
+            control={control}
+            fullWidth
+          />
+        </Grid>
+        <Grid item>
+          <FormMultiSelectGroup
+            name="dishes"
+            group="Speisen"
+            label="Zur Speise hinzufügen"
+            items={dishIdsToNames}
+            control={control}
+            fullWidth
+          />
+        </Grid>
+      </Grid>
+    </ResponsiveModal>
   );
 }
 

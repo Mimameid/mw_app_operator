@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   alert: {
     marginTop: theme.spacing(-1),
   },
-  [theme.breakpoints.up(600)]: {
+  [theme.breakpoints.up('sm')]: {
     signupContainerInner: {
       maxWidth: '600px',
       marginTop: theme.spacing(10),
@@ -129,6 +129,8 @@ function SignUp({ shopRegistered }) {
   useEffect(() => {
     if (shopData.location.address) {
       setValue('address', shopData.location.address);
+    } else {
+      setValue('address', '');
     }
     setSelected(false);
   }, [shopData.location.address, setValue, selected]);

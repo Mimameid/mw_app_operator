@@ -1,6 +1,6 @@
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { createError, createFetchParams } from 'common/utils/utils';
-import { colors } from 'features/deliveryAreas/areas/utils';
+import { colors, getCenter } from 'features/deliveryAreas/areas/utils';
 
 export const setAreas = createAction('areas/setAreas');
 export const setVersion = createAction('areas/setVersion');
@@ -17,7 +17,7 @@ export const rotatePolygon = createAction('areas/rotatePolygon');
 export const addVertex = createAction('areas/addVertex');
 export const updateVertex = createAction('areas/updateVertex');
 export const removeVertex = createAction('areas/removeVertex');
-export const setMinimumOrderValue = createAction('areas/setMinimumOrderValue');
+export const setMinOrderValue = createAction('areas/setminOrderValue');
 export const setDeliveryFee = createAction('areas/setDeliveryFee');
 
 export const fetchAreas = createAsyncThunk('deliveryAreas/areas/fetchAreas', async (_, thunkAPI) => {
@@ -28,20 +28,23 @@ export const fetchAreas = createAsyncThunk('deliveryAreas/areas/fetchAreas', asy
     colors.resetColors();
     let areaNumberCounter = 0;
     const areas = data.areas.map((entry, areaIndex) => {
+      const areaPolygons = entry.area.coordinates.map((polygon, index) => {
+        return polygon.map((ring, index) => {
+          return ring.map((vertex, index) => {
+            return (vertex = [vertex[1], vertex[0]]);
+          });
+        });
+      });
+
       return {
         areaNumber: areaNumberCounter++,
         // convert lng/lat to lat/lng order to conform with leaflet specification
-        areaPolygons: entry.area.coordinates.map((polygon, index) => {
-          return polygon.map((ring, index) => {
-            return ring.map((vertex, index) => {
-              return (vertex = [vertex[1], vertex[0]]);
-            });
-          });
-        }),
+        areaPolygons: areaPolygons,
 
         deliveryFee: entry.deliveryFee,
-        minimumOrderValue: entry.minimumOrderValue,
+        minOrderValue: entry.minOrderValue,
         color: colors.getColor(),
+        center: getCenter(areaPolygons),
       };
     });
     return Promise.resolve({ areas, areaNumberCounter, version: data.version });
@@ -55,7 +58,7 @@ export const updateAreas = createAsyncThunk('deliveryAreas/areas/updateAreas', a
     areas: areas.areas.map((area, _) => ({
       areaPolygons: area.areaPolygons,
       deliveryFee: area.deliveryFee,
-      minimumOrderValue: area.minimumOrderValue,
+      minOrderValue: area.minOrderValue,
     })),
     version: areas.version,
   };

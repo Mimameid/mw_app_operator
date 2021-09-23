@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   alert: {
     marginTop: theme.spacing(1),
   },
-  [theme.breakpoints.up(600)]: {
+  [theme.breakpoints.up('sm')]: {
     loginOuter: {
       maxWidth: '600px',
     },

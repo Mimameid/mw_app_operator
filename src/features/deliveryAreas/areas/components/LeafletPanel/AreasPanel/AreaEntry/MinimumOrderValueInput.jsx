@@ -3,7 +3,7 @@ import React from 'react';
 import { TextField, InputAdornment, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
-  minimumOrderValueInput: {
+  minOrderValueInput: {
     maxWidth: '36px',
     padding: '2px',
     marginLeft: 'auto',
@@ -31,14 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function MinimumOrderValueInput({ onChangeOrderValue, minimumOrderValue }) {
+function MinimumOrderValueInput({ onChangeOrderValue, minOrderValue }) {
   const classes = useStyles();
 
   return (
     <TextField
-      className={classes.minimumOrderValueInput}
+      className={classes.minOrderValueInput}
       size="small"
-      value={minimumOrderValue}
+      value={minOrderValue}
       onChange={onChangeOrderValue}
       InputProps={{
         startAdornment: (

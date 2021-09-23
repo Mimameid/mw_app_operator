@@ -7,7 +7,7 @@ import { setDrawerOpen } from 'features/frame/actions';
 import { deactivateArea } from 'features/deliveryAreas/areas/actions';
 import routes from 'routes';
 
-import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles } from '@material-ui/core';
+import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles, useTheme } from '@material-ui/core';
 import NavigationLink from './NavigationLink';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { ExitToApp } from '@material-ui/icons';
@@ -66,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
 function NavigationDrawer() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const match = useMediaQuery('(min-width:960px)');
+  const theme = useTheme();
+  const match = useMediaQuery(theme.breakpoints.up('sm'));
 
   const { draw, changed, open } = useSelector((state) => ({
     draw: state.mode.draw,

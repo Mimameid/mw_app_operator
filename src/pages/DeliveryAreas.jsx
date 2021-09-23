@@ -8,7 +8,7 @@ import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
 import { Box, Toolbar, makeStyles } from '@material-ui/core';
 import LeafletMap from 'features/deliveryAreas/areas/components/LeafletMap';
 import LoadingScreen from './LoadingScreen';
-import ContentHeader from 'common/components/ContentHeader';
+import ContentHeader from 'common/components/other/ContentHeader';
 import LoadingButton from 'common/components/buttons/LoadingButton';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { CloudUpload } from '@material-ui/icons';

@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { createError, createFetchParams } from 'common/utils/utils';
 
 export const authenticate = createAsyncThunk('user/auth', async (_, thunkAPI) => {
-  const fetchParams = createFetchParams('auth', 'GET');
+  const fetchParams = createFetchParams('owner/auth', 'GET');
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
     return response.data;
@@ -12,13 +12,13 @@ export const authenticate = createAsyncThunk('user/auth', async (_, thunkAPI) =>
 });
 
 export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
-  const fetchParams = createFetchParams('auth/logout', 'GET');
+  const fetchParams = createFetchParams('owner/auth/logout', 'GET');
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   return response.data;
 });
 
 export const login = createAsyncThunk('user/login', async (credentials, thunkAPI) => {
-  const fetchParams = createFetchParams('auth/login', 'POST', credentials);
+  const fetchParams = createFetchParams('owner/auth/login', 'POST', credentials);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
     return response.data;

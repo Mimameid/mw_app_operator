@@ -25,12 +25,14 @@ function CategoryItem({ category, checked, handleToggle }) {
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
-  function handleEditCategory() {
+  function handleEditCategory(event) {
     setEditCategoryOpen(true);
+    event.stopPropagation();
   }
 
-  function handleDeleteCategory() {
+  function handleDeleteCategory(event) {
     setTriggerDelete(true);
+    event.stopPropagation();
   }
 
   return (

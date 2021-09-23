@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveOpeningHours } from 'features/shop/shop/actions';
-import { weekdays } from '../constants';
+import { weekdays } from 'common/constants';
 
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -87,7 +87,7 @@ function OpeningHoursModal({ open, onClose }) {
 
   const { handleSubmit, control, formState, setValue, clearErrors } = useForm({
     mode: 'onBlur',
-    defaultValue: openingHours,
+    defaultValues: openingHours,
     resolver: yupResolver(schema),
   });
 
@@ -219,7 +219,7 @@ function OpeningHoursModal({ open, onClose }) {
             </React.Fragment>
           ))}
 
-          <Alert className={classes.alert} severity={error ? 'error' : 'info'}>
+          <Alert severity={error ? 'error' : 'info'}>
             <Collapse in={true}>
               {error
                 ? 'Zeiten fehlerhaft: ' + error[1].message

@@ -6,6 +6,16 @@ import markerSVG from 'assets/marker_icon.svg';
 import shopSVG from 'assets/shopIcon.svg';
 export const nanoid = customAlphabet('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz', 12);
 
+export const weekdays = {
+  monday: 'Montag',
+  tuesday: 'Dienstag',
+  wednesday: 'Mittwoch',
+  thursday: 'Donnerstag',
+  friday: 'Freitag',
+  saturday: 'Samstag',
+  sunday: 'Sonntag',
+};
+
 export const CUISINE_TYPES = [
   'Fleischgerichte',
   'Fischgerichte',
@@ -43,6 +53,7 @@ export const markerIcon = L.icon({
 export const shopIcon = L.icon({
   iconUrl: shopSVG,
   iconSize: [36, 36],
+  iconAnchor: [20, 32],
 });
 
 export const STATUS_CODE = {

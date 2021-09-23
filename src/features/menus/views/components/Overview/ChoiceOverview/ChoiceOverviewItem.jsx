@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectItem } from 'features/menus/views/viewsSlice';
+import { selectItem } from 'features/menus/views/slice';
 
-import { Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
+import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import EditChoice from 'features/menus/choices/components/EditChoice';
 import DeleteChoice from 'features/menus/choices/components/DeleteChoice';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
@@ -64,14 +64,14 @@ function ChoiceOverviewItem({ choice, selected }) {
           <TruncatedGridItem item xs={2}>
             {new Date(choice.created).toLocaleDateString('DE-de')}
           </TruncatedGridItem>
-          <Grid className={selected ? null : classes.hidden} item xs={2}>
+          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
             <IconButton aria-label="edit" size="small" onClick={handleDeleteDish}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
-          </Grid>
+          </Box>
         </Grid>
       </ListItem>
       <EditChoice open={editModalOpen} setOpen={setEditModalOpen} choice={choice} />

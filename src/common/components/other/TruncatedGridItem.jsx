@@ -28,7 +28,9 @@ function TruncatedGridItem(props) {
   return (
     <React.Fragment>
       <Grid className={classes.wrap} {...props}>
-        <span className={classes.inner}>{props.children}</span>
+        <span className={classes.inner} style={{ color: props.color, fontStyle: props.fontStyle }}>
+          {props.children}
+        </span>
       </Grid>
     </React.Fragment>
   );

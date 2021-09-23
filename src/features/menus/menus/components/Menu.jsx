@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { selectActiveMenu } from '../slice';
 
 import { Box, Button, Grid, Paper, IconButton, Collapse, makeStyles } from '@material-ui/core';
 import MenuCategories from 'features/menus/menus/components/MenuCategories';
@@ -47,6 +48,7 @@ function Menu() {
   const classes = useStyles();
   const menuId = useSelector((state) => state.menus.views.itemId);
   const menu = useSelector((state) => state.menus.menus.byId[menuId]);
+  const activeMenu = useSelector(selectActiveMenu);
 
   const [show, setShow] = useState(true);
   const [menuModalOpen, setMenuModalOpen] = useState(false);
@@ -73,7 +75,7 @@ function Menu() {
                 {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
               </IconButton>
             </Box>
-            <Box>
+            <Box flexGrow={1}>
               <Grid container alignItems="center">
                 <TruncatedBox
                   className={classes.title}
@@ -83,7 +85,7 @@ function Menu() {
                 >
                   {menu.name}
                 </TruncatedBox>
-                <Grid className={classes.buttonsContainer} item>
+                <Grid item className={classes.buttonsContainer}>
                   <IconButton aria-label="edit" size="small" onClick={handleUpdateMenu}>
                     <Edit fontSize="small" />
                   </IconButton>
@@ -99,6 +101,17 @@ function Menu() {
                     Kategorien
                   </Button>
                 </Grid>
+                {activeMenu?.id === menu.id ? (
+                  <Box
+                    className={classes.buttonsContainer}
+                    color={'green'}
+                    fontStyle={'italic'}
+                    flexGrow={1}
+                    textAlign="right"
+                  >
+                    aktiv
+                  </Box>
+                ) : null}
               </Grid>
               <TruncatedBox
                 className={classes.subtitle}

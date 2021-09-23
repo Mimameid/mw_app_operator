@@ -25,12 +25,14 @@ function ChoiceItem({ choice, checked, handleToggle }) {
   const [editChoiceOpen, setEditChoiceOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
-  function handleEditDish() {
+  function handleEditDish(event) {
     setEditChoiceOpen(true);
+    event.stopPropagation();
   }
 
-  function handleDeleteDish() {
+  function handleDeleteDish(event) {
     setTriggerDelete(true);
+    event.stopPropagation();
   }
 
   return (

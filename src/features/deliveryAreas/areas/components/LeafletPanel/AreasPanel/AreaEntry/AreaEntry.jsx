@@ -6,7 +6,7 @@ import {
   deactivateArea,
   removeArea,
   setDeliveryFee,
-  setMinimumOrderValue,
+  setMinOrderValue,
 } from 'features/deliveryAreas/areas/actions';
 import { setDraw } from 'features/mode/actions';
 
@@ -45,7 +45,7 @@ const useStyles = (props) => {
       alignItems: 'center',
       marginLeft: 'auto',
     },
-    minimumOrderValueInput: {
+    minOrderValueInput: {
       maxWidth: '36px',
       padding: '2px',
       marginLeft: 'auto',
@@ -74,7 +74,7 @@ const useStyles = (props) => {
   }));
 };
 
-function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber }) {
+function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
   const classes = useStyles({ color })();
   const dispatch = useDispatch();
   const { activeArea, areas } = useSelector((state) => ({
@@ -93,7 +93,7 @@ function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber })
       const center = areas.find((area) => area.areaNumber === areaNumber).center;
       map.flyTo(center, 11, {
         animate: true,
-        duration: 0.75,
+        duration: 0.5,
       });
     }
   };
@@ -143,7 +143,7 @@ function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber })
 
     value = Number(value);
     if (value > -1 && value < 100) {
-      dispatch(setMinimumOrderValue({ value: value, areaNumber: areaNumber }));
+      dispatch(setMinOrderValue({ value: value, areaNumber: areaNumber }));
     }
   };
 
@@ -163,7 +163,7 @@ function AreaEntry({ color, index, minimumOrderValue, deliveryFee, areaNumber })
         <Divider orientation="vertical" flexItem />
         <DeliveryFeeInput onChangeDeliveryFee={onChangeDeliveryFee} deliveryFee={deliveryFee} />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
-        <MinimumOrderValueInput onChangeOrderValue={onChangeOrderValue} minimumOrderValue={minimumOrderValue} />
+        <MinimumOrderValueInput onChangeOrderValue={onChangeOrderValue} minOrderValue={minOrderValue} />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
         <IconButton className={classes.editIcon} size="small" onClick={handleAddPolygon}>
           <Add />

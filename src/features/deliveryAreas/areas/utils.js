@@ -1,17 +1,17 @@
 import polygonClipping from 'polygon-clipping';
 
 const _colors = [
+  '#c566ee',
+  '#01afe3',
   '#ff4d49',
-  '#0055cf',
   '#d7c930',
+  '#e92199',
+  '#745300',
   '#762caa',
   '#ffa952',
-  '#c566ee',
-  '#745300',
-  '#e92199',
   '#00b6aa',
   '#a11c28',
-  '#01afe3',
+  '#0055cf',
 ];
 let availableColors = [];
 let usedColors = [];

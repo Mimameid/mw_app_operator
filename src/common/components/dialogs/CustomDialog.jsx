@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CustomDialog({ open, title, message, handleReject, handleAccept }) {
+function CustomDialog({ open, title, message, acceptText, rejectText, handleReject, handleAccept }) {
   const classes = useStyles(makeStyles);
   return (
     <Dialog
@@ -64,10 +64,10 @@ function CustomDialog({ open, title, message, handleReject, handleAccept }) {
       </DialogContent>
       <DialogActions className={classes.dialogActions}>
         <Button onClick={handleReject} autoFocus>
-          Abbrechen
+          {rejectText ? rejectText : 'Abbrechen'}
         </Button>
         <Button onClick={handleAccept} color="primary" variant="contained">
-          Ja, weiter
+          {acceptText ? acceptText : '   Ja, weiter'}
         </Button>
       </DialogActions>
     </Dialog>
