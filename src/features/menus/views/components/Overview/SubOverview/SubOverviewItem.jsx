@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { selectItem } from 'features/menus/views/viewsSlice';
+import { selectItem } from 'features/menus/views/slice';
 
 import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import EditSub from 'features/menus/subs/components/EditSub';

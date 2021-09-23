@@ -14,7 +14,10 @@ function FormCheckboxField({ control, name, items, ...props }) {
 
   return (
     <FormControl fullWidth>
-      <FormControlLabel control={<Checkbox color="primary" checked={inputProps.value} {...inputProps} />} {...props} />
+      <FormControlLabel
+        control={<Checkbox color="primary" checked={inputProps.value} {...inputProps} {...props} />}
+        {...props}
+      />
       <FormHelperText error={error}>{error ? error.message : null}</FormHelperText>
     </FormControl>
   );

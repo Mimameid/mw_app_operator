@@ -1,10 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 import { selectActiveMenu } from 'features/menus/menus/slice';
 
-import { Grid, List, ListSubheader, Divider, makeStyles } from '@material-ui/core';
+import { Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import MenuOverviewItem from './MenuOverviewItem';
-import { useSelector } from 'react-redux';
 import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,9 +22,12 @@ const useStyles = makeStyles((theme) => ({
 
 function MenuOverview() {
   const classes = useStyles();
-  const menus = useSelector((state) => state.menus.menus.byId);
+  const menusArray = useSelector((state) => {
+    let menusArray = Object.values(state.menus.menus.byId);
+    menusArray.sort((a, b) => a.name.localeCompare(b.name));
+    return menusArray;
+  });
   const activeMenu = useSelector(selectActiveMenu);
-
   const selectedMenuId = useSelector((state) => state.menus.views.itemId);
 
   return (
@@ -51,10 +54,11 @@ function MenuOverview() {
           </Grid>
         </Grid>
       </ListSubheader>
-      {Object.values(menus).length === 0 ? (
+      <Divider />
+      {menusArray.length === 0 ? (
         <EmptyView>Keine Menüs verfügbar. Bitte fügen Sie ein Menü hinzu...</EmptyView>
       ) : (
-        Object.values(menus).map((menu, index) => (
+        menusArray.map((menu, index) => (
           <React.Fragment key={nanoid()}>
             <MenuOverviewItem menu={menu} activeMenuId={activeMenu?.id} selected={menu.id === selectedMenuId} />
             <Divider />

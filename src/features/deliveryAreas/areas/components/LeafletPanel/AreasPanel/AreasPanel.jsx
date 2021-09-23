@@ -28,7 +28,7 @@ function AreasPanel({ draw, edited, areas, areaNumber }) {
         <React.Fragment key={index}>
           <AreaEntry
             color={area.color}
-            minimumOrderValue={area.minimumOrderValue}
+            minOrderValue={area.minOrderValue}
             deliveryFee={area.deliveryFee}
             areaNumber={area.areaNumber}
             currentAreaNumber={areaNumber}

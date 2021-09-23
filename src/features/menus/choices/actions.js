@@ -20,10 +20,8 @@ export const updateChoice = createAsyncThunk('dishes/updateChoice', async (data,
 
   const fetchParams = createFetchParams('owner/menus/choices', 'PUT', { dishes, choice });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
-
   if (response.ok) {
     const data = await response.json();
-    console.log(data);
     return Promise.resolve(data);
   } else {
     return createError('Fehler beim Aktualisieren der Optiongruppe.', response.status);

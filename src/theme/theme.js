@@ -9,7 +9,8 @@ const theme = createTheme({
       contrastText: '#fff',
     },
     divider: 'rgba(0, 0, 0, 0.12)',
-    text: { primary: 'rgb(23, 43, 77)' },
+    text: { primary: '#132F4C' },
+
     background: {
       default: '#f4f5f7',
       footer: '#0C1324',
@@ -50,7 +51,7 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 600, // due to Tabs component not wrappong properly if changed
+      sm: 640, // due to Tabs component not wrappong properly if changed
       md: 960,
       lg: 1280,
       xl: 1920,
@@ -59,9 +60,13 @@ const theme = createTheme({
   typography: {
     fontFamily:
       "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'",
+
     h4: {
       fontWeight: 600,
       fontSize: '1.8725rem',
+    },
+    body1: {
+      lineHeight: '1.4',
     },
   },
   shape: {

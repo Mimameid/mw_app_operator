@@ -1,5 +1,13 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { fetchAllMenus, createMenu, updateMenu, deleteMenu, addCategories, removeCategory, setActive } from './actions';
+import {
+  fetchAllMenus,
+  createMenu,
+  updateMenu,
+  deleteMenu,
+  addCategories,
+  removeCategory,
+  activateMenu,
+} from './actions';
 import { createCategory, updateCategory } from '../categories/actions';
 
 // reducer
@@ -19,7 +27,7 @@ const slice = createSlice({
       .addCase(createMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
       })
-      .addCase(setActive.fulfilled, (state, action) => {
+      .addCase(activateMenu.fulfilled, (state, action) => {
         const menu = state.byId[action.payload.menuId];
         menu.active = action.payload.active;
 

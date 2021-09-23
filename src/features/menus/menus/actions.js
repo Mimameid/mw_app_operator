@@ -71,8 +71,7 @@ export const removeCategory = createAsyncThunk('menus/removeCategory', async (da
   }
 });
 
-export const setActive = createAsyncThunk('menus/setActive', async (data, thunkAPI) => {
-  console.log(data);
+export const activateMenu = createAsyncThunk('menus/activateMenu', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/menus/active', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 

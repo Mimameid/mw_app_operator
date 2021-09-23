@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteMenu, setActive } from 'features/menus/menus/actions';
-import { selectItem } from 'features/menus/views/viewsSlice';
+import { deleteMenu, activateMenu } from 'features/menus/menus/actions';
+import { selectItem } from 'features/menus/views/slice';
 
 import { Box, Grid, IconButton, ListItem, makeStyles, Switch } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
@@ -70,7 +70,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
   }
 
   function handleSwitchAcceptDialog(event) {
-    dispatch(setActive({ menuId: menu.id, activeMenuId, active: ref.current }));
+    dispatch(activateMenu({ menuId: menu.id, activeMenuId, active: ref.current }));
     setDialogOpen(false);
   }
 

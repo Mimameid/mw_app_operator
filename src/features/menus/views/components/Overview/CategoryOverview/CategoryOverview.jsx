@@ -21,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 function CategoryOverview() {
   const classes = useStyles();
-  const categories = useSelector((state) => state.menus.categories.byId);
+  const categoriesArray = useSelector((state) => {
+    let categoriesArray = Object.values(state.menus.categories.byId);
+    categoriesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return categoriesArray;
+  });
   const selectedCategoryId = useSelector((state) => state.menus.views.itemId);
 
   return (
@@ -46,10 +50,10 @@ function CategoryOverview() {
         </Grid>
       </ListSubheader>
       <Divider className={classes.divider} />
-      {Object.values(categories).length === 0 ? (
+      {categoriesArray.length === 0 ? (
         <EmptyView>Keine Kategorien verfügbar. Bitte fügen Sie eine Kategorie hinzu...</EmptyView>
       ) : (
-        Object.values(categories).map((category, index) => (
+        categoriesArray.map((category, index) => (
           <React.Fragment key={nanoid()}>
             <CategoryOverviewItem category={category} selected={category.id === selectedCategoryId} />
             <Divider />

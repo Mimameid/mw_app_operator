@@ -103,7 +103,9 @@ function FormPriceField({ control, name, ...props }) {
     <TextField
       inputRef={ref}
       // inputProps={{ inputMode: 'numeric' }}
-      InputProps={{ endAdornment: <InputAdornment position="end">€</InputAdornment> }}
+      InputProps={{
+        endAdornment: <InputAdornment position="end">{props.adornment ? props.adornment : '€'}</InputAdornment>,
+      }}
       placeholder="00,00"
       error={!!error}
       helperText={error ? error.message : null}

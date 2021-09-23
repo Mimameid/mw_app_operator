@@ -6,7 +6,7 @@ import { Box, Button, Grid, Toolbar, makeStyles } from '@material-ui/core';
 import Overview from 'features/menus/views/components/Overview/Overview';
 import ItemView from 'features/menus/views/components/ItemView/ItemView';
 import LoadingScreen from './LoadingScreen';
-import ContentHeader from 'common/components/ContentHeader';
+import ContentHeader from 'common/components/other/ContentHeader';
 
 import MenuModal from 'features/menus/menus/components/MenuModal';
 import CategoryModal from 'features/menus/categories/components/CategoryModal';

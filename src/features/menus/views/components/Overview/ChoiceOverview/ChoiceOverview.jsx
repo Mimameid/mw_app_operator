@@ -21,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 function ChoiceOverview() {
   const classes = useStyles();
-  const choices = useSelector((state) => state.menus.choices.byId);
+  const choicesArray = useSelector((state) => {
+    let choicesArray = Object.values(state.menus.choices.byId);
+    choicesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return choicesArray;
+  });
   const selectedChoiceId = useSelector((state) => state.menus.views.itemId);
 
   return (
@@ -46,10 +50,10 @@ function ChoiceOverview() {
         </Grid>
       </ListSubheader>
       <Divider className={classes.divider} />
-      {Object.values(choices).length === 0 ? (
+      {choicesArray.length === 0 ? (
         <EmptyView>Keine Optiongruppen verfügbar. Bitte fügen Sie eine Optiongruppe hinzu...</EmptyView>
       ) : (
-        Object.values(choices).map((choice, index) => (
+        choicesArray.map((choice, index) => (
           <React.Fragment key={nanoid()}>
             <ChoiceOverviewItem choice={choice} selected={choice.id === selectedChoiceId} />
             <Divider />

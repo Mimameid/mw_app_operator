@@ -27,7 +27,7 @@ function CategoryDishes({ category }) {
     </Paper>
   ) : (
     <Box color="text.secondary" fontStyle="italic">
-      Keine Speisen verfügbar. Bitte fügen Sie eine Speise hinzu...
+      Diese Kategorie hat noch keine Speisen. Bitte fügen Sie eine Speise hinzu...
     </Box>
   );
 }

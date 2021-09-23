@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { selectGroup } from '../../viewsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectGroup } from '../../slice';
 
 import { Paper, Box, Tabs, makeStyles } from '@material-ui/core';
 import GroupTab from './GroupTab';
@@ -32,8 +32,9 @@ const tabNames = ['Menüs', 'Kategorien', 'Speisen', 'Optiongruppe', 'Optionen']
 function Overview() {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const group = useSelector((state) => state.menus.views.group);
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(group);
 
   const handleChange = (event, newValue) => {
     dispatch(selectGroup(newValue));

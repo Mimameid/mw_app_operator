@@ -11,7 +11,7 @@ import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
 import useDetectFormChange from 'common/hooks/useDetectFormChange';
 import { Box, Button, Grid, Paper, Toolbar, Avatar, makeStyles } from '@material-ui/core';
 import LoadingScreen from './LoadingScreen';
-import ContentHeader from 'common/components/ContentHeader';
+import ContentHeader from 'common/components/other/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
 import FormSwitch from 'common/components/form/FormSwitch';
@@ -219,7 +219,7 @@ function Shop({ name }) {
                           label="Servicearten*"
                           items={SERVICE_TYPES}
                           control={control}
-                          variant="outlined"
+                          // variant="outlined"
                         />
                       </Box>
                     </Grid>

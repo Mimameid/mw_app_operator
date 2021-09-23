@@ -1,17 +1,7 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  Checkbox,
-  ListItemText,
-  Chip,
-  makeStyles,
-} from '@material-ui/core';
+import { MenuItem, Checkbox, ListItemText, Chip, makeStyles, TextField } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   chips: {
@@ -73,23 +63,19 @@ function FormTagMultiSelect({ control, name, items, ...props }) {
   };
 
   return (
-    <FormControl fullWidth>
-      <InputLabel>{props.label}</InputLabel>
-      <Select
-        inputRef={ref}
-        error={!!error}
-        {...inputProps}
-        {...props}
-        multiple
-        multiline
-        MenuProps={{
+    <TextField
+      select
+      SelectProps={{
+        multiple: true,
+        value: inputProps.value,
+        MenuProps: {
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'left',
           },
           getContentAnchorEl: null,
-        }}
-        renderValue={(selected) => {
+        },
+        renderValue: (selected) => {
           return (
             <div className={classes.chips}>
               {selected.map((tag, _) => {
@@ -97,23 +83,28 @@ function FormTagMultiSelect({ control, name, items, ...props }) {
               })}
             </div>
           );
-        }}
-      >
-        {items.length > 0 ? (
-          items.map((tag) => (
-            <MenuItem key={tag} value={tag}>
-              <Checkbox color="primary" checked={inputProps.value.indexOf(tag) > -1} />
-              <ListItemText primary={tag} />
-            </MenuItem>
-          ))
-        ) : (
-          <MenuItem value="" disabled>
-            <em>Keine {props.label} vorhanden.</em>
+        },
+      }}
+      inputRef={ref}
+      error={!!error}
+      helperText={error ? error.message : null}
+      {...inputProps}
+      {...props}
+      fullWidth
+    >
+      {items.length > 0 ? (
+        items.map((tag) => (
+          <MenuItem key={tag} value={tag}>
+            <Checkbox color="primary" checked={inputProps.value.indexOf(tag) > -1} />
+            <ListItemText primary={tag} />
           </MenuItem>
-        )}
-      </Select>
-      <FormHelperText error={error}>{error ? error.message : null}</FormHelperText>
-    </FormControl>
+        ))
+      ) : (
+        <MenuItem value="" disabled>
+          <em>Keine {props.label} vorhanden.</em>
+        </MenuItem>
+      )}
+    </TextField>
   );
 }
 

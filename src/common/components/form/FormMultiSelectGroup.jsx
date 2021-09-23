@@ -1,16 +1,7 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-  Checkbox,
-  ListItemText,
-  makeStyles,
-} from '@material-ui/core';
+import { MenuItem, Checkbox, ListItemText, makeStyles, TextField } from '@material-ui/core';
 import TruncatedChip from 'features/menus/common/components/TruncatedChip';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,23 +34,19 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
   });
 
   return (
-    <FormControl fullWidth>
-      <InputLabel>{props.label}</InputLabel>
-      <Select
-        inputRef={ref}
-        error={!!error}
-        {...inputProps}
-        {...props}
-        multiple
-        multiline
-        MenuProps={{
+    <TextField
+      select
+      SelectProps={{
+        multiple: true,
+        value: inputProps.value,
+        MenuProps: {
           anchorOrigin: {
             vertical: 'bottom',
             horizontal: 'left',
           },
           getContentAnchorEl: null,
-        }}
-        renderValue={(selected) => {
+        },
+        renderValue: (selected) => {
           return (
             <div className={classes.chips}>
               {selected.map((item, _) => {
@@ -67,23 +54,28 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
               })}
             </div>
           );
-        }}
-      >
-        {items.length > 0 ? (
-          items.map((item) => (
-            <MenuItem key={item} value={item}>
-              <Checkbox color="primary" checked={inputProps.value.indexOf(item) > -1} />
-              <ListItemText primary={item[1]} />
-            </MenuItem>
-          ))
-        ) : (
-          <MenuItem value="" disabled>
-            <em>Keine {props.group} vorhanden.</em>
+        },
+      }}
+      inputRef={ref}
+      error={!!error}
+      helperText={error ? error.message : null}
+      {...inputProps}
+      {...props}
+      fullWidth
+    >
+      {items.length > 0 ? (
+        items.map((item) => (
+          <MenuItem key={item} value={item}>
+            <Checkbox color="primary" checked={inputProps.value.indexOf(item) > -1} />
+            <ListItemText primary={item[1]} />
           </MenuItem>
-        )}
-      </Select>
-      <FormHelperText error={error}>{error ? error.message : null}</FormHelperText>
-    </FormControl>
+        ))
+      ) : (
+        <MenuItem value="" disabled>
+          <em>Keine {props.group} vorhanden.</em>
+        </MenuItem>
+      )}
+    </TextField>
   );
 }
 

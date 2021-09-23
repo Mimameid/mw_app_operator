@@ -6,7 +6,7 @@ import MyResponsiveBar from 'features/dashboard/components/MyResponsiveBar';
 import MyResponsivePie from 'features/dashboard/components/MyResponsivePie';
 import MyResponsiveCalendar from 'features/dashboard/components/MyResponsiveCalendar';
 import MyResponsiveAreaBump from 'features/dashboard/components/MyResponsiveAreaBump';
-import ContentHeader from 'common/components/ContentHeader';
+import ContentHeader from 'common/components/other/ContentHeader';
 
 // import { useFetchUserData } from 'hooks/useFetchUserData';
 

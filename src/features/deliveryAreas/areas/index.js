@@ -16,7 +16,7 @@ import {
   rotatePolygon,
   saveArea,
   setDeliveryFee,
-  setMinimumOrderValue,
+  setMinOrderValue,
   updateVertex,
 } from './actions';
 
@@ -30,7 +30,7 @@ const initialState = {
     areaNumber: -1, // stores which of the areas is currently selected
     areaPolygons: [], // the coordinates of a geojson multipolygon
     selectedPolygonIndex: -1, // stores which of the polygons of the area is currently being edited
-    minimumOrderValue: 0,
+    minOrderValue: 0,
     deliveryFee: 0,
     color: null,
   },
@@ -49,7 +49,7 @@ const areas = createReducer(initialState, (builder) => {
         areaNumber: areaNumber,
         areaPolygons: [[[]]],
         selectedPolygonIndex: 0,
-        minimumOrderValue: 0,
+        minOrderValue: 0,
         deliveryFee: 0,
         color: colors.getColor(state.areas),
       };
@@ -95,7 +95,7 @@ const areas = createReducer(initialState, (builder) => {
           areaPolygons: newAreaPolygons,
           areaNumber: area.areaNumber,
 
-          minimumOrderValue: area.minimumOrderValue,
+          minOrderValue: area.minOrderValue,
           deliveryFee: area.deliveryFee,
           color: area.color,
         };
@@ -107,7 +107,7 @@ const areas = createReducer(initialState, (builder) => {
         areaNumber: -1,
         areaPolygons: [[[]]],
         selectedPolygonIndex: -1,
-        minimumOrderValue: 0,
+        minOrderValue: 0,
         deliveryFee: 0,
         color: null,
       };
@@ -197,12 +197,12 @@ const areas = createReducer(initialState, (builder) => {
         state.activeArea.areaPolygons[index[0]][index[1]] = [...ring.slice(0, index[2]), ...ring.slice(index[2] + 1)];
       }
     })
-    .addCase(setMinimumOrderValue, (state, action) => {
+    .addCase(setMinOrderValue, (state, action) => {
       const index = state.areas.findIndex((area) => area.areaNumber === action.payload.areaNumber);
-      state.areas[index].minimumOrderValue = action.payload.value;
+      state.areas[index].minOrderValue = action.payload.value;
 
       if (state.activeArea.areaNumber === action.payload.areaNumber) {
-        state.activeArea.minimumOrderValue = action.payload;
+        state.activeArea.minOrderValue = action.payload;
       }
     })
     .addCase(setDeliveryFee, (state, action) => {
@@ -222,7 +222,7 @@ const areas = createReducer(initialState, (builder) => {
         areaNumber: areaNumber,
         areaPolygons: newPolygons,
         selectedPolygonIndex: 0,
-        minimumOrderValue: 0,
+        minOrderValue: 0,
         deliveryFee: 0,
         color: colors.getColor(state.areas),
       };
@@ -251,7 +251,7 @@ const areas = createReducer(initialState, (builder) => {
           areaNumber: -1, // stores which of the areas is currently selected
           areaPolygons: [], // the coordinates of a geojson multipolygon
           selectedPolygonIndex: -1, // stores which of the polygons of the area is currently being edited
-          minimumOrderValue: 0,
+          minOrderValue: 0,
           deliveryFee: 0,
           color: null,
         },

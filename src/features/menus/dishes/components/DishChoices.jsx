@@ -17,7 +17,7 @@ function DishChoices({ dish }) {
     </Grid>
   ) : (
     <Box color="text.secondary" fontStyle="italic">
-      Keine Optiongruppe verfügbar. Bitte fügen Sie eine Optiongruppe hinzu...
+      Diese Speise hat noch keine Optiongruppen...
     </Box>
   );
 }

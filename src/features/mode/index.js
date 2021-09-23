@@ -8,7 +8,7 @@ import {
   removeVertex,
   saveArea,
   setDeliveryFee,
-  setMinimumOrderValue,
+  setMinOrderValue,
   updateAreas,
   updateVertex,
 } from 'features/deliveryAreas/areas/actions';
@@ -33,7 +33,7 @@ const mode = createReducer(initialState, (builder) =>
       state.changed = false;
     })
     .addMatcher(
-      isAnyOf(createArea, removeArea, removePolygon, updateVertex, removeVertex, setDeliveryFee, setMinimumOrderValue),
+      isAnyOf(createArea, removeArea, removePolygon, updateVertex, removeVertex, setDeliveryFee, setMinOrderValue),
       (state, action) => {
         state.changed = true;
       },

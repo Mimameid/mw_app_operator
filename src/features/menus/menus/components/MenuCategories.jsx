@@ -27,7 +27,7 @@ function MenuCategories({ menu }) {
         ))
       ) : (
         <Box color="text.secondary" fontStyle="italic" p={2}>
-          Keine Kategorien verfügbar. Bitte fügen Sie eine Kategorie hinzu...
+          Dieses Menü hat noch keine Kategorien. Bitte fügen Sie eine Kategorie hinzu...
         </Box>
       )}
     </List>

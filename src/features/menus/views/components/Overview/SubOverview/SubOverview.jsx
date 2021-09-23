@@ -21,7 +21,11 @@ const useStyles = makeStyles((theme) => ({
 
 function SubOverview() {
   const classes = useStyles();
-  const subs = useSelector((state) => state.menus.subs.byId);
+  const subsArray = useSelector((state) => {
+    let subsArray = Object.values(state.menus.subs.byId);
+    subsArray.sort((a, b) => a.name.localeCompare(b.name));
+    return subsArray;
+  });
   const selectedSubId = useSelector((state) => state.menus.views.itemId);
 
   return (
@@ -41,10 +45,10 @@ function SubOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      {Object.values(subs).length === 0 ? (
+      {subsArray.length === 0 ? (
         <EmptyView>Keine Optiongruppe verfügbar. Bitte fügen Sie ein Optiongrupp hinzu...</EmptyView>
       ) : (
-        Object.values(subs).map((sub, index) => (
+        subsArray.map((sub, index) => (
           <React.Fragment key={nanoid()}>
             <SubOverviewItem sub={sub} selected={sub.id === selectedSubId} />
             <Divider />

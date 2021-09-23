@@ -17,7 +17,7 @@ export const rotatePolygon = createAction('areas/rotatePolygon');
 export const addVertex = createAction('areas/addVertex');
 export const updateVertex = createAction('areas/updateVertex');
 export const removeVertex = createAction('areas/removeVertex');
-export const setMinimumOrderValue = createAction('areas/setMinimumOrderValue');
+export const setMinOrderValue = createAction('areas/setminOrderValue');
 export const setDeliveryFee = createAction('areas/setDeliveryFee');
 
 export const fetchAreas = createAsyncThunk('deliveryAreas/areas/fetchAreas', async (_, thunkAPI) => {
@@ -42,7 +42,7 @@ export const fetchAreas = createAsyncThunk('deliveryAreas/areas/fetchAreas', asy
         areaPolygons: areaPolygons,
 
         deliveryFee: entry.deliveryFee,
-        minimumOrderValue: entry.minimumOrderValue,
+        minOrderValue: entry.minOrderValue,
         color: colors.getColor(),
         center: getCenter(areaPolygons),
       };
@@ -58,7 +58,7 @@ export const updateAreas = createAsyncThunk('deliveryAreas/areas/updateAreas', a
     areas: areas.areas.map((area, _) => ({
       areaPolygons: area.areaPolygons,
       deliveryFee: area.deliveryFee,
-      minimumOrderValue: area.minimumOrderValue,
+      minOrderValue: area.minOrderValue,
     })),
     version: areas.version,
   };
