@@ -1,12 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { deleteDiscount } from '../discounts/actions';
 // import { deleteCategory } from '../categories/actions';
-// import { deleteChoice } from '../choices/actions';
-// import { deleteDish } from '../dishes/actions';
-// import { deleteMenu } from '../menus/actions';
-// import { deleteSub } from '../subs/actions';
 
 const initialState = {
-  group: 0, // menus = 0, categories = 1, dishes = 2, choices = 3, options = 4
+  group: 0, // discounts = 0, coupons = 1,
   itemId: null,
 };
 
@@ -23,32 +20,16 @@ const viewsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // builder
-    //   .addCase(deleteMenu.fulfilled, (state, action) => {
-    //     if (state.group === 0 && state.itemId === action.payload) {
-    //       state.itemId = null;
-    //     }
-    //   })
+    builder.addCase(deleteDiscount.fulfilled, (state, action) => {
+      if (state.group === 0 && state.itemId === action.payload) {
+        state.itemId = null;
+      }
+    });
     //   .addCase(deleteCategory.fulfilled, (state, action) => {
     //     if (state.group === 1 && state.itemId === action.payload) {
     //       state.itemId = null;
     //     }
     //   })
-    //   .addCase(deleteDish.fulfilled, (state, action) => {
-    //     if (state.group === 2 && state.itemId === action.payload) {
-    //       state.itemId = null;
-    //     }
-    //   })
-    //   .addCase(deleteChoice.fulfilled, (state, action) => {
-    //     if (state.group === 3 && state.itemId === action.payload) {
-    //       state.itemId = null;
-    //     }
-    //   })
-    //   .addCase(deleteSub.fulfilled, (state, action) => {
-    //     if (state.group === 4 && state.itemId === action.payload) {
-    //       state.itemId = null;
-    //     }
-    //   });
   },
 });
 

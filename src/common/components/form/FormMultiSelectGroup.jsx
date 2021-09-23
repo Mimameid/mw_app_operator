@@ -26,9 +26,9 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
 
   // all values and current values have to be identical otherwise it will be shown as distinugish values, even though they have the same value
   inputProps.value = inputProps.value.map((item) => {
-    for (let menuIdToName of items) {
-      if (item[0] === menuIdToName[0]) {
-        return menuIdToName;
+    for (let itemIdToName of items) {
+      if (item[0] === itemIdToName[0]) {
+        return itemIdToName;
       }
     }
   });

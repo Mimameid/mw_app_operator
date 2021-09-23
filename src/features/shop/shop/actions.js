@@ -32,7 +32,6 @@ export const updateShop = createAsyncThunk('shop/shop/updateShop', async (data, 
 
   const fetchParams = createFetchParams('owner/shop/', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
-  console.log(data);
   if (response.ok) {
     return Promise.resolve({ data, message: 'Daten erfolgreich aktualisiert.' });
   } else {

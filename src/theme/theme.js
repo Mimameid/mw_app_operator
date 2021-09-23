@@ -3,11 +3,17 @@ import { createTheme } from '@material-ui/core/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      light: '#64cfbf',
-      main: '#2a9d8f',
-      dark: '#006e62',
+      light: '#97c7dc',
+      main: '#6796aa',
+      dark: '#38687b',
       contrastText: '#fff',
     },
+    // primary: {
+    //   light: '#64cfbf',
+    //   main: '#2a9d8f',
+    //   dark: '#006e62',
+    //   contrastText: '#fff',
+    // },
     divider: 'rgba(0, 0, 0, 0.12)',
     text: { primary: '#132F4C' },
 
@@ -20,6 +26,7 @@ const theme = createTheme({
     },
     action: {
       hoverOpacity: 0.15,
+      disabledOpacity: 'rgba(0,0,0,0.38)',
     },
     food_tags: {
       // halal: {

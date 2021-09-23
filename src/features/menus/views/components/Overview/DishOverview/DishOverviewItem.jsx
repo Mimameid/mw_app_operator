@@ -78,7 +78,7 @@ function DishOverviewItem({ dish, selected }) {
               inputProps={{ 'aria-label': 'dish available checkbox' }}
             />
           </TruncatedGridItem>
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>

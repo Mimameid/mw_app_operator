@@ -58,7 +58,7 @@ function SubOverviewItem({ sub, selected }) {
           <TruncatedGridItem item xs={3}>
             {new Date(sub.created).toLocaleDateString('DE-de')}
           </TruncatedGridItem>
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>

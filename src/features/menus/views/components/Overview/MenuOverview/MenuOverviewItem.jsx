@@ -126,7 +126,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
             </TruncatedGridItem>
           ) : null}
 
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>

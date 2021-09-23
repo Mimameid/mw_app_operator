@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createDiscount, updateDiscount } from '../actions';
+import { discountTypes, weekdays } from 'common/constants';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid, Paper } from '@material-ui/core';
-
 import FormTextField from 'common/components/form/FormTextField';
-
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormWeekdayField from './FormWeekdayField';
 import FormDateRange from './FormDateRange';
@@ -17,12 +16,11 @@ import FormTimeRange from './FormTimeRange';
 import ResponsiveModal from 'common/components/other/ResponsiveModal';
 import FormDiscount from './FormDiscount';
 import FormEffectedItems from './FormEffectedItems';
-import { weekdays } from 'common/constants';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup.string('Geben Sie eine Beschreibung ein.').max(255, 'Beschreibung zu lang.').optional(),
-  type: yup.number('Geben Sie an, welcher Typ betroffen ist.').oneOf([0, 1, 2]).required(),
+  type: yup.string('Geben Sie an, welcher Typ betroffen ist.').oneOf(Object.keys(discountTypes)).required(),
   effectedItems: yup
     .array('Geben Sie die betroffenen Items an.')
     .of(yup.array().of(yup.string()))
@@ -61,7 +59,7 @@ const schema = yup.object({
     }),
   weekdays: yup
     .array()
-    .of(yup.string().oneOf(Object.values(weekdays), 'Wochentag muss aus den gegebenen Optionen ausgewählt werden.')),
+    .of(yup.string().oneOf(Object.keys(weekdays), 'Wochentag muss aus den gegebenen Optionen ausgewählt werden.')),
   allDay: yup.boolean('Geben Sie an, ob der Nachlass ganztätig ist.').required('Angabe ist erforderlich'),
   time: yup
     .object({
@@ -85,7 +83,7 @@ const schema = yup.object({
 
 function DiscountModal({ open, onClose, discount }) {
   const dispatch = useDispatch();
-  console.log(discount);
+
   const { handleSubmit, control, reset, setValue, watch } = useForm({
     mode: 'onTouched',
     defaultValues: {
@@ -106,7 +104,7 @@ function DiscountModal({ open, onClose, discount }) {
         endDate: Date.now(),
       },
 
-      weekdays: [],
+      weekdays: Object.keys(weekdays),
 
       allDay: false,
       time: {
@@ -114,7 +112,7 @@ function DiscountModal({ open, onClose, discount }) {
         endTime: '10:00',
       },
 
-      type: 0,
+      type: discountTypes.menu,
       effectedItems: [],
     },
     resolver: yupResolver(schema),
@@ -131,9 +129,9 @@ function DiscountModal({ open, onClose, discount }) {
       setValue('name', discount.name);
       setValue('desc', discount.desc);
       setValue('combinable', discount.combinable);
-      setValue('isFixedPrice', discount.repeating);
+      setValue('isFixedPrice', discount.isFixedPrice);
       setValue('fixedPrice', discount.fixedPrice);
-      setValue('percental', discount.repeating);
+      setValue('percental', discount.percental);
       setValue('reduction', discount.reduction);
       setValue('minOrderValue', discount.minOrderValue);
       setValue('repeating', discount.repeating);
@@ -198,7 +196,7 @@ function DiscountModal({ open, onClose, discount }) {
           <Paper variant="outlined">
             <FormDateRange control={control} repeating={watchRepeating} setValue={setValue} />
 
-            <FormWeekdayField />
+            <FormWeekdayField name="weekdays" control={control} setValue={setValue} />
             <FormTimeRange control={control} allDay={watchAllDay} setValue={setValue} />
           </Paper>
         </Grid>

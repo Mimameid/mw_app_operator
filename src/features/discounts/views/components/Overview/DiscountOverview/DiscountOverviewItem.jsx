@@ -2,22 +2,18 @@ import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectDiscountItem } from 'features/discounts/views/slice';
 import { deleteDiscount, setActivationDiscount } from 'features/discounts/discounts/actions';
+import { getDiscountTypeName } from 'common/constants';
 
 import { Box, Grid, IconButton, ListItem, Switch, makeStyles } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
 import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
-import { DeleteForever, Edit } from '@material-ui/icons';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
+import { DeleteForever, Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
-  noHover: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.light + '33',
-    },
-  },
   highlight: {
-    background: theme.palette.primary.light + '33',
+    background: theme.palette.primary.light + '85',
   },
   hidden: {
     visibility: 'hidden',
@@ -88,7 +84,7 @@ function DiscountOverviewItem({ discount, selected }) {
         button={!selected}
         onClick={!selected ? handleSelectMenu : null}
       >
-        <Grid container>
+        <Grid container wrap={'nowrap'}>
           <TruncatedGridItem item xs={2}>
             {discount.id}
           </TruncatedGridItem>
@@ -99,7 +95,7 @@ function DiscountOverviewItem({ discount, selected }) {
             {discount.desc}
           </TruncatedGridItem>
           <TruncatedGridItem item xs={2}>
-            {discount.type}
+            {getDiscountTypeName(discount.type)}
           </TruncatedGridItem>
           <TruncatedGridItem item xs={2}>
             {new Date(discount.created).toLocaleDateString('DE-de')}
@@ -114,13 +110,13 @@ function DiscountOverviewItem({ discount, selected }) {
                 inputProps={{ 'aria-label': 'dish available checkbox' }}
               />
             </TruncatedGridItem>
-          ) : discount.active ? (
-            <TruncatedGridItem color={'green'} fontStyle={'italic'} item xs={1}>
-              aktiv
+          ) : (
+            <TruncatedGridItem color={discount.active ? 'green' : 'red'} fontStyle={'italic'} item xs={1}>
+              {discount.active ? 'aktiv' : 'inaktiv'}
             </TruncatedGridItem>
-          ) : null}
+          )}
 
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>

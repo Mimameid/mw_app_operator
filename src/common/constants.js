@@ -16,6 +16,25 @@ export const weekdays = {
   sunday: 'Sonntag',
 };
 
+export const discountTypes = {
+  menu: 'menu',
+  category: 'category',
+  dish: 'dish',
+};
+
+export const getDiscountTypeName = (type) => {
+  switch (type) {
+    case discountTypes.menu:
+      return 'Menüs';
+    case discountTypes.category:
+      return 'Kategorien';
+    case discountTypes.dish:
+      return 'Speisen';
+    default:
+      return '';
+  }
+};
+
 export const CUISINE_TYPES = [
   'Fleischgerichte',
   'Fischgerichte',
@@ -54,6 +73,7 @@ export const shopIcon = L.icon({
   iconUrl: shopSVG,
   iconSize: [36, 36],
   iconAnchor: [20, 32],
+  popupAnchor: [-2, -14],
 });
 
 export const STATUS_CODE = {
