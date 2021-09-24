@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(2),
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: 0,
+    },
   },
   innerContainer: {
     [theme.breakpoints.down('sm')]: {
@@ -100,8 +103,8 @@ function Discount() {
               </TruncatedBox>
             </Box>
             <Divider />
-            <Grid className={classes.container} container direction="column">
-              <Grid container>
+            <Grid container direction="column">
+              <Grid className={classes.container} container>
                 <Grid className={classes.innerContainer} item sm={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Typ
