@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
     // bug fix of material ui tabs responsiveness
     minWidth: '90px',
     padding: '14px 12px',
+    zIndex: 100,
   },
   selected: {
     color: theme.palette.common.white,

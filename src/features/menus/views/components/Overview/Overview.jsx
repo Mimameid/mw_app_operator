@@ -13,7 +13,6 @@ import SubOverview from './SubOverview/SubOverview';
 const useStyles = makeStyles((theme) => ({
   container: {
     position: 'relative',
-
     overflow: 'hidden',
   },
   tabs: {
@@ -21,9 +20,6 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[20],
   },
   listContainer: {
-    height: '264px',
-    overflow: 'auto',
-
     boxShadow: theme.shadows[3],
   },
 }));

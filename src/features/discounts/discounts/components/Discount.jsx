@@ -105,7 +105,7 @@ function Discount() {
             <Divider />
             <Grid container direction="column">
               <Grid className={classes.container} container>
-                <Grid className={classes.innerContainer} item sm={12} md={4}>
+                <Grid className={classes.innerContainer} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Typ
                   </Box>
@@ -113,13 +113,13 @@ function Discount() {
                     <Box>{getDiscountTypeName(discount.type)}rabatt</Box>
                   </Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item sm={12} md={4}>
+                <Grid className={classes.innerContainer} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Betroffene {getDiscountTypeName(discount.type)}
                   </Box>
                   <Box>{discount.effectedItems.map((item, index) => item[1]).join(', ')}</Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item sm={12} md={4}>
+                <Grid className={classes.innerContainer} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     {discount.isFixedPrice ? <Box> Festpreis</Box> : <Box> Nachlass</Box>}
                   </Box>
@@ -127,11 +127,19 @@ function Discount() {
                     <Box> {discount.fixedPrice}</Box>
                   ) : (
                     <React.Fragment>
-                      <Box>
-                        Nachlass: {discount.reduction}
-                        {discount.percental ? '%' : '€'}
+                      <Box display="flex">
+                        <Box>Nachlass:</Box>
+                        <Box color="primary.main" fontWeight="fontWeightBold" pl={1}>
+                          {discount.reduction}
+                          {discount.percental ? '%' : '€'}
+                        </Box>
                       </Box>
-                      <Box> Midnestbestellwert: {discount.minOrderValue}€</Box>
+                      <Box display="flex">
+                        <Box>Midnestbestellwert:</Box>
+                        <Box color="primary.main" fontWeight="fontWeightBold" pl={1}>
+                          {discount.minOrderValue}€
+                        </Box>
+                      </Box>
                     </React.Fragment>
                   )}
                 </Grid>
@@ -139,7 +147,7 @@ function Discount() {
 
               <Divider />
               <Grid className={classes.container} container>
-                <Grid className={classes.innerContainer} item sm={12} md={4}>
+                <Grid className={classes.innerContainer} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Zeitraum
                   </Box>
@@ -151,11 +159,14 @@ function Discount() {
                         <Box>{new Date(discount.date.startDate).toLocaleDateString('de-DE')}</Box>
                         <Box px={1}> - </Box>
                         <Box>{new Date(discount.date.endDate).toLocaleDateString('de-DE')}</Box>
+                        <Box color="error.main" fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+                          {discount.expired ? 'abgelaufen' : null}
+                        </Box>
                       </Box>
                     )}
                   </Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item sm={12} md={4}>
+                <Grid className={classes.innerContainer} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Wochentage
                   </Box>
@@ -175,15 +186,19 @@ function Discount() {
                     })}
                   </Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item sm={12} md={4}>
+                <Grid className={classes.innerContainer} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Uhrzeit
                   </Box>
-                  <Box display="flex">
-                    <Box>{discount.time.startTime} Uhr</Box>
-                    <Box px={1}> - </Box>
-                    <Box>{discount.time.endTime} Uhr</Box>
-                  </Box>
+                  {discount.allDay ? (
+                    <Box>Ganztags</Box>
+                  ) : (
+                    <Box display="flex">
+                      <Box>{discount.time.startTime} Uhr</Box>
+                      <Box px={1}> - </Box>
+                      <Box>{discount.time.endTime} Uhr</Box>
+                    </Box>
+                  )}
                 </Grid>
               </Grid>
             </Grid>

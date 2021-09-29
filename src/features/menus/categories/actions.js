@@ -46,7 +46,7 @@ export const addDishes = createAsyncThunk('categories/addDishes', async (data, t
   if (response.ok) {
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Hinzufügen der Speise.', response.status);
+    return createError('Fehler beim Erstellen der Speise.', response.status);
   }
 });
 

@@ -27,26 +27,12 @@ const schema = yup.object({
     .min(1, 'Es muss mindestens 1 Item ausgewählt werden.')
     .required('Betroffene Items sind erforderlich.'),
   isFixedPrice: yup.boolean('Geben Sie an, ob es ein Festpreis ist.').required('Angabe ist erforderlich.'),
-  fixedPrice: yup
-    .string('Geben Sie die Höhe des Festpreises ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Preis muss eine Dezimalzahl sein.')
-    .required('Festpreis ist erforderlich.'),
-  reduction: yup
-    .string('Geben Sie die Höhe des Nachlasses ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Nachlass muss eine Dezimalzahl sein.')
-    .required('Nachlass ist erforderlich.'),
+  fixedPrice: yup.number('Geben Sie die Höhe des Festpreises ein.').required('Festpreis ist erforderlich.'),
+  reduction: yup.number('Geben Sie die Höhe des Nachlasses ein.').required('Nachlass ist erforderlich.'),
   percental: yup
     .boolean('Geben Sie an, ob der Nachlass prozentual ist.')
     .required('Angabe des Typs des Nachlasses ist erforderlich'),
-
-  minOrderValue: yup
-    .string('Geben Sie einen Mindestbestellwert ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Mindestbestellwert muss eine Dezimalzahl sein.')
-    .required('Mindestbestellwert ist erforderlich.'),
-
+  minOrderValue: yup.number('Geben Sie einen Mindestbestellwert ein.').required('Mindestbestellwert ist erforderlich.'),
   repeating: yup.boolean('Geben Sie an, ob der Nachlass wiederkehrend ist.').required('Angabe ist erforderlich'),
   date: yup
     .object({
@@ -90,18 +76,18 @@ function DiscountModal({ open, onClose, discount }) {
       active: false,
       name: '',
       desc: '',
-      combinable: true,
+      combinable: false,
 
       isFixedPrice: false,
-      fixedPrice: '00,00',
+      fixedPrice: 0,
       percental: false,
-      reduction: '00,00',
-      minOrderValue: '00,00',
+      reduction: 0,
+      minOrderValue: 0,
 
       repeating: false,
       date: {
-        startDate: Date.now(),
-        endDate: Date.now(),
+        startDate: new Date().setHours(0, 0, 0, 0),
+        endDate: new Date().setHours(0, 0, 0, 0),
       },
 
       weekdays: Object.keys(weekdays),
@@ -117,6 +103,7 @@ function DiscountModal({ open, onClose, discount }) {
     },
     resolver: yupResolver(schema),
   });
+
   const watchRepeating = watch('repeating');
   const watchAllDay = watch('allDay');
   const watchPercental = watch('percental');
@@ -167,7 +154,7 @@ function DiscountModal({ open, onClose, discount }) {
   return (
     <ResponsiveModal
       open={open}
-      header={discount ? 'Rabatt bearbeiten' : 'Rabatt erstellen'}
+      header={discount ? 'Rabattaktion bearbeiten' : 'Rabattaktion erstellen'}
       acceptLabel={'Speichern'}
       onCancel={handleClose}
       onAccept={handleSubmit(onSubmit)}

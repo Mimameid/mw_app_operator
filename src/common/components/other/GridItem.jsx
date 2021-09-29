@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, makeStyles } from '@material-ui/core';
+import { Grid, makeStyles, useTheme } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   wrap: {
@@ -16,19 +16,28 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
     wordBreak: 'break-all',
     '&:hover': {
+      position: 'absolute',
+      maxWidth: '480px',
+      backgroundColor: 'white',
       whiteSpace: 'normal',
       overflow: 'visible',
+      boxShadow: theme.shadows[3],
+      padding: theme.spacing(1),
+      borderRadius: theme.spacing(1),
+      zIndex: 1000,
     },
   },
 }));
 
-function TruncatedGridItem(props) {
+function GridItem(props) {
   const classes = useStyles();
-
+  const theme = useTheme();
+  const color =
+    props.color === 'success' ? theme.palette.success.main : props.color === 'error' ? theme.palette.error.main : null;
   return (
     <React.Fragment>
       <Grid className={classes.wrap} {...props}>
-        <span className={classes.inner} style={{ color: props.color, fontStyle: props.fontStyle }}>
+        <span className={classes.inner} style={{ color, fontStyle: props.fontStyle }}>
           {props.children}
         </span>
       </Grid>
@@ -36,4 +45,4 @@ function TruncatedGridItem(props) {
   );
 }
 
-export default TruncatedGridItem;
+export default GridItem;

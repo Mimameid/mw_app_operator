@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDiscounts } from 'features/discounts/discounts/actions';
+import { fetchCoupons } from 'features/discounts/coupons/actions';
 import { nanoid } from 'common/constants';
 
 import { Grid, List, ListSubheader, Divider, makeStyles, Box } from '@material-ui/core';
-import DiscountOverviewItem from './DiscountOverviewItem';
+import CouponOverviewItem from './CouponOverviewItem';
 import GridHeaderItem from 'common/components/other/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 import Spinner from 'common/components/other/Spinner';
@@ -26,20 +26,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DiscountOverview() {
+function CouponOverview() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const discountsArray = useSelector((state) => {
-    let discountsArray = Object.values(state.discounts.discounts.byId);
-    discountsArray.sort((a, b) => a.name.localeCompare(b.name));
-    return discountsArray;
+  const couponsArray = useSelector((state) => {
+    let couponsArray = Object.values(state.discounts.coupons.byId);
+    couponsArray.sort((a, b) => a.name.localeCompare(b.name));
+    return couponsArray;
   });
-  const selectedDiscountId = useSelector((state) => state.discounts.views.itemId);
+  const selectedCouponId = useSelector((state) => state.discounts.views.itemId);
 
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchDiscounts()).then(() => setDataLoaded(true));
+    dispatch(fetchCoupons()).then(() => setDataLoaded(true));
   }, [dispatch]);
 
   return (
@@ -56,26 +56,26 @@ function DiscountOverview() {
             Beschreibung
           </GridHeaderItem>
           <GridHeaderItem item xs={2}>
-            Typ
+            Gutscheine
           </GridHeaderItem>
           <GridHeaderItem item xs={2}>
             Ablaufdatum
           </GridHeaderItem>
           <GridHeaderItem item xs={2}>
-            Aktiv
+            Wert
           </GridHeaderItem>
         </Grid>
       </ListSubheader>
       <Divider />
       <Box className={classes.listBody}>
         {dataLoaded ? (
-          discountsArray.length === 0 ? (
-            <EmptyView>Keine Rabattaktion verfügbar...</EmptyView>
+          couponsArray.length === 0 ? (
+            <EmptyView>Keine Couponaktion verfügbar...</EmptyView>
           ) : (
-            discountsArray.map((discount, index) => (
+            couponsArray.map((coupon, index) => (
               <React.Fragment key={nanoid()}>
-                <DiscountOverviewItem discount={discount} selected={discount.id === selectedDiscountId} />
-                {discountsArray.length >= 5 && index === discountsArray.length - 1 ? null : <Divider />}
+                <CouponOverviewItem coupon={coupon} selected={coupon.id === selectedCouponId} />
+                {couponsArray.length >= 5 && index === couponsArray.length - 1 ? null : <Divider />}
               </React.Fragment>
             ))
           )
@@ -87,4 +87,4 @@ function DiscountOverview() {
   );
 }
 
-export default DiscountOverview;
+export default CouponOverview;

@@ -6,7 +6,7 @@ import { selectItem } from 'features/menus/views/slice';
 import { Box, Grid, IconButton, ListItem, makeStyles, Switch } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 import MenuModal from 'features/menus/menus/components/MenuModal';
-import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
+import GridItem from 'common/components/other/GridItem';
 import { DeleteForever, Edit } from '@material-ui/icons';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 
@@ -95,23 +95,23 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
         onClick={!selected ? handleSelectMenu : null}
       >
         <Grid container>
-          <TruncatedGridItem item xs={2}>
+          <GridItem item xs={1}>
             {menu.id}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {menu.name}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {menu.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {menu.categories.length}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {new Date(menu.created).toLocaleDateString('DE-de')}
-          </TruncatedGridItem>
+          </GridItem>
           {selected ? (
-            <TruncatedGridItem item xs={1}>
+            <Grid item xs={1}>
               <Switch
                 checked={menu.active}
                 onChange={handleToggleActivateMenu}
@@ -119,14 +119,14 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
                 size="small"
                 inputProps={{ 'aria-label': 'dish available checkbox' }}
               />
-            </TruncatedGridItem>
+            </Grid>
           ) : menu.id === activeMenuId ? (
-            <TruncatedGridItem color={'green'} fontStyle={'italic'} item xs={1}>
+            <GridItem color={'green'} fontStyle={'italic'} item xs={1}>
               aktiv
-            </TruncatedGridItem>
+            </GridItem>
           ) : null}
 
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>

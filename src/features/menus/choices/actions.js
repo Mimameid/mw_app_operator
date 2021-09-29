@@ -45,7 +45,7 @@ export const addSubs = createAsyncThunk('choices/addSubs', async (data, thunkAPI
   if (response.ok) {
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Hinzufügen der Option.', response.status);
+    return createError('Fehler beim Erstellen der Option.', response.status);
   }
 });
 

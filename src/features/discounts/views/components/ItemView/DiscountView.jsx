@@ -11,7 +11,7 @@ function DiscountView() {
       <Discount />
     </React.Fragment>
   ) : (
-    <EmptyView>Wählen Sie ein Menü aus der Liste aus, um es anzuzeigen...</EmptyView>
+    <EmptyView>Wählen Sie eine Rabattaktion aus der Liste aus, um sie anzuzeigen...</EmptyView>
   );
 }
 

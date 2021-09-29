@@ -7,7 +7,8 @@ import { getDiscountTypeName } from 'common/constants';
 import { Box, Grid, IconButton, ListItem, Switch, makeStyles } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
-import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
+import GridItem from 'common/components/other/GridItem';
+import TruncatedBox from 'features/menus/common/components/TruncatedBox';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { DeleteForever, Edit } from '@material-ui/icons';
 
@@ -37,11 +38,11 @@ function DiscountOverviewItem({ discount, selected }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activateDialogOpen, setActivateDialogOpen] = useState(false);
   const [deactivateDialogOpen, setDectivateDialogOpen] = useState(false);
-  const [menuModalOpen, setMenuModalOpen] = useState(false);
+  const [discountModalOpen, setDiscountModalOpen] = useState(false);
   const ref = useRef(false);
 
   function editEntryHandler(event) {
-    setMenuModalOpen(true);
+    setDiscountModalOpen(true);
   }
 
   function handleSelectMenu(event) {
@@ -85,23 +86,28 @@ function DiscountOverviewItem({ discount, selected }) {
         onClick={!selected ? handleSelectMenu : null}
       >
         <Grid container wrap={'nowrap'}>
-          <TruncatedGridItem item xs={2}>
+          <GridItem item xs={1}>
             {discount.id}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {discount.name}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {discount.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {getDiscountTypeName(discount.type)}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
-            {new Date(discount.created).toLocaleDateString('DE-de')}
-          </TruncatedGridItem>
+          </GridItem>
+          <GridItem item xs={2}>
+            <TruncatedBox display="flex">
+              {new Date(discount.date.endDate).toLocaleDateString('DE-de')}
+              <TruncatedBox color="error.main" fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+                {discount.expired ? 'abgelaufen' : null}
+              </TruncatedBox>
+            </TruncatedBox>
+          </GridItem>
           {selected ? (
-            <TruncatedGridItem item xs={1}>
+            <GridItem item xs={1}>
               <Switch
                 checked={discount.active}
                 onChange={handleToggleActivateDiscount}
@@ -109,14 +115,14 @@ function DiscountOverviewItem({ discount, selected }) {
                 size="small"
                 inputProps={{ 'aria-label': 'dish available checkbox' }}
               />
-            </TruncatedGridItem>
+            </GridItem>
           ) : (
-            <TruncatedGridItem color={discount.active ? 'green' : 'red'} fontStyle={'italic'} item xs={1}>
+            <GridItem color={discount.active ? 'success' : 'error'} fontStyle={'italic'} item xs={1}>
               {discount.active ? 'aktiv' : 'inaktiv'}
-            </TruncatedGridItem>
+            </GridItem>
           )}
 
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>
@@ -128,7 +134,7 @@ function DiscountOverviewItem({ discount, selected }) {
       </ListItem>
       <WarningDialog
         open={dialogOpen}
-        title="Rabatt löschen?"
+        title="Rabattaktion löschen?"
         message="Dieser Vorgang kann nicht rückgängig gemacht werden."
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
@@ -136,20 +142,20 @@ function DiscountOverviewItem({ discount, selected }) {
       />
       <CustomDialog
         open={activateDialogOpen}
-        title="Rabatt aktivieren?"
-        message="Wenn Sie den Rabatt aktivieren, ist er ab sofort für die betroffenen Items wirksam."
+        title="Rabattaktion aktivieren?"
+        message="Wenn Sie die Rabattaktion aktivieren, ist sie ab sofort für die betroffenen Items wirksam."
         handleReject={handleRejectDialog}
         handleAccept={handleSwitchAcceptDialog}
       />
       <WarningDialog
         open={deactivateDialogOpen}
-        title="Rabatt deaktivieren?"
-        message="Wenn Sie den Rabatt deaktivieren, ist er ab sofort unwirksam."
+        title="Rabattaktion deaktivieren?"
+        message="Wenn Sie die Rabattaktion deaktivieren, ist sie ab sofort unwirksam."
         handleReject={handleRejectDialog}
         handleAccept={handleSwitchAcceptDialog}
         warning
       />
-      <DiscountModal open={menuModalOpen} onClose={() => setMenuModalOpen(false)} discount={discount} />
+      <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
     </React.Fragment>
   );
 }

@@ -7,8 +7,8 @@ import Overview from 'features/discounts/views/components/Overview/Overview';
 import ContentHeader from 'common/components/other/ContentHeader';
 import LoadingScreen from 'common/components/other/Spinner';
 import ItemView from 'features/discounts/views/components/ItemView/ItemView';
-
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
+import CouponModal from 'features/discounts/coupons/components/CouponModal';
 import { Add } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -77,7 +77,7 @@ function Discount({ name }) {
             color="primary"
             startIcon={<Add />}
           >
-            Hinzufügen
+            Erstellen
           </Button>
         </Box>
       </Box>
@@ -93,6 +93,7 @@ function Discount({ name }) {
       </Grid>
 
       <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} />
+      <CouponModal open={couponModal} onClose={() => setCouponModalOpen(false)} />
     </Box>
   ) : (
     <LoadingScreen />

@@ -2,8 +2,9 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 
-import { Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import CategoryOverviewItem from './CategoryOverviewItem';
+import GridHeaderItem from 'common/components/other/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
@@ -16,6 +17,10 @@ const useStyles = makeStyles((theme) => ({
 
     borderBottom: '1px solid ' + theme.palette.primary.main,
     boxShadow: theme.shadows[3],
+  },
+  listBody: {
+    overflow: 'auto',
+    height: '213px',
   },
 }));
 
@@ -32,34 +37,36 @@ function CategoryOverview() {
     <List className={classes.list}>
       <ListSubheader className={classes.listHeader}>
         <Grid container>
-          <Grid item xs={2}>
+          <GridHeaderItem item xs={1}>
             ID
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Name
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Beschreibung
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Speisen
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Erstellt
-          </Grid>
+          </GridHeaderItem>
         </Grid>
       </ListSubheader>
       <Divider className={classes.divider} />
-      {categoriesArray.length === 0 ? (
-        <EmptyView>Keine Kategorien verfügbar. Bitte fügen Sie eine Kategorie hinzu...</EmptyView>
-      ) : (
-        categoriesArray.map((category, index) => (
-          <React.Fragment key={nanoid()}>
-            <CategoryOverviewItem category={category} selected={category.id === selectedCategoryId} />
-            <Divider />
-          </React.Fragment>
-        ))
-      )}
+      <Box className={classes.listBody}>
+        {categoriesArray.length === 0 ? (
+          <EmptyView>Keine Kategorien verfügbar. Bitte erstellen Sie eine Kategorie...</EmptyView>
+        ) : (
+          categoriesArray.map((category, index) => (
+            <React.Fragment key={nanoid()}>
+              <CategoryOverviewItem category={category} selected={category.id === selectedCategoryId} />
+              {categoriesArray.length >= 5 && index === categoriesArray.length - 1 ? null : <Divider />}
+            </React.Fragment>
+          ))
+        )}
+      </Box>
     </List>
   );
 }

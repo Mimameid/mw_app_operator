@@ -2,8 +2,8 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { queryPlace } from 'features/shop/location/actions';
-
-import { Grid, Typography, makeStyles } from '@material-ui/core';
+import googleAttribution from 'assets/powered_by_google.png';
+import { Grid, Typography, makeStyles, Box } from '@material-ui/core';
 
 import RoomIcon from '@material-ui/icons/Room';
 
@@ -92,6 +92,10 @@ function AutocompleteDropdown({ open, onSelect }) {
                 );
               })
             : null}
+
+          <Box className={classes.textContainer} textAlign="center" style={{ maxHeight: '50px' }} p={2}>
+            <img alt="google icon" width={120} height={15} src={googleAttribution} style={{ margin: 'auto' }} />
+          </Box>
         </ul>
       </div>
     ) : null

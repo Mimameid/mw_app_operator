@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { Paper } from '@material-ui/core';
 import DiscountView from './DiscountView';
+import CouponView from './CouponView';
 
 function ItemView() {
   const group = useSelector((state) => state.discounts.views.group);
@@ -12,7 +13,7 @@ function ItemView() {
       case 0:
         return <DiscountView />;
       case 1:
-        return null;
+        return <CouponView />;
       default:
         return null;
     }

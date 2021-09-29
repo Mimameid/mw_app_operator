@@ -93,7 +93,7 @@ function Menu({ name }) {
             color="primary"
             startIcon={<Add />}
           >
-            Hinzufügen
+            Erstellen
           </Button>
         </Box>
       </Box>

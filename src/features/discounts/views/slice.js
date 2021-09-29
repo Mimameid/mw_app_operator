@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { deleteCoupon } from '../coupons/actions';
 import { deleteDiscount } from '../discounts/actions';
-// import { deleteCategory } from '../categories/actions';
 
 const initialState = {
   group: 0, // discounts = 0, coupons = 1,
@@ -20,11 +20,17 @@ const viewsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(deleteDiscount.fulfilled, (state, action) => {
-      if (state.group === 0 && state.itemId === action.payload) {
-        state.itemId = null;
-      }
-    });
+    builder
+      .addCase(deleteDiscount.fulfilled, (state, action) => {
+        if (state.group === 0 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      })
+      .addCase(deleteCoupon.fulfilled, (state, action) => {
+        if (state.group === 1 && state.itemId === action.payload) {
+          state.itemId = null;
+        }
+      });
     //   .addCase(deleteCategory.fulfilled, (state, action) => {
     //     if (state.group === 1 && state.itemId === action.payload) {
     //       state.itemId = null;

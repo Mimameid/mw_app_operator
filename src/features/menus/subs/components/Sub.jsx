@@ -56,7 +56,9 @@ function Sub({ subId, choice }) {
       </Grid>
 
       <Grid item style={{ marginLeft: 'auto' }}>
-        {parseFloat(sub.price.replace(',', '.')) > 0 ? sub.price + '€' : '-'}
+        <Box color="primary.main" fontWeight="fontWeightBold">
+          {sub.price}€
+        </Box>
       </Grid>
       <EditSub open={editSubOpen} setOpen={setEditSubOpen} sub={sub} />
     </Grid>

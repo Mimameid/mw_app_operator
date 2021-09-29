@@ -7,8 +7,8 @@ import FormPriceField from 'common/components/form/FormPriceField';
 function FormDiscountType({ control, isFixedPrice, percental, setValue }) {
   const handleChange = (event, newValue) => {
     setValue('isFixedPrice', newValue);
-    setValue('reduction', '00,00');
-    setValue('fixedPrice', '00,00');
+    setValue('reduction', 0);
+    setValue('fixedPrice', 0);
   };
 
   return (

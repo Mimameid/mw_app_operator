@@ -5,7 +5,7 @@ import { selectItem } from 'features/menus/views/slice';
 import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import EditChoice from 'features/menus/choices/components/EditChoice';
 import DeleteChoice from 'features/menus/choices/components/DeleteChoice';
-import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
+import GridItem from 'common/components/other/GridItem';
 import { DeleteForever, Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,22 +49,22 @@ function ChoiceOverviewItem({ choice, selected }) {
         onClick={!selected ? handleSelectChoice : null}
       >
         <Grid container>
-          <TruncatedGridItem item xs={2}>
+          <GridItem item xs={1}>
             {choice.id}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {choice.name}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {choice.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {choice.subs.length}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {new Date(choice.created).toLocaleDateString('DE-de')}
-          </TruncatedGridItem>
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} textAlign="right">
+          </GridItem>
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
