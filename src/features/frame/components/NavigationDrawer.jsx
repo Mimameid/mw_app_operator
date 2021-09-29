@@ -7,7 +7,18 @@ import { setDrawerOpen } from 'features/frame/actions';
 import { deactivateArea } from 'features/deliveryAreas/areas/actions';
 import routes from 'routes';
 
-import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles, useTheme } from '@material-ui/core';
+import {
+  Divider,
+  Drawer,
+  List,
+  Toolbar,
+  useMediaQuery,
+  Box,
+  Button,
+  makeStyles,
+  useTheme,
+  ListItem,
+} from '@material-ui/core';
 import NavigationLink from './NavigationLink';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { ExitToApp } from '@material-ui/icons';
@@ -51,11 +62,18 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     bottom: theme.spacing(1),
   },
+  logoutButtonInnerContainer: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(1),
+  },
   logoutButton: {
-    minWidth: '24px',
+    padding: '12px 16px 12px 14px',
+
     maxHeight: '46px',
-    padding: '12px 30px 12px 30px',
+    minWidth: '24px',
     justifyContent: 'flex-start',
+    alignItems: 'center',
     textTransform: 'none',
     '&:hover': {
       backgroundColor: theme.palette.primary.light + '28',
@@ -122,8 +140,28 @@ function NavigationDrawer() {
           ))}
         </List>
       </Box>
+
       <Box className={classes.logoutButtonContainer}>
         <Divider />
+        <Box className={classes.logoutButtonInnerContainer}>
+          <Button
+            className={classes.logoutButton}
+            startIcon={<ExitToApp color={'action'} style={{ transform: 'rotate(180deg)' }} />}
+            size="large"
+            fullWidth
+          >
+            <Box color="text.secondary"> {open ? 'Abmelden' : null}</Box>
+          </Button>
+        </Box>
+        <CustomDialog
+          open={transitionDialogOpen}
+          handleReject={handleRejectDialog}
+          handleAccept={handleAcceptDialog}
+          title="Bearbeitung abbrechen?"
+          message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
+          unwiederruflich gelöscht."
+        />
+        {/* <Divider />
         <Button
           className={classes.logoutButton}
           onClick={handleLogout}
@@ -135,8 +173,9 @@ function NavigationDrawer() {
           <Box color="text.secondary" style={{}}>
             {open ? 'Abmelden' : null}
           </Box>
-        </Button>
+        </Button> */}
       </Box>
+
       <CustomDialog
         open={transitionDialogOpen}
         handleReject={handleRejectDialog}

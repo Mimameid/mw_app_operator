@@ -59,8 +59,8 @@ function FormDateRange({ control, repeating, setValue }) {
 
   const [showCalendar, setShowCalendar] = useState(false);
   const [rangeSelection, setRangeSelection] = useState({
-    startDate: startInputProps.value,
-    endDate: endInputProps.value,
+    startDate: new Date(startInputProps.value),
+    endDate: new Date(endInputProps.value),
     key: 'selection',
   });
   const startSelected = useRef(false);
