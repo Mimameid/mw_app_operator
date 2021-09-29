@@ -15,11 +15,7 @@ import ResponsiveModal from 'common/components/other/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
-  price: yup
-    .string('Geben Sie einen Preis ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Preis muss eine Dezimalzahl sein.')
-    .required('Preis ist erforderlich.'),
+  price: yup.number('Geben Sie einen Preis ein.').required('Preis ist erforderlich.'),
 });
 
 function SubModal({ open, onClose, sub }) {
@@ -32,7 +28,7 @@ function SubModal({ open, onClose, sub }) {
     mode: 'onTouched',
     defaultValues: {
       name: '',
-      price: '0,00',
+      price: 0,
       choices: [],
     },
     resolver: yupResolver(schema),

@@ -54,7 +54,7 @@ export const addCategories = createAsyncThunk('menus/addCategories', async (data
   if (response.ok) {
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Hinzufügen der Kategorie.', response.status);
+    return createError('Fehler beim Erstellen der Kategorie.', response.status);
   }
 });
 

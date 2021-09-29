@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import DishOverviewItem from './DishOverviewItem';
+import GridHeaderItem from 'common/components/other/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
 
     borderBottom: '1px solid ' + theme.palette.primary.main,
     boxShadow: theme.shadows[3],
+  },
+  listBody: {
+    overflow: 'auto',
+    height: '213px',
   },
 }));
 
@@ -31,37 +36,39 @@ function DishOverview() {
     <List className={classes.list}>
       <ListSubheader className={classes.listHeader}>
         <Grid container>
-          <Grid item xs={2}>
+          <GridHeaderItem item xs={1}>
             ID
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Name
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Beschreibung
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             OG
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Erstellt
-          </Grid>
-          <Grid item xs={1}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Verfügbar
-          </Grid>
+          </GridHeaderItem>
         </Grid>
       </ListSubheader>
       <Divider className={classes.divider} />
-      {dishesArray.length === 0 ? (
-        <EmptyView>Keine Speisen verfügbar. Bitte fügen Sie eine Speise hinzu...</EmptyView>
-      ) : (
-        dishesArray.map((dish, index) => (
-          <React.Fragment key={dish.id}>
-            <DishOverviewItem dish={dish} selected={dish.id === selectedDishId} />
-            <Divider />
-          </React.Fragment>
-        ))
-      )}
+      <Box className={classes.listBody}>
+        {dishesArray.length === 0 ? (
+          <EmptyView>Keine Speisen verfügbar. Bitte erstellen Sie eine Speise...</EmptyView>
+        ) : (
+          dishesArray.map((dish, index) => (
+            <React.Fragment key={dish.id}>
+              <DishOverviewItem dish={dish} selected={dish.id === selectedDishId} />
+              {dishesArray.length >= 5 && index === dishesArray.length - 1 ? null : <Divider />}
+            </React.Fragment>
+          ))
+        )}
+      </Box>
     </List>
   );
 }

@@ -23,11 +23,7 @@ const schema = yup.object({
     .string('Geben Sie eine Beschreibung ein.')
     .max(255, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
-  price: yup
-    .string('Geben Sie einen Preis ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Preis muss eine Dezimalzahl sein.')
-    .required('Preis ist erforderlich.'),
+  price: yup.number('Geben Sie einen Preis ein.').required('Preis ist erforderlich.'),
   cuisineType: yup
     .string('Wählen Sie einen Typen aus.')
     .oneOf(CUISINE_TYPES, 'Typ muss aus der vorgegebenen Liste ausgewählt werden')
@@ -53,7 +49,7 @@ function DishModal({ open, onClose, dish }) {
       desc: '',
       cuisineType: 'Burger',
       available: true,
-      price: '0,00',
+      price: 0,
       categories: [],
       cuisineLabels: [],
     },

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/slice';
 
 import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
-import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
+import GridItem from 'common/components/other/GridItem';
 import EditCategory from 'features/menus/categories/components/EditCategory';
 import DeleteCategory from 'features/menus/categories/components/DeleteCategory';
 import { DeleteForever, Edit } from '@material-ui/icons';
@@ -60,22 +60,22 @@ function CategoryOverviewItem({ category, selected }) {
         onClick={!selected ? handleSelectCategory : null}
       >
         <Grid container>
-          <TruncatedGridItem item xs={2}>
+          <GridItem item xs={1}>
             {category.id}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {category.name}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {category.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {category.dishes.length}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {new Date(category.created).toLocaleDateString('DE-de')}
-          </TruncatedGridItem>
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          </GridItem>
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
             <IconButton aria-label="edit" size="small" onClick={handleEditCategory}>
               <Edit fontSize="small" />
             </IconButton>

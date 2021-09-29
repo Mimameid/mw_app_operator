@@ -20,6 +20,7 @@ const theme = createTheme({
     },
     action: {
       hoverOpacity: 0.15,
+      disabledOpacity: 'rgba(0,0,0,0.38)',
     },
     food_tags: {
       // halal: {

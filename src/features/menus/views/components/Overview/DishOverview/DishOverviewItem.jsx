@@ -4,7 +4,7 @@ import { selectItem } from 'features/menus/views/slice';
 import { setAvailable } from 'features/menus/dishes/actions';
 
 import { Grid, IconButton, ListItem, Switch, makeStyles, Box } from '@material-ui/core';
-import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
+import GridItem from 'common/components/other/GridItem';
 import EditDish from 'features/menus/dishes/components/EditDish';
 import DeleteDish from 'features/menus/dishes/components/DeleteDish';
 import { DeleteForever, Edit } from '@material-ui/icons';
@@ -54,22 +54,22 @@ function DishOverviewItem({ dish, selected }) {
         onClick={!selected ? handleSelectDish : null}
       >
         <Grid container>
-          <TruncatedGridItem item xs={2}>
+          <GridItem item xs={1}>
             {dish.id}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {dish.name}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {dish.desc}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {dish.choices.length}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={2}>
+          </GridItem>
+          <GridItem item xs={2}>
             {new Date(dish.created).toLocaleDateString('DE-de')}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={1}>
+          </GridItem>
+          <GridItem item xs={1}>
             <Switch
               checked={dish.available}
               onChange={handleDisableDish}
@@ -77,8 +77,8 @@ function DishOverviewItem({ dish, selected }) {
               size="small"
               inputProps={{ 'aria-label': 'dish available checkbox' }}
             />
-          </TruncatedGridItem>
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          </GridItem>
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>

@@ -3,8 +3,9 @@ import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 import { selectActiveMenu } from 'features/menus/menus/slice';
 
-import { Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
 import MenuOverviewItem from './MenuOverviewItem';
+import GridHeaderItem from 'common/components/other/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
 const useStyles = makeStyles((theme) => ({
@@ -17,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
 
     borderBottom: '1px solid ' + theme.palette.primary.main,
     boxShadow: theme.shadows[3],
+  },
+  listBody: {
+    overflow: 'auto',
+    height: '213px',
   },
 }));
 
@@ -34,37 +39,39 @@ function MenuOverview() {
     <List className={classes.list}>
       <ListSubheader className={classes.listHeader}>
         <Grid container>
-          <Grid item xs={2}>
+          <GridHeaderItem item xs={1}>
             ID
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Name
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Beschreibung
-          </Grid>
-          <Grid item xs={2}>
-            Kategorien
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
+            Kategorie
+          </GridHeaderItem>
+          <GridHeaderItem item xs={2}>
             Erstellt
-          </Grid>
-          <Grid item xs={2}>
+          </GridHeaderItem>
+          <GridHeaderItem item xs={1}>
             Aktiv
-          </Grid>
+          </GridHeaderItem>
         </Grid>
       </ListSubheader>
       <Divider />
-      {menusArray.length === 0 ? (
-        <EmptyView>Keine Menüs verfügbar. Bitte fügen Sie ein Menü hinzu...</EmptyView>
-      ) : (
-        menusArray.map((menu, index) => (
-          <React.Fragment key={nanoid()}>
-            <MenuOverviewItem menu={menu} activeMenuId={activeMenu?.id} selected={menu.id === selectedMenuId} />
-            <Divider />
-          </React.Fragment>
-        ))
-      )}
+      <Box className={classes.listBody}>
+        {menusArray.length === 0 ? (
+          <EmptyView>Keine Menüs verfügbar. Bitte erstellen Sie ein Menü...</EmptyView>
+        ) : (
+          menusArray.map((menu, index) => (
+            <React.Fragment key={nanoid()}>
+              <MenuOverviewItem menu={menu} activeMenuId={activeMenu?.id} selected={menu.id === selectedMenuId} />
+              {menusArray.length >= 5 && index === menusArray.length - 1 ? null : <Divider />}
+            </React.Fragment>
+          ))
+        )}
+      </Box>
     </List>
   );
 }

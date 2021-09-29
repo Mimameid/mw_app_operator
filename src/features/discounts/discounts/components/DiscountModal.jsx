@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createDiscount, updateDiscount } from '../actions';
+import { discountTypes, weekdays } from 'common/constants';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid, Paper } from '@material-ui/core';
-
 import FormTextField from 'common/components/form/FormTextField';
-
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormWeekdayField from './FormWeekdayField';
 import FormDateRange from './FormDateRange';
@@ -17,38 +16,23 @@ import FormTimeRange from './FormTimeRange';
 import ResponsiveModal from 'common/components/other/ResponsiveModal';
 import FormDiscount from './FormDiscount';
 import FormEffectedItems from './FormEffectedItems';
-import { weekdays } from 'common/constants';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup.string('Geben Sie eine Beschreibung ein.').max(255, 'Beschreibung zu lang.').optional(),
-  type: yup.number('Geben Sie an, welcher Typ betroffen ist.').oneOf([0, 1, 2]).required(),
+  type: yup.string('Geben Sie an, welcher Typ betroffen ist.').oneOf(Object.keys(discountTypes)).required(),
   effectedItems: yup
     .array('Geben Sie die betroffenen Items an.')
     .of(yup.array().of(yup.string()))
     .min(1, 'Es muss mindestens 1 Item ausgewählt werden.')
     .required('Betroffene Items sind erforderlich.'),
   isFixedPrice: yup.boolean('Geben Sie an, ob es ein Festpreis ist.').required('Angabe ist erforderlich.'),
-  fixedPrice: yup
-    .string('Geben Sie die Höhe des Festpreises ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Preis muss eine Dezimalzahl sein.')
-    .required('Festpreis ist erforderlich.'),
-  reduction: yup
-    .string('Geben Sie die Höhe des Nachlasses ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Nachlass muss eine Dezimalzahl sein.')
-    .required('Nachlass ist erforderlich.'),
+  fixedPrice: yup.number('Geben Sie die Höhe des Festpreises ein.').required('Festpreis ist erforderlich.'),
+  reduction: yup.number('Geben Sie die Höhe des Nachlasses ein.').required('Nachlass ist erforderlich.'),
   percental: yup
     .boolean('Geben Sie an, ob der Nachlass prozentual ist.')
     .required('Angabe des Typs des Nachlasses ist erforderlich'),
-
-  minOrderValue: yup
-    .string('Geben Sie einen Mindestbestellwert ein.')
-    .trim()
-    .matches(/\d+,\d{2}/, 'Der Mindestbestellwert muss eine Dezimalzahl sein.')
-    .required('Mindestbestellwert ist erforderlich.'),
-
+  minOrderValue: yup.number('Geben Sie einen Mindestbestellwert ein.').required('Mindestbestellwert ist erforderlich.'),
   repeating: yup.boolean('Geben Sie an, ob der Nachlass wiederkehrend ist.').required('Angabe ist erforderlich'),
   date: yup
     .object({
@@ -61,7 +45,7 @@ const schema = yup.object({
     }),
   weekdays: yup
     .array()
-    .of(yup.string().oneOf(Object.values(weekdays), 'Wochentag muss aus den gegebenen Optionen ausgewählt werden.')),
+    .of(yup.string().oneOf(Object.keys(weekdays), 'Wochentag muss aus den gegebenen Optionen ausgewählt werden.')),
   allDay: yup.boolean('Geben Sie an, ob der Nachlass ganztätig ist.').required('Angabe ist erforderlich'),
   time: yup
     .object({
@@ -85,28 +69,28 @@ const schema = yup.object({
 
 function DiscountModal({ open, onClose, discount }) {
   const dispatch = useDispatch();
-  console.log(discount);
+
   const { handleSubmit, control, reset, setValue, watch } = useForm({
     mode: 'onTouched',
     defaultValues: {
       active: false,
       name: '',
       desc: '',
-      combinable: true,
+      combinable: false,
 
       isFixedPrice: false,
-      fixedPrice: '00,00',
+      fixedPrice: 0,
       percental: false,
-      reduction: '00,00',
-      minOrderValue: '00,00',
+      reduction: 0,
+      minOrderValue: 0,
 
       repeating: false,
       date: {
-        startDate: Date.now(),
-        endDate: Date.now(),
+        startDate: new Date().setHours(0, 0, 0, 0),
+        endDate: new Date().setHours(0, 0, 0, 0),
       },
 
-      weekdays: [],
+      weekdays: Object.keys(weekdays),
 
       allDay: false,
       time: {
@@ -114,11 +98,12 @@ function DiscountModal({ open, onClose, discount }) {
         endTime: '10:00',
       },
 
-      type: 0,
+      type: discountTypes.menu,
       effectedItems: [],
     },
     resolver: yupResolver(schema),
   });
+
   const watchRepeating = watch('repeating');
   const watchAllDay = watch('allDay');
   const watchPercental = watch('percental');
@@ -131,9 +116,9 @@ function DiscountModal({ open, onClose, discount }) {
       setValue('name', discount.name);
       setValue('desc', discount.desc);
       setValue('combinable', discount.combinable);
-      setValue('isFixedPrice', discount.repeating);
+      setValue('isFixedPrice', discount.isFixedPrice);
       setValue('fixedPrice', discount.fixedPrice);
-      setValue('percental', discount.repeating);
+      setValue('percental', discount.percental);
       setValue('reduction', discount.reduction);
       setValue('minOrderValue', discount.minOrderValue);
       setValue('repeating', discount.repeating);
@@ -169,7 +154,7 @@ function DiscountModal({ open, onClose, discount }) {
   return (
     <ResponsiveModal
       open={open}
-      header={discount ? 'Rabatt bearbeiten' : 'Rabatt erstellen'}
+      header={discount ? 'Rabattaktion bearbeiten' : 'Rabattaktion erstellen'}
       acceptLabel={'Speichern'}
       onCancel={handleClose}
       onAccept={handleSubmit(onSubmit)}
@@ -198,7 +183,7 @@ function DiscountModal({ open, onClose, discount }) {
           <Paper variant="outlined">
             <FormDateRange control={control} repeating={watchRepeating} setValue={setValue} />
 
-            <FormWeekdayField />
+            <FormWeekdayField name="weekdays" control={control} setValue={setValue} />
             <FormTimeRange control={control} allDay={watchAllDay} setValue={setValue} />
           </Paper>
         </Grid>

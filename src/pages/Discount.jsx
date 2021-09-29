@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchAllMenus } from 'features/menus/menus/actions';
 
 import { Box, Button, Toolbar, makeStyles, Grid } from '@material-ui/core';
-
 import Overview from 'features/discounts/views/components/Overview/Overview';
 import ContentHeader from 'common/components/other/ContentHeader';
-
-import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
-import { Add } from '@material-ui/icons';
-import { fetchAllMenus } from 'features/menus/menus/actions';
 import LoadingScreen from 'common/components/other/Spinner';
+import ItemView from 'features/discounts/views/components/ItemView/ItemView';
+import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
+import CouponModal from 'features/discounts/coupons/components/CouponModal';
+import { Add } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +21,16 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.body1.fontSize,
     marginBottom: theme.spacing(3),
     textTransform: 'none',
+  },
+  discountContainer: {
+    width: '100%',
+    transition: 'margin 0.2s ease-in-out, width 0.2s ease-in-out',
+    backgroundColor: 'transparent',
+  },
+
+  discountListContainer: {
+    paddingBottom: theme.spacing(3),
+    backgroundColor: 'transparent',
   },
 }));
 
@@ -67,20 +77,23 @@ function Discount({ name }) {
             color="primary"
             startIcon={<Add />}
           >
-            Hinzufügen
+            Erstellen
           </Button>
         </Box>
       </Box>
 
-      <Grid className={classes.menuContainer} container direction="column">
-        <Grid className={classes.menuListContainer} item>
+      <Grid className={classes.discountContainer} container direction="column">
+        <Grid className={classes.discountListContainer} item>
           <Overview />
         </Grid>
 
-        <Grid item>{/* <DiscountView /> */}</Grid>
+        <Grid item>
+          <ItemView />
+        </Grid>
       </Grid>
 
       <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} />
+      <CouponModal open={couponModal} onClose={() => setCouponModalOpen(false)} />
     </Box>
   ) : (
     <LoadingScreen />

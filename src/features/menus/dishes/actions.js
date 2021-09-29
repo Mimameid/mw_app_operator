@@ -45,7 +45,7 @@ export const addChoices = createAsyncThunk('dishes/addChoices', async (data, thu
   if (response.ok) {
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Hinzufügen der Optiongruppe.', response.status);
+    return createError('Fehler beim Erstellen der Optiongruppe.', response.status);
   }
 });
 

@@ -16,7 +16,7 @@ function ChoiceSubs({ choice }) {
     </React.Fragment>
   ) : (
     <Box color="text.secondary" fontStyle="italic" p={2}>
-      Keine Option verfügbar. Bitte fügen Sie eine Option hinzu...
+      Keine Option verfügbar. Bitte erstellen Sie eine Option...
     </Box>
   );
 }

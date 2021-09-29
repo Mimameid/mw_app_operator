@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useController } from 'react-hook-form';
 
 import { TextField, InputAdornment } from '@material-ui/core';
@@ -77,6 +77,12 @@ const maskInput = (newValue, previousValue, cursorPosition) => {
   return [value, cursorPosition];
 };
 
+function localeParseFloat(s) {
+  // Remove thousand separators, and put a point where the decimal separator occurs
+  s = Array.from(s, (c) => (c === ',' ? '.' : c)).join('');
+  return parseFloat(s);
+}
+
 function FormPriceField({ control, name, ...props }) {
   const {
     field: { ref, ...inputProps },
@@ -86,30 +92,37 @@ function FormPriceField({ control, name, ...props }) {
     control,
   });
 
+  const previousValue = useRef('0,00');
+
   const handleOnChange = (event) => {
-    const [value, cursorPosition] = maskInput(
+    const [maskedValue, cursorPosition] = maskInput(
       event.target.value,
-      event.target.defaultValue,
+      previousValue.current,
       event.target.selectionStart,
     );
-    event.target.value = value;
+    // setValue(maskedValue);
+    event.target.value = maskedValue;
+    previousValue.current = maskedValue;
     // register rhf
-    inputProps.onChange(event);
+    inputProps.onChange(localeParseFloat(maskedValue));
+
     event.target.setSelectionRange(cursorPosition, cursorPosition);
-    return;
   };
 
   return (
     <TextField
       inputRef={ref}
-      // inputProps={{ inputMode: 'numeric' }}
+      inputProps={{
+        inputMode: 'numeric',
+        pattern: '[0-9]*',
+        defaultValue: inputProps.value.toFixed(2).replace('.', ','),
+      }}
       InputProps={{
         endAdornment: <InputAdornment position="end">{props.adornment ? props.adornment : '€'}</InputAdornment>,
       }}
       placeholder="00,00"
       error={!!error}
       helperText={error ? error.message : null}
-      {...inputProps}
       {...props}
       onChange={handleOnChange}
     />

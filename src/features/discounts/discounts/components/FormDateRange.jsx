@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react';
+import { useController } from 'react-hook-form';
 
-import { Box, ClickAwayListener, Collapse, makeStyles, Paper, useTheme } from '@material-ui/core';
+import { Box, ClickAwayListener, Collapse, makeStyles, Paper, TextField, useTheme } from '@material-ui/core';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
-import FormDateField from 'common/components/form/FormDateField';
 
 const useStyles = makeStyles((theme) => ({
   calendarRoot: {
@@ -33,16 +33,34 @@ const useStyles = makeStyles((theme) => ({
   },
   inputStyle: {
     cursor: 'pointer',
+    textAlign: 'center',
   },
 }));
 
 function FormDateRange({ control, repeating, setValue }) {
   const classes = useStyles();
   const theme = useTheme();
+
+  const {
+    field: { ref: startRef, ...startInputProps },
+    fieldState: { startError },
+  } = useController({
+    name: 'date.startDate',
+    control,
+  });
+
+  const {
+    field: { ref: endRef, ...endInputProps },
+    fieldState: { endError },
+  } = useController({
+    name: 'date.endDate',
+    control,
+  });
+
   const [showCalendar, setShowCalendar] = useState(false);
   const [rangeSelection, setRangeSelection] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: startInputProps.value,
+    endDate: endInputProps.value,
     key: 'selection',
   });
   const startSelected = useRef(false);
@@ -75,34 +93,38 @@ function FormDateRange({ control, repeating, setValue }) {
 
         <Collapse in={!repeating}>
           <Box display="flex" pt={1} justifyContent="flex-end">
-            <Box width={90} px={1}>
-              <FormDateField
+            <Box width={96} px={1}>
+              <TextField
                 className={classes.textField}
-                name={'date.startDate'}
                 label="Start"
-                control={control}
                 inputProps={{ className: classes.inputStyle }}
                 size="small"
                 onClick={(e) => {
                   setShowCalendar(!showCalendar);
                 }}
+                {...startInputProps}
+                error={!!startError}
+                helperText={startError ? startError.message : null}
+                value={new Intl.DateTimeFormat('de-DE').format(startInputProps.value)}
                 disabled
               />
             </Box>
             <Box alignSelf="flex-end" pb={1}>
               -
             </Box>
-            <Box width={82} pl={1}>
-              <FormDateField
+            <Box width={88} pl={1}>
+              <TextField
                 className={classes.textField}
-                name={'date.endDate'}
                 label="Ende"
-                control={control}
                 inputProps={{ className: classes.inputStyle }}
                 size="small"
-                onClick={() => {
+                onClick={(e) => {
                   setShowCalendar(!showCalendar);
                 }}
+                {...endInputProps}
+                error={!!endError}
+                helperText={endError ? endError.message : null}
+                value={new Intl.DateTimeFormat('de-DE').format(endInputProps.value)}
                 disabled
               />
             </Box>

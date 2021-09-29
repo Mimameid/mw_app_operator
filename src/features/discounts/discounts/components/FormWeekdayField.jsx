@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useController } from 'react-hook-form';
 import { weekdays } from 'common/constants';
 
 import { Box, makeStyles } from '@material-ui/core';
@@ -28,12 +29,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FormWeekdayField() {
+function FormWeekdayField({ name, control, setValue }) {
   const classes = useStyles();
-  const [values, setValues] = useState(Object.values(weekdays));
   const handleValues = (event, newValues) => {
-    setValues(newValues);
+    setValue('weekdays', newValues);
   };
+
+  const {
+    field: { ref, ...inputProps },
+  } = useController({
+    name,
+    control,
+  });
 
   return (
     <React.Fragment>
@@ -42,8 +49,8 @@ function FormWeekdayField() {
           Wochentage
         </Box>
         <Box display="flex" pt={1} justifyContent="flex-end">
-          <ToggleButtonGroup value={values} onChange={handleValues}>
-            {Object.values(weekdays).map((day, index) => {
+          <ToggleButtonGroup value={inputProps.value} onChange={handleValues}>
+            {Object.keys(weekdays).map((day, index) => {
               return (
                 <ToggleButton key={index} className={classes.toggleButton} value={day} disableRipple disableFocusRipple>
                   {day[0]}

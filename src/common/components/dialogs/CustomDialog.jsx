@@ -67,7 +67,7 @@ function CustomDialog({ open, title, message, acceptText, rejectText, handleReje
           {rejectText ? rejectText : 'Abbrechen'}
         </Button>
         <Button onClick={handleAccept} color="primary" variant="contained">
-          {acceptText ? acceptText : '   Ja, weiter'}
+          {acceptText ? acceptText : 'Ja, weiter'}
         </Button>
       </DialogActions>
     </Dialog>

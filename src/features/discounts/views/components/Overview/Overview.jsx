@@ -5,7 +5,7 @@ import { selectDiscountGroup } from '../../slice';
 import { Paper, Box, Tabs, makeStyles } from '@material-ui/core';
 import GroupTab from './GroupTab';
 import DiscountOverview from './DiscountOverview/DiscountOverview';
-// import CategoryOverview from './CouponOverview/CategoryOverview';
+import CouponOverview from './CouponOverview/CouponOverview';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -17,14 +17,11 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[20],
   },
   listContainer: {
-    height: '264px',
-    overflow: 'auto',
-
     boxShadow: theme.shadows[3],
   },
 }));
 
-const tabNames = ['Rabatte', 'Gutscheine'];
+const tabNames = ['Rabattaktionen', 'Gutscheinaktionen'];
 function Overview() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -41,8 +38,8 @@ function Overview() {
     switch (value) {
       case 0:
         return <DiscountOverview />;
-      // case 1:
-      //   return <CategoryOverview />;
+      case 1:
+        return <CouponOverview />;
       default:
         return null;
     }

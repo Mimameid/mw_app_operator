@@ -5,7 +5,7 @@ import { selectItem } from 'features/menus/views/slice';
 import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import EditSub from 'features/menus/subs/components/EditSub';
 import DeleteSub from 'features/menus/subs/components/DeleteSub';
-import TruncatedGridItem from 'common/components/other/TruncatedGridItem';
+import GridItem from 'common/components/other/GridItem';
 import { DeleteForever, Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -49,16 +49,16 @@ function SubOverviewItem({ sub, selected }) {
         onClick={!selected ? handleSelectCategory : null}
       >
         <Grid container>
-          <TruncatedGridItem item xs={3}>
+          <GridItem item xs={3}>
             {sub.id}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={3}>
+          </GridItem>
+          <GridItem item xs={3}>
             {sub.name}
-          </TruncatedGridItem>
-          <TruncatedGridItem item xs={3}>
+          </GridItem>
+          <GridItem item xs={3}>
             {new Date(sub.created).toLocaleDateString('DE-de')}
-          </TruncatedGridItem>
-          <Box className={selected ? null : classes.hidden} flexGrow={1} textAlign="right">
+          </GridItem>
+          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
