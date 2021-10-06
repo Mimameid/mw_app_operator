@@ -20,7 +20,7 @@ const appReducer = combineReducers({
   mode,
 });
 
-const rootReducer = (state, action) => {
+const reducers = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === 'user/auth/rejected' || action.type === 'user/logout/fulfilled') {
     state = undefined;
@@ -29,4 +29,4 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-export default rootReducer;
+export default reducers;

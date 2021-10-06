@@ -1,29 +1,16 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import rootReducer from './rootReducer';
+import reducers from './reducers';
+import { configureStore } from '@reduxjs/toolkit';
 import { loadState, saveState } from './localStorage';
 import { throttle } from 'common/utils/utils';
 
 // const initialState = loadState();
 const initialState = {};
-const middleware = [thunk];
 
-// dev tools middleware
-/* eslint-disable no-underscore-dangle */
-let devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-if (process.env.NODE_ENV === 'prod' || process.env.NODE_ENV === 'production') {
-  devTools = (a) => a;
-}
-
-const store = createStore(rootReducer, initialState, compose(applyMiddleware(...middleware), devTools));
-
-if (process.env.NODE_ENV !== 'production') {
-  if (module.hot) {
-    module.hot.accept('./rootReducer', () => {
-      store.replaceReducer(rootReducer);
-    });
-  }
-}
+const store = configureStore({
+  reducer: reducers,
+  devTools: process.env.NODE_ENV !== 'production',
+  initialState,
+});
 
 // store.subscribe(
 //   throttle(() => {

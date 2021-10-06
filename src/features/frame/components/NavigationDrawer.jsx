@@ -146,6 +146,7 @@ function NavigationDrawer() {
         <Box className={classes.logoutButtonInnerContainer}>
           <Button
             className={classes.logoutButton}
+            onClick={handleLogout}
             startIcon={<ExitToApp color={'action'} style={{ transform: 'rotate(180deg)' }} />}
             size="large"
             fullWidth
