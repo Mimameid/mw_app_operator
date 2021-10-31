@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectDiscountItem } from 'features/discounts/views/slice';
 import { deleteCoupon } from 'features/discounts/coupons/actions';
+import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
@@ -12,7 +13,7 @@ import { DeleteForever, Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   highlight: {
-    background: theme.palette.primary.light + '85',
+    background: theme.palette.primary.light + '33',
   },
   hidden: {
     visibility: 'hidden',
@@ -57,10 +58,11 @@ function CouponOverviewItem({ coupon, selected }) {
     setDialogOpen(false);
   }
 
-  const numberValidCoupons = coupon.expired
+  const couponStatus = getDiscountStatus(coupon);
+  const numberValidCoupons = coupon.isExpired
     ? 0
     : coupon.codes.reduce((prev, cur) => {
-        return cur.valid ? prev + 1 : prev;
+        return cur.isValid ? prev + 1 : prev;
       }, 0);
   return (
     <React.Fragment>
@@ -85,8 +87,8 @@ function CouponOverviewItem({ coupon, selected }) {
           <GridItem item xs={2}>
             <TruncatedBox display="flex">
               {new Date(coupon.date.endDate).toLocaleDateString('DE-de')}
-              <TruncatedBox color="error.main" fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
-                {coupon.expired ? 'abgelaufen' : null}
+              <TruncatedBox color={couponStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+                {couponStatus.statusText}
               </TruncatedBox>
             </TruncatedBox>
           </GridItem>

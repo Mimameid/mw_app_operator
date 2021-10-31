@@ -138,7 +138,6 @@ function FormDateRange({ control, setValue }) {
               <DateRange
                 ranges={[rangeSelection]}
                 onChange={handleSelect}
-                minDate={new Date()}
                 showDateDisplay={false}
                 rangeColors={[theme.palette.primary.main]}
                 color={theme.palette.primary.main}

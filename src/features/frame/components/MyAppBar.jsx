@@ -6,14 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setDrawerOpen } from 'features/frame/actions';
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-  },
-  content: {
-    flexGrow: 1,
   },
   userDetails: {},
 }));

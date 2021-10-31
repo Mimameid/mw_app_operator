@@ -11,10 +11,10 @@ import FormTextField from 'common/components/form/FormTextField';
 import ResponsiveModal from 'common/components/other/ResponsiveModal';
 
 const schema = yup.object({
-  name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
+  name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup
     .string('Geben Sie eine Beschreibung ein.')
-    .max(255, 'Beschreibung zu lang.')
+    .max(48, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
 });
 
@@ -25,7 +25,7 @@ function MenuModal({ open, onClose, menu }) {
     defaultValues: {
       name: '',
       desc: '',
-      active: false,
+      isActive: false,
     },
     resolver: yupResolver(schema),
   });

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getDiscountTypeName, weekdays } from 'common/constants';
+import { getDiscountStatus } from '../utils';
 
 import { Box, Divider, Grid, IconButton, makeStyles, Paper } from '@material-ui/core';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
@@ -65,6 +66,7 @@ function Discount() {
 
   const [discountModalOpen, setDiscountModalOpen] = useState(false);
 
+  const discountStatus = getDiscountStatus(discount);
   return (
     <Paper elevation={3} className={classes.root}>
       {discountId ? (
@@ -80,17 +82,15 @@ function Discount() {
                     <Edit fontSize="small" />
                   </IconButton>
                 </Box>
-                {discount.active ? (
-                  <Box
-                    className={classes.buttonsContainer}
-                    color={'green'}
-                    fontStyle={'italic'}
-                    flexGrow={1}
-                    textAlign="right"
-                  >
-                    aktiv
-                  </Box>
-                ) : null}
+                <Box
+                  className={classes.buttonsContainer}
+                  color={discount.isActive ? 'success.main' : 'error.main'}
+                  fontStyle={'italic'}
+                  flexGrow={1}
+                  textAlign="right"
+                >
+                  {discount.isActive ? 'aktiv' : 'inaktiv'}
+                </Box>
               </Box>
 
               <TruncatedBox
@@ -159,8 +159,8 @@ function Discount() {
                         <Box>{new Date(discount.date.startDate).toLocaleDateString('de-DE')}</Box>
                         <Box px={1}> - </Box>
                         <Box>{new Date(discount.date.endDate).toLocaleDateString('de-DE')}</Box>
-                        <Box color="error.main" fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
-                          {discount.expired ? 'abgelaufen' : null}
+                        <Box color={discountStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+                          {discountStatus.statusText}
                         </Box>
                       </Box>
                     )}

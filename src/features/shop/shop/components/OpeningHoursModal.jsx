@@ -1,7 +1,7 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { saveOpeningHours } from 'features/shop/shop/actions';
-import { weekdays } from 'common/constants';
+import { useSelector } from 'react-redux';
+import { weekdays, dayBeforeMap } from 'common/constants';
+import { sortWeekdayRanges } from '../utils';
 
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -29,47 +29,83 @@ const useStyles = makeStyles((theme) => ({
   buttonLayout: {
     marginTop: theme.spacing(3),
   },
+  switchLayout: {
+    paddingTop: theme.spacing(0.5),
+  },
 }));
 
 const weekdaySchema = yup
   .array(yup.object({ start: yup.string().required(), end: yup.string().required() }))
-  .test('overlap test', 'Die angegebenen Zeiten überschneiden sich.', function () {
-    for (let range of this.originalValue) {
-      const timeStart = range.start.substring(0, 2) + range.start.substring(3, 5);
-      let timeEnd = range.end.substring(0, 2) + range.end.substring(3, 5);
-
-      if (timeStart >= timeEnd) {
-        timeEnd = parseInt(timeEnd) + 2400;
-      }
-
-      for (let otherRange of this.originalValue) {
-        const otherTimeStart = otherRange.start.substring(0, 2) + otherRange.start.substring(3, 5);
-        let otherTimeEnd = otherRange.end.substring(0, 2) + otherRange.end.substring(3, 5);
-        if (otherTimeStart > otherTimeEnd) {
-          otherTimeEnd = parseInt(otherTimeEnd) + 2400;
-        }
-
-        if (
-          (timeStart > otherTimeStart && timeStart < otherTimeEnd) ||
-          (timeEnd > otherTimeStart && timeEnd < otherTimeEnd)
-        ) {
-          return false;
-        }
-      }
-    }
-    return true;
-  })
   .test('same value test', 'Start- und Endzeit dürfen nicht identisch sein.', function () {
     for (let range of this.originalValue) {
-      const timeStart = range.start.substring(0, 2) + range.start.substring(3, 5);
-      let timeEnd = range.end.substring(0, 2) + range.end.substring(3, 5);
+      const timeStart = parseInt(range.start.replace(':', ''));
+      const timeEnd = parseInt(range.end.replace(':', ''));
       if (timeStart === timeEnd) {
         return false;
       }
     }
 
     return true;
+  })
+  .test('overlap test', 'Die angegebenen Zeiten überschneiden sich.', function () {
+    for (let range of this.originalValue) {
+      const timeStart = parseInt(range.start.replace(':', ''));
+      let timeEnd = parseInt(range.end.replace(':', ''));
+
+      if (timeStart > timeEnd) {
+        timeEnd = timeEnd + 2400;
+      }
+      for (let otherRange of this.originalValue) {
+        if (range === otherRange) {
+          continue;
+        }
+        const otherTimeStart = parseInt(otherRange.start.replace(':', ''));
+        let otherTimeEnd = parseInt(otherRange.end.replace(':', ''));
+
+        if (otherTimeStart > otherTimeEnd) {
+          otherTimeEnd = otherTimeEnd + 2400;
+        }
+
+        if (
+          (timeStart >= otherTimeStart && timeStart < otherTimeEnd) ||
+          (timeEnd > otherTimeStart && timeEnd <= otherTimeEnd)
+        ) {
+          return false;
+        }
+      }
+    }
+    return true;
   });
+// .test('overlap day', 'Zwei Tage überschneiden sich.', function () {
+//   const before = dayBeforeMap[this.path];
+//   let overlappingDay = null;
+//   for (let range of this.parent[before]) {
+//     if (range.end < range.start) {
+//       overlappingDay = { start: 0, end: parseInt(range.end.replace(':', '')) };
+//       break;
+//     }
+//   }
+
+//   if (overlappingDay) {
+//     for (let range of this.originalValue) {
+//       const timeStart = parseInt(range.start.replace(':', ''));
+//       let timeEnd = parseInt(range.end.replace(':', ''));
+
+//       if (timeStart >= timeEnd) {
+//         timeEnd = timeEnd + 2400;
+//       }
+
+//       if (
+//         (timeStart >= overlappingDay.start && timeStart < overlappingDay.end) ||
+//         (timeEnd > overlappingDay.start && timeEnd <= overlappingDay.end)
+//       ) {
+//         return false;
+//       }
+//     }
+//   }
+//   return true;
+// });
+
 const schema = yup.object({
   monday: weekdaySchema,
   tuesday: weekdaySchema,
@@ -80,13 +116,12 @@ const schema = yup.object({
   sunday: weekdaySchema,
 });
 
-function OpeningHoursModal({ open, onClose }) {
+function OpeningHoursModal({ open, onClose, onChange }) {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const openingHours = useSelector((state) => state.shop.shop.openingHours);
 
-  const { handleSubmit, control, formState, setValue, clearErrors } = useForm({
-    mode: 'onBlur',
+  const { handleSubmit, control, formState, setValue } = useForm({
+    mode: 'onChange',
     defaultValues: openingHours,
     resolver: yupResolver(schema),
   });
@@ -101,7 +136,7 @@ function OpeningHoursModal({ open, onClose }) {
   }
 
   const onSubmit = (data) => {
-    dispatch(saveOpeningHours(data));
+    onChange(data);
     onClose();
   };
 
@@ -125,7 +160,7 @@ function OpeningHoursModal({ open, onClose }) {
                 >
                   {weekdays[weekday]}
                 </Box>
-                <Box pr={1} pl={1}>
+                <Box className={classes.switchLayout}>
                   <Switch
                     size="small"
                     color="primary"
@@ -137,7 +172,7 @@ function OpeningHoursModal({ open, onClose }) {
                       } else {
                         setValue(weekday, []);
                       }
-                      clearErrors(weekday);
+                      // clearErrors(weekday);
                     }}
                   />
                 </Box>
@@ -163,7 +198,11 @@ function OpeningHoursModal({ open, onClose }) {
                             pr={1}
                             pl={1}
                           >
-                            <FormTimeField name={`${weekday}[${index}].start`} control={control} />
+                            <FormTimeField
+                              name={`${weekday}[${index}].start`}
+                              control={control}
+                              onChange={sortWeekdayRanges.bind({}, fieldArrays, weekday, index)}
+                            />
                           </Box>
                           <Box alignSelf="center" fontSize="body1.fontSize" pr={1} pl={1}>
                             -
@@ -185,7 +224,7 @@ function OpeningHoursModal({ open, onClose }) {
                             <IconButton
                               size="small"
                               onClick={() => {
-                                clearErrors(weekday);
+                                // clearErrors(weekday);
                                 fieldArrays[weekday].remove(index);
                               }}
                             >
@@ -199,7 +238,7 @@ function OpeningHoursModal({ open, onClose }) {
                                 size="small"
                                 color="primary"
                                 onClick={() => {
-                                  clearErrors(weekday);
+                                  // clearErrors(weekday);
                                   fieldArrays[weekday].append({ start: '00:00', end: '00:00' });
                                 }}
                               >
@@ -235,7 +274,7 @@ function OpeningHoursModal({ open, onClose }) {
             </Grid>
             <Grid item>
               <Button color="primary" variant="contained" onClick={handleSubmit(onSubmit)}>
-                Speichern
+                Übernehmen
               </Button>
             </Grid>
           </Grid>

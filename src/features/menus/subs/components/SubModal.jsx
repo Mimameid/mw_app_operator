@@ -14,7 +14,7 @@ import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 import ResponsiveModal from 'common/components/other/ResponsiveModal';
 
 const schema = yup.object({
-  name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
+  name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
   price: yup.number('Geben Sie einen Preis ein.').required('Preis ist erforderlich.'),
 });
 

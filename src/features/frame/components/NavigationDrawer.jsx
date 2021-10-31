@@ -7,18 +7,7 @@ import { setDrawerOpen } from 'features/frame/actions';
 import { deactivateArea } from 'features/deliveryAreas/areas/actions';
 import routes from 'routes';
 
-import {
-  Divider,
-  Drawer,
-  List,
-  Toolbar,
-  useMediaQuery,
-  Box,
-  Button,
-  makeStyles,
-  useTheme,
-  ListItem,
-} from '@material-ui/core';
+import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles, useTheme } from '@material-ui/core';
 import NavigationLink from './NavigationLink';
 import CustomDialog from 'common/components/dialogs/CustomDialog';
 import { ExitToApp } from '@material-ui/icons';

@@ -18,10 +18,10 @@ import FormTagMultiSelect from 'common/components/form/FormTagMultiSelect';
 import ResponsiveModal from 'common/components/other/ResponsiveModal';
 
 const schema = yup.object({
-  name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
+  name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup
     .string('Geben Sie eine Beschreibung ein.')
-    .max(255, 'Beschreibung zu lang.')
+    .max(48, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
   price: yup.number('Geben Sie einen Preis ein.').required('Preis ist erforderlich.'),
   cuisineType: yup
@@ -31,7 +31,7 @@ const schema = yup.object({
   cuisineLabels: yup
     .array('Wählen Sie Labels aus.')
     .of(yup.string().oneOf(CUISINE_LABELS, 'Labels müssen aus der vorgegebenen Liste ausgewählt werden')),
-  available: yup
+  isAvailable: yup
     .boolean('Geben Sie an, ob die Speise verfügbar ist.')
     .required('Angabe der Verfügbarkeit ist erforderlich'),
 });
@@ -48,7 +48,7 @@ function DishModal({ open, onClose, dish }) {
       name: '',
       desc: '',
       cuisineType: 'Burger',
-      available: true,
+      isAvailable: true,
       price: 0,
       categories: [],
       cuisineLabels: [],
@@ -61,7 +61,7 @@ function DishModal({ open, onClose, dish }) {
       setValue('name', dish.name);
       setValue('desc', dish.desc);
       setValue('cuisineType', dish.cuisineType);
-      setValue('available', dish.available);
+      setValue('isAvailable', dish.isAvailable);
       setValue('price', dish.price);
       setValue('categories', affectedCategories);
       setValue('cuisineLabels', dish.cuisineLabels);
@@ -118,7 +118,7 @@ function DishModal({ open, onClose, dish }) {
           />
         </Grid>
         <Grid item>
-          <FormCheckboxField name="available" label="Verfügbar" control={control} />
+          <FormCheckboxField name="isAvailable" label="Verfügbar" control={control} />
         </Grid>
       </Grid>
     </ResponsiveModal>

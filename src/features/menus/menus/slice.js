@@ -29,10 +29,10 @@ const slice = createSlice({
       })
       .addCase(activateMenu.fulfilled, (state, action) => {
         const menu = state.byId[action.payload.menuId];
-        menu.active = action.payload.active;
+        menu.isActive = action.payload.isActive;
 
         const activeMenu = state.byId[action.payload.activeMenuId];
-        if (activeMenu) activeMenu.active = false;
+        if (activeMenu) activeMenu.isActive = false;
       })
       .addCase(updateMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
@@ -111,7 +111,7 @@ export const selectActiveMenu = createSelector(
   (state) => state.menus.menus.byId,
   (byId) => {
     const menusArray = Object.values(byId);
-    return menusArray.find((menu) => menu.active === true);
+    return menusArray.find((menu) => menu.isActive === true);
   },
 );
 

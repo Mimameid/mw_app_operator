@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { selectDiscountItem } from 'features/discounts/views/slice';
 import { deleteDiscount, setActivationDiscount } from 'features/discounts/discounts/actions';
 import { getDiscountTypeName } from 'common/constants';
+import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import { Box, Grid, IconButton, ListItem, Switch, makeStyles } from '@material-ui/core';
 import WarningDialog from 'common/components/dialogs/WarningDialog';
@@ -14,7 +15,7 @@ import { DeleteForever, Edit } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   highlight: {
-    background: theme.palette.primary.light + '85',
+    background: theme.palette.primary.light + '33',
   },
   hidden: {
     visibility: 'hidden',
@@ -65,7 +66,7 @@ function DiscountOverviewItem({ discount, selected }) {
   }
 
   function handleSwitchAcceptDialog(event) {
-    dispatch(setActivationDiscount({ discountId: discount.id, active: ref.current }));
+    dispatch(setActivationDiscount({ discountId: discount.id, isActive: ref.current }));
     setDialogOpen(false);
   }
 
@@ -78,6 +79,7 @@ function DiscountOverviewItem({ discount, selected }) {
     }
   }
 
+  const discountStatus = getDiscountStatus(discount);
   return (
     <React.Fragment>
       <ListItem
@@ -101,15 +103,15 @@ function DiscountOverviewItem({ discount, selected }) {
           <GridItem item xs={2}>
             <TruncatedBox display="flex">
               {new Date(discount.date.endDate).toLocaleDateString('DE-de')}
-              <TruncatedBox color="error.main" fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
-                {discount.expired ? 'abgelaufen' : null}
+              <TruncatedBox color={discountStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+                {discountStatus.statusText}
               </TruncatedBox>
             </TruncatedBox>
           </GridItem>
           {selected ? (
             <GridItem item xs={1}>
               <Switch
-                checked={discount.active}
+                checked={discount.isActive}
                 onChange={handleToggleActivateDiscount}
                 color="primary"
                 size="small"
@@ -117,8 +119,8 @@ function DiscountOverviewItem({ discount, selected }) {
               />
             </GridItem>
           ) : (
-            <GridItem color={discount.active ? 'success' : 'error'} fontStyle={'italic'} item xs={1}>
-              {discount.active ? 'aktiv' : 'inaktiv'}
+            <GridItem color={discount.isActive ? 'success.main' : 'error.main'} fontStyle={'italic'} item xs={1}>
+              {discount.isActive ? 'aktiv' : 'inaktiv'}
             </GridItem>
           )}
 
@@ -143,7 +145,7 @@ function DiscountOverviewItem({ discount, selected }) {
       <CustomDialog
         open={activateDialogOpen}
         title="Rabattaktion aktivieren?"
-        message="Wenn Sie die Rabattaktion aktivieren, ist sie ab sofort für die betroffenen Items wirksam."
+        message="Wenn Sie die Rabattaktion aktivieren, ist sie ab sofort, sofern im Gültigkeitszeitraum, für die betroffenen Items wirksam."
         handleReject={handleRejectDialog}
         handleAccept={handleSwitchAcceptDialog}
       />

@@ -43,7 +43,7 @@ const dishesSlice = createSlice({
       })
       .addCase(setAvailable.fulfilled, (state, action) => {
         const dish = state.byId[action.payload.dishId];
-        dish.available = action.payload.available;
+        dish.isAvailable = action.payload.isAvailable;
       })
       .addCase(createChoice.fulfilled, (state, action) => {
         for (let dishId of action.payload.dishes) {

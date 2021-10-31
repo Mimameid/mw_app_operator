@@ -67,13 +67,24 @@ const schema = yup.object({
   name: yup
     .string('Geben Sie einen Namen ein.')
     .min(1, 'Name ist erforderlich')
-    .max(255, 'Name zu lang.')
+    .max(48, 'Name zu lang.')
     .required('Name ist erforderlich'),
+  desc: yup
+    .string('Geben Sie eine Kurzbeschreibung ein.')
+    .max(48, 'Kurzbeschreibung zu lang.')
+    .required('Kurzbeschreibung ist erforderlich'),
+  descLong: yup
+    .string('Geben Sie eine Beschreibung ein.')
+    .max(1024, 'Beschreibung zu lang.')
+    .required('Beschreibung ist erforderlich'),
   address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
-  phoneNumber: yup.string('Geben Sie eine Telefonnumer ein.').matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
-    message: 'Das Format ist fehlerhaft',
-    excludeEmptyString: true,
-  }),
+  phoneNumber: yup
+    .string('Geben Sie eine Telefonnumer ein.')
+    .matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
+      message: 'Das Format ist fehlerhaft',
+      excludeEmptyString: true,
+    })
+    .required(),
   url: yup
     .string('Geben Sie eine URL ein.')
     .matches(
@@ -122,6 +133,15 @@ function SignUp({ shopRegistered }) {
       cuisineLabels: [],
       isActive: true,
       isKosher: false,
+      openingHours: {
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: [],
+        saturday: [],
+        sunday: [],
+      },
     },
     resolver: yupResolver(schema),
   });
@@ -166,6 +186,18 @@ function SignUp({ shopRegistered }) {
               </Grid>
               <Grid item xs={12}>
                 <Box>
+                  <FormTextField
+                    name="desc"
+                    label="Kurzbeschreibung*"
+                    placeholder="Beschreiben Sie ihr Shop kurz..."
+                    control={control}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box>
                   <Autocomplete
                     name="address"
                     label="Addresse*"
@@ -180,7 +212,7 @@ function SignUp({ shopRegistered }) {
                 <Box>
                   <FormTextField
                     name="phoneNumber"
-                    label="Telefonnummer"
+                    label="Telefonnummer*"
                     control={control}
                     variant="outlined"
                     fullWidth
@@ -195,9 +227,9 @@ function SignUp({ shopRegistered }) {
               <Grid item xs={12}>
                 <Box>
                   <FormMultiSelect
-                    name="serviceTypes"
-                    label="Servicearten*"
-                    items={SERVICE_TYPES}
+                    name="cuisineTypes"
+                    label="Kategorien*"
+                    items={CUISINE_TYPES}
                     control={control}
                     variant="outlined"
                   />
@@ -205,10 +237,29 @@ function SignUp({ shopRegistered }) {
               </Grid>
               <Grid item xs={12}>
                 <Box>
+                  <FormTextField
+                    name="descLong"
+                    label="Beschreibung*"
+                    placeholder="Beschreiben Sie ihr Shop etwas ausführlicher..."
+                    control={control}
+                    variant="outlined"
+                    multiline
+                    rows={6}
+                    fullWidth
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box pt={1}>
+                  <OpeningHours name="openingHours" control={control} setOpeningHours={setValue} />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box>
                   <FormMultiSelect
-                    name="cuisineTypes"
-                    label="Kategorien*"
-                    items={CUISINE_TYPES}
+                    name="serviceTypes"
+                    label="Servicearten*"
+                    items={SERVICE_TYPES}
                     control={control}
                     variant="outlined"
                   />
@@ -245,11 +296,7 @@ function SignUp({ shopRegistered }) {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={12}>
-                <Box pt={1}>
-                  <OpeningHours />
-                </Box>
-              </Grid>
+
               <Grid item xs={12}>
                 <LoadingButton
                   className={classes.submitButton}

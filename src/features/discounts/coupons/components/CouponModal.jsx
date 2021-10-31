@@ -14,8 +14,8 @@ import FormPriceField from 'common/components/form/FormPriceField';
 import FormDateRange from './FormDateRange';
 
 const schema = yup.object({
-  name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
-  desc: yup.string('Geben Sie eine Beschreibung ein.').max(255, 'Beschreibung zu lang.').optional(),
+  name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
+  desc: yup.string('Geben Sie eine Beschreibung ein.').max(48, 'Beschreibung zu lang.').optional(),
   value: yup.number('Geben Sie einen Wert ein.').required('Wert ist erforderlich.'),
   minOrderValue: yup.number('Geben Sie einen Mindestbestellwert ein.').required('Mindestbestellwert ist erforderlich.'),
   numberOfCoupons: yup
@@ -29,7 +29,7 @@ const schema = yup.object({
       endDate: yup.number('Geben Sie ein Enddatum ein.').required('Enddatum ist erforderlich'),
     })
     .required(),
-  combinable: yup
+  isCombinable: yup
     .boolean('Geben Sie an, ob der Rabatt kombinierbar ist.')
     .required('Angabe der Kombinierbarkeit ist erforderlich'),
 });
@@ -42,7 +42,7 @@ function CouponModal({ open, onClose, coupon }) {
     defaultValues: {
       name: '',
       desc: '',
-      combinable: false,
+      isCombinable: false,
       value: 0,
       minOrderValue: 0,
       numberOfCoupons: 1,

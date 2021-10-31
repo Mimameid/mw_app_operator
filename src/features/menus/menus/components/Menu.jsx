@@ -104,7 +104,7 @@ function Menu() {
                 {activeMenu?.id === menu.id ? (
                   <Box
                     className={classes.buttonsContainer}
-                    color={'green'}
+                    color={'success.main'}
                     fontStyle={'italic'}
                     flexGrow={1}
                     textAlign="right"

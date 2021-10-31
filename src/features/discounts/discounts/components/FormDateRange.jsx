@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function FormDateRange({ control, repeating, setValue }) {
+function FormDateRange({ control, isRepeating, setValue }) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -87,11 +87,11 @@ function FormDateRange({ control, repeating, setValue }) {
             Zeitraum
           </Box>
           <Box display="flex" mr={-2}>
-            <FormCheckboxField name="repeating" label="Wiederkehrend" control={control} size="small" />
+            <FormCheckboxField name="isRepeating" label="Wiederkehrend" control={control} size="small" />
           </Box>
         </Box>
 
-        <Collapse in={!repeating}>
+        <Collapse in={!isRepeating}>
           <Box display="flex" pt={1} justifyContent="flex-end">
             <Box width={96} px={1}>
               <TextField
@@ -141,7 +141,6 @@ function FormDateRange({ control, repeating, setValue }) {
                   <DateRange
                     ranges={[rangeSelection]}
                     onChange={handleSelect}
-                    minDate={new Date()}
                     showDateDisplay={false}
                     rangeColors={[theme.palette.primary.main]}
                     color={theme.palette.primary.main}

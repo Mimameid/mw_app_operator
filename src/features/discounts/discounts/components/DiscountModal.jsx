@@ -18,8 +18,8 @@ import FormDiscount from './FormDiscount';
 import FormEffectedItems from './FormEffectedItems';
 
 const schema = yup.object({
-  name: yup.string('Geben Sie einen Namen ein.').max(255, 'Name zu lang.').required('Name ist erforderlich'),
-  desc: yup.string('Geben Sie eine Beschreibung ein.').max(255, 'Beschreibung zu lang.').optional(),
+  name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
+  desc: yup.string('Geben Sie eine Beschreibung ein.').max(48, 'Beschreibung zu lang.').optional(),
   type: yup.string('Geben Sie an, welcher Typ betroffen ist.').oneOf(Object.keys(discountTypes)).required(),
   effectedItems: yup
     .array('Geben Sie die betroffenen Items an.')
@@ -29,11 +29,11 @@ const schema = yup.object({
   isFixedPrice: yup.boolean('Geben Sie an, ob es ein Festpreis ist.').required('Angabe ist erforderlich.'),
   fixedPrice: yup.number('Geben Sie die Höhe des Festpreises ein.').required('Festpreis ist erforderlich.'),
   reduction: yup.number('Geben Sie die Höhe des Nachlasses ein.').required('Nachlass ist erforderlich.'),
-  percental: yup
+  isPercental: yup
     .boolean('Geben Sie an, ob der Nachlass prozentual ist.')
     .required('Angabe des Typs des Nachlasses ist erforderlich'),
   minOrderValue: yup.number('Geben Sie einen Mindestbestellwert ein.').required('Mindestbestellwert ist erforderlich.'),
-  repeating: yup.boolean('Geben Sie an, ob der Nachlass wiederkehrend ist.').required('Angabe ist erforderlich'),
+  isRepeating: yup.boolean('Geben Sie an, ob der Nachlass wiederkehrend ist.').required('Angabe ist erforderlich'),
   date: yup
     .object({
       startDate: yup.number('Geben Sie ein Startdatum ein.').required('Startdatum ist erforderlich'),
@@ -46,7 +46,7 @@ const schema = yup.object({
   weekdays: yup
     .array()
     .of(yup.string().oneOf(Object.keys(weekdays), 'Wochentag muss aus den gegebenen Optionen ausgewählt werden.')),
-  allDay: yup.boolean('Geben Sie an, ob der Nachlass ganztätig ist.').required('Angabe ist erforderlich'),
+  isAllDay: yup.boolean('Geben Sie an, ob der Nachlass ganztätig ist.').required('Angabe ist erforderlich'),
   time: yup
     .object({
       startTime: yup.string('Geben Sie die Startzeit an.').required('Startzeit erforderlich'),
@@ -57,12 +57,12 @@ const schema = yup.object({
       const timeEnd = this.originalValue.endTime.substring(0, 2) + this.originalValue.endTime.substring(3, 5);
       return timeStart < timeEnd;
     })
-    .when('allDay', {
+    .when('isAllDay', {
       is: false,
       then: yup.object().required(),
     })
     .required(),
-  combinable: yup
+  isCombinable: yup
     .boolean('Geben Sie an, ob der Rabatt kombinierbar ist.')
     .required('Angabe der Kombinierbarkeit ist erforderlich'),
 });
@@ -73,18 +73,18 @@ function DiscountModal({ open, onClose, discount }) {
   const { handleSubmit, control, reset, setValue, watch } = useForm({
     mode: 'onTouched',
     defaultValues: {
-      active: false,
+      isActive: false,
       name: '',
       desc: '',
-      combinable: false,
+      isCombinable: false,
 
       isFixedPrice: false,
       fixedPrice: 0,
-      percental: false,
+      isPercental: false,
       reduction: 0,
       minOrderValue: 0,
 
-      repeating: false,
+      isRepeating: false,
       date: {
         startDate: new Date().setHours(0, 0, 0, 0),
         endDate: new Date().setHours(0, 0, 0, 0),
@@ -92,7 +92,7 @@ function DiscountModal({ open, onClose, discount }) {
 
       weekdays: Object.keys(weekdays),
 
-      allDay: false,
+      isAllDay: false,
       time: {
         startTime: '06:00',
         endTime: '10:00',
@@ -104,28 +104,28 @@ function DiscountModal({ open, onClose, discount }) {
     resolver: yupResolver(schema),
   });
 
-  const watchRepeating = watch('repeating');
-  const watchAllDay = watch('allDay');
-  const watchPercental = watch('percental');
+  const watchRepeating = watch('isRepeating');
+  const watchAllDay = watch('isAllDay');
+  const watchPercental = watch('isPercental');
   const watchIsFixedPrice = watch('isFixedPrice');
   const watchType = watch('type');
 
   useEffect(() => {
     if (discount) {
-      setValue('active', discount.active);
+      setValue('isActive', discount.isActive);
       setValue('name', discount.name);
       setValue('desc', discount.desc);
-      setValue('combinable', discount.combinable);
+      setValue('isCombinable', discount.isCombinable);
       setValue('isFixedPrice', discount.isFixedPrice);
       setValue('fixedPrice', discount.fixedPrice);
-      setValue('percental', discount.percental);
+      setValue('isPercental', discount.isPercental);
       setValue('reduction', discount.reduction);
       setValue('minOrderValue', discount.minOrderValue);
-      setValue('repeating', discount.repeating);
+      setValue('isRepeating', discount.isRepeating);
       setValue('date.startDate', discount.date.startDate);
       setValue('date.endDate', discount.date.endDate);
       setValue('weekdays', discount.weekdays);
-      setValue('allDay', discount.allDay);
+      setValue('isAllDay', discount.isAllDay);
       setValue('time.startTime', discount.time.startTime);
       setValue('time.endTime', discount.time.endTime);
       setValue('type', discount.type);
@@ -174,22 +174,22 @@ function DiscountModal({ open, onClose, discount }) {
           <FormDiscount
             control={control}
             isFixedPrice={watchIsFixedPrice}
-            percental={watchPercental}
+            isPercental={watchPercental}
             setValue={setValue}
           />
         </Grid>
 
         <Grid item>
           <Paper variant="outlined">
-            <FormDateRange control={control} repeating={watchRepeating} setValue={setValue} />
+            <FormDateRange control={control} isRepeating={watchRepeating} setValue={setValue} />
 
             <FormWeekdayField name="weekdays" control={control} setValue={setValue} />
-            <FormTimeRange control={control} allDay={watchAllDay} setValue={setValue} />
+            <FormTimeRange control={control} isAllDay={watchAllDay} setValue={setValue} />
           </Paper>
         </Grid>
 
         <Grid item>
-          <FormCheckboxField name="combinable" label="Kombinierbar" control={control} />
+          <FormCheckboxField name="isCombinable" label="Kombinierbar" control={control} />
         </Grid>
       </Grid>
     </ResponsiveModal>

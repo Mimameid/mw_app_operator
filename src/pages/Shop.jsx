@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchShop, updateShop } from 'features/shop/shop/actions';
 import { CUISINE_TYPES, CUISINE_LABELS, SERVICE_TYPES } from 'common/constants';
+import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
+import useDetectFormChange from 'common/hooks/useDetectFormChange';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
-import useDetectFormChange from 'common/hooks/useDetectFormChange';
-import { Box, Button, Grid, Paper, Toolbar, Avatar, makeStyles } from '@material-ui/core';
+import { Box, Button, Grid, Link, Paper, Toolbar, Avatar, makeStyles } from '@material-ui/core';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/other/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
@@ -46,19 +46,33 @@ const useStyles = makeStyles((theme) => ({
   headerName: {
     paddingTop: theme.spacing(2),
   },
+  multiline: {
+    padding: theme.spacing(2),
+  },
 }));
 
 const schema = yup.object({
   name: yup
     .string('Geben Sie einen Namen ein.')
     .min(1, 'Name ist erforderlich')
-    .max(255, 'Name zu lang.')
+    .max(48, 'Name zu lang.')
     .required('Name ist erforderlich'),
+  desc: yup
+    .string('Geben Sie eine Kurzbeschreibung ein.')
+    .max(48, 'Kurzbeschreibung zu lang.')
+    .required('Kurzbeschreibung ist erforderlich'),
+  descLong: yup
+    .string('Geben Sie eine Beschreibung ein.')
+    .max(1024, 'Beschreibung zu lang.')
+    .required('Beschreibung ist erforderlich'),
   address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
-  phoneNumber: yup.string('Geben Sie eine Telefonnumer ein.').matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
-    message: 'Das Format ist fehlerhaft',
-    excludeEmptyString: true,
-  }),
+  phoneNumber: yup
+    .string('Geben Sie eine Telefonnumer ein.')
+    .matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
+      message: 'Das Format ist fehlerhaft',
+      excludeEmptyString: true,
+    })
+    .required('Telefonnummer ist erforderlich'),
   url: yup
     .string('Geben Sie eine URL ein.')
     .matches(
@@ -115,6 +129,8 @@ function Shop({ name }) {
   useEffect(() => {
     if (shopData) {
       setValue('name', shopData.name);
+      setValue('desc', shopData.desc);
+      setValue('descLong', shopData.descLong);
       setValue('address', shopData.location.address);
       setValue('phoneNumber', shopData.phoneNumber);
       setValue('url', shopData.url);
@@ -123,6 +139,7 @@ function Shop({ name }) {
       setValue('cuisineLabels', shopData.cuisineLabels);
       setValue('isActive', shopData.isActive);
       setValue('isKosher', shopData.isKosher);
+      setValue('openingHours', shopData.openingHours);
     }
     setSelected(false);
   }, [shopData, setValue]);
@@ -137,7 +154,9 @@ function Shop({ name }) {
   const onSubmit = (data) => {
     dispatch(updateShop(data));
   };
-
+  console.log(formState.isValid);
+  console.log(formState.errors);
+  console.log(shopData);
   return dataLoaded ? (
     <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
       <Toolbar />
@@ -158,73 +177,70 @@ function Shop({ name }) {
         </Box>
 
         <Paper>
-          <Grid className={classes.menuContainer} container direction="column">
-            <Grid item>
-              <Box className={classes.headerContainer} display="flex" justifyContent="space-around">
-                <Box>
-                  <Avatar alt="shop logo" src="./assets/delivery_icon.png" className={classes.avatar}>
-                    {shopData.name[0]}
-                  </Avatar>
-                  <Box className={classes.headerName} fontSize="h3.fontSize">
-                    {shopData.name}
-                  </Box>
+          <Box flexDirection="column">
+            <Box className={classes.headerContainer} display="flex" justifyContent="space-around">
+              <Box>
+                <Avatar alt="shop logo" src="./assets/delivery_icon.png" className={classes.avatar}>
+                  {shopData.name[0]}
+                </Avatar>
+                <Box className={classes.headerName} fontSize="h3.fontSize">
+                  {shopData.name}
                 </Box>
+                <Box fontSize="subtitle1.fontSize">{shopData.desc}</Box>
+                <Link href={`http://www.pickstop.de/${shopData.id}/${shopData.name.replaceAll(' ', '-')}`}>
+                  www.pickstop.de/{shopData.id}/{shopData.name.replaceAll(' ', '-')}
+                </Link>
               </Box>
-            </Grid>
-            <Grid item>
-              <Box width="90%" m="auto" pb={8}>
-                <Grid container direction="column" spacing={4}>
-                  <Grid container item spacing={3} justifyContent="space-around">
-                    <Grid item xs={12} sm={6}>
-                      <Box>
-                        <FormTextField name="name" label="Name*" control={control} variant="outlined" fullWidth />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Box>
-                        <Autocomplete
-                          name="address"
-                          label="Addresse*"
-                          control={control}
-                          onSelect={() => setSelected(true)}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Box>
-                    </Grid>
+            </Box>
+
+            <Box width="90%" m="auto" pb={8}>
+              <Grid container direction="column" spacing={4}>
+                <Grid container item spacing={4} justifyContent="space-around">
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <FormTextField name="name" label="Name*" control={control} variant="outlined" fullWidth />
+                    </Box>
                   </Grid>
-                  <Grid container item spacing={3} justifyContent="space-around">
-                    <Grid item xs={12} sm={6}>
-                      <Box>
-                        <FormTextField
-                          name="phoneNumber"
-                          label="Telefonnummer"
-                          control={control}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Box>
+                  <Grid item xs={12} sm={6}>
+                    <FormTextField
+                      name="desc"
+                      label="Kurzbeschreibung*"
+                      placeholder="Beschreiben Sie ihr Shop kurz..."
+                      control={control}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container item spacing={4} justifyContent="space-around">
+                  <Grid item xs={12} sm={6}>
+                    <Autocomplete
+                      name="address"
+                      label="Addresse*"
+                      control={control}
+                      onSelect={() => setSelected(true)}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={6}>
+                    <FormTextField
+                      name="phoneNumber"
+                      label="Telefonnummer*"
+                      control={control}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+                <Grid container item spacing={4} justifyContent="space-around">
+                  <Grid item xs={12} sm={6}>
+                    <Grid container spacing={4}>
+                      <Grid item xs={12}>
                         <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                  <Grid container item spacing={3} justifyContent="space-around">
-                    <Grid item xs={12} sm={6}>
-                      <Box>
-                        <FormMultiSelect
-                          name="serviceTypes"
-                          label="Servicearten*"
-                          items={SERVICE_TYPES}
-                          control={control}
-                          // variant="outlined"
-                        />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Box>
+                      </Grid>
+                      <Grid item xs={12}>
                         <FormMultiSelect
                           name="cuisineTypes"
                           label="Kategorien*"
@@ -232,17 +248,41 @@ function Shop({ name }) {
                           control={control}
                           variant="outlined"
                         />
-                      </Box>
+                      </Grid>
                     </Grid>
                   </Grid>
-                  <Grid container item spacing={3} justifyContent="space-around">
-                    <Grid item xs={12} sm={6}>
-                      <Box>
-                        <OpeningHours />
-                      </Box>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Box pb={1}>
+                  <Grid item xs={12} sm={6}>
+                    <FormTextField
+                      name="descLong"
+                      label="Beschreibung*"
+                      placeholder="Beschreiben Sie ihr Shop etwas ausführlicher..."
+                      control={control}
+                      variant="outlined"
+                      multiline
+                      rows={6}
+                      fullWidth
+                    />
+                  </Grid>
+                </Grid>
+
+                <Grid container item spacing={4} justifyContent="space-around">
+                  <Grid item xs={12} sm={6}>
+                    <Box>
+                      <OpeningHours name="openingHours" control={control} setOpeningHours={setValue} />
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Grid container spacing={4}>
+                      <Grid item xs={12}>
+                        <FormMultiSelect
+                          name="serviceTypes"
+                          label="Servicearten*"
+                          items={SERVICE_TYPES}
+                          control={control}
+                          variant="outlined"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
                         <FormMultiSelect
                           name="cuisineLabels"
                           label="Labels"
@@ -250,29 +290,30 @@ function Shop({ name }) {
                           control={control}
                           variant="outlined"
                         />
-                      </Box>
-                      <Box py={1}>
+                      </Grid>
+
+                      <Grid item xs={12}>
                         <FormSwitch
                           name="isKosher"
                           label="Koscher"
                           control={control}
                           desc="Geben Sie an, ob Ihre Gastronomie das Essen Koscher zubereitet."
                         />
-                      </Box>
-                      <Box pt={1}>
+                      </Grid>
+                      <Grid item xs={12}>
                         <FormSwitch
                           name="isActive"
                           label="Aktiv"
                           control={control}
                           desc="Geben Sie an, ob Ihre Gastronomie online gehen soll."
                         />
-                      </Box>
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>
-              </Box>
-            </Grid>
-          </Grid>
+              </Grid>
+            </Box>
+          </Box>
         </Paper>
       </form>
     </Box>

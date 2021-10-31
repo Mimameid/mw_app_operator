@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
+import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import {
   Box,
@@ -73,11 +74,12 @@ function Coupon() {
     setPage(page);
   };
 
+  const couponStatus = getDiscountStatus(coupon);
   const visibleCodes = coupon.codes.slice(page * pageSize, (page + 1) * pageSize);
   const numberValidCoupons = coupon.expired
     ? 0
     : coupon.codes.reduce((prev, cur) => {
-        return cur.valid ? prev + 1 : prev;
+        return cur.isValid ? prev + 1 : prev;
       }, 0);
 
   return (
@@ -125,8 +127,13 @@ function Coupon() {
                           {new Date(coupon.date.startDate).toLocaleDateString('de-DE')} -{' '}
                           {new Date(coupon.date.endDate).toLocaleDateString('de-DE')}
                         </TruncatedBox>
-                        <TruncatedBox color="error.main" fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
-                          {coupon.expired ? 'abgelaufen' : null}
+                        <TruncatedBox
+                          color={couponStatus.color}
+                          fontSize="subtitle2.fontSize"
+                          fontStyle="italic"
+                          pl={1}
+                        >
+                          {couponStatus.statusText}
                         </TruncatedBox>
                       </Box>
                     </Box>
@@ -171,9 +178,9 @@ function Coupon() {
                             {code.code}
                           </GridHeaderItem>
                           <GridHeaderItem item xs={3}>
-                            {coupon.expired ? (
+                            {coupon.isExpired ? (
                               <Box color="error.main">Abgelaufen</Box>
-                            ) : code.valid ? (
+                            ) : code.isValid ? (
                               <Box color="success.main">Gültig</Box>
                             ) : (
                               <Box color="error.main">Ungültig</Box>

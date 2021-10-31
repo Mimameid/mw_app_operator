@@ -4,7 +4,7 @@ import { useController } from 'react-hook-form';
 import { TextField } from '@material-ui/core';
 import TimeField from 'react-simple-timefield';
 
-function FormTimeField({ control, name, ...props }) {
+function FormTimeField({ control, name, onChange, ...props }) {
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
@@ -18,6 +18,12 @@ function FormTimeField({ control, name, ...props }) {
       {...props}
       inputRef={ref}
       {...inputProps}
+      onChange={(event) => {
+        inputProps.onChange(event);
+        if (onChange) {
+          onChange(event.target.value);
+        }
+      }}
       error={!!error}
       helperText={error ? error.message : null}
       inputProps={{ min: 0, style: { textAlign: 'center' } }}

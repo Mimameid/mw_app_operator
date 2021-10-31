@@ -16,6 +16,16 @@ export const weekdays = {
   sunday: 'Sonntag',
 };
 
+export const dayBeforeMap = {
+  monday: 'sunday',
+  tuesday: 'monday',
+  wednesday: 'tuesday',
+  thursday: 'wednesday',
+  friday: 'thursday',
+  saturday: 'friday',
+  sunday: 'saturday',
+};
+
 export const discountTypes = {
   menu: 'menu',
   category: 'category',

@@ -52,8 +52,6 @@ function FormTagMultiSelect({ control, name, items, ...props }) {
       case 'Vegetarisch':
         return classes.vegetarian;
       case 'Halal':
-        return classes.halal;
-      case 'Koscher':
         return classes.kosher;
       case 'Glutenfrei':
         return classes.gluten;

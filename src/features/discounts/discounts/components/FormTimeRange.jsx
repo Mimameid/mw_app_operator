@@ -6,7 +6,7 @@ import { Alert } from '@material-ui/lab';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormTimeField from 'common/components/form/FormTimeField';
 
-function FormTimeRange({ control, allDay }) {
+function FormTimeRange({ control, isAllDay }) {
   const {
     fieldState: { error },
   } = useController({
@@ -21,10 +21,10 @@ function FormTimeRange({ control, allDay }) {
           Uhrzeit
         </Box>
         <Box display="flex" mr={-2}>
-          <FormCheckboxField name="allDay" label="Ganztags" control={control} size="small" />
+          <FormCheckboxField name="isAllDay" label="Ganztags" control={control} size="small" />
         </Box>
       </Box>
-      <Collapse in={!allDay}>
+      <Collapse in={!isAllDay}>
         <Box display="flex" pt={1} justifyContent="flex-end">
           <Box width={60} px={1}>
             <FormTimeField name="time.startTime" label="Start" control={control} size="small" />

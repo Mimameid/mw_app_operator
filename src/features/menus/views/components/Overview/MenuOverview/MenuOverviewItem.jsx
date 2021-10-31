@@ -70,7 +70,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
   }
 
   function handleSwitchAcceptDialog(event) {
-    dispatch(activateMenu({ menuId: menu.id, activeMenuId, active: ref.current }));
+    dispatch(activateMenu({ menuId: menu.id, activeMenuId, isActive: ref.current }));
     setDialogOpen(false);
   }
 
@@ -113,7 +113,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
           {selected ? (
             <Grid item xs={1}>
               <Switch
-                checked={menu.active}
+                checked={menu.isActive}
                 onChange={handleToggleActivateMenu}
                 color="primary"
                 size="small"
@@ -121,7 +121,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
               />
             </Grid>
           ) : menu.id === activeMenuId ? (
-            <GridItem color={'green'} fontStyle={'italic'} item xs={1}>
+            <GridItem color={'success.main'} fontStyle={'italic'} item xs={1}>
               aktiv
             </GridItem>
           ) : null}

@@ -3,7 +3,7 @@ import { weekdays } from 'common/constants';
 
 import { Box, makeStyles } from '@material-ui/core';
 import OpeningHoursModal from './OpeningHoursModal';
-import { useSelector } from 'react-redux';
+import { useController } from 'react-hook-form';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,10 +24,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function OpeningHours() {
+function OpeningHours({ control, name }) {
   const classes = useStyles();
-  const openingHours = useSelector((state) => state.shop.shop.openingHours);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const {
+    field: { ref, ...inputProps },
+    fieldState: { error },
+  } = useController({
+    name,
+    control,
+  });
 
   return (
     <Box className={classes.container} display="flex" flexDirection="column">
@@ -46,23 +53,25 @@ function OpeningHours() {
             <Box flexBasis="50%" fontSize="h6.fontSize">
               {weekdays[key]}
             </Box>
-            <Box fontSize="body1.fontSize">
-              {openingHours[key].length > 0 ? (
-                openingHours[key].map((range, index) => (
-                  <Box key={index} display="flex" justifyContent="space-around" px={1}>
+            <Box display="flex" flexDirection="column" fontSize="body1.fontSize">
+              {inputProps.value[key].length > 0 ? (
+                inputProps.value[key].map((range, index) => (
+                  <Box key={index} display="flex" justifyContent="space-around" px={1} pt={0.6}>
                     <Box>{range.start}</Box>
                     <Box px={1}>-</Box>
                     <Box>{range.end}</Box>
                   </Box>
                 ))
               ) : (
-                <Box px={1}>Geschlossen</Box>
+                <Box px={1} pt={0.6}>
+                  Geschlossen
+                </Box>
               )}
             </Box>
           </Box>
         ))}
       </Box>
-      <OpeningHoursModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <OpeningHoursModal open={modalOpen} onClose={() => setModalOpen(false)} onChange={inputProps.onChange} />
     </Box>
   );
 }

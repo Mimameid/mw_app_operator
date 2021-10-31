@@ -43,7 +43,7 @@ function DishOverviewItem({ dish, selected }) {
   }
 
   function handleDisableDish(event) {
-    dispatch(setAvailable({ dishId: dish.id, available: event.target.checked }));
+    dispatch(setAvailable({ dishId: dish.id, isAvailable: event.target.checked }));
   }
 
   return (
@@ -71,7 +71,7 @@ function DishOverviewItem({ dish, selected }) {
           </GridItem>
           <GridItem item xs={1}>
             <Switch
-              checked={dish.available}
+              checked={dish.isAvailable}
               onChange={handleDisableDish}
               color="primary"
               size="small"

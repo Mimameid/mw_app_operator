@@ -95,8 +95,6 @@ function Dish({ dishId, category }) {
         return classes.vegetarian;
       case 'Halal':
         return classes.halal;
-      case 'Koscher':
-        return classes.kosher;
       case 'Glutenfrei':
         return classes.gluten;
       default:
@@ -167,7 +165,7 @@ function Dish({ dishId, category }) {
         </Box>
         <Box className={classes.infoContainer} display="flex" flexDirection="column" justifyContent="space-around">
           <Box display="inline" color="primary.main" fontWeight="fontWeightBold" textAlign="right">
-            {dish.price}€
+            {dish.price.toFixed(2)}€
           </Box>
           <Box color="text.secondary" fontSize="subtitle2.fontSize" fontStyle="italic" textAlign="right">
             {dish.type}

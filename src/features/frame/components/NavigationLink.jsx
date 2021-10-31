@@ -71,7 +71,7 @@ function NavigationLink({ name, path, IconComponent }) {
           onClick={routeTransitionHandler}
           fullWidth
         >
-          <Box color={selected ? 'primary.main' : 'text.secondary'}>{open ? name : ' '}</Box>
+          <Box color={selected ? 'primary.main' : 'text.secondary'}>{open ? name : ''}</Box>
         </Button>
         <CustomDialog
           open={transitionDialogOpen}

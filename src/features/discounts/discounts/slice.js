@@ -24,7 +24,7 @@ const discountsSlice = createSlice({
         delete state.byId[action.payload];
       })
       .addCase(setActivationDiscount.fulfilled, (state, action) => {
-        state.byId[action.payload.discountId].active = action.payload.active;
+        state.byId[action.payload.discountId].isActive = action.payload.isActive;
       });
   },
 });

@@ -40,7 +40,7 @@ function Autocomplete({ control, name, onSelect, ...props }) {
       <Box ref={containerRef} style={{ position: 'relative' }} width={'100%'}>
         <TextField
           inputRef={ref}
-          inputProps={{ spellCheck: 'false' }}
+          inputProps={{ spellCheck: 'false', style: { whiteSpace: 'nowrap', textOverflow: 'ellipsis' } }}
           autoComplete="new-password"
           {...inputProps}
           onChange={onChange}

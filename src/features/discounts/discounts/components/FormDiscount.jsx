@@ -4,7 +4,7 @@ import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@material-ui/
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormPriceField from 'common/components/form/FormPriceField';
 
-function FormDiscountType({ control, isFixedPrice, percental, setValue }) {
+function FormDiscountType({ control, isFixedPrice, isPercental, setValue }) {
   const handleChange = (event, newValue) => {
     setValue('isFixedPrice', newValue);
     setValue('reduction', 0);
@@ -62,11 +62,11 @@ function FormDiscountType({ control, isFixedPrice, percental, setValue }) {
                 Nachlass
               </Box>
               <Box display="flex" mr={-2}>
-                <FormCheckboxField name="percental" label="Prozentual" control={control} size="small" />
+                <FormCheckboxField name="isPercental" label="Prozentual" control={control} size="small" />
               </Box>
             </Box>
             <Box width={62} alignSelf="flex-end">
-              <FormPriceField name="reduction" control={control} adornment={percental ? '%' : '€'} size="small" />
+              <FormPriceField name="reduction" control={control} adornment={isPercental ? '%' : '€'} size="small" />
             </Box>
           </Box>
 
