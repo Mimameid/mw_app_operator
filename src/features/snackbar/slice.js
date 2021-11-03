@@ -33,7 +33,7 @@ const slice = createSlice({
       state.statusMessage = action.payload.message;
       state.count = state.count + 1;
     });
-    builder.addMatcher(isAnyOf(login.rejected, fetchArea.rejected), (state, action) => {
+    builder.addMatcher(isAnyOf(login.rejected, fetchArea.rejected, updateShop.rejected), (state, action) => {
       state.statusCode = STATUS_CODE.ERROR;
       state.statusMessage = action.error.message;
       state.count = state.count + 1;

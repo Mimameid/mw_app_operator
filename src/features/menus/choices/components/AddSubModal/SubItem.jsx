@@ -57,7 +57,7 @@ function SubItem({ sub, checked, handleToggle }) {
             />
           </Grid>
           <Grid item xs={4}>
-            <ListItemText primary={sub.price + '€'} />
+            <ListItemText primary={sub.price.toFixed(2) + '€'} />
           </Grid>
         </Grid>
 

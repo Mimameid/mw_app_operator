@@ -57,7 +57,7 @@ function DishItem({ dish, checked, handleToggle }) {
             />
           </Grid>
           <Grid item xs={4}>
-            <ListItemText primary={dish.price + '€'} secondary={dish.type} />
+            <ListItemText primary={dish.price.toFixed(2) + '€'} secondary={dish.type} />
           </Grid>
         </Grid>
 

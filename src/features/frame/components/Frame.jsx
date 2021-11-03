@@ -7,6 +7,7 @@ import MySnackbar from 'features/snackbar/components/MySnackbar';
 import ProtectedPage from 'pages/ProtectedPage';
 import MyAppBar from './MyAppBar';
 import NavigationDrawer from './NavigationDrawer';
+import DeactivatedShopNotification from './DeactivatedShopNotification';
 import Login from 'pages/Login';
 import SignUp from 'pages/SignUp';
 import { useAuthenticate } from 'common/hooks/useAuthenticate';
@@ -53,6 +54,7 @@ function Frame() {
                     </Route>
                   ))}
                 </Switch>
+                <DeactivatedShopNotification />
               </div>
             ) : (
               <Redirect from="*" to="/signup" />

@@ -27,6 +27,7 @@ export const fetchShop = createAsyncThunk('shop/shop/fetchShop', async (thunkAPI
 
 export const updateShop = createAsyncThunk('shop/shop/updateShop', async (data, thunkAPI) => {
   delete data.address;
+  delete data.id;
   data.location = thunkAPI.getState().shop.shop.location;
   data.openingHours = JSON.parse(JSON.stringify(data.openingHours));
 

@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4),
 
     zIndex: 1000,
-    '& .MuiDialog-container .MuiDialog-paper': {
-      // margin: 0,
-    },
   },
 
   dialogActions: {
@@ -52,7 +49,7 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
       scroll="body"
       fullScreen={!match}
     >
-      <DialogTitle className={classes.header}>
+      <DialogTitle>
         {typeof header === 'string' ? (
           <Box fontSize={'h5.fontSize'} color="primary.main">
             {header}

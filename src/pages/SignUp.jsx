@@ -106,9 +106,6 @@ const schema = yup.object({
     .array()
     .of(yup.string().oneOf(CUISINE_LABELS, 'Label muss aus der vorgegebenen Liste ausgewählt werden'))
     .required(),
-  isActive: yup
-    .boolean('Geben Sie an, ob Ihre Gastronomie online gehen soll.')
-    .required('Diese Angabe ist erforderlich'),
   isKosher: yup
     .boolean('Geben Sie an, ob Ihre Gastronomie das Essen Kosher zubereitet.')
     .required('Diese Angabe ist erforderlich'),
@@ -131,7 +128,7 @@ function SignUp({ shopRegistered }) {
       serviceTypes: [],
       cuisineTypes: [],
       cuisineLabels: [],
-      isActive: true,
+      isActive: false,
       isKosher: false,
       openingHours: {
         monday: [],
@@ -286,17 +283,6 @@ function SignUp({ shopRegistered }) {
                   />
                 </Box>
               </Grid>
-              <Grid item xs={12}>
-                <Box pt={1}>
-                  <FormSwitch
-                    name="isActive"
-                    label="Aktiv"
-                    control={control}
-                    desc="Geben Sie an, ob Ihre Gastronomie online gehen soll."
-                  />
-                </Box>
-              </Grid>
-
               <Grid item xs={12}>
                 <LoadingButton
                   className={classes.submitButton}

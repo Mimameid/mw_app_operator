@@ -15,6 +15,7 @@ import ContentHeader from 'common/components/other/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
 import FormSwitch from 'common/components/form/FormSwitch';
+import FormSwitchActivateShop from 'features/shop/shop/components/FormSwitchActivateShop';
 import FormMultiSelect from 'common/components/form/FormMultiSelect';
 import FormTextField from 'common/components/form/FormTextField';
 import { CloudUpload } from '@material-ui/icons';
@@ -154,9 +155,6 @@ function Shop({ name }) {
   const onSubmit = (data) => {
     dispatch(updateShop(data));
   };
-  console.log(formState.isValid);
-  console.log(formState.errors);
-  console.log(shopData);
   return dataLoaded ? (
     <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
       <Toolbar />
@@ -187,7 +185,11 @@ function Shop({ name }) {
                   {shopData.name}
                 </Box>
                 <Box fontSize="subtitle1.fontSize">{shopData.desc}</Box>
-                <Link href={`http://www.pickstop.de/${shopData.id}/${shopData.name.replaceAll(' ', '-')}`}>
+                <Link
+                  rel="noreferrer"
+                  href={`http://www.pickstop.de/${shopData.id}/${shopData.name.replaceAll(' ', '-')}`}
+                  target="_blank"
+                >
                   www.pickstop.de/{shopData.id}/{shopData.name.replaceAll(' ', '-')}
                 </Link>
               </Box>
@@ -301,7 +303,7 @@ function Shop({ name }) {
                         />
                       </Grid>
                       <Grid item xs={12}>
-                        <FormSwitch
+                        <FormSwitchActivateShop
                           name="isActive"
                           label="Aktiv"
                           control={control}
