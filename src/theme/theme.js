@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -59,15 +59,16 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily:
-      "-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'",
-
     h4: {
       fontWeight: 600,
       fontSize: '1.8725rem',
     },
     body1: {
       lineHeight: '1.4',
+      fontSize: '0.875rem',
+    },
+    button: {
+      fontWeight: 400,
     },
   },
   shape: {
@@ -82,11 +83,9 @@ const theme = createTheme({
     width: 214,
   },
   components: {
-    // Name of the component
     MuiTextField: {
       defaultProps: {
-        // The props to change the default for.
-        variant: 'standard', // No more ripple!
+        variant: 'standard',
       },
     },
   },

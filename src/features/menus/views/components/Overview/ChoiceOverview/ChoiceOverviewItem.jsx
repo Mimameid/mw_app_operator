@@ -29,9 +29,7 @@ function ChoiceOverviewItem({ choice, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        sx={{
-          bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null),
-        }}
+        sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectChoice : null}
       >

@@ -64,7 +64,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
   return (
     <React.Fragment>
       <ListItem
-        sx={{ bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
+        sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectMenu : null}
       >
@@ -85,7 +85,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
             {new Date(menu.created).toLocaleDateString('DE-de')}
           </GridItem>
           {selected ? (
-            <Grid item xs={1}>
+            <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={1}>
               <Switch
                 checked={menu.isActive}
                 onChange={handleToggleActivateMenu}

@@ -40,7 +40,7 @@ function SubOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '213px' }}>
+      <Box sx={{ overflow: 'auto', height: '234px' }}>
         {subsArray.length === 0 ? (
           <EmptyView>Keine Optiongruppe verfügbar. Bitte erstellen Sie eine Optiongruppe...</EmptyView>
         ) : (

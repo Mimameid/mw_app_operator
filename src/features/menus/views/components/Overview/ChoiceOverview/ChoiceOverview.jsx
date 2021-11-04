@@ -45,7 +45,7 @@ function ChoiceOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '213px' }}>
+      <Box sx={{ overflow: 'auto', height: '194px' }}>
         {choicesArray.length === 0 ? (
           <EmptyView>Keine Optiongruppen verfügbar. Bitte erstellen Sie eine Optiongruppe...</EmptyView>
         ) : (

@@ -62,7 +62,7 @@ function DiscountOverviewItem({ discount, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        sx={{ bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
+        sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectMenu : null}
       >
@@ -79,13 +79,13 @@ function DiscountOverviewItem({ discount, selected }) {
           <GridItem item xs={3}>
             <TruncatedBox display="flex">
               {new Date(discount.date.endDate).toLocaleDateString('DE-de')}
-              <TruncatedBox color={discountStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+              <TruncatedBox color={discountStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic">
                 {discountStatus.statusText}
               </TruncatedBox>
             </TruncatedBox>
           </GridItem>
           {selected ? (
-            <GridItem item xs={1}>
+            <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={2}>
               <Switch
                 checked={discount.isActive}
                 onChange={handleToggleActivateDiscount}
@@ -93,26 +93,27 @@ function DiscountOverviewItem({ discount, selected }) {
                 size="small"
                 inputProps={{ 'aria-label': 'dish available checkbox' }}
               />
-            </GridItem>
+            </Grid>
           ) : (
-            <GridItem color={discount.isActive ? 'success.main' : 'error.main'} fontStyle={'italic'} item xs={1}>
+            <GridItem color={discount.isActive ? 'success.main' : 'error.main'} fontStyle={'italic'} item xs={2}>
               {discount.isActive ? 'aktiv' : 'inaktiv'}
             </GridItem>
           )}
-
-          <Box
-            sx={{ visibility: selected ? 'hidden' : 'visible' }}
-            display="flex"
-            flexGrow={1}
-            justifyContent="flex-end"
-          >
-            <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
-              <Edit fontSize="small" />
-            </IconButton>
-            <IconButton aria-label="edit" size="small" onClick={deleteEntryHandler}>
-              <DeleteForever fontSize="small" color="error" />
-            </IconButton>
-          </Box>
+          <Grid item xs={1}>
+            <Box
+              sx={{ visibility: selected ? 'visible' : 'hidden' }}
+              display="flex"
+              flexGrow={1}
+              justifyContent="flex-end"
+            >
+              <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
+                <Edit fontSize="small" />
+              </IconButton>
+              <IconButton aria-label="edit" size="small" onClick={deleteEntryHandler}>
+                <DeleteForever fontSize="small" color="error" />
+              </IconButton>
+            </Box>
+          </Grid>
         </Grid>
       </ListItem>
       <WarningDialog

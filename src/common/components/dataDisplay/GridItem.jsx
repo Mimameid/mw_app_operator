@@ -25,7 +25,9 @@ function GridItem(props) {
               whiteSpace: 'normal',
 
               boxShadow: (theme) => theme.shadows[3],
-              p: 1,
+
+              p: 0.8,
+
               borderRadius: (theme) => theme.spacing(1),
               zIndex: 1000,
             },

@@ -29,9 +29,7 @@ function CategoryOverviewItem({ category, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        sx={{
-          bgcolor: selected ? (theme) => theme.palette.primary.light + '33' : null,
-        }}
+        sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectCategory : null}
       >
@@ -52,9 +50,7 @@ function CategoryOverviewItem({ category, selected }) {
             {new Date(category.created).toLocaleDateString('DE-de')}
           </GridItem>
           <Box
-            sx={{
-              visibility: selected ? 'visible' : 'hidden',
-            }}
+            sx={{ visibility: selected ? 'visible' : 'hidden' }}
             display="flex"
             flexGrow={1}
             justifyContent="flex-end"

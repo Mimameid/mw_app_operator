@@ -34,9 +34,7 @@ function DishOverviewItem({ dish, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        sx={{
-          bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null),
-        }}
+        sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectDish : null}
       >
@@ -56,7 +54,7 @@ function DishOverviewItem({ dish, selected }) {
           <GridItem item xs={2}>
             {new Date(dish.created).toLocaleDateString('DE-de')}
           </GridItem>
-          <GridItem item xs={1}>
+          <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={1}>
             <Switch
               checked={dish.isAvailable}
               onChange={handleDisableDish}
@@ -64,7 +62,7 @@ function DishOverviewItem({ dish, selected }) {
               size="small"
               inputProps={{ 'aria-label': 'dish available checkbox' }}
             />
-          </GridItem>
+          </Grid>
           <Box
             sx={{ visibility: selected ? 'visible' : 'hidden' }}
             display="flex"

@@ -32,8 +32,8 @@ function FormWeekdayField({ name, control, setValue }) {
                   sx={{
                     width: (theme) => theme.spacing(4),
                     height: (theme) => theme.spacing(4),
-
-                    border: 'none',
+                    ml: '0 !important',
+                    // border: 'none',
                     '&.Mui-selected': {
                       bgcolor: 'primary.main',
                       opacity: 0.9,
@@ -41,12 +41,6 @@ function FormWeekdayField({ name, control, setValue }) {
                     },
                     '&:hover': {
                       background: 'none',
-                    },
-                    '&:not(:first-of-type)': {
-                      borderRadius: (theme) => theme.shape.borderRadius,
-                    },
-                    '&:first-of-type': {
-                      borderRadius: (theme) => theme.shape.borderRadius,
                     },
                   }}
                   value={day}

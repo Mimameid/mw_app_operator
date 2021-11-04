@@ -5,7 +5,7 @@ import { fetchAllMenus } from 'features/menus/menus/actions';
 import { Box, Button, Toolbar, Grid } from '@mui/material';
 import Overview from 'features/discounts/views/components/Overview/Overview';
 import ContentHeader from 'common/components/dataDisplay/ContentHeader';
-import LoadingScreen from 'common/components/feedback/Spinner';
+import LoadingScreen from './LoadingScreen';
 import ItemView from 'features/discounts/views/components/ItemView/ItemView';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
 import CouponModal from 'features/discounts/coupons/components/CouponModal';

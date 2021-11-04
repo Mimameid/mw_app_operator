@@ -33,7 +33,14 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
           return (
             <div sx={{ display: 'flex', flexWrap: 'wrap' }}>
               {selected.map((item, _) => {
-                return <TruncatedChip sx={{ margin: '2px 2px 0 2px' }} key={item[0]} label={item[1]} size="small" />;
+                return (
+                  <TruncatedChip
+                    sx={{ margin: '2px 2px 0 2px' }}
+                    key={item[0]}
+                    label={item[1] + 'hallo'}
+                    size="small"
+                  />
+                );
               })}
             </div>
           );

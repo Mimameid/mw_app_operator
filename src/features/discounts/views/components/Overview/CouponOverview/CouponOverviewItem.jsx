@@ -46,7 +46,7 @@ function CouponOverviewItem({ coupon, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        sx={{ bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
+        sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectMenu : null}
       >
@@ -63,7 +63,7 @@ function CouponOverviewItem({ coupon, selected }) {
           <GridItem item xs={3}>
             <TruncatedBox display="flex">
               {new Date(coupon.date.endDate).toLocaleDateString('DE-de')}
-              <TruncatedBox color={couponStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
+              <TruncatedBox color={couponStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic">
                 {couponStatus.statusText}
               </TruncatedBox>
             </TruncatedBox>
@@ -71,19 +71,21 @@ function CouponOverviewItem({ coupon, selected }) {
           <GridItem item xs={2}>
             {coupon.value}€
           </GridItem>
-          <Box
-            sx={{ visibility: selected ? 'hidden' : 'visible' }}
-            display="flex"
-            flexGrow={1}
-            justifyContent="flex-end"
-          >
-            <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
-              <Edit fontSize="small" />
-            </IconButton>
-            <IconButton aria-label="edit" size="small" onClick={deleteEntryHandler}>
-              <DeleteForever fontSize="small" color="error" />
-            </IconButton>
-          </Box>
+          <Grid item xs={1}>
+            <Box
+              sx={{ visibility: selected ? 'visible' : 'hidden' }}
+              display="flex"
+              flexGrow={1}
+              justifyContent="flex-end"
+            >
+              <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
+                <Edit fontSize="small" />
+              </IconButton>
+              <IconButton aria-label="edit" size="small" onClick={deleteEntryHandler}>
+                <DeleteForever fontSize="small" color="error" />
+              </IconButton>
+            </Box>
+          </Grid>
         </Grid>
       </ListItem>
       <WarningDialog

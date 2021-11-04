@@ -47,7 +47,7 @@ function DishOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '213px' }}>
+      <Box sx={{ overflow: 'auto', height: '194px' }}>
         {dishesArray.length === 0 ? (
           <EmptyView>Keine Speisen verfügbar. Bitte erstellen Sie eine Speise...</EmptyView>
         ) : (

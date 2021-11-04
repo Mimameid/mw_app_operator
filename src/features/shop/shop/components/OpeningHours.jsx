@@ -10,7 +10,6 @@ function OpeningHours({ control, name }) {
 
   const {
     field: { ref, ...inputProps },
-    fieldState: { error },
   } = useController({
     name,
     control,

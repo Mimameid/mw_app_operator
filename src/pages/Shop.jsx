@@ -15,7 +15,6 @@ import ContentHeader from 'common/components/dataDisplay/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
 import FormSwitch from 'common/components/form/FormSwitch';
-import FormSwitchActivateShop from 'features/shop/shop/components/FormSwitchActivateShop';
 import FormMultiSelect from 'common/components/form/FormMultiSelect';
 import FormTextField from 'common/components/form/FormTextField';
 import { CloudUpload } from '@mui/icons-material';
@@ -185,6 +184,7 @@ function Shop({ name }) {
                   rel="noreferrer"
                   href={`http://www.pickstop.de/${shopData.id}/${shopData.name.replaceAll(' ', '-')}`}
                   target="_blank"
+                  underline="hover"
                 >
                   www.pickstop.de/{shopData.id}/{shopData.name.replaceAll(' ', '-')}
                 </Link>
@@ -296,14 +296,6 @@ function Shop({ name }) {
                           label="Koscher"
                           control={control}
                           desc="Geben Sie an, ob Ihre Gastronomie das Essen Koscher zubereitet."
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormSwitchActivateShop
-                          name="isActive"
-                          label="Aktiv"
-                          control={control}
-                          desc="Geben Sie an, ob Ihre Gastronomie online gehen soll."
                         />
                       </Grid>
                     </Grid>

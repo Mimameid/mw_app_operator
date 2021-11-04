@@ -54,7 +54,7 @@ function DiscountOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '213px' }}>
+      <Box sx={{ overflow: 'auto', height: '194px' }}>
         {dataLoaded ? (
           discountsArray.length === 0 ? (
             <EmptyView>Keine Rabattaktion verfügbar...</EmptyView>

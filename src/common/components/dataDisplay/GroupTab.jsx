@@ -7,8 +7,8 @@ function GroupTab({ selected, label, value, ...props }) {
     <React.Fragment>
       <Tab
         sx={{
-          typography: { xs: 'caption', sm: 'button' },
-          minWidth: '90px',
+          typography: { xs: 'caption', sm: 'body2' },
+          minWidth: '96px',
           padding: '14px 12px',
           zIndex: 100,
           color: selected ? 'common.white' : null,

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 function GridHeaderItem(props) {
   return (
     <React.Fragment>
       <Grid sx={{ display: 'flex', alignItems: 'center' }} {...props}>
-        <span
+        <Box
           sx={{
-            typography: { xs: 'caption' },
+            typography: { xs: 'caption', sm: 'subtitle2' },
             overflow: 'hidden',
-            pl: 1,
-            pr: 1,
+            px: 1,
+            py: 1.5,
             maxWidth: '480px',
 
             textOverflow: 'ellipsis',
@@ -20,7 +20,7 @@ function GridHeaderItem(props) {
           style={{ color: props.color, fontStyle: props.fontStyle }}
         >
           {props.children}
-        </span>
+        </Box>
       </Grid>
     </React.Fragment>
   );
