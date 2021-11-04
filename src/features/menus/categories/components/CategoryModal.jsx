@@ -7,10 +7,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import FormTextField from 'common/components/form/FormTextField';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),

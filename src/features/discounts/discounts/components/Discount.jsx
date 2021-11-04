@@ -3,64 +3,12 @@ import { useSelector } from 'react-redux';
 import { getDiscountTypeName, weekdays } from 'common/constants';
 import { getDiscountStatus } from '../utils';
 
-import { Box, Divider, Grid, IconButton, makeStyles, Paper } from '@material-ui/core';
+import { Box, Divider, Grid, IconButton, Paper } from '@mui/material';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
 import DiscountModal from './DiscountModal';
-import { Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    borderBottom: '1px solid ' + theme.palette.grey[300],
-  },
-  headerContainer: {
-    paddingBottom: theme.spacing(2),
-  },
-  container: {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
-      paddingBottom: 0,
-    },
-  },
-  innerContainer: {
-    [theme.breakpoints.down('sm')]: {
-      paddingBottom: theme.spacing(2),
-    },
-  },
-  subtitle: {
-    marginTop: '-4px',
-    paddingTop: theme.spacing(1),
-
-    lineHeight: '24px',
-  },
-  buttonsContainer: {
-    paddingLeft: theme.spacing(1),
-  },
-  toggleButton: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-
-    width: theme.spacing(2),
-    height: theme.spacing(4),
-    margin: theme.spacing(0.5),
-
-    color: theme.palette.action.disabledOpacity,
-    ...theme.typography.button,
-
-    border: 'none',
-    borderRadius: theme.shape.borderRadius,
-  },
-  coloredButton: {
-    width: theme.spacing(4),
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
+import { Edit } from '@mui/icons-material';
 
 function Discount() {
-  const classes = useStyles();
   const discountId = useSelector((state) => state.discounts.views.itemId);
   const discount = useSelector((state) => state.discounts.discounts.byId[discountId]);
 
@@ -68,22 +16,22 @@ function Discount() {
 
   const discountStatus = getDiscountStatus(discount);
   return (
-    <Paper elevation={3} className={classes.root}>
+    <Paper elevation={3} sx={{ p: 2, borderBottom: (theme) => '1px solid ' + theme.palette.grey[300] }}>
       {discountId ? (
         <React.Fragment>
           <Box display="flex" flexDirection="column">
-            <Box className={classes.headerContainer}>
+            <Box sx={{ pb: 2 }}>
               <Box display="flex">
                 <TruncatedBox fontSize="h6.fontSize" fontWeight="fontWeightBold">
                   {discount.name}
                 </TruncatedBox>
-                <Box className={classes.buttonsContainer}>
+                <Box sx={{ pl: 1 }}>
                   <IconButton aria-label="edit" size="small" onClick={() => setDiscountModalOpen(true)}>
                     <Edit fontSize="small" />
                   </IconButton>
                 </Box>
                 <Box
-                  className={classes.buttonsContainer}
+                  sx={{ pl: 1 }}
                   color={discount.isActive ? 'success.main' : 'error.main'}
                   fontStyle={'italic'}
                   flexGrow={1}
@@ -94,7 +42,12 @@ function Discount() {
               </Box>
 
               <TruncatedBox
-                className={classes.subtitle}
+                sx={{
+                  mt: '-4px',
+                  pt: 1,
+
+                  lineHeight: '24px',
+                }}
                 color="text.secondary"
                 fontSize="subtitle2.fontSize"
                 fontStyle="italic"
@@ -104,8 +57,8 @@ function Discount() {
             </Box>
             <Divider />
             <Grid container direction="column">
-              <Grid className={classes.container} container>
-                <Grid className={classes.innerContainer} item xs={12} md={4}>
+              <Grid sx={{ pt: 1, pb: { xs: 0, md: 2 } }} container>
+                <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Typ
                   </Box>
@@ -113,13 +66,13 @@ function Discount() {
                     <Box>{getDiscountTypeName(discount.type)}rabatt</Box>
                   </Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item xs={12} md={4}>
+                <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Betroffene {getDiscountTypeName(discount.type)}
                   </Box>
                   <Box>{discount.effectedItems.map((item, index) => item[1]).join(', ')}</Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item xs={12} md={4}>
+                <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     {discount.isFixedPrice ? <Box> Festpreis</Box> : <Box> Nachlass</Box>}
                   </Box>
@@ -146,8 +99,8 @@ function Discount() {
               </Grid>
 
               <Divider />
-              <Grid className={classes.container} container>
-                <Grid className={classes.innerContainer} item xs={12} md={4}>
+              <Grid sx={{ pt: 1, pb: { xs: 0, md: 2 } }} container>
+                <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Zeitraum
                   </Box>
@@ -166,27 +119,43 @@ function Discount() {
                     )}
                   </Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item xs={12} md={4}>
+                <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Wochentage
                   </Box>
                   <Box display="flex">
                     {Object.keys(weekdays).map((day, index) => {
                       return (
-                        <span
+                        <Box
+                          component={'span'}
                           key={index}
-                          className={`${classes.toggleButton} ${
-                            discount.weekdays.includes(day) ? classes.coloredButton : null
-                          }`}
+                          sx={{
+                            typography: 'button',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+
+                            width: (theme) => (discount.weekdays.includes(day) ? theme.spacing(4) : theme.spacing(2)),
+                            height: (theme) => theme.spacing(4),
+                            m: 0.5,
+
+                            color: discount.weekdays.includes(day) ? 'common.white' : 'action.disabledOpacity',
+
+                            border: 'none',
+                            borderRadius: (theme) => theme.shape.borderRadius,
+
+                            backgroundColor: (theme) =>
+                              discount.weekdays.includes(day) ? theme.palette.primary.main : null,
+                          }}
                           value={day}
                         >
                           {day[0]}
-                        </span>
+                        </Box>
                       );
                     })}
                   </Box>
                 </Grid>
-                <Grid className={classes.innerContainer} item xs={12} md={4}>
+                <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
                     Uhrzeit
                   </Box>

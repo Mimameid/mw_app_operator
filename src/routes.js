@@ -4,7 +4,7 @@ import DashboardPage from 'pages/Dashboard';
 import ShopPage from 'pages/Shop';
 import DiscountPage from 'pages/Discount';
 
-import { Dashboard, Map, Restaurant, Home, LocalOffer } from '@material-ui/icons';
+import { Dashboard, Map, Restaurant, Home, LocalOffer } from '@mui/icons-material';
 
 const routes = [
   { path: '/', exact: true, name: 'Dashboard', Component: DashboardPage, IconComponent: Dashboard },

@@ -2,28 +2,12 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeSub } from 'features/menus/choices/actions';
 
-import { Box, Grid, IconButton, makeStyles } from '@material-ui/core';
-import { Delete, Edit } from '@material-ui/icons';
+import { Box, Grid, IconButton } from '@mui/material';
+import { Delete, Edit } from '@mui/icons-material';
 import EditSub from './EditSub';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
 
-const useStyles = makeStyles((theme) => ({
-  smallPadding: {
-    padding: theme.spacing(1),
-  },
-  mediumPadding: {
-    padding: theme.spacing(2),
-  },
-  buttonsContainer: {
-    paddingLeft: theme.spacing(1),
-  },
-  subName: {
-    verticalAlign: 'middle',
-  },
-}));
-
 function Sub({ subId, choice }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const sub = useSelector((state) => state.menus.subs.byId[subId]);
 
@@ -38,12 +22,12 @@ function Sub({ subId, choice }) {
   };
 
   return (
-    <Grid className={choice ? classes.smallPadding : classes.mediumPadding} container alignItems="center">
+    <Grid sx={{ p: choice ? 1 : 2 }} container alignItems="center">
       <Grid item>
-        <TruncatedBox className={classes.subName} display="inline-block">
+        <TruncatedBox sx={{ verticalAlign: 'middle' }} display="inline-block">
           {sub.name}
         </TruncatedBox>
-        <Box className={classes.buttonsContainer} display="inline-block">
+        <Box sx={{ pl: 1 }} display="inline-block">
           <IconButton aria-label="edit dish" size="small" onClick={handleEditSub}>
             <Edit fontSize="small" />
           </IconButton>

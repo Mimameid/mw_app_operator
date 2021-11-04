@@ -2,54 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeChoice } from 'features/menus/dishes/actions';
 
-import { Box, Button, Collapse, Grid, IconButton, Paper, makeStyles } from '@material-ui/core';
+import { Box, Button, Collapse, Grid, IconButton, Paper, Stack } from '@mui/material';
 import ChoiceSubs from './ChoiceSubs';
 import AddSubModal from 'features/menus/choices/components/AddSubModal/AddSubModal';
 import EditChoice from './EditChoice';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
-import { Add, Delete, Edit, Remove } from '@material-ui/icons';
+import { Add, Delete, Edit, Remove } from '@mui/icons-material';
 
-const useStyles = makeStyles((theme) => ({
-  headerContainer: {
-    padding: theme.spacing(2),
-
-    backgroundColor: theme.palette.primary.main,
-    borderBottom: '1px solid ' + theme.palette.primary.main,
-    color: theme.palette.common.white,
-  },
-  collapseIconContainer: {
-    width: '24px',
-    marginLeft: theme.spacing(-1),
-    paddingTop: '3px',
-    alignSelf: 'flex-start',
-  },
-  collapseIcon: {
-    cursor: 'pointer',
-    '&:hover': {
-      background: 'none',
-    },
-  },
-  title: {
-    cursor: 'pointer',
-
-    userSelect: 'none',
-  },
-  subtitle: {
-    marginTop: '-4px',
-    paddingTop: theme.spacing(1),
-
-    lineHeight: '24px',
-  },
-  buttonsContainer: {
-    paddingLeft: theme.spacing(1),
-  },
-  contentContainer: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-}));
 function Choice({ choiceId, dish }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const choice = useSelector((state) => state.menus.choices.byId[choiceId]);
 
@@ -74,23 +34,47 @@ function Choice({ choiceId, dish }) {
 
   return (
     <Paper elevation={0}>
-      <Box className={classes.headerContainer} display="flex">
-        <Box className={classes.collapseIconContainer} onClick={handleClickCollapse}>
-          <IconButton className={classes.collapseIcon} disableRipple aria-label="edit" color="inherit" size="small">
+      <Box
+        sx={{
+          p: 2,
+
+          bgcolor: 'primary.main',
+          color: 'common.white',
+          borderBottom: (theme) => '1px solid ' + theme.palette.primary.main,
+        }}
+        display="flex"
+      >
+        <Box sx={{ width: '24px', ml: -1, pt: '3px', alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
+          <IconButton
+            sx={{
+              cursor: 'pointer',
+              '&:hover': {
+                background: 'none',
+              },
+            }}
+            disableRipple
+            aria-label="edit"
+            color="inherit"
+            size="small"
+          >
             {show ? <Remove fontSize="small" /> : <Add fontSize="small" />}
           </IconButton>
         </Box>
         <Box>
-          <Grid container alignItems="center">
+          <Stack sx={{ alignItems: 'center' }} direction="row">
             <TruncatedBox
-              className={classes.title}
-              fontSize="subtitle1.fontSize"
-              fontWeight="fontWeightBold"
+              sx={{
+                fontSize: 'subtitle1.fontSize',
+                fontWeight: 'fontWeightBold',
+
+                cursor: 'pointer',
+                userSelect: 'none',
+              }}
               onClick={handleClickCollapse}
             >
               {choice.name}
             </TruncatedBox>
-            <Grid className={classes.buttonsContainer} item>
+            <Box sx={{ display: 'flex', flexWrap: 'nowrap', pl: 1 }}>
               <IconButton aria-label="edit" color="inherit" size="small" onClick={handleEditChoice}>
                 <Edit fontSize="small" />
               </IconButton>
@@ -99,20 +83,29 @@ function Choice({ choiceId, dish }) {
                   <Delete fontSize="small" />
                 </IconButton>
               ) : null}
-            </Grid>
-            <Grid item className={classes.buttonsContainer}>
+            </Box>
+            <Box sx={{ pl: 1 }}>
               <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddSubs}>
                 Option
               </Button>
-            </Grid>
-          </Grid>
-          <TruncatedBox className={classes.subtitle} fontSize="subtitle2.fontSize" fontStyle="italic">
+            </Box>
+          </Stack>
+          <TruncatedBox
+            sx={{
+              mt: '-4px',
+              pt: 1,
+
+              lineHeight: '24px',
+            }}
+            fontSize="subtitle2.fontSize"
+            fontStyle="italic"
+          >
             {choice.desc}
           </TruncatedBox>
         </Box>
       </Box>
       <Collapse in={show}>
-        <Box className={classes.contentContainer}>
+        <Box sx={{ pl: 1, pr: 2 }}>
           <ChoiceSubs choice={choice} />
         </Box>
       </Collapse>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Grid, Paper } from '@material-ui/core';
+import { Box, Grid, Paper } from '@mui/material';
 import Choice from '../../choices/components/Choice';
 
 function DishChoices({ dish }) {

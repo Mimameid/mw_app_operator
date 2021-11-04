@@ -1,27 +1,16 @@
 import React, { useEffect } from 'react';
 
-import { Box, Grid, Paper, Toolbar, makeStyles } from '@material-ui/core';
+import { Box, Grid, Paper, Toolbar } from '@mui/material';
 import MyResponsiveLine from 'features/dashboard/components/MyResponsiveLine';
 import MyResponsiveBar from 'features/dashboard/components/MyResponsiveBar';
 import MyResponsivePie from 'features/dashboard/components/MyResponsivePie';
 import MyResponsiveCalendar from 'features/dashboard/components/MyResponsiveCalendar';
 import MyResponsiveAreaBump from 'features/dashboard/components/MyResponsiveAreaBump';
-import ContentHeader from 'common/components/other/ContentHeader';
+import ContentHeader from 'common/components/dataDisplay/ContentHeader';
 
 // import { useFetchUserData } from 'hooks/useFetchUserData';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-  },
-  lineChartContainer: {},
-}));
-
 function Dashboard({ name }) {
-  const classes = useStyles();
-
   useEffect(() => {
     // dispatch(fetchShopData());
   }, []);
@@ -4504,7 +4493,15 @@ function Dashboard({ name }) {
   ];
 
   return (
-    <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
+    <Box
+      sx={{
+        p: 3,
+        pt: 0,
+      }}
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <Toolbar />
       <Box flexGrow={1}>
         <ContentHeader name={name} info="Visuelle Analyse Ihrer Daten." />

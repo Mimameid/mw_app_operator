@@ -2,24 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addChoices } from 'features/menus/dishes/actions';
 
-import { Box, Button, Divider, Grid, List, Paper, makeStyles } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Paper } from '@mui/material';
 import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
 import ChoiceItem from './ChoiceItem';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
-
-const useStyles = makeStyles((theme) => ({
-  list: {
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 320,
-    height: '304px',
-    padding: 0,
-  },
-}));
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 function AddChoiceModal({ open, setOpen, dishId }) {
-  const classes = useStyles();
-
   const dispatch = useDispatch();
   const choicesArray = useSelector((state) => {
     const choicesArray = Object.values(state.menus.choices.byId);
@@ -64,7 +52,7 @@ function AddChoiceModal({ open, setOpen, dishId }) {
         header={
           <Grid container justifyContent="space-between">
             <Grid item>
-              <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
+              <Box fontSize={'h5.fontSize'} color="primary.main">
                 Optiongruppe
               </Box>
             </Grid>
@@ -80,7 +68,10 @@ function AddChoiceModal({ open, setOpen, dishId }) {
         onAccept={handleAddChoices}
       >
         <Paper variant="outlined" square>
-          <List className={classes.list} subheader={<li />}>
+          <List
+            sx={{ position: 'relative', overflow: 'auto', maxHeight: 320, height: '304px', padding: 0 }}
+            subheader={<li />}
+          >
             {choicesArray.length === 0 ? (
               <Box color="text.secondary" fontStyle="italic" p={1}>
                 Keine Optiongruppe verfügbar. Bitte erstellen Sie eine neue Optiongruppe...

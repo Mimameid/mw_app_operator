@@ -2,40 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllMenus } from 'features/menus/menus/actions';
 
-import { Box, Button, Toolbar, makeStyles, Grid } from '@material-ui/core';
+import { Box, Button, Toolbar, Grid } from '@mui/material';
 import Overview from 'features/discounts/views/components/Overview/Overview';
-import ContentHeader from 'common/components/other/ContentHeader';
-import LoadingScreen from 'common/components/other/Spinner';
+import ContentHeader from 'common/components/dataDisplay/ContentHeader';
+import LoadingScreen from 'common/components/feedback/Spinner';
 import ItemView from 'features/discounts/views/components/ItemView/ItemView';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
 import CouponModal from 'features/discounts/coupons/components/CouponModal';
-import { Add } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-  },
-  addNewButton: {
-    fontSize: theme.typography.body1.fontSize,
-    marginBottom: theme.spacing(3),
-    textTransform: 'none',
-  },
-  discountContainer: {
-    width: '100%',
-    transition: 'margin 0.2s ease-in-out, width 0.2s ease-in-out',
-    backgroundColor: 'transparent',
-  },
-
-  discountListContainer: {
-    paddingBottom: theme.spacing(3),
-    backgroundColor: 'transparent',
-  },
-}));
+import { Add } from '@mui/icons-material';
 
 function Discount({ name }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const selectedGroup = useSelector((state) => state.discounts.views.group);
 
@@ -64,14 +40,26 @@ function Discount({ name }) {
   };
 
   return dataLoaded ? (
-    <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
+    <Box
+      sx={{
+        p: 3,
+        pt: 0,
+      }}
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <Toolbar />
 
       <Box display="flex" justifyContent="space-between">
         <ContentHeader name={name} info="Erstellen Sie Ihre Angebote." />
         <Box alignSelf="flex-end">
           <Button
-            className={classes.addNewButton}
+            sx={{
+              mb: 3,
+              fontSize: 'body1.fontSize',
+              textTransform: 'none',
+            }}
             onClick={handleAddButton}
             variant="contained"
             color="primary"
@@ -82,8 +70,21 @@ function Discount({ name }) {
         </Box>
       </Box>
 
-      <Grid className={classes.discountContainer} container direction="column">
-        <Grid className={classes.discountListContainer} item>
+      <Grid
+        sx={{
+          width: '100%',
+          transition: 'margin 0.2s ease-in-out, width 0.2s ease-in-out',
+          backgroundColor: 'transparent',
+        }}
+        container
+        direction="column"
+      >
+        <Grid
+          sx={{
+            pb: 3,
+          }}
+          item
+        >
           <Overview />
         </Grid>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 import { Marker, Popup } from 'react-leaflet';
 import { shopIcon } from 'common/constants';
 

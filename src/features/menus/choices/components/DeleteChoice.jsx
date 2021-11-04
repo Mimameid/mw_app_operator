@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedDishes } from 'features/menus/dishes/slice';
 import { deleteChoice } from '../actions';
 
-import WarningDialog from 'common/components/dialogs/WarningDialog';
+import WarningDialog from 'common/components/feedback/WarningDialog';
 
 function DeleteChoice({ trigger, setTrigger, choiceId }) {
   const dispatch = useDispatch();

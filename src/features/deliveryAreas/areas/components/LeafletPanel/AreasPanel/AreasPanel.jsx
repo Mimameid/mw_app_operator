@@ -1,21 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
-import { Divider, Paper, makeStyles } from '@material-ui/core';
+import { Divider, Paper } from '@mui/material';
 import AreaEntry from './AreaEntry/AreaEntry';
 
-const useStyles = makeStyles((theme) => ({
-  areasContainer: {
-    overflow: 'hidden',
-    position: 'relative',
-    marginTop: '10px',
-    width: '200px',
-
-    borderRadius: theme.shape.borderRadius,
-  },
-}));
-
 function AreasPanel({ draw, edited, areas, areaNumber }) {
-  const classes = useStyles();
   const panelRef = useRef();
 
   useEffect(() => {
@@ -23,7 +11,15 @@ function AreasPanel({ draw, edited, areas, areaNumber }) {
   }, [draw, edited]);
 
   return (
-    <Paper className={classes.areasContainer} ref={panelRef}>
+    <Paper
+      sx={{
+        overflow: 'hidden',
+        position: 'relative',
+        marginTop: '10px',
+        width: '200px',
+      }}
+      ref={panelRef}
+    >
       {areas.map((area, index) => (
         <React.Fragment key={index}>
           <AreaEntry

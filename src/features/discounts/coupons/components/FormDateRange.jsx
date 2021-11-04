@@ -1,47 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { useController } from 'react-hook-form';
 
-import { Box, ClickAwayListener, makeStyles, Paper, TextField, useTheme } from '@material-ui/core';
+import { Box, ClickAwayListener, Paper, TextField, useTheme } from '@mui/material';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: 'relative',
-  },
-  calendarRoot: {
-    position: 'absolute',
-    left: '50%',
-    bottom: '10%',
-
-    transform: 'translateX(-50%)',
-    zIndex: 1000,
-    border: '1px solid grey',
-
-    '& > div': {
-      borderRadius: theme.spacing(4),
-    },
-    '&  .rdrDayToday > span': {
-      '& :after': {
-        background: theme.palette.primary.main,
-      },
-    },
-  },
-  textField: {
-    '& .MuiInputBase-root.Mui-disabled': {
-      color: 'rgba(0, 0, 0, 1)',
-      cursor: 'pointer',
-    },
-  },
-  inputStyle: {
-    cursor: 'pointer',
-    textAlign: 'center',
-  },
-}));
-
 function FormDateRange({ control, setValue }) {
-  const classes = useStyles();
   const theme = useTheme();
 
   const {
@@ -84,16 +49,21 @@ function FormDateRange({ control, setValue }) {
 
   return (
     <React.Fragment>
-      <Box className={classes.root} display="flex" justifyContent="space-between">
+      <Box sx={{ position: 'relative' }} display="flex" justifyContent="space-between">
         <Box display="flex" alignItems="center" fontSize="subtitle1.fontSize" fontWeight={400}>
           Zeitraum
         </Box>
         <Box display="flex" pt={1}>
           <Box width={96} px={1}>
             <TextField
-              className={classes.textField}
+              sx={{
+                '& .MuiInputBase-root.Mui-disabled': {
+                  color: 'rgba(0, 0, 0, 1)',
+                  cursor: 'pointer',
+                },
+              }}
               label="Start"
-              inputProps={{ className: classes.inputStyle }}
+              inputProps={{ sx: { cursor: 'pointer', textAlign: 'center' } }}
               size="small"
               onClick={(e) => {
                 setShowCalendar(!showCalendar);
@@ -110,9 +80,14 @@ function FormDateRange({ control, setValue }) {
           </Box>
           <Box width={88} pl={1}>
             <TextField
-              className={classes.textField}
+              sx={{
+                '& .MuiInputBase-root.Mui-disabled': {
+                  color: 'rgba(0, 0, 0, 1)',
+                  cursor: 'pointer',
+                },
+              }}
               label="Ende"
-              inputProps={{ className: classes.inputStyle }}
+              inputProps={{ sx: { cursor: 'pointer', textAlign: 'center' } }}
               size="small"
               onClick={(e) => {
                 setShowCalendar(!showCalendar);
@@ -134,7 +109,26 @@ function FormDateRange({ control, setValue }) {
           mouseEvent="onMouseDown"
         >
           <Box>
-            <Paper className={classes.calendarRoot}>
+            <Paper
+              sx={{
+                position: 'absolute',
+                left: '50%',
+                bottom: '10%',
+
+                transform: 'translateX(-50%)',
+                zIndex: 1000,
+                border: '1px solid grey',
+
+                '& > div': {
+                  borderRadius: theme.spacing(4),
+                },
+                '&  .rdrDayToday > span': {
+                  '& :after': {
+                    background: theme.palette.primary.main,
+                  },
+                },
+              }}
+            >
               <DateRange
                 ranges={[rangeSelection]}
                 onChange={handleSelect}

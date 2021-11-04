@@ -2,28 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/slice';
 
-import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
+import { Box, Grid, IconButton, ListItem } from '@mui/material';
 import EditSub from 'features/menus/subs/components/EditSub';
 import DeleteSub from 'features/menus/subs/components/DeleteSub';
-import GridItem from 'common/components/other/GridItem';
-import { DeleteForever, Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  noHover: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.light + '33',
-    },
-  },
-  highlight: {
-    background: theme.palette.primary.light + '33',
-  },
-  hidden: {
-    visibility: 'hidden',
-  },
-}));
+import GridItem from 'common/components/dataDisplay/GridItem';
+import { DeleteForever, Edit } from '@mui/icons-material';
 
 function SubOverviewItem({ sub, selected }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [triggerDelete, setTriggerDelete] = useState(false);
@@ -44,7 +29,7 @@ function SubOverviewItem({ sub, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        className={selected ? classes.highlight : null}
+        sx={{ bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectCategory : null}
       >
@@ -58,7 +43,12 @@ function SubOverviewItem({ sub, selected }) {
           <GridItem item xs={3}>
             {new Date(sub.created).toLocaleDateString('DE-de')}
           </GridItem>
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
+          <Box
+            sx={{ visibility: selected ? 'visible' : 'hidden' }}
+            display="flex"
+            flexGrow={1}
+            justifyContent="flex-end"
+          >
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>

@@ -6,9 +6,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import FormTextField from 'common/components/form/FormTextField';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
@@ -61,10 +61,10 @@ function MenuModal({ open, onClose, menu }) {
     >
       <Grid container spacing={2} direction="column">
         <Grid item>
-          <FormTextField fullWidth name="name" label="Name" control={control} />
+          <FormTextField name="name" label="Name" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormTextField fullWidth name="desc" label="Beschreibung" control={control} />
+          <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
         </Grid>
       </Grid>
     </ResponsiveModal>

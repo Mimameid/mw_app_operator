@@ -8,10 +8,11 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Alert } from '@material-ui/lab';
-import { Grid, Paper, makeStyles, Box, Typography } from '@material-ui/core';
+import { Alert } from '@mui/material';
+import { Grid, Paper, Box, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import FormTextField from 'common/components/form/FormTextField';
-import LoadingButton from 'common/components/buttons/LoadingButton';
+import LoadingButton from 'common/components/inputs/LoadingButton';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import FormMultiSelect from 'common/components/form/FormMultiSelect';
 import FormSwitch from 'common/components/form/FormSwitch';

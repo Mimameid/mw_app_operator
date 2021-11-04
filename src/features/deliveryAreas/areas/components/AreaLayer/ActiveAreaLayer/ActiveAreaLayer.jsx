@@ -5,7 +5,7 @@ import { deactivateArea, removeArea, removePolygon } from '../../../actions';
 
 import PolygonWrapper from './PolygonWrapper/PolygonWrapper';
 import LookaheadLine from './LookaheadLine';
-import CustomDialog from 'common/components/dialogs/CustomDialog';
+import CustomDialog from 'common/components/feedback/CustomDialog';
 
 function ActiveAreaLayer({ activeArea, draw }) {
   const dispatch = useDispatch();

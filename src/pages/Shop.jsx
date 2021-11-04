@@ -9,48 +9,16 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Box, Button, Grid, Link, Paper, Toolbar, Avatar, makeStyles } from '@material-ui/core';
+import { Box, Button, Grid, Link, Paper, Toolbar, Avatar } from '@mui/material';
 import LoadingScreen from './LoadingScreen';
-import ContentHeader from 'common/components/other/ContentHeader';
+import ContentHeader from 'common/components/dataDisplay/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
 import FormSwitch from 'common/components/form/FormSwitch';
 import FormSwitchActivateShop from 'features/shop/shop/components/FormSwitchActivateShop';
 import FormMultiSelect from 'common/components/form/FormMultiSelect';
 import FormTextField from 'common/components/form/FormTextField';
-import { CloudUpload } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-  },
-  saveButton: {
-    fontSize: theme.typography.body1.fontSize,
-    marginBottom: theme.spacing(3),
-    textTransform: 'none',
-  },
-  headerContainer: {
-    paddingTop: theme.spacing(6),
-    paddingBottom: theme.spacing(8),
-    textAlign: 'center',
-  },
-  avatar: {
-    height: theme.spacing(12),
-    width: theme.spacing(12),
-    margin: 'auto',
-
-    fontSize: theme.typography.h4.fontSize,
-    backgroundColor: theme.palette.avatar.default,
-  },
-  headerName: {
-    paddingTop: theme.spacing(2),
-  },
-  multiline: {
-    padding: theme.spacing(2),
-  },
-}));
+import { CloudUpload } from '@mui/icons-material';
 
 const schema = yup.object({
   name: yup
@@ -104,7 +72,6 @@ const schema = yup.object({
 });
 
 function Shop({ name }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const shopData = useSelector((state) => state.shop.shop);
 
@@ -156,14 +123,26 @@ function Shop({ name }) {
     dispatch(updateShop(data));
   };
   return dataLoaded ? (
-    <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
+    <Box
+      sx={{
+        p: 3,
+        pt: 0,
+      }}
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <Toolbar />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box display="flex" justifyContent="space-between">
           <ContentHeader name={name} info="Ihre Shop Daten." />
           <Box alignSelf="flex-end">
             <Button
-              className={classes.saveButton}
+              sx={{
+                mb: 3,
+                fontSize: 'body1.fontSize',
+                textTransform: 'none',
+              }}
               variant="contained"
               color="primary"
               startIcon={<CloudUpload />}
@@ -176,12 +155,29 @@ function Shop({ name }) {
 
         <Paper>
           <Box flexDirection="column">
-            <Box className={classes.headerContainer} display="flex" justifyContent="space-around">
+            <Box sx={{ pt: 6, pb: 9, px: 4, textAlign: 'center' }} display="flex" justifyContent="space-around">
               <Box>
-                <Avatar alt="shop logo" src="./assets/delivery_icon.png" className={classes.avatar}>
+                <Avatar
+                  sx={{
+                    height: (theme) => theme.spacing(12),
+                    width: (theme) => theme.spacing(12),
+
+                    margin: 'auto',
+
+                    fontSize: 'h4.fontSize',
+                    bgcolor: 'avatar.default',
+                  }}
+                  alt="shop logo"
+                  src="./assets/delivery_icon.png"
+                >
                   {shopData.name[0]}
                 </Avatar>
-                <Box className={classes.headerName} fontSize="h3.fontSize">
+                <Box
+                  sx={{
+                    pt: 2,
+                    fontSize: { xs: 'h4.fontSize', sm: 'h3.fontSize' },
+                  }}
+                >
                   {shopData.name}
                 </Box>
                 <Box fontSize="subtitle1.fontSize">{shopData.desc}</Box>

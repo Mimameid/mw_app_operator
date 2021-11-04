@@ -2,28 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectDiscountGroup } from '../../slice';
 
-import { Paper, Box, Tabs, makeStyles } from '@material-ui/core';
-import GroupTab from './GroupTab';
+import { Paper, Box, Tabs } from '@mui/material';
+import GroupTab from 'common/components/dataDisplay/GroupTab';
 import DiscountOverview from './DiscountOverview/DiscountOverview';
 import CouponOverview from './CouponOverview/CouponOverview';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  tabs: {
-    borderRadius: '16px 16px 0 0',
-    boxShadow: theme.shadows[20],
-  },
-  listContainer: {
-    boxShadow: theme.shadows[3],
-  },
-}));
-
 const tabNames = ['Rabattaktionen', 'Gutscheinaktionen'];
 function Overview() {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const group = useSelector((state) => state.discounts.views.group);
 
@@ -46,9 +31,9 @@ function Overview() {
   };
 
   return (
-    <Paper className={classes.container}>
+    <Paper sx={{ position: 'relative', overflow: 'hidden' }}>
       <Tabs
-        className={classes.tabs}
+        sx={{ borderRadius: '16px 16px 0 0', boxShadow: (theme) => theme.shadows[20] }}
         indicatorColor="primary"
         TabIndicatorProps={{
           style: {
@@ -64,7 +49,7 @@ function Overview() {
           <GroupTab key={index} selected={index === value} value={index} label={tabName} />
         ))}
       </Tabs>
-      <Box className={classes.listContainer}>{renderList(value)}</Box>
+      <Box sx={{ boxShadow: (theme) => theme.shadows[3] }}>{renderList(value)}</Box>
     </Paper>
   );
 }

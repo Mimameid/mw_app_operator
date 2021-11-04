@@ -1,7 +1,7 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@material-ui/core';
+import { Checkbox, FormControl, FormControlLabel, FormHelperText } from '@mui/material';
 
 function FormCheckboxField({ control, name, items, ...props }) {
   const {

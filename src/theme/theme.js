@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material';
 
 const theme = createTheme({
   palette: {
@@ -52,7 +52,7 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 640, // due to Tabs component not wrappong properly if changed
+      sm: 800,
       md: 960,
       lg: 1280,
       xl: 1920,
@@ -80,6 +80,15 @@ const theme = createTheme({
   },
   navigationDrawer: {
     width: 214,
+  },
+  components: {
+    // Name of the component
+    MuiTextField: {
+      defaultProps: {
+        // The props to change the default for.
+        variant: 'standard', // No more ripple!
+      },
+    },
   },
 });
 

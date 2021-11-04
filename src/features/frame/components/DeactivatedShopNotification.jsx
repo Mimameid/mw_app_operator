@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Paper } from '@material-ui/core';
-import { Alert, AlertTitle } from '@material-ui/lab';
+import { Box, Paper } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 
 function DeactivatedShopNotification() {
   const shop = useSelector((state) => state.shop.shop);

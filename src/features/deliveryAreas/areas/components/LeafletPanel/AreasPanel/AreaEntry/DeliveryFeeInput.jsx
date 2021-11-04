@@ -1,45 +1,39 @@
 import React from 'react';
 
-import { TextField, InputAdornment, makeStyles } from '@material-ui/core';
+import { TextField, InputAdornment } from '@mui/material';
 import DeliveryIcon from 'assets/delivery_icon.png';
 
-const useStyles = makeStyles((theme) => ({
-  deliveryFeeInput: {
-    maxWidth: '36px',
-    padding: '2px',
-    marginLeft: 'auto',
-    fontSize: '0.8rem',
-    '& .MuiInputBase-input': {
-      padding: '1px 2px',
-    },
-    '& .MuiOutlinedInput-root': {
-      fontSize: '0.8rem',
-      padding: '2px',
-
-      '& fieldset': {},
-      '&:hover fieldset': {
-        borderColor: theme.palette.primary.main,
-
-        border: '1px solid',
-        borderRadius: '2px',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: theme.palette.primary.main,
-        border: '1px solid',
-        borderRadius: '2px',
-      },
-    },
-  },
-}));
-
 function DeliveryFeeInput({ onChangeDeliveryFee, deliveryFee }) {
-  const classes = useStyles();
-
   return (
     <React.Fragment>
       <img src={DeliveryIcon} alt="Delivery Icon" width="18" height="18" />
       <TextField
-        className={classes.deliveryFeeInput}
+        sx={{
+          maxWidth: '36px',
+          padding: '2px',
+          marginLeft: 'auto',
+          fontSize: '0.8rem',
+          '& .MuiInputBase-input': {
+            padding: '1px 2px',
+          },
+          '& .MuiOutlinedInput-root': {
+            fontSize: '0.8rem',
+            padding: '2px',
+
+            '& fieldset': {},
+            '&:hover fieldset': {
+              borderColor: (theme) => theme.palette.primary.main,
+
+              border: '1px solid',
+              borderRadius: '2px',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: (theme) => theme.palette.primary.main,
+              border: '1px solid',
+              borderRadius: '2px',
+            },
+          },
+        }}
         size="small"
         value={deliveryFee}
         onChange={onChangeDeliveryFee}

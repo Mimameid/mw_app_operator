@@ -4,35 +4,14 @@ import { selectDiscountItem } from 'features/discounts/views/slice';
 import { deleteCoupon } from 'features/discounts/coupons/actions';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
-import { Box, Grid, IconButton, ListItem, makeStyles } from '@material-ui/core';
-import WarningDialog from 'common/components/dialogs/WarningDialog';
+import { Box, Grid, IconButton, ListItem } from '@mui/material';
+import WarningDialog from 'common/components/feedback/WarningDialog';
 import CouponModal from 'features/discounts/coupons/components/CouponModal';
-import GridItem from 'common/components/other/GridItem';
+import GridItem from 'common/components/dataDisplay/GridItem';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
-import { DeleteForever, Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  highlight: {
-    background: theme.palette.primary.light + '33',
-  },
-  hidden: {
-    visibility: 'hidden',
-  },
-  wrap: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      overflow: 'visible',
-      whiteSpace: 'normal',
-    },
-  },
-}));
+import { DeleteForever, Edit } from '@mui/icons-material';
 
 function CouponOverviewItem({ coupon, selected }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [couponModalOpen, setCouponModalOpen] = useState(false);
@@ -67,24 +46,21 @@ function CouponOverviewItem({ coupon, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        className={selected ? classes.highlight : null}
+        sx={{ bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectMenu : null}
       >
         <Grid container wrap={'nowrap'}>
-          <GridItem item xs={1}>
+          <GridItem item xs={2}>
             {coupon.id}
           </GridItem>
           <GridItem item xs={2}>
             {coupon.name}
           </GridItem>
           <GridItem item xs={2}>
-            {coupon.desc}
-          </GridItem>
-          <GridItem item xs={2}>
             {numberValidCoupons}/{coupon.numberOfCoupons}
           </GridItem>
-          <GridItem item xs={2}>
+          <GridItem item xs={3}>
             <TruncatedBox display="flex">
               {new Date(coupon.date.endDate).toLocaleDateString('DE-de')}
               <TruncatedBox color={couponStatus.color} fontSize="subtitle2.fontSize" fontStyle="italic" pl={1}>
@@ -95,7 +71,12 @@ function CouponOverviewItem({ coupon, selected }) {
           <GridItem item xs={2}>
             {coupon.value}€
           </GridItem>
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
+          <Box
+            sx={{ visibility: selected ? 'hidden' : 'visible' }}
+            display="flex"
+            flexGrow={1}
+            justifyContent="flex-end"
+          >
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>

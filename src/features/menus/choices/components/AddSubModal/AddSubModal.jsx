@@ -2,43 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addSubs } from 'features/menus/choices/actions';
 
-import { Box, Button, Divider, Grid, List, Paper, makeStyles } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Paper } from '@mui/material';
 import SubItem from './SubItem';
 import CreateSubModal from 'features/menus/subs/components/SubModal';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  formContainer: {
-    position: 'absolute',
-    width: '432px',
-    left: '50%',
-    top: '50%',
-    padding: theme.spacing(4),
-
-    transform: 'translate(-50%, -50%)',
-    zIndex: 1000,
-  },
-  header: {
-    marginBottom: theme.spacing(3),
-  },
-  list: {
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 320,
-    height: '304px',
-    padding: 0,
-  },
-  buttonLayout: {
-    marginTop: theme.spacing(3),
-  },
-}));
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 function AddSubModal({ open, setOpen, choiceId }) {
-  const classes = useStyles();
-
   const dispatch = useDispatch();
   const subsArray = useSelector((state) => {
     let subsArray = Object.values(state.menus.subs.byId);
@@ -84,7 +53,7 @@ function AddSubModal({ open, setOpen, choiceId }) {
         header={
           <Grid container justifyContent="space-between">
             <Grid item>
-              <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
+              <Box sx={{ mb: 3 }} fontSize={'h5.fontSize'} color="primary.main">
                 Optionen
               </Box>
             </Grid>
@@ -100,7 +69,10 @@ function AddSubModal({ open, setOpen, choiceId }) {
         onAccept={handleAddChoices}
       >
         <Paper variant="outlined" square>
-          <List className={classes.list} subheader={<li />}>
+          <List
+            sx={{ position: 'relative', overflow: 'auto', maxHeight: 320, height: '304px', padding: 0 }}
+            subheader={<li />}
+          >
             {subsArray.length === 0 ? (
               <Box color="text.secondary" fontStyle="italic" p={1}>
                 Keine Optionen verfügbar. Bitte erstellen Sie eine neue Option...

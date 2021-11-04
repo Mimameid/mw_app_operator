@@ -1,21 +1,10 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { MenuItem, Checkbox, ListItemText, makeStyles, TextField } from '@material-ui/core';
+import { MenuItem, Checkbox, ListItemText, TextField } from '@mui/material';
 import TruncatedChip from 'features/menus/common/components/TruncatedChip';
 
-const useStyles = makeStyles((theme) => ({
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  chip: {
-    margin: '2px 2px 0 2px',
-  },
-}));
-
 function FormMultiSelectGroup({ control, name, items, ...props }) {
-  const classes = useStyles();
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
@@ -39,18 +28,12 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
       SelectProps={{
         multiple: true,
         value: inputProps.value,
-        MenuProps: {
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left',
-          },
-          getContentAnchorEl: null,
-        },
+
         renderValue: (selected) => {
           return (
-            <div className={classes.chips}>
+            <div sx={{ display: 'flex', flexWrap: 'wrap' }}>
               {selected.map((item, _) => {
-                return <TruncatedChip className={classes.chip} key={item[0]} label={item[1]} size="small" />;
+                return <TruncatedChip sx={{ margin: '2px 2px 0 2px' }} key={item[0]} label={item[1]} size="small" />;
               })}
             </div>
           );

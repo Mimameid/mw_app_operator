@@ -2,7 +2,7 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 import { nanoid } from 'common/constants';
 
-import { MenuItem, TextField } from '@material-ui/core';
+import { MenuItem, TextField } from '@mui/material';
 
 function FormSelectField({ control, name, items, ...props }) {
   const {
@@ -18,13 +18,6 @@ function FormSelectField({ control, name, items, ...props }) {
       select
       SelectProps={{
         value: inputProps.value,
-        MenuProps: {
-          anchorOrigin: {
-            vertical: 'bottom',
-            horizontal: 'left',
-          },
-          getContentAnchorEl: null,
-        },
       }}
       inputRef={ref}
       error={!!error}

@@ -7,13 +7,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Grid, Paper } from '@material-ui/core';
+import { Box, Paper, Stack } from '@mui/material';
 import FormTextField from 'common/components/form/FormTextField';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormWeekdayField from './FormWeekdayField';
 import FormDateRange from './FormDateRange';
 import FormTimeRange from './FormTimeRange';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 import FormDiscount from './FormDiscount';
 import FormEffectedItems from './FormEffectedItems';
 
@@ -159,39 +159,39 @@ function DiscountModal({ open, onClose, discount }) {
       onCancel={handleClose}
       onAccept={handleSubmit(onSubmit)}
     >
-      <Grid container spacing={2} direction="column">
-        <Grid item>
+      <Stack spacing={2}>
+        <Box>
           <FormTextField name="name" label="Name" control={control} fullWidth />
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <FormEffectedItems control={control} type={watchType} setValue={setValue} />
-        </Grid>
+        </Box>
 
-        <Grid item>
+        <Box>
           <FormDiscount
             control={control}
             isFixedPrice={watchIsFixedPrice}
             isPercental={watchPercental}
             setValue={setValue}
           />
-        </Grid>
+        </Box>
 
-        <Grid item>
+        <Box>
           <Paper variant="outlined">
             <FormDateRange control={control} isRepeating={watchRepeating} setValue={setValue} />
 
             <FormWeekdayField name="weekdays" control={control} setValue={setValue} />
             <FormTimeRange control={control} isAllDay={watchAllDay} setValue={setValue} />
           </Paper>
-        </Grid>
+        </Box>
 
-        <Grid item>
+        <Box>
           <FormCheckboxField name="isCombinable" label="Kombinierbar" control={control} />
-        </Grid>
-      </Grid>
+        </Box>
+      </Stack>
     </ResponsiveModal>
   );
 }

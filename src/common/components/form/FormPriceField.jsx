@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { useController } from 'react-hook-form';
 
-import { TextField, InputAdornment } from '@material-ui/core';
+import { TextField, InputAdornment } from '@mui/material';
 
 function getIntAndFractal(value, commaIndex) {
   let intPart = value.substring(0, commaIndex);

@@ -3,31 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchDiscounts } from 'features/discounts/discounts/actions';
 import { nanoid } from 'common/constants';
 
-import { Grid, List, ListSubheader, Divider, makeStyles, Box } from '@material-ui/core';
+import { Grid, List, ListSubheader, Divider, Box } from '@mui/material';
 import DiscountOverviewItem from './DiscountOverviewItem';
-import GridHeaderItem from 'common/components/other/GridHeaderItem';
+import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
-import Spinner from 'common/components/other/Spinner';
-
-const useStyles = makeStyles((theme) => ({
-  list: {
-    padding: 0,
-  },
-  listHeader: {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-
-    borderBottom: '1px solid ' + theme.palette.primary.main,
-    boxShadow: theme.shadows[3],
-  },
-  listBody: {
-    overflow: 'auto',
-    height: '213px',
-  },
-}));
+import Spinner from 'common/components/feedback/Spinner';
 
 function DiscountOverview() {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const discountsArray = useSelector((state) => {
     let discountsArray = Object.values(state.discounts.discounts.byId);
@@ -43,22 +25,27 @@ function DiscountOverview() {
   }, [dispatch]);
 
   return (
-    <List className={classes.list}>
-      <ListSubheader className={classes.listHeader}>
+    <List sx={{ p: 0 }}>
+      <ListSubheader
+        sx={{
+          color: 'common.white',
+          bgcolor: 'primary.main',
+
+          borderBottom: (theme) => '1px solid ' + theme.palette.primary.main,
+          boxShadow: (theme) => theme.shadows[3],
+        }}
+      >
         <Grid container>
-          <GridHeaderItem item xs={1}>
+          <GridHeaderItem item xs={2}>
             ID
           </GridHeaderItem>
           <GridHeaderItem item xs={2}>
             Name
           </GridHeaderItem>
           <GridHeaderItem item xs={2}>
-            Beschreibung
-          </GridHeaderItem>
-          <GridHeaderItem item xs={2}>
             Typ
           </GridHeaderItem>
-          <GridHeaderItem item xs={2}>
+          <GridHeaderItem item xs={3}>
             Ablaufdatum
           </GridHeaderItem>
           <GridHeaderItem item xs={2}>
@@ -67,7 +54,7 @@ function DiscountOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box className={classes.listBody}>
+      <Box sx={{ overflow: 'auto', height: '213px' }}>
         {dataLoaded ? (
           discountsArray.length === 0 ? (
             <EmptyView>Keine Rabattaktion verfügbar...</EmptyView>
@@ -80,7 +67,7 @@ function DiscountOverview() {
             ))
           )
         ) : (
-          <Spinner className={classes.loadingIcon} />
+          <Spinner />
         )}
       </Box>
     </List>

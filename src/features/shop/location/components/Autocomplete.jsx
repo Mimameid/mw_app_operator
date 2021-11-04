@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useController } from 'react-hook-form';
 import { queryPredictions } from 'features/shop/location/actions';
 
-import { Box, ClickAwayListener, IconButton, InputAdornment, TextField } from '@material-ui/core';
+import { Box, ClickAwayListener, IconButton, InputAdornment, TextField } from '@mui/material';
 import AutocompleteDropdown from './AutocompleteDropdown';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
 
 function Autocomplete({ control, name, onSelect, ...props }) {
   const dispatch = useDispatch();

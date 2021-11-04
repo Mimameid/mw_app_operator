@@ -3,7 +3,6 @@ import React from 'react';
 import {
   Button,
   Grid,
-  makeStyles,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -11,43 +10,25 @@ import {
   useMediaQuery,
   useTheme,
   Box,
-} from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    lineHeight: 'normal',
-  },
-  dialogContainer: {
-    maxWidth: '520px',
-    width: '100%',
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(8),
-
-    padding: theme.spacing(4),
-
-    zIndex: 1000,
-  },
-
-  dialogActions: {
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(4),
-    marginTop: theme.spacing(3),
-  },
-}));
+} from '@mui/material';
 
 function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, children }) {
-  const classes = useStyles();
   const theme = useTheme();
-  const match = useMediaQuery(theme.breakpoints.up('sm'));
+  const match = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Dialog
-      className={classes.backdrop}
-      PaperProps={{ className: classes.dialogContainer }}
+      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, lineHeight: 'normal' }}
+      PaperProps={{
+        sx: {
+          width: '100%',
+          p: 4,
+          zIndex: 1000,
+        },
+      }}
       open={open}
       scroll="body"
-      fullScreen={!match}
+      fullScreen={match}
     >
       <DialogTitle>
         {typeof header === 'string' ? (
@@ -62,10 +43,10 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
       <DialogContent>
         <div style={{ paddingBottom: '1px' }}>{children}</div>
       </DialogContent>
-      <DialogActions className={classes.dialogActions}>
+      <DialogActions sx={{ pr: 3, pl: 4, mt: 3 }}>
         <Grid container item justifyContent="flex-end" spacing={2}>
           <Grid item>
-            <Button variant="contained" onClick={onCancel}>
+            <Button color="inherit" onClick={onCancel}>
               Abbrechen
             </Button>
           </Grid>

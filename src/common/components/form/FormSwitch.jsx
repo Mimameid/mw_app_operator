@@ -1,7 +1,7 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { Box, FormHelperText, Switch } from '@material-ui/core';
+import { Box, FormHelperText, Switch } from '@mui/material';
 
 function FormTextField({ control, name, label, desc, ...props }) {
   const {

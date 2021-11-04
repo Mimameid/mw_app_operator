@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Checkbox, IconButton, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
+import { Box, Checkbox, IconButton, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import EditCategory from '../../../categories/components/EditCategory';
 import DeleteCategory from '../../../categories/components/DeleteCategory';
-import { DeleteForever, Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  textContainer: {
-    display: 'block',
-    overflow: 'hidden',
-    paddingRight: theme.spacing(2),
-    maxWidth: '220px',
-
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  checkBoxContainer: {
-    minWidth: '32px',
-  },
-}));
+import { DeleteForever, Edit } from '@mui/icons-material';
 
 function CategoryItem({ category, checked, handleToggle }) {
-  const classes = useStyles();
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
@@ -38,7 +22,7 @@ function CategoryItem({ category, checked, handleToggle }) {
   return (
     <React.Fragment>
       <ListItem dense button onClick={handleToggle(category.id)}>
-        <ListItemIcon className={classes.checkBoxContainer}>
+        <ListItemIcon sx={{ minWidth: '32px' }}>
           <Checkbox
             color="primary"
             edge="start"
@@ -49,16 +33,12 @@ function CategoryItem({ category, checked, handleToggle }) {
             inputProps={{ 'aria-labelledby': category.id }}
           />
         </ListItemIcon>
-        <ListItemText
-          id={category.id}
-          primary={<span className={classes.textContainer}>{category.name}</span>}
-          secondary={<span className={classes.textContainer}>{category.desc}</span>}
-        />
+        <ListItemText id={category.id} primary={category.name} secondary={category.desc} />
         <Box display="flex">
-          <IconButton edge="end" aria-label="edit" onClick={handleEditCategory}>
+          <IconButton edge="end" aria-label="edit" onClick={handleEditCategory} size="large">
             <Edit fontSize="small" />
           </IconButton>
-          <IconButton edge="end" aria-label="delete" onClick={handleDeleteCategory}>
+          <IconButton edge="end" aria-label="delete" onClick={handleDeleteCategory} size="large">
             <DeleteForever fontSize="small" color="error" />
           </IconButton>
         </Box>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { Box, Collapse } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Box, Collapse } from '@mui/material';
+import { Alert } from '@mui/material';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormTimeField from 'common/components/form/FormTimeField';
 

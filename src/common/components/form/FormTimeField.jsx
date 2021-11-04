@@ -1,7 +1,7 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 import TimeField from 'react-simple-timefield';
 
 function FormTimeField({ control, name, onChange, ...props }) {

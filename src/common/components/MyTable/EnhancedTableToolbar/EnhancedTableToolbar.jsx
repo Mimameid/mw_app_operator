@@ -1,5 +1,5 @@
-import { IconButton, Toolbar, Tooltip, Typography } from '@material-ui/core';
-import { Delete, FilterList } from '@material-ui/icons';
+import { IconButton, Toolbar, Tooltip, Typography } from '@mui/material';
+import { Delete, FilterList } from '@mui/icons-material';
 
 import React from 'react';
 
@@ -20,13 +20,13 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" size="large">
             <Delete />
           </IconButton>
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
+          <IconButton aria-label="filter list" size="large">
             <FilterList />
           </IconButton>
         </Tooltip>

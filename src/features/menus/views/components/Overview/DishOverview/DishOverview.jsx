@@ -1,30 +1,12 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
 import DishOverviewItem from './DishOverviewItem';
-import GridHeaderItem from 'common/components/other/GridHeaderItem';
+import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    padding: 0,
-  },
-  listHeader: {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-
-    borderBottom: '1px solid ' + theme.palette.primary.main,
-    boxShadow: theme.shadows[3],
-  },
-  listBody: {
-    overflow: 'auto',
-    height: '213px',
-  },
-}));
-
 function DishOverview() {
-  const classes = useStyles();
   const dishesArray = useSelector((state) => {
     let dishesArray = Object.values(state.menus.dishes.byId);
     dishesArray.sort((a, b) => a.name.localeCompare(b.name));
@@ -33,8 +15,16 @@ function DishOverview() {
   const selectedDishId = useSelector((state) => state.menus.views.itemId);
 
   return (
-    <List className={classes.list}>
-      <ListSubheader className={classes.listHeader}>
+    <List sx={{ p: 0 }}>
+      <ListSubheader
+        sx={{
+          color: 'common.white',
+          bgcolor: 'primary.main',
+
+          borderBottom: (theme) => '1px solid ' + theme.palette.primary.main,
+          boxShadow: (theme) => theme.shadows[3],
+        }}
+      >
         <Grid container>
           <GridHeaderItem item xs={1}>
             ID
@@ -56,8 +46,8 @@ function DishOverview() {
           </GridHeaderItem>
         </Grid>
       </ListSubheader>
-      <Divider className={classes.divider} />
-      <Box className={classes.listBody}>
+      <Divider />
+      <Box sx={{ overflow: 'auto', height: '213px' }}>
         {dishesArray.length === 0 ? (
           <EmptyView>Keine Speisen verfügbar. Bitte erstellen Sie eine Speise...</EmptyView>
         ) : (

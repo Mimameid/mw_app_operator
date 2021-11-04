@@ -3,28 +3,13 @@ import { useDispatch } from 'react-redux';
 import { selectItem } from 'features/menus/views/slice';
 import { setAvailable } from 'features/menus/dishes/actions';
 
-import { Grid, IconButton, ListItem, Switch, makeStyles, Box } from '@material-ui/core';
-import GridItem from 'common/components/other/GridItem';
+import { Grid, IconButton, ListItem, Switch, Box } from '@mui/material';
+import GridItem from 'common/components/dataDisplay/GridItem';
 import EditDish from 'features/menus/dishes/components/EditDish';
 import DeleteDish from 'features/menus/dishes/components/DeleteDish';
-import { DeleteForever, Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  noHover: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.light + '33',
-    },
-  },
-  highlight: {
-    background: theme.palette.primary.light + '33',
-  },
-  hidden: {
-    visibility: 'hidden',
-  },
-}));
+import { DeleteForever, Edit } from '@mui/icons-material';
 
 function DishOverviewItem({ dish, selected }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const [triggerDelete, setTriggerDelete] = useState(false);
@@ -49,7 +34,9 @@ function DishOverviewItem({ dish, selected }) {
   return (
     <React.Fragment>
       <ListItem
-        className={selected ? classes.highlight : null}
+        sx={{
+          bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null),
+        }}
         button={!selected}
         onClick={!selected ? handleSelectDish : null}
       >
@@ -78,7 +65,12 @@ function DishOverviewItem({ dish, selected }) {
               inputProps={{ 'aria-label': 'dish available checkbox' }}
             />
           </GridItem>
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
+          <Box
+            sx={{ visibility: selected ? 'visible' : 'hidden' }}
+            display="flex"
+            flexGrow={1}
+            justifyContent="flex-end"
+          >
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>

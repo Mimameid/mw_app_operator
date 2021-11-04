@@ -2,23 +2,13 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addCategories } from 'features/menus/menus/actions';
 
-import { Box, Button, Divider, Grid, List, Paper, makeStyles } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Paper } from '@mui/material';
+
 import CategoryModal from 'features/menus/categories/components/CategoryModal';
 import CategoryItem from './CategoryItem';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
-
-const useStyles = makeStyles((theme) => ({
-  list: {
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 320,
-    height: '304px',
-    padding: 0,
-  },
-}));
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 function AddCategoryModal({ open, setOpen, menu }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const categoriesArray = useSelector((state) => {
@@ -64,7 +54,7 @@ function AddCategoryModal({ open, setOpen, menu }) {
         header={
           <Grid container justifyContent="space-between">
             <Grid item>
-              <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
+              <Box fontSize={'h5.fontSize'} color="primary.main">
                 Kategorien
               </Box>
             </Grid>
@@ -80,7 +70,7 @@ function AddCategoryModal({ open, setOpen, menu }) {
         onAccept={handleAddCategories}
       >
         <Paper variant="outlined" square>
-          <List className={classes.list}>
+          <List sx={{ position: 'relative', overflow: 'auto', maxHeight: 320, height: '304px', padding: 0 }}>
             {categoriesArray.length === 0 ? (
               <Box color="text.secondary" fontStyle="italic" p={1}>
                 Keine Kategorien verfügbar. Bitte erstellen Sie eine neue Kategorie...

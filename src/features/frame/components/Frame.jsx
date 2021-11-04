@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import routes from 'routes';
 
-import { makeStyles } from '@material-ui/core';
 import MySnackbar from 'features/snackbar/components/MySnackbar';
 import ProtectedPage from 'pages/ProtectedPage';
 import MyAppBar from './MyAppBar';
@@ -12,15 +11,9 @@ import Login from 'pages/Login';
 import SignUp from 'pages/SignUp';
 import { useAuthenticate } from 'common/hooks/useAuthenticate';
 import LoadingScreen from 'pages/LoadingScreen';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: 'flex',
-  },
-}));
+import { Box } from '@mui/system';
 
 function Frame() {
-  const classes = useStyles();
   const { loggedIn, shopRegistered, loading } = useAuthenticate();
 
   if (loading) {
@@ -42,7 +35,7 @@ function Frame() {
 
           <Route>
             {shopRegistered ? (
-              <div className={classes.container}>
+              <Box sx={{ display: 'flex' }}>
                 <MyAppBar />
                 <NavigationDrawer />
                 <Switch>
@@ -55,7 +48,7 @@ function Frame() {
                   ))}
                 </Switch>
                 <DeactivatedShopNotification />
-              </div>
+              </Box>
             ) : (
               <Redirect from="*" to="/signup" />
             )}

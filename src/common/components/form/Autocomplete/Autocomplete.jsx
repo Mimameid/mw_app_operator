@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { useController } from 'react-hook-form';
 import { queryPredictions } from 'features/shop/slices/location/actions';
 
-import { Box, ClickAwayListener, IconButton, InputAdornment, TextField } from '@material-ui/core';
+import { Box, ClickAwayListener, IconButton, InputAdornment, TextField } from '@mui/material';
 import AutocompleteDropDown from './AutocompleteDropDown';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
 
 function Autocomplete({ control, name, onSelect, ...props }) {
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ function Autocomplete({ control, name, onSelect, ...props }) {
                   // onMouseDown={handleMouseDownPassword}s
                   style={{ marginBottom: '4px' }}
                   edge="end"
-                >
+                  size="large">
                   <Close />
                 </IconButton>
               </InputAdornment>

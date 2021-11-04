@@ -2,35 +2,10 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 import { weekdays } from 'common/constants';
 
-import { Box, makeStyles } from '@material-ui/core';
-import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab';
-
-const useStyles = makeStyles((theme) => ({
-  toggleButton: {
-    margin: theme.spacing(0.5),
-    width: theme.spacing(4),
-    height: theme.spacing(4),
-
-    border: 'none',
-    '&.Mui-selected': {
-      backgroundColor: theme.palette.primary.main,
-      opacity: 0.9,
-      color: theme.palette.common.white,
-    },
-    '&:hover': {
-      background: 'none',
-    },
-    '&:not(:first-child)': {
-      borderRadius: theme.shape.borderRadius,
-    },
-    '&:first-child': {
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
+import { Box } from '@mui/material';
+import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 function FormWeekdayField({ name, control, setValue }) {
-  const classes = useStyles();
   const handleValues = (event, newValues) => {
     setValue('weekdays', newValues);
   };
@@ -52,7 +27,32 @@ function FormWeekdayField({ name, control, setValue }) {
           <ToggleButtonGroup value={inputProps.value} onChange={handleValues}>
             {Object.keys(weekdays).map((day, index) => {
               return (
-                <ToggleButton key={index} className={classes.toggleButton} value={day} disableRipple disableFocusRipple>
+                <ToggleButton
+                  key={index}
+                  sx={{
+                    width: (theme) => theme.spacing(4),
+                    height: (theme) => theme.spacing(4),
+
+                    border: 'none',
+                    '&.Mui-selected': {
+                      bgcolor: 'primary.main',
+                      opacity: 0.9,
+                      color: 'common.white',
+                    },
+                    '&:hover': {
+                      background: 'none',
+                    },
+                    '&:not(:first-of-type)': {
+                      borderRadius: (theme) => theme.shape.borderRadius,
+                    },
+                    '&:first-of-type': {
+                      borderRadius: (theme) => theme.shape.borderRadius,
+                    },
+                  }}
+                  value={day}
+                  disableRipple
+                  disableFocusRipple
+                >
                   {day[0]}
                 </ToggleButton>
               );

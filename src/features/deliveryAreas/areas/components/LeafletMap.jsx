@@ -1,30 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Paper, makeStyles } from '@material-ui/core';
+import { Box, Paper } from '@mui/material';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanel';
 import AreaLayer from './AreaLayer/AreaLayer';
 import ShopMarker from './ShopMarker';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  mapContainer: {
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
-    position: 'relative',
-  },
-  map: {
-    width: '100%',
-    height: '100%',
-  },
-}));
-
 function LeafletMap() {
-  const classes = useStyles();
   const { draw, shop } = useSelector((state) => ({
     draw: state.mode.draw,
     shop: state.shop.shop,
@@ -47,10 +30,14 @@ function LeafletMap() {
   };
 
   return (
-    <div className={classes.root}>
-      <Paper className={classes.mapContainer} variant="elevation" elevation={3}>
+    <Box sx={{ flexGrow: 1 }}>
+      <Paper
+        sx={{ width: '100%', height: '100%', overflow: 'hidden', position: 'relative' }}
+        variant="elevation"
+        elevation={3}
+      >
         <MapContainer
-          className={classes.map}
+          style={{ width: '100%', height: '100%' }}
           center={[shop.location.coords.lat, shop.location.coords.lon]}
           zoom={11}
           doubleClickZoom={false}
@@ -66,7 +53,7 @@ function LeafletMap() {
           <AreaLayer />
         </MapContainer>
       </Paper>
-    </div>
+    </Box>
   );
 }
 

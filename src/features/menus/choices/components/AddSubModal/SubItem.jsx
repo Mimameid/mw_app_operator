@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
+import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import EditSub from '../../../subs/components/EditSub';
 import DeleteSub from 'features/menus/subs/components/DeleteSub';
-import { DeleteForever, Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  textContainer: {
-    display: 'block',
-    overflow: 'hidden',
-    paddingRight: theme.spacing(2),
-    maxWidth: '220px',
-
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  checkBoxContainer: {
-    minWidth: '32px',
-  },
-}));
+import { DeleteForever, Edit } from '@mui/icons-material';
 
 function SubItem({ sub, checked, handleToggle }) {
-  const classes = useStyles();
   const [editSubOpen, setEditSubOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
@@ -38,7 +22,7 @@ function SubItem({ sub, checked, handleToggle }) {
   return (
     <React.Fragment>
       <ListItem dense button onClick={handleToggle(sub.id)}>
-        <ListItemIcon className={classes.checkBoxContainer}>
+        <ListItemIcon sx={{ minWidth: '32px' }}>
           <Checkbox
             color="primary"
             edge="start"
@@ -51,10 +35,7 @@ function SubItem({ sub, checked, handleToggle }) {
         </ListItemIcon>
         <Grid container justifyContent="flex-start">
           <Grid item xs={8}>
-            <ListItemText
-              primary={<span className={classes.textContainer}>{sub.name}</span>}
-              secondary={<span className={classes.textContainer}>{sub.desc}</span>}
-            />
+            <ListItemText primary={sub.name} secondary={sub.desc} />
           </Grid>
           <Grid item xs={4}>
             <ListItemText primary={sub.price.toFixed(2) + '€'} />
@@ -62,10 +43,10 @@ function SubItem({ sub, checked, handleToggle }) {
         </Grid>
 
         <Box display="flex">
-          <IconButton edge="end" aria-label="edit" onClick={handleEditSub}>
+          <IconButton edge="end" aria-label="edit" onClick={handleEditSub} size="large">
             <Edit fontSize="small" />
           </IconButton>
-          <IconButton edge="end" aria-label="delete" onClick={handleDeleteSub}>
+          <IconButton edge="end" aria-label="delete" onClick={handleDeleteSub} size="large">
             <DeleteForever fontSize="small" color="error" />
           </IconButton>
         </Box>

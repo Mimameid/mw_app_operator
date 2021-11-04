@@ -1,38 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { weekdays, dayBeforeMap } from 'common/constants';
+import { weekdays } from 'common/constants';
 import { sortWeekdayRanges } from '../utils';
 
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Box, Collapse, IconButton, Modal, Paper, Switch, makeStyles, Button, Grid, Divider } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Box, Collapse, IconButton, Modal, Paper, Switch, Button, Grid, Divider } from '@mui/material';
+import { Alert } from '@mui/material';
 import FormTimeField from 'common/components/form/FormTimeField';
-import { Add, Delete } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  formContainer: {
-    position: 'absolute',
-    width: '460px',
-    left: '50%',
-    top: '50%',
-    padding: theme.spacing(4),
-
-    transform: 'translate(-50%, -50%)',
-    zIndex: 1000,
-  },
-  header: {
-    paddingBottom: theme.spacing(2),
-  },
-  buttonLayout: {
-    marginTop: theme.spacing(3),
-  },
-  switchLayout: {
-    paddingTop: theme.spacing(0.5),
-  },
-}));
+import { Add, Delete } from '@mui/icons-material';
 
 const weekdaySchema = yup
   .array(yup.object({ start: yup.string().required(), end: yup.string().required() }))
@@ -117,7 +95,6 @@ const schema = yup.object({
 });
 
 function OpeningHoursModal({ open, onClose, onChange }) {
-  const classes = useStyles();
   const openingHours = useSelector((state) => state.shop.shop.openingHours);
 
   const { handleSubmit, control, formState, setValue } = useForm({
@@ -142,12 +119,23 @@ function OpeningHoursModal({ open, onClose, onChange }) {
 
   const error = Object.entries(formState.errors)[0];
   return (
-    <Modal className={classes.backdrop} open={open} onClose={null}>
-      <Paper className={classes.formContainer}>
-        <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
+    <Modal open={open} onClose={null}>
+      <Paper
+        sx={{
+          position: 'absolute',
+          width: '460px',
+          left: '50%',
+          top: '50%',
+          p: 4,
+
+          transform: 'translate(-50%, -50%)',
+          zIndex: 1000,
+        }}
+      >
+        <Box sx={{ pb: 2 }} fontSize={'h5.fontSize'} color="primary.main">
           Öffnungszeiten
         </Box>
-        <Box className={classes.listContainer}>
+        <Box>
           {Object.keys(weekdays).map((weekday) => (
             <React.Fragment key={weekday}>
               <Box display="flex" p={2} minHeight={64}>
@@ -160,7 +148,7 @@ function OpeningHoursModal({ open, onClose, onChange }) {
                 >
                   {weekdays[weekday]}
                 </Box>
-                <Box className={classes.switchLayout}>
+                <Box sx={{ pt: 0.5 }}>
                   <Switch
                     size="small"
                     color="primary"
@@ -266,7 +254,7 @@ function OpeningHoursModal({ open, onClose, onChange }) {
             </Collapse>
           </Alert>
 
-          <Grid className={classes.buttonLayout} container justifyContent="flex-end" spacing={2}>
+          <Grid sx={{ mt: 3 }} container justifyContent="flex-end" spacing={2}>
             <Grid item>
               <Button variant="contained" onClick={onClose}>
                 Abbrechen

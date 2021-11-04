@@ -10,8 +10,8 @@ import {
 import { setDraw } from 'features/mode/actions';
 
 import { Marker, Popup } from 'react-leaflet';
-import { IconButton, Divider } from '@material-ui/core';
-import { Edit, Delete } from '@material-ui/icons';
+import { IconButton, Divider } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material';
 import { markerIcon } from 'common/constants';
 
 function VertexMarker({ index, coordinates, numberVertices, handleRemovePolygon }) {

@@ -8,14 +8,14 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 import FormTextField from 'common/components/form/FormTextField';
 import FormPriceField from 'common/components/form/FormPriceField';
 import FormSelectField from 'common/components/form/FormSelectField';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
-import FormTagMultiSelect from 'common/components/form/FormTagMultiSelect';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
+import FormTagMultiSelect from 'common/components/form/FormLabelMultiSelect';
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),

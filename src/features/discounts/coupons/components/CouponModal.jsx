@@ -6,10 +6,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Grid } from '@material-ui/core';
+import { Box, Stack } from '@mui/material';
 import FormTextField from 'common/components/form/FormTextField';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 import FormPriceField from 'common/components/form/FormPriceField';
 import FormDateRange from './FormDateRange';
 
@@ -93,22 +93,22 @@ function CouponModal({ open, onClose, coupon }) {
       onCancel={handleClose}
       onAccept={handleSubmit(onSubmit)}
     >
-      <Grid container spacing={2} direction="column">
-        <Grid item>
+      <Stack spacing={2}>
+        <Box>
           <FormTextField name="name" label="Name" control={control} fullWidth />
-        </Grid>
-        <Grid item>
+        </Box>
+        <Box>
           <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
-        </Grid>
+        </Box>
         {!coupon ? (
           <React.Fragment>
-            <Grid item>
+            <Box>
               <FormPriceField name="value" label="Wert" control={control} fullWidth />
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               <FormPriceField name="minOrderValue" label="Mindestbestellwert" control={control} fullWidth />
-            </Grid>
-            <Grid item>
+            </Box>
+            <Box>
               <FormTextField
                 name="numberOfCoupons"
                 label="Anzahl"
@@ -116,18 +116,18 @@ function CouponModal({ open, onClose, coupon }) {
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 fullWidth
               />
-            </Grid>
+            </Box>
           </React.Fragment>
         ) : null}
-        <Grid item>
+        <Box>
           <FormDateRange control={control} setValue={setValue} />
-        </Grid>
+        </Box>
         {!coupon ? (
-          <Grid item>
+          <Box>
             <FormCheckboxField name="combinable" label="Kombinierbar" control={control} />
-          </Grid>
+          </Box>
         ) : null}
-      </Grid>
+      </Stack>
     </ResponsiveModal>
   );
 }

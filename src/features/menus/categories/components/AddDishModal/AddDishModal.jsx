@@ -2,23 +2,12 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addDishes } from 'features/menus/categories/actions';
 
-import { Box, Button, Divider, Grid, List, Paper, makeStyles } from '@material-ui/core';
+import { Box, Button, Divider, Grid, List, Paper } from '@mui/material';
 import DishItem from './DishItem';
 import DishModal from 'features/menus/dishes/components/DishModal';
-import ResponsiveModal from 'common/components/other/ResponsiveModal';
-const useStyles = makeStyles((theme) => ({
-  list: {
-    position: 'relative',
-    overflow: 'auto',
-    maxHeight: 320,
-    height: '304px',
-    padding: 0,
-  },
-}));
+import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 function AddDishModal({ open, setOpen, categoryId }) {
-  const classes = useStyles();
-
   const dispatch = useDispatch();
 
   const dishesArray = useSelector((state) => {
@@ -65,7 +54,7 @@ function AddDishModal({ open, setOpen, categoryId }) {
         header={
           <Grid container justifyContent="space-between">
             <Grid item>
-              <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
+              <Box fontSize={'h5.fontSize'} color="primary.main">
                 Speisen
               </Box>
             </Grid>
@@ -80,21 +69,11 @@ function AddDishModal({ open, setOpen, categoryId }) {
         onCancel={handleClose}
         onAccept={handleAddDishes}
       >
-        {/* <Grid container justifyContent="space-between">
-            <Grid item>
-              <Box className={classes.header} fontSize={'h5.fontSize'} color="primary.main">
-                Speisen
-              </Box>
-            </Grid>
-            <Grid item>
-              <Button variant="contained" color="primary" onClick={handleCreateDish}>
-                Erstellen
-              </Button>
-            </Grid>
-          </Grid>  */}
-
         <Paper variant="outlined" square>
-          <List className={classes.list} subheader={<li />}>
+          <List
+            sx={{ position: 'relative', overflow: 'auto', maxHeight: 320, height: '304px', padding: 0 }}
+            subheader={<li />}
+          >
             {dishesArray.length === 0 ? (
               <Box color="text.secondary" fontStyle="italic" p={1}>
                 Keine Speisen verfügbar. Bitte erstellen Sie eine neue Speise...

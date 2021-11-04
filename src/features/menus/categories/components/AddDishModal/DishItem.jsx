@@ -1,27 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core';
+import { Box, Checkbox, Grid, IconButton, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import EditDish from 'features/menus/dishes/components/EditDish';
 import DeleteDish from 'features/menus/dishes/components/DeleteDish';
-import { DeleteForever, Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  textContainer: {
-    display: 'block',
-    overflow: 'hidden',
-    paddingRight: theme.spacing(2),
-    maxWidth: '220px',
-
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-  },
-  checkBoxContainer: {
-    minWidth: '32px',
-  },
-}));
+import { DeleteForever, Edit } from '@mui/icons-material';
 
 function DishItem({ dish, checked, handleToggle }) {
-  const classes = useStyles();
   const [editDishOpen, setEditDishOpen] = useState(false);
   const [triggerDelete, setTriggerDelete] = useState(false);
 
@@ -38,7 +22,7 @@ function DishItem({ dish, checked, handleToggle }) {
   return (
     <React.Fragment>
       <ListItem dense button onClick={handleToggle(dish.id)}>
-        <ListItemIcon className={classes.checkBoxContainer}>
+        <ListItemIcon sx={{ minWidth: '32px' }}>
           <Checkbox
             color="primary"
             edge="start"
@@ -51,10 +35,7 @@ function DishItem({ dish, checked, handleToggle }) {
         </ListItemIcon>
         <Grid container justifyContent="flex-start">
           <Grid item xs={8}>
-            <ListItemText
-              primary={<span className={classes.textContainer}>{dish.name}</span>}
-              secondary={<span className={classes.textContainer}>{dish.desc}</span>}
-            />
+            <ListItemText primary={dish.name} secondary={dish.desc} />
           </Grid>
           <Grid item xs={4}>
             <ListItemText primary={dish.price.toFixed(2) + '€'} secondary={dish.type} />
@@ -62,10 +43,10 @@ function DishItem({ dish, checked, handleToggle }) {
         </Grid>
 
         <Box display="flex">
-          <IconButton edge="end" aria-label="edit" onClick={handleEditDish}>
+          <IconButton edge="end" aria-label="edit" onClick={handleEditDish} size="large">
             <Edit fontSize="small" />
           </IconButton>
-          <IconButton edge="end" aria-label="delete" onClick={handleDeleteDish}>
+          <IconButton edge="end" aria-label="delete" onClick={handleDeleteDish} size="large">
             <DeleteForever fontSize="small" color="error" />
           </IconButton>
         </Box>

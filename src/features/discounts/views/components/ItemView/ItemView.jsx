@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Paper } from '@material-ui/core';
+import { Paper } from '@mui/material';
 import DiscountView from './DiscountView';
 import CouponView from './CouponView';
 

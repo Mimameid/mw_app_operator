@@ -1,20 +1,9 @@
 import React from 'react';
 
-// import { Box, DataGrid, Divider, List, ListItem, ListSubheader, Paper } from '@material-ui/core';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableRow, makeStyles } from '@material-ui/core';
+// import { Box, DataGrid, Divider, List, ListItem, ListSubheader, Paper } from '@mui/material';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 
 import EnhancedTableHead from './EnhancedTableHead/EnhancedTableHead';
-
-const useStyles = makeStyles((theme) => ({
-  listContainer: {
-    margin: '0 ' + theme.spacing(1) + 'px',
-    marginBottom: theme.spacing(1),
-    padding: '0 ' + theme.spacing(1) + 'px',
-  },
-  divider: {
-    margin: '0 ' + theme.spacing(2) + 'px',
-  },
-}));
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -43,7 +32,6 @@ function stableSort(array, comparator) {
 }
 
 function MyTable({ headCells, data }) {
-  const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -95,7 +83,13 @@ function MyTable({ headCells, data }) {
     //     </List>
     //   )}
     // </Paper>
-    <Paper className={classes.listContainer} elevation={3}>
+    <Paper
+      sx={{
+        m: 1,
+        px: 1,
+      }}
+      elevation={3}
+    >
       <TableContainer>
         <Table>
           <EnhancedTableHead

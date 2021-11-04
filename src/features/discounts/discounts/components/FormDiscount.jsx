@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
 import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormPriceField from 'common/components/form/FormPriceField';
 

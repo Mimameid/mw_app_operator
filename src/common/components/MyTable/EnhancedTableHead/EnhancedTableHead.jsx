@@ -1,24 +1,8 @@
 import React from 'react';
 
-import { TableCell, TableHead, TableRow, TableSortLabel, makeStyles } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-  visuallyHidden: {
-    border: 0,
-    clip: 'rect(0 0 0 0)',
-    height: 1,
-    margin: -1,
-    overflow: 'hidden',
-    padding: 0,
-    position: 'absolute',
-    top: 20,
-    width: 1,
-  },
-}));
+import { Box, TableCell, TableHead, TableRow, TableSortLabel } from '@mui/material';
 
 function EnhancedTableHead({ order, orderBy, onRequestSort, headCells }) {
-  const classes = useStyles();
-
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -40,9 +24,22 @@ function EnhancedTableHead({ order, orderBy, onRequestSort, headCells }) {
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
+                <Box
+                  component={<span />}
+                  sx={{
+                    border: 0,
+                    clip: 'rect(0 0 0 0)',
+                    height: 1,
+                    margin: -1,
+                    overflow: 'hidden',
+                    padding: 0,
+                    position: 'absolute',
+                    top: 20,
+                    width: 1,
+                  }}
+                >
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
+                </Box>
               ) : null}
             </TableSortLabel>
           </TableCell>

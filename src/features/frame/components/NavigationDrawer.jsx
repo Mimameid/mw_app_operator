@@ -7,71 +7,12 @@ import { setDrawerOpen } from 'features/frame/actions';
 import { deactivateArea } from 'features/deliveryAreas/areas/actions';
 import routes from 'routes';
 
-import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, makeStyles, useTheme } from '@material-ui/core';
+import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, useTheme } from '@mui/material';
 import NavigationLink from './NavigationLink';
-import CustomDialog from 'common/components/dialogs/CustomDialog';
-import { ExitToApp } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  drawer: {
-    position: 'relative',
-    display: 'flex',
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-
-    zIndex: 100,
-
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-
-  drawerOpen: {
-    width: theme.navigationDrawer.width,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    overflowX: 'hidden',
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: theme.spacing(9) + 1,
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9) + 1,
-    },
-  },
-  logoutButtonContainer: {
-    position: 'absolute',
-    width: '100%',
-    bottom: theme.spacing(1),
-  },
-  logoutButtonInnerContainer: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-    paddingTop: theme.spacing(1),
-  },
-  logoutButton: {
-    padding: '12px 16px 12px 14px',
-
-    maxHeight: '46px',
-    minWidth: '24px',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    textTransform: 'none',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.light + '28',
-    },
-  },
-}));
+import CustomDialog from 'common/components/feedback/CustomDialog';
+import { ExitToApp } from '@mui/icons-material';
 
 function NavigationDrawer() {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.up('sm'));
@@ -111,8 +52,35 @@ function NavigationDrawer() {
 
   return (
     <Drawer
-      className={`${classes.drawer} ${match ? (open ? classes.drawerOpen : classes.drawerClose) : null}`}
-      classes={{ paper: open ? classes.drawerOpen : classes.drawerClose }}
+      sx={{
+        width: (theme) => (open ? theme.navigationDrawer.width : `calc(${theme.spacing(7)} + 1px)`),
+        flexShrink: 0,
+        whiteSpace: 'nowrap',
+        boxSizing: 'border-box',
+
+        transition: (theme) =>
+          theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+
+        [theme.breakpoints.up('sm')]: {
+          width: (theme) => (!open ? `calc(${theme.spacing(9)} + 1px)` : null),
+        },
+
+        '& .MuiDrawer-paper': {
+          width: (theme) => (open ? theme.navigationDrawer.width : `calc(${theme.spacing(7)} + 1px)`),
+          transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+          overflowX: 'hidden',
+
+          [theme.breakpoints.up('sm')]: {
+            width: (theme) => (!open ? `calc(${theme.spacing(9)} + 1px)` : null),
+          },
+        },
+      }}
       variant={match ? 'permanent' : 'temporary'}
       anchor={'left'}
       open={open}
@@ -130,11 +98,23 @@ function NavigationDrawer() {
         </List>
       </Box>
 
-      <Box className={classes.logoutButtonContainer}>
+      <Box sx={{ position: 'absolute', width: '100%', bottom: (theme) => theme.spacing(1) }}>
         <Divider />
-        <Box className={classes.logoutButtonInnerContainer}>
+        <Box sx={{ p: 2, pb: 0 }}>
           <Button
-            className={classes.logoutButton}
+            sx={{
+              justifyContent: 'flex-start',
+              alignItems: 'center',
+
+              maxHeight: '46px',
+              minWidth: '24px',
+              padding: '12px 16px 12px 14px',
+
+              textTransform: 'none',
+              '&:hover': {
+                backgroundColor: theme.palette.primary.light + '28',
+              },
+            }}
             onClick={handleLogout}
             startIcon={<ExitToApp color={'action'} style={{ transform: 'rotate(180deg)' }} />}
             size="large"
@@ -151,19 +131,6 @@ function NavigationDrawer() {
           message="Wenn Sie die Bearbeitung abbrechen, werden alle Veränderungen
           unwiederruflich gelöscht."
         />
-        {/* <Divider />
-        <Button
-          className={classes.logoutButton}
-          onClick={handleLogout}
-          startIcon={<ExitToApp color={'action'} style={{ transform: 'rotate(180deg)' }} />}
-          size="large"
-          fullWidth
-          color={'inherit'}
-        >
-          <Box color="text.secondary" style={{}}>
-            {open ? 'Abmelden' : null}
-          </Box>
-        </Button> */}
       </Box>
 
       <CustomDialog

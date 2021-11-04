@@ -1,31 +1,11 @@
 import React, { useState } from 'react';
 import { weekdays } from 'common/constants';
 
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@mui/material';
 import OpeningHoursModal from './OpeningHoursModal';
 import { useController } from 'react-hook-form';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    position: 'relative',
-    padding: theme.spacing(2),
-
-    border: '1px solid #00000023',
-    borderRadius: theme.shape.borderRadius,
-    cursor: 'pointer',
-  },
-  label: {
-    position: 'absolute',
-    top: '-10px',
-    left: '10px',
-    padding: '0 4px',
-
-    backgroundColor: 'white',
-  },
-}));
-
 function OpeningHours({ control, name }) {
-  const classes = useStyles();
   const [modalOpen, setModalOpen] = useState(false);
 
   const {
@@ -37,8 +17,30 @@ function OpeningHours({ control, name }) {
   });
 
   return (
-    <Box className={classes.container} display="flex" flexDirection="column">
-      <Box color="text.secondary" fontSize="caption.fontSize" className={classes.label}>
+    <Box
+      sx={{
+        position: 'relative',
+        p: 2,
+
+        border: '1px solid #00000023',
+        borderRadius: 1,
+        cursor: 'pointer',
+      }}
+      display="flex"
+      flexDirection="column"
+    >
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '-10px',
+          left: '10px',
+          padding: '0 4px',
+
+          bgcolor: 'common.white',
+        }}
+        color="text.secondary"
+        fontSize="caption.fontSize"
+      >
         Öffnungszeiten
       </Box>
       <Box

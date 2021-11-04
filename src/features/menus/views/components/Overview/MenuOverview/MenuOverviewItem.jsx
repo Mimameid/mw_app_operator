@@ -3,40 +3,14 @@ import { useDispatch } from 'react-redux';
 import { deleteMenu, activateMenu } from 'features/menus/menus/actions';
 import { selectItem } from 'features/menus/views/slice';
 
-import { Box, Grid, IconButton, ListItem, makeStyles, Switch } from '@material-ui/core';
-import WarningDialog from 'common/components/dialogs/WarningDialog';
+import { Box, Grid, IconButton, ListItem, Switch } from '@mui/material';
+import WarningDialog from 'common/components/feedback/WarningDialog';
 import MenuModal from 'features/menus/menus/components/MenuModal';
-import GridItem from 'common/components/other/GridItem';
-import { DeleteForever, Edit } from '@material-ui/icons';
-import CustomDialog from 'common/components/dialogs/CustomDialog';
-
-const useStyles = makeStyles((theme) => ({
-  noHover: {
-    '&:hover': {
-      backgroundColor: theme.palette.primary.light + '33',
-    },
-  },
-  highlight: {
-    background: theme.palette.primary.light + '33',
-  },
-  hidden: {
-    visibility: 'hidden',
-  },
-  wrap: {
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      overflow: 'visible',
-      whiteSpace: 'normal',
-    },
-  },
-}));
+import GridItem from 'common/components/dataDisplay/GridItem';
+import { DeleteForever, Edit } from '@mui/icons-material';
+import CustomDialog from 'common/components/feedback/CustomDialog';
 
 function MenuOverviewItem({ menu, selected, activeMenuId }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activateDialogOpen, setActivateDialogOpen] = useState(false);
@@ -90,7 +64,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
   return (
     <React.Fragment>
       <ListItem
-        className={selected ? classes.highlight : null}
+        sx={{ bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
         onClick={!selected ? handleSelectMenu : null}
       >
@@ -126,7 +100,12 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
             </GridItem>
           ) : null}
 
-          <Box className={selected ? null : classes.hidden} display="flex" flexGrow={1} justifyContent="flex-end">
+          <Box
+            sx={{ visibility: selected ? 'visible' : 'hidden' }}
+            display="flex"
+            flexGrow={1}
+            justifyContent="flex-end"
+          >
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>

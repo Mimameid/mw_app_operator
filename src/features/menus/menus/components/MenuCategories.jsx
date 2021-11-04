@@ -1,23 +1,12 @@
 import React from 'react';
 
-import { Divider, List, Box, makeStyles } from '@material-ui/core';
+import { Divider, List, Box } from '@mui/material';
 import Category from '../../categories/components/Category';
 
-const useStyles = makeStyles((theme) => ({
-  listContainer: {
-    padding: 0,
-  },
-  list: {
-    paddingBottom: 0,
-  },
-}));
-
 function MenuCategories({ menu }) {
-  const classes = useStyles();
-
   const categoryIds = menu.categories;
   return (
-    <List className={classes.listContainer}>
+    <List sx={{ p: 0 }}>
       {categoryIds.length > 0 ? (
         categoryIds.map((categoryId, index) => (
           <React.Fragment key={categoryId}>

@@ -3,67 +3,13 @@ import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
-import {
-  Box,
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListSubheader,
-  makeStyles,
-  Paper,
-  TablePagination,
-} from '@material-ui/core';
+import { Box, Divider, Grid, IconButton, List, ListItem, ListSubheader, Paper, TablePagination } from '@mui/material';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
-import GridHeaderItem from 'common/components/other/GridHeaderItem';
+import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import CouponModal from './CouponModal';
-import { Edit } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    borderBottom: '1px solid ' + theme.palette.grey[300],
-  },
-  headerContainer: {
-    paddingBottom: theme.spacing(2),
-  },
-  subtitle: {
-    marginTop: '-4px',
-    paddingTop: theme.spacing(1),
-
-    lineHeight: '24px',
-  },
-  buttonsContainer: {
-    paddingLeft: theme.spacing(1),
-  },
-  listContainer: {
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderColor: theme.palette.grey[400],
-  },
-  listHeader: {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-
-    borderBottom: '1px solid ' + theme.palette.primary.main,
-  },
-  listBody: {
-    overflow: 'auto',
-    height: '221px',
-  },
-  listeItem: {
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    borderBottomColor: theme.palette.grey[400],
-    '&:last-of-type': {
-      borderBottom: 0,
-    },
-  },
-}));
+import { Edit } from '@mui/icons-material';
 
 function Coupon() {
-  const classes = useStyles();
   const couponId = useSelector((state) => state.discounts.views.itemId);
   const coupon = useSelector((state) => state.discounts.coupons.byId[couponId]);
   const [pageSize, setPageSize] = React.useState(25);
@@ -83,16 +29,16 @@ function Coupon() {
       }, 0);
 
   return (
-    <Paper elevation={3} className={classes.root}>
+    <Paper sx={{ p: 2, borderBottom: (theme) => '1px solid ' + theme.palette.grey[300] }} elevation={3}>
       {couponId ? (
         <React.Fragment>
           <Box display="flex" flexDirection="column">
-            <Box className={classes.headerContainer}>
+            <Box sx={{ pb: 2 }}>
               <Box display="flex">
                 <TruncatedBox fontSize="h6.fontSize" fontWeight="fontWeightBold">
                   {coupon.name}
                 </TruncatedBox>
-                <Box className={classes.buttonsContainer}>
+                <Box sx={{ pl: 1 }}>
                   <IconButton aria-label="edit" size="small" onClick={() => setCouponModalOpen(true)}>
                     <Edit fontSize="small" />
                   </IconButton>
@@ -100,7 +46,12 @@ function Coupon() {
               </Box>
 
               <TruncatedBox
-                className={classes.subtitle}
+                sx={{
+                  mt: '-4px',
+                  pt: 1,
+
+                  lineHeight: '24px',
+                }}
                 color="text.secondary"
                 fontSize="subtitle2.fontSize"
                 fontStyle="italic"
@@ -113,14 +64,30 @@ function Coupon() {
               <Grid container justifyContent="space-between">
                 <Grid item xs={12} md={4}>
                   <Box>
-                    <Box display="flex" className={classes.subtitle}>
+                    <Box
+                      sx={{
+                        mt: '-4px',
+                        pt: 1,
+
+                        lineHeight: '24px',
+                      }}
+                      display="flex"
+                    >
                       <Box> Gültige Gutscheine:</Box>
                       <Box pl={1}>
                         {numberValidCoupons}/{coupon.numberOfCoupons}
                       </Box>
                     </Box>
 
-                    <Box display="flex" className={classes.subtitle}>
+                    <Box
+                      sx={{
+                        mt: '-4px',
+                        pt: 1,
+
+                        lineHeight: '24px',
+                      }}
+                      display="flex"
+                    >
                       <Box> Zeitraum:</Box>
                       <Box display="flex" flexWrap="nowrap">
                         <TruncatedBox pl={1}>
@@ -141,13 +108,29 @@ function Coupon() {
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Box>
-                    <Box display="flex" className={classes.subtitle}>
+                    <Box
+                      sx={{
+                        mt: '-4px',
+                        pt: 1,
+
+                        lineHeight: '24px',
+                      }}
+                      display="flex"
+                    >
                       <Box>Wert:</Box>
                       <Box color="primary.main" fontWeight="fontWeightBold" pl={1}>
                         {coupon.value}€
                       </Box>
                     </Box>
-                    <Box display="flex" className={classes.subtitle}>
+                    <Box
+                      sx={{
+                        mt: '-4px',
+                        pt: 1,
+
+                        lineHeight: '24px',
+                      }}
+                      display="flex"
+                    >
                       <Box>Mindestbestellwert:</Box>
                       <Box color="primary.main" fontWeight="fontWeightBold" pl={1}>
                         {coupon.minOrderValue}€
@@ -157,9 +140,16 @@ function Coupon() {
                 </Grid>
               </Grid>
             </Box>
-            <Box className={classes.listContainer}>
+            <Box sx={{ borderWidth: '1px', borderStyle: 'solid', borderColor: (theme) => theme.palette.grey[400] }}>
               <List disablePadding>
-                <ListSubheader className={classes.listHeader}>
+                <ListSubheader
+                  sx={{
+                    color: 'common.white',
+                    bgcolor: 'primary.main',
+
+                    borderBottom: (theme) => '1px solid ' + theme.palette.primary.main,
+                  }}
+                >
                   <Grid container>
                     <GridHeaderItem item xs={3}>
                       Code
@@ -169,10 +159,19 @@ function Coupon() {
                     </GridHeaderItem>
                   </Grid>
                 </ListSubheader>
-                <Box className={classes.listBody}>
+                <Box sx={{ overflow: 'auto', height: '221px' }}>
                   {visibleCodes.map((code, index) => (
                     <React.Fragment key={nanoid()}>
-                      <ListItem className={classes.listeItem}>
+                      <ListItem
+                        sx={{
+                          borderBottomWidth: '1px',
+                          borderBottomStyle: 'solid',
+                          borderBottomColor: (theme) => theme.palette.grey[400],
+                          '&:last-of-type': {
+                            borderBottom: 0,
+                          },
+                        }}
+                      >
                         <Grid container>
                           <GridHeaderItem item xs={3}>
                             {code.code}

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useController } from 'react-hook-form';
 
-import { Box, FormHelperText, Switch } from '@material-ui/core';
+import { Box, FormHelperText, Switch } from '@mui/material';
 
 function FormSwitchActivateShop({ control, name, label, desc, ...props }) {
   const shop = useSelector((state) => state.shop.shop);

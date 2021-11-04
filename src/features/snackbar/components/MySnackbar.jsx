@@ -4,8 +4,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { STATUS_CODE } from 'common/constants';
 
-import { Snackbar, Slide } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Snackbar, Slide } from '@mui/material';
+import { Alert } from '@mui/material';
 
 function TransitionDown(props) {
   return <Slide {...props} direction="left" />;

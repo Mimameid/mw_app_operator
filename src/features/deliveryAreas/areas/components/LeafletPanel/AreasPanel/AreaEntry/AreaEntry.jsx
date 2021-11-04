@@ -11,71 +11,13 @@ import {
 import { setDraw } from 'features/mode/actions';
 
 import { useMap } from 'react-leaflet';
-import { IconButton, Divider, makeStyles } from '@material-ui/core';
-import CustomDialog from 'common/components/dialogs/CustomDialog';
+import { Box, IconButton, Divider } from '@mui/material';
+import CustomDialog from 'common/components/feedback/CustomDialog';
 import MinimumOrderValueInput from './MinimumOrderValueInput';
 import DeliveryFeeInput from './DeliveryFeeInput';
-import { Delete, Add } from '@material-ui/icons';
-
-const useStyles = (props) => {
-  return makeStyles((theme) => ({
-    polygonContainer: {
-      direction: 'ltr',
-      display: 'flex',
-      alignItems: 'center',
-    },
-
-    polygonSelected: {
-      backgroundColor: props.color + '77',
-    },
-    entryHighlight: {
-      backgroundColor: props.color + '77',
-    },
-    colorArea: {
-      backgroundColor: props.color,
-      flexBasis: '28px',
-      alignSelf: 'stretch',
-      '&:hover': {
-        cursor: 'pointer',
-      },
-    },
-
-    orderValueContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      marginLeft: 'auto',
-    },
-    minOrderValueInput: {
-      maxWidth: '36px',
-      padding: '2px',
-      marginLeft: 'auto',
-      fontSize: '0.8rem',
-      '& .MuiInputBase-input': {
-        padding: '1px 2px',
-      },
-      '& .MuiOutlinedInput-root': {
-        fontSize: '0.8rem',
-        padding: '2px',
-
-        '& fieldset': {},
-        '&:hover fieldset': {
-          borderColor: theme.palette.primary.main,
-
-          border: '1px solid',
-          borderRadius: '2px',
-        },
-        '&.Mui-focused fieldset': {
-          borderColor: theme.palette.primary.main,
-          border: '1px solid',
-          borderRadius: '2px',
-        },
-      },
-    },
-  }));
-};
+import { Delete, Add } from '@mui/icons-material';
 
 function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
-  const classes = useStyles({ color })();
   const dispatch = useDispatch();
   const { activeArea, areas } = useSelector((state) => ({
     areas: state.deliveryAreas.areas.areas,
@@ -118,13 +60,6 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
     setDeleteDialogOpen(false);
   };
 
-  const handleMouseOver = (event) => {
-    polygonContainer.current.classList.add(classes.entryHighlight);
-  };
-  const handleMouseLeave = (event) => {
-    polygonContainer.current.classList.remove(classes.entryHighlight);
-  };
-
   const onChangeDeliveryFee = (event) => {
     let value = event.target.value;
     if (!value) {
@@ -147,17 +82,28 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
     }
   };
 
+  console.log(activeArea.areaNumber === areaNumber);
   return (
     <React.Fragment key={index}>
-      <div
-        className={`${classes.polygonContainer} ${activeArea.areaNumber === areaNumber ? classes.polygonSelected : ''}`}
+      <Box
+        sx={{
+          direction: 'ltr',
+          display: 'flex',
+          alignItems: 'center',
+          bgcolor: activeArea.areaNumber === areaNumber ? color + '55' : '',
+        }}
         ref={polygonContainer}
       >
-        <div
-          className={classes.colorArea}
+        <Box
+          sx={{
+            backgroundColor: color,
+            flexBasis: '28px',
+            alignSelf: 'stretch',
+            '&:hover': {
+              cursor: 'pointer',
+            },
+          }}
           onClick={(event) => handleActivateArea(event, areaNumber)}
-          onMouseOver={handleMouseOver}
-          onMouseLeave={handleMouseLeave}
         />
 
         <Divider orientation="vertical" flexItem />
@@ -165,13 +111,13 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
         <MinimumOrderValueInput onChangeOrderValue={onChangeOrderValue} minOrderValue={minOrderValue} />
         <Divider orientation="vertical" flexItem style={{ margin: '6px' }} />
-        <IconButton className={classes.editIcon} size="small" onClick={handleAddPolygon}>
-          <Add />
+        <IconButton size="small" onClick={handleAddPolygon}>
+          <Add fontSize="small" />
         </IconButton>
         <IconButton size="small" onClick={(event) => setDeleteDialogOpen(true)}>
-          <Delete />
+          <Delete fontSize="small" />
         </IconButton>
-      </div>
+      </Box>
 
       <CustomDialog
         open={deleteDialogOpen}

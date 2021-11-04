@@ -5,20 +5,10 @@ import { selectCategoryIdsToNames } from 'features/menus/categories/slice';
 import { selectDishIdsToNames } from 'features/menus/dishes/slice';
 import { discountTypes } from 'common/constants';
 
-import { Box, Checkbox, FormControlLabel, makeStyles, Paper, Tab, Tabs } from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingBottom: theme.spacing(3),
-  },
-  tab: {
-    minWidth: '90px',
-  },
-}));
-
 function FormEffectedItems({ control, type, setValue }) {
-  const classes = useStyles();
   const menuIdsToNames = useSelector(selectMenuIdsToNames);
   const categoryIdsToNames = useSelector(selectCategoryIdsToNames);
   const dishIdsToNames = useSelector(selectDishIdsToNames);
@@ -51,7 +41,7 @@ function FormEffectedItems({ control, type, setValue }) {
   }
 
   return (
-    <Paper className={classes.root} variant="outlined">
+    <Paper sx={{ pb: 3 }} variant="outlined">
       <Tabs
         value={type}
         onChange={handleChange}
@@ -63,7 +53,7 @@ function FormEffectedItems({ control, type, setValue }) {
         }}
       >
         <Tab
-          className={classes.tab}
+          sx={{ minWidth: '90px' }}
           value={discountTypes.menu}
           label={
             <FormControlLabel
@@ -73,7 +63,7 @@ function FormEffectedItems({ control, type, setValue }) {
           }
         />
         <Tab
-          className={classes.tab}
+          sx={{ minWidth: '90px' }}
           value={discountTypes.category}
           label={
             <FormControlLabel
@@ -83,7 +73,7 @@ function FormEffectedItems({ control, type, setValue }) {
           }
         />
         <Tab
-          className={classes.tab}
+          sx={{ minWidth: '90px' }}
           value={discountTypes.dish}
           label={
             <FormControlLabel
@@ -94,13 +84,7 @@ function FormEffectedItems({ control, type, setValue }) {
         />
       </Tabs>
       <Box px={2}>
-        <FormMultiSelectGroup
-          className={classes.selectField}
-          name="effectedItems"
-          label={label}
-          control={control}
-          items={items}
-        />
+        <FormMultiSelectGroup name="effectedItems" label={label} control={control} items={items} />
       </Box>
     </Paper>
   );

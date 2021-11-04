@@ -5,31 +5,15 @@ import { fetchShop } from 'features/shop/shop/actions';
 import { reset } from 'features/mode/actions';
 import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
 
-import { Box, Toolbar, makeStyles } from '@material-ui/core';
+import { Box, Toolbar } from '@mui/material';
 import LeafletMap from 'features/deliveryAreas/areas/components/LeafletMap';
 import LoadingScreen from './LoadingScreen';
-import ContentHeader from 'common/components/other/ContentHeader';
-import LoadingButton from 'common/components/buttons/LoadingButton';
-import CustomDialog from 'common/components/dialogs/CustomDialog';
-import { CloudUpload } from '@material-ui/icons';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    height: '100vh',
-
-    paddingLeft: theme.spacing(3),
-    paddingRight: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-  },
-  uploadButton: {
-    fontSize: theme.typography.body1.fontSize,
-    marginBottom: theme.spacing(3),
-    textTransform: 'none',
-  },
-}));
+import ContentHeader from 'common/components/dataDisplay/ContentHeader';
+import LoadingButton from 'common/components/inputs/LoadingButton';
+import CustomDialog from 'common/components/feedback/CustomDialog';
+import { CloudUpload } from '@mui/icons-material';
 
 function DeliveryAreas({ name }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const areas = useSelector((state) => state.deliveryAreas.areas);
   useOnBeforeUnload();
@@ -63,14 +47,28 @@ function DeliveryAreas({ name }) {
   };
 
   return dataLoaded ? (
-    <Box className={classes.root} display="flex" flexDirection="column" flexGrow={1}>
+    <Box
+      sx={{
+        height: '100vh',
+
+        p: 3,
+        pt: 0,
+      }}
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <Toolbar />
       <Box display="flex" flexDirection="column" flexGrow={1} alignItems="stretch">
         <Box display="flex" justifyContent="space-between">
           <ContentHeader name={name} info="Erstellen Sie Ihre Liefergebiete und setzen sie die Lieferkosten fest." />
           <Box alignSelf="flex-end">
             <LoadingButton
-              className={classes.uploadButton}
+              sx={{
+                fontSize: 'body1.fontSize',
+                mb: 3,
+                textTransform: 'none',
+              }}
               onClick={() => setDialogOpen(true)}
               loading={loading}
               loadingText={'Speichere...'}

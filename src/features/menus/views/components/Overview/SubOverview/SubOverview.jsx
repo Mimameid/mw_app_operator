@@ -2,30 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { nanoid } from 'common/constants';
 
-import { Box, Divider, Grid, List, ListSubheader, makeStyles } from '@material-ui/core';
+import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
 import SubOverviewItem from './SubOverviewItem';
-import GridHeaderItem from 'common/components/other/GridHeaderItem';
+import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
-const useStyles = makeStyles((theme) => ({
-  list: {
-    padding: 0,
-  },
-  listHeader: {
-    color: theme.palette.common.white,
-    backgroundColor: theme.palette.primary.main,
-
-    borderBottom: '1px solid ' + theme.palette.primary.main,
-    boxShadow: theme.shadows[3],
-  },
-  listBody: {
-    overflow: 'auto',
-    height: '213px',
-  },
-}));
-
 function SubOverview() {
-  const classes = useStyles();
   const subsArray = useSelector((state) => {
     let subsArray = Object.values(state.menus.subs.byId);
     subsArray.sort((a, b) => a.name.localeCompare(b.name));
@@ -34,8 +16,16 @@ function SubOverview() {
   const selectedSubId = useSelector((state) => state.menus.views.itemId);
 
   return (
-    <List className={classes.list}>
-      <ListSubheader className={classes.listHeader}>
+    <List sx={{ p: 0 }}>
+      <ListSubheader
+        sx={{
+          color: 'common.white',
+          backgroundColor: 'primary.main',
+
+          borderBottom: (theme) => '1px solid ' + theme.palette.primary.main,
+          boxShadow: (theme) => theme.shadows[3],
+        }}
+      >
         <Grid container>
           <GridHeaderItem item xs={3}>
             ID
@@ -50,7 +40,7 @@ function SubOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box className={classes.listBody}>
+      <Box sx={{ overflow: 'auto', height: '213px' }}>
         {subsArray.length === 0 ? (
           <EmptyView>Keine Optiongruppe verfügbar. Bitte erstellen Sie eine Optiongruppe...</EmptyView>
         ) : (

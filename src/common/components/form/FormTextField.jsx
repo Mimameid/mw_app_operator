@@ -1,7 +1,7 @@
 import React from 'react';
 import { useController } from 'react-hook-form';
 
-import { TextField } from '@material-ui/core';
+import { TextField } from '@mui/material';
 
 function FormTextField({ control, name, ...props }) {
   const {
