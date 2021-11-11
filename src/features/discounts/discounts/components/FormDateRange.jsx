@@ -5,7 +5,7 @@ import { Box, ClickAwayListener, Collapse, Paper, TextField, useTheme } from '@m
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
-import FormCheckboxField from 'common/components/form/FormCheckboxField';
+import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
 
 function FormDateRange({ control, isRepeating, setValue }) {
   const theme = useTheme();
@@ -65,9 +65,8 @@ function FormDateRange({ control, isRepeating, setValue }) {
             <Box width={96} px={1}>
               <TextField
                 sx={{
-                  '& .MuiInputBase-root.Mui-disabled': {
-                    color: 'rgba(0, 0, 0, 1)',
-                    cursor: 'pointer',
+                  '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: (theme) => theme.palette.text.primary,
                   },
                 }}
                 label="Start"
@@ -89,9 +88,8 @@ function FormDateRange({ control, isRepeating, setValue }) {
             <Box width={88} pl={1}>
               <TextField
                 sx={{
-                  '& .MuiInputBase-root.Mui-disabled': {
-                    color: 'rgba(0, 0, 0, 1)',
-                    cursor: 'pointer',
+                  '& .MuiInputBase-input.Mui-disabled': {
+                    WebkitTextFillColor: (theme) => theme.palette.text.primary,
                   },
                 }}
                 label="Ende"

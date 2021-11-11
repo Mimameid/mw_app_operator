@@ -64,7 +64,8 @@ function ChoiceOverviewItem({ choice, selected }) {
           </Box>
         </Grid>
       </ListItem>
-      <EditChoice open={editModalOpen} setOpen={setEditModalOpen} choice={choice} />
+
+      <EditChoice open={editModalOpen} onClose={() => setEditModalOpen(false)} choice={choice} />
       <DeleteChoice trigger={triggerDelete} setTrigger={setTriggerDelete} choiceId={choice.id} />
     </React.Fragment>
   );

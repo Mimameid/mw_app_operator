@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedDishes, selectDishIdsToNames } from 'features/menus/dishes/slice';
 import { createChoice, updateChoice } from '../actions';
@@ -8,14 +8,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/FormTextField';
-import FormSelectField from 'common/components/form/FormSelectField';
-import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
+import FormTextField from 'common/components/form/common/FormTextField';
+import FormSelectField from 'common/components/form/common/FormSelectField';
+import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
-  desc: yup.string('Geben Sie eine Beschreibung ein.').max(48, 'Beschreibung zu lang.').optional(),
+  desc: yup.string('Geben Sie eine Beschreibung ein.').max(128, 'Beschreibung zu lang.').optional(),
   minRequired: yup.string('Geben Sie an, wieviele Optionen verpflichtend sind.').required('Angabe ist erforderlich.'),
   maxAllowed: yup
     .string('Geben Sie an, wieviele Optionen erlaubt sind.')
@@ -31,56 +31,63 @@ const schema = yup.object({
     .required('Angabe ist erforderlich.'),
 });
 
+const defaultValues = {
+  name: '',
+  desc: '',
+  minRequired: 0,
+  maxAllowed: -1,
+  dishes: [],
+};
+
 function ChoiceModal({ open, onClose, choice }) {
   const dispatch = useDispatch();
   const selectAffectedDishes = useMemo(makeSelectAffectedDishes, []);
   const affectedDishes = useSelector((state) => selectAffectedDishes(state, choice ? choice.id : null));
   const dishIdsToNames = useSelector(selectDishIdsToNames);
+  const [loading, setLoading] = useState(false);
 
-  const { handleSubmit, control, reset, setValue } = useForm({
-    mode: 'onTouched',
-    defaultValues: {
-      name: '',
-      desc: '',
-      minRequired: 0,
-      maxAllowed: 'Keine Einschränkung',
-      dishes: [],
-    },
+  const { handleSubmit, control, reset, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: choice ? { ...choice, dishes: affectedDishes } : defaultValues,
+    delayError: 500,
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (choice) {
-      setValue('name', choice.name);
-      setValue('desc', choice.desc);
-      setValue('minRequired', choice.minRequired);
-      setValue('maxAllowed', choice.maxAllowed === -1 ? 'Keine Einschränkung' : choice.maxAllowed);
-      setValue('dishes', affectedDishes);
-    }
-  }, [open, choice, affectedDishes, setValue]);
+  const resetValues = useCallback(() => {
+    reset(choice ? { ...choice, dishes: affectedDishes } : defaultValues);
+  }, [choice, affectedDishes, reset]);
 
-  const handleClose = () => {
-    reset();
+  const onSubmit = async (data) => {
+    setLoading(true);
+    data.dishes = data.dishes.map((item) => item[0]);
+    if (!choice) {
+      await dispatch(createChoice(data));
+    } else {
+      await dispatch(updateChoice({ ...choice, ...data }));
+    }
     onClose();
   };
 
-  const onSubmit = (data) => {
-    data.dishes = data.dishes.map((item) => item[0]);
-    if (!choice) {
-      dispatch(createChoice(data));
-    } else {
-      dispatch(updateChoice({ ...choice, ...data }));
-    }
-    handleClose();
-  };
+  useEffect(() => {
+    resetValues();
+  }, [resetValues, choice]);
 
+  const { isValid } = formState;
   return (
     <ResponsiveModal
       open={open}
       header={choice ? 'Optiongruppe bearbeiten' : 'Optiongruppe erstellen'}
       acceptLabel={'Speichern'}
-      onCancel={handleClose}
+      onCancel={onClose}
       onAccept={handleSubmit(onSubmit)}
+      disabled={!isValid}
+      loading={loading}
+      TransitionProps={{
+        onExited: () => {
+          resetValues();
+          setLoading(false);
+        },
+      }}
     >
       <Grid container spacing={2} direction="column">
         <Grid item>
@@ -102,7 +109,7 @@ function ChoiceModal({ open, onClose, choice }) {
           <FormSelectField
             name="maxAllowed"
             label="Maximal Erlaubt"
-            items={['Keine Einschränkung', '1', '2', '3', '4', '5', '6']}
+            items={[-1, 1, 2, 3, 4, 5, 6]}
             control={control}
             fullWidth
           />

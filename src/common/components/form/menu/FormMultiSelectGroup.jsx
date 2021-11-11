@@ -14,12 +14,13 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
   });
 
   // all values and current values have to be identical otherwise it will be shown as distinugish values, even though they have the same value
-  inputProps.value = inputProps.value.map((item) => {
-    for (let itemIdToName of items) {
+  inputProps.value = items.filter((itemIdToName) => {
+    for (let item of inputProps.value) {
       if (item[0] === itemIdToName[0]) {
-        return itemIdToName;
+        return true;
       }
     }
+    return false;
   });
 
   return (
@@ -33,14 +34,7 @@ function FormMultiSelectGroup({ control, name, items, ...props }) {
           return (
             <div sx={{ display: 'flex', flexWrap: 'wrap' }}>
               {selected.map((item, _) => {
-                return (
-                  <TruncatedChip
-                    sx={{ margin: '2px 2px 0 2px' }}
-                    key={item[0]}
-                    label={item[1] + 'hallo'}
-                    size="small"
-                  />
-                );
+                return <TruncatedChip sx={{ margin: '2px 2px 0 2px' }} key={item[0]} label={item[1]} size="small" />;
               })}
             </div>
           );

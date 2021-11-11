@@ -13,10 +13,10 @@ function Discount() {
   const discount = useSelector((state) => state.discounts.discounts.byId[discountId]);
 
   const [discountModalOpen, setDiscountModalOpen] = useState(false);
-
   const discountStatus = getDiscountStatus(discount);
+
   return (
-    <Paper elevation={3} sx={{ p: 2, borderBottom: (theme) => '1px solid ' + theme.palette.grey[300] }}>
+    <Paper sx={{ p: 2, borderBottom: (theme) => '1px solid ' + theme.palette.grey[300] }}>
       {discountId ? (
         <React.Fragment>
           <Box display="flex" flexDirection="column">
@@ -32,7 +32,7 @@ function Discount() {
                 </Box>
                 <Box
                   sx={{ pl: 1 }}
-                  color={discount.isActive ? 'success.main' : 'error.main'}
+                  color={discount.isActive ? 'success.main' : 'grey.500'}
                   fontStyle={'italic'}
                   flexGrow={1}
                   textAlign="right"
@@ -63,14 +63,14 @@ function Discount() {
                     Typ
                   </Box>
                   <Box display="flex">
-                    <Box>{getDiscountTypeName(discount.type)}rabatt</Box>
+                    <Box>{getDiscountTypeName(discount.scope.type)}rabatt</Box>
                   </Box>
                 </Grid>
                 <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
-                    Betroffene {getDiscountTypeName(discount.type)}
+                    Betroffene {getDiscountTypeName(discount.scope.itemType)}
                   </Box>
-                  <Box>{discount.effectedItems.map((item, index) => item[1]).join(', ')}</Box>
+                  <Box>{discount.scope.items.map((item, index) => item[1]).join(', ')}</Box>
                 </Grid>
                 <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
                   <Box fontSize="subtitle1.fontSize" fontWeight="fontWeightBold">
@@ -163,16 +163,18 @@ function Discount() {
                     <Box>Ganztags</Box>
                   ) : (
                     <Box display="flex">
-                      <Box>{discount.time.startTime} Uhr</Box>
+                      <Box>{discount.timeRange.startTime} Uhr</Box>
                       <Box px={1}> - </Box>
-                      <Box>{discount.time.endTime} Uhr</Box>
+                      <Box>{discount.timeRange.endTime} Uhr</Box>
                     </Box>
                   )}
                 </Grid>
               </Grid>
             </Grid>
           </Box>
-          <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
+          {discountModalOpen ? (
+            <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
+          ) : null}
         </React.Fragment>
       ) : null}
     </Paper>

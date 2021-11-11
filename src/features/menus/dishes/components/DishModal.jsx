@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedCategories, selectCategoryIdsToNames } from 'features/menus/categories/slice';
 import { createDish, updateDish } from '../actions';
@@ -9,19 +9,19 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/FormTextField';
-import FormPriceField from 'common/components/form/FormPriceField';
-import FormSelectField from 'common/components/form/FormSelectField';
-import FormCheckboxField from 'common/components/form/FormCheckboxField';
-import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
-import FormTagMultiSelect from 'common/components/form/FormLabelMultiSelect';
+import FormTextField from 'common/components/form/common/FormTextField';
+import FormPriceField from 'common/components/form/common/FormPriceField';
+import FormSelectField from 'common/components/form/common/FormSelectField';
+import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
+import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
+import FormTagMultiSelect from 'common/components/form/menu/FormMultiSelectLabel';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup
     .string('Geben Sie eine Beschreibung ein.')
-    .max(48, 'Beschreibung zu lang.')
+    .max(128, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
   price: yup.number('Geben Sie einen Preis ein.').required('Preis ist erforderlich.'),
   cuisineType: yup
@@ -36,74 +36,79 @@ const schema = yup.object({
     .required('Angabe der Verfügbarkeit ist erforderlich'),
 });
 
+const defaultValues = {
+  name: '',
+  desc: '',
+  cuisineType: 'Burger',
+  isAvailable: true,
+  price: 0,
+  categories: [],
+  cuisineLabels: [],
+};
+
 function DishModal({ open, onClose, dish }) {
   const dispatch = useDispatch();
   const selectAffectedCategories = useMemo(makeSelectAffectedCategories, []);
   const affectedCategories = useSelector((state) => selectAffectedCategories(state, dish ? dish.id : null));
   const categoryIdsToNames = useSelector(selectCategoryIdsToNames);
+  const [loading, setLoading] = useState(false);
 
-  const { handleSubmit, control, reset, setValue } = useForm({
-    mode: 'onTouched',
-    defaultValues: {
-      name: '',
-      desc: '',
-      cuisineType: 'Burger',
-      isAvailable: true,
-      price: 0,
-      categories: [],
-      cuisineLabels: [],
-    },
+  const { handleSubmit, control, reset, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: dish ? { ...dish, categories: affectedCategories } : defaultValues,
+    delayError: 500,
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (dish) {
-      setValue('name', dish.name);
-      setValue('desc', dish.desc);
-      setValue('cuisineType', dish.cuisineType);
-      setValue('isAvailable', dish.isAvailable);
-      setValue('price', dish.price);
-      setValue('categories', affectedCategories);
-      setValue('cuisineLabels', dish.cuisineLabels);
-    }
-  }, [open, dish, affectedCategories, setValue]);
+  const resetValues = useCallback(() => {
+    reset(dish ? { ...dish, categories: affectedCategories } : defaultValues);
+  }, [dish, affectedCategories, reset]);
 
-  const handleClose = () => {
-    reset();
+  const onSubmit = async (data) => {
+    setLoading(true);
+    data.categories = data.categories.map((item) => item[0]);
+    if (!dish) {
+      await dispatch(createDish(data));
+    } else {
+      await dispatch(updateDish({ ...dish, ...data }));
+    }
+
     onClose();
   };
 
-  const onSubmit = (data) => {
-    data.categories = data.categories.map((item) => item[0]);
-    if (!dish) {
-      dispatch(createDish(data));
-    } else {
-      dispatch(updateDish({ ...dish, ...data }));
-    }
+  useEffect(() => {
+    resetValues();
+  }, [resetValues, dish]);
 
-    handleClose();
-  };
-
+  const { isValid } = formState;
   return (
     <ResponsiveModal
       open={open}
       header={dish ? 'Speise bearbeiten' : 'Speise erstellen'}
       acceptLabel={'Speichern'}
-      onCancel={handleClose}
+      onCancel={onClose}
       onAccept={handleSubmit(onSubmit)}
+      disabled={!isValid}
+      loading={loading}
+      TransitionProps={{
+        onExited: () => {
+          resetValues();
+          setLoading(false);
+        },
+      }}
     >
       <Grid container spacing={2} direction="column">
         <Grid item>
-          <FormTextField name="name" label="Name" control={control} fullWidth />
+          <FormTextField name="name" label="Name*" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
+          <FormTextField name="desc" label="Beschreibung*" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormSelectField name="cuisineType" label="Typ" items={CUISINE_TYPES} control={control} fullWidth />
+          <FormSelectField name="cuisineType" label="Typ*" items={CUISINE_TYPES} control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormPriceField name="price" label="Preis" control={control} fullWidth />
+          <FormPriceField name="price" label="Preis*" control={control} fullWidth />
         </Grid>
         <Grid item>
           <FormTagMultiSelect name="cuisineLabels" label="Labels" items={CUISINE_LABELS} control={control} />

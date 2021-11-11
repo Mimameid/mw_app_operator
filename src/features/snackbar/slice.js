@@ -28,16 +28,27 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addMatcher(isAnyOf(updateAreas.fulfilled, updateShop.fulfilled), (state, action) => {
-      state.statusCode = STATUS_CODE.SUCCESS;
-      state.statusMessage = action.payload.message;
-      state.count = state.count + 1;
-    });
-    builder.addMatcher(isAnyOf(login.rejected, fetchArea.rejected, updateShop.rejected), (state, action) => {
-      state.statusCode = STATUS_CODE.ERROR;
-      state.statusMessage = action.error.message;
-      state.count = state.count + 1;
-    });
+    builder
+      .addMatcher(isAnyOf(updateAreas.fulfilled, updateShop.fulfilled), (state, action) => {
+        state.statusCode = STATUS_CODE.SUCCESS;
+        state.statusMessage = action.payload.message;
+        state.count = state.count + 1;
+      })
+      .addMatcher(
+        isAnyOf(login.rejected, fetchArea.rejected, updateShop.rejected, updateAreas.rejected),
+        (state, action) => {
+          state.statusCode = STATUS_CODE.ERROR;
+          state.statusMessage = action.error.message;
+          state.count = state.count + 1;
+        },
+      )
+      .addDefaultCase((state, action) => {
+        if (action.type.endsWith('/rejected' && !action.type.includes('fetchShop'))) {
+          state.statusCode = STATUS_CODE.ERROR;
+          state.statusMessage = navigator.onLine ? 'Etwas ist schief gelaufen.' : 'Netzwerkverbindung unterbrochen.';
+          state.count = state.count + 1;
+        }
+      });
   },
 });
 

@@ -4,7 +4,7 @@ import { selectActiveMenu } from '../slice';
 
 import { Box, Button, Grid, Paper, IconButton, Collapse } from '@mui/material';
 import MenuCategories from 'features/menus/menus/components/MenuCategories';
-import AddCategoryModal from 'features/menus/menus/components/AddCategoryModal/AddCategoryModal';
+import SetCategoriesModal from 'features/menus/menus/components/SetCategoriesModal/SetCategoriesModal';
 
 import MenuModal from './MenuModal';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
@@ -17,13 +17,14 @@ function Menu() {
 
   const [show, setShow] = useState(true);
   const [menuModalOpen, setMenuModalOpen] = useState(false);
-  const [addCategoryOpen, setAddCategoryOpen] = useState(false);
+  const [setCategoriesOpen, setSetCategoriesOpen] = useState(false);
 
-  function handleAddCategories(event) {
-    setAddCategoryOpen(true);
-  }
-  function handleUpdateMenu(event) {
+  function handleEditMenu(event) {
     setMenuModalOpen(true);
+  }
+
+  function handleSetCategories(event) {
+    setSetCategoriesOpen(true);
   }
 
   function handleClickCollapse() {
@@ -31,7 +32,7 @@ function Menu() {
   }
 
   return (
-    <Paper elevation={3}>
+    <Paper>
       {menuId ? (
         <React.Fragment>
           <Box
@@ -42,10 +43,7 @@ function Menu() {
               borderBottom: (theme) => '1px solid ' + theme.palette.grey[300],
             }}
           >
-            <Box
-              sx={{ width: '24px', ml: -1, paddingTop: '3px', alignSelf: 'flex-start' }}
-              onClick={handleClickCollapse}
-            >
+            <Box sx={{ width: '24px', ml: -1, alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
               <IconButton
                 sx={{
                   cursor: 'pointer',
@@ -71,7 +69,7 @@ function Menu() {
                   {menu.name}
                 </TruncatedBox>
                 <Grid item sx={{ pl: 1 }}>
-                  <IconButton aria-label="edit" size="small" onClick={handleUpdateMenu}>
+                  <IconButton aria-label="edit" size="small" onClick={handleEditMenu}>
                     <Edit fontSize="small" />
                   </IconButton>
                 </Grid>
@@ -81,16 +79,23 @@ function Menu() {
                     variant="outlined"
                     color="primary"
                     endIcon={<Add />}
-                    onClick={handleAddCategories}
+                    onClick={handleSetCategories}
                   >
-                    Kategorien
+                    Kategorie
                   </Button>
                 </Grid>
-                {activeMenu?.id === menu.id ? (
-                  <Box sx={{ pl: 1 }} color={'success.main'} fontStyle={'italic'} flexGrow={1} textAlign="right">
-                    aktiv
-                  </Box>
-                ) : null}
+
+                <Box
+                  sx={{
+                    pl: 1,
+                    color: activeMenu?.id === menu.id ? 'success.main' : 'grey.500',
+                    fontStyle: 'italic',
+                    flexGrow: 1,
+                    textAlign: 'right',
+                  }}
+                >
+                  {activeMenu?.id === menu.id ? 'aktiv' : 'inaktiv'}
+                </Box>
               </Grid>
               <TruncatedBox
                 sx={{
@@ -112,7 +117,7 @@ function Menu() {
             <MenuCategories menu={menu} />
           </Collapse>
 
-          <AddCategoryModal open={addCategoryOpen} setOpen={setAddCategoryOpen} menu={menu} />
+          <SetCategoriesModal open={setCategoriesOpen} setOpen={setSetCategoriesOpen} menu={menu} />
           <MenuModal open={menuModalOpen} onClose={() => setMenuModalOpen(false)} menu={menu} />
         </React.Fragment>
       ) : null}

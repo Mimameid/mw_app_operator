@@ -20,6 +20,7 @@ export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
 export const login = createAsyncThunk('user/login', async (credentials, thunkAPI) => {
   const fetchParams = createFetchParams('owner/auth/login', 'POST', credentials);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
+
   if (response.ok) {
     return response.data;
   } else {

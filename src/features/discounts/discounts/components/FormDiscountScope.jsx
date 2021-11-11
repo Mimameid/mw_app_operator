@@ -1,21 +1,22 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+
 import { selectMenuIdsToNames } from 'features/menus/menus/slice';
 import { selectCategoryIdsToNames } from 'features/menus/categories/slice';
 import { selectDishIdsToNames } from 'features/menus/dishes/slice';
 import { discountTypes } from 'common/constants';
 
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
-import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
+import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
 
-function FormEffectedItems({ control, type, setValue }) {
+function FormDiscountScope({ type, control, setValue }) {
   const menuIdsToNames = useSelector(selectMenuIdsToNames);
   const categoryIdsToNames = useSelector(selectCategoryIdsToNames);
   const dishIdsToNames = useSelector(selectDishIdsToNames);
 
   const handleChange = (event, newValue) => {
-    setValue('type', newValue);
-    setValue('effectedItems', []);
+    setValue('scope.itemType', newValue);
+    setValue('scope.items', []);
   };
 
   let items;
@@ -23,20 +24,19 @@ function FormEffectedItems({ control, type, setValue }) {
   switch (type) {
     case discountTypes.menu:
       items = menuIdsToNames;
-      label = 'Betroffene Menüs';
+      label = 'Betroffene Menüs*';
       break;
 
     case discountTypes.category:
       items = categoryIdsToNames;
-      label = 'Betroffene Kategorien';
+      label = 'Betroffene Kategorien*';
       break;
 
     case discountTypes.dish:
       items = dishIdsToNames;
-      label = 'Betroffene Speisen';
+      label = 'Betroffene Speisen*';
 
       break;
-
     default:
   }
 
@@ -84,10 +84,10 @@ function FormEffectedItems({ control, type, setValue }) {
         />
       </Tabs>
       <Box px={2}>
-        <FormMultiSelectGroup name="effectedItems" label={label} control={control} items={items} />
+        <FormMultiSelectGroup name="scope.items" label={label} control={control} items={items} />
       </Box>
     </Paper>
   );
 }
 
-export default FormEffectedItems;
+export default FormDiscountScope;

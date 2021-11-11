@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from 'common/constants';
 import { selectActiveMenu } from 'features/menus/menus/slice';
 
 import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
@@ -50,13 +49,13 @@ function MenuOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '194px' }}>
+      <Box sx={{ overflow: 'auto', height: '234px' }}>
         {menusArray.length === 0 ? (
           <EmptyView>Keine Menüs verfügbar. Bitte erstellen Sie ein Menü...</EmptyView>
         ) : (
           menusArray.map((menu, index) => (
-            <React.Fragment key={nanoid()}>
-              <MenuOverviewItem menu={menu} activeMenuId={activeMenu?.id} selected={menu.id === selectedMenuId} />
+            <React.Fragment key={menu.id}>
+              <MenuOverviewItem menu={menu} activeMenu={activeMenu} selected={menu.id === selectedMenuId} />
               {menusArray.length >= 5 && index === menusArray.length - 1 ? null : <Divider />}
             </React.Fragment>
           ))

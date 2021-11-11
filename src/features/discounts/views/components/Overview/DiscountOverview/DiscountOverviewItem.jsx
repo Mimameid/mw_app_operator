@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectDiscountItem } from 'features/discounts/views/slice';
-import { deleteDiscount, setActivationDiscount } from 'features/discounts/discounts/actions';
+import { deleteDiscount, setActive } from 'features/discounts/discounts/actions';
 import { getDiscountTypeName } from 'common/constants';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
@@ -45,7 +45,7 @@ function DiscountOverviewItem({ discount, selected }) {
   }
 
   function handleSwitchAcceptDialog(event) {
-    dispatch(setActivationDiscount({ discountId: discount.id, isActive: ref.current }));
+    dispatch(setActive({ discountId: discount.id, isActive: ref.current }));
     setDialogOpen(false);
   }
 
@@ -57,8 +57,9 @@ function DiscountOverviewItem({ discount, selected }) {
       setDectivateDialogOpen(true);
     }
   }
-  console.log(discount);
+
   const discountStatus = getDiscountStatus(discount);
+
   return (
     <React.Fragment>
       <ListItem
@@ -95,7 +96,7 @@ function DiscountOverviewItem({ discount, selected }) {
               />
             </Grid>
           ) : (
-            <GridItem color={discount.isActive ? 'success.main' : 'error.main'} fontStyle={'italic'} item xs={2}>
+            <GridItem color={discount.isActive ? 'success.main' : 'grey.500'} fontStyle={'italic'} item xs={2}>
               {discount.isActive ? 'aktiv' : 'inaktiv'}
             </GridItem>
           )}
@@ -122,7 +123,6 @@ function DiscountOverviewItem({ discount, selected }) {
         message="Dieser Vorgang kann nicht rückgängig gemacht werden."
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
-        warning
       />
       <CustomDialog
         open={activateDialogOpen}
@@ -137,9 +137,12 @@ function DiscountOverviewItem({ discount, selected }) {
         message="Wenn Sie die Rabattaktion deaktivieren, ist sie ab sofort unwirksam."
         handleReject={handleRejectDialog}
         handleAccept={handleSwitchAcceptDialog}
-        warning
       />
-      <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
+
+      {discountModalOpen ? (
+        <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
+      ) : null}
+      {/* <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} /> */}
     </React.Fragment>
   );
 }

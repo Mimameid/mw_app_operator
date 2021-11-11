@@ -3,14 +3,14 @@ import { useController } from 'react-hook-form';
 
 import { Box, Collapse } from '@mui/material';
 import { Alert } from '@mui/material';
-import FormCheckboxField from 'common/components/form/FormCheckboxField';
-import FormTimeField from 'common/components/form/FormTimeField';
+import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
+import FormTimeField from 'common/components/form/discount/FormTimeField';
 
 function FormTimeRange({ control, isAllDay }) {
   const {
     fieldState: { error },
   } = useController({
-    name: 'time',
+    name: 'timeRange',
     control,
   });
 
@@ -27,13 +27,13 @@ function FormTimeRange({ control, isAllDay }) {
       <Collapse in={!isAllDay}>
         <Box display="flex" pt={1} justifyContent="flex-end">
           <Box width={60} px={1}>
-            <FormTimeField name="time.startTime" label="Start" control={control} size="small" />
+            <FormTimeField name="timeRange.startTime" label="Start" control={control} size="small" />
           </Box>
           <Box alignSelf="flex-end" pb={1}>
             -
           </Box>
           <Box width={52} pl={1}>
-            <FormTimeField name="time.endTime" label="Ende" control={control} size="small" />
+            <FormTimeField name="timeRange.endTime" label="Ende" control={control} size="small" />
           </Box>
         </Box>
         <Box pt={2}>

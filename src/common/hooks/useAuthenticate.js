@@ -1,27 +1,32 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { selectUserState } from 'features/user';
 import { authenticate } from 'features/user/actions';
-import { hasShop } from 'features/shop/shop/actions';
+import { fetchShop } from 'features/shop/shop/actions';
 
 export function useAuthenticate() {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
-  const { loggedIn, shopRegistered } = useSelector((state) => ({
-    loggedIn: state.user.loggedIn,
-    shopRegistered: state.user.shopRegistered,
-  }));
+  const [authenticating, setAuthenticating] = useState(true);
+  const [loadingShop, setLoadingShop] = useState(true);
+  const { loggedIn, authenticated, shopRegistered } = useSelector(selectUserState);
 
   useEffect(() => {
-    dispatch(authenticate()).then((data) => {
-      if (data.error) {
-        setLoading(false);
-        return;
-      }
+    if (!authenticated) {
+      setAuthenticating(true);
+      setLoadingShop(true);
 
-      dispatch(hasShop()).then((data) => {
-        setLoading(false);
+      dispatch(authenticate()).then((data) => {
+        if (data.error) {
+          setAuthenticating(false);
+          return;
+        }
+
+        dispatch(fetchShop()).then((data) => {
+          setAuthenticating(false);
+          setLoadingShop(false);
+        });
       });
-    });
-  }, [dispatch]);
-  return { loggedIn, shopRegistered, loading };
+    }
+  }, [dispatch, loggedIn, authenticated, shopRegistered]);
+  return { loggedIn, shopRegistered, authenticating, loadingShop };
 }

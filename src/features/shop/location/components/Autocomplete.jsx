@@ -7,10 +7,7 @@ import { Box, ClickAwayListener, IconButton, InputAdornment, TextField } from '@
 import AutocompleteDropdown from './AutocompleteDropdown';
 import { Close } from '@mui/icons-material';
 
-function Autocomplete({ control, name, onSelect, ...props }) {
-  const dispatch = useDispatch();
-  const containerRef = useRef(null);
-
+function Autocomplete({ control, name, ...props }) {
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
@@ -19,19 +16,24 @@ function Autocomplete({ control, name, onSelect, ...props }) {
     control,
   });
 
+  const dispatch = useDispatch();
+  const containerRef = useRef(null);
+  const [value, setValue] = useState(inputProps.value.address);
   const [open, setOpen] = useState(false);
+
   const onChange = (event) => {
-    inputProps.onChange(event);
+    setValue(event.target.value);
     dispatch(queryPredictions(event.target.value));
   };
 
   const onBlur = (e) => {
-    onSelect();
+    setValue(inputProps.value.address);
     setOpen(false);
   };
 
-  const selectHandler = () => {
-    onSelect();
+  const selectHandler = (data) => {
+    inputProps.onChange(data);
+    setValue(data.address);
     setOpen(false);
   };
 
@@ -42,7 +44,7 @@ function Autocomplete({ control, name, onSelect, ...props }) {
           inputRef={ref}
           inputProps={{ spellCheck: 'false', style: { whiteSpace: 'nowrap', textOverflow: 'ellipsis' } }}
           autoComplete="new-password"
-          {...inputProps}
+          value={value}
           onChange={onChange}
           onBlur={onBlur}
           onFocus={() => {
@@ -66,7 +68,6 @@ function Autocomplete({ control, name, onSelect, ...props }) {
           //     </InputAdornment>
           //   ),
           // }}
-          fullWidth
         />
         <AutocompleteDropdown open={open} onSelect={selectHandler} />
       </Box>

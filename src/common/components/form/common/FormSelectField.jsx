@@ -28,7 +28,7 @@ function FormSelectField({ control, name, items, ...props }) {
     >
       {items.map((item) => (
         <MenuItem key={nanoid()} value={item}>
-          {item}
+          {item === -1 ? 'Keine Einschränkung' : item}
         </MenuItem>
       ))}
     </TextField>

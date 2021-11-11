@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { createShop } from 'features/shop/shop/actions';
@@ -8,61 +8,13 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Alert } from '@mui/material';
-import { Grid, Paper, Box, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
-import FormTextField from 'common/components/form/FormTextField';
+import { Alert, Dialog, Stack, useMediaQuery, useTheme, Box, Typography } from '@mui/material';
+import FormTextField from 'common/components/form/common/FormTextField';
 import LoadingButton from 'common/components/inputs/LoadingButton';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
-import FormMultiSelect from 'common/components/form/FormMultiSelect';
-import FormSwitch from 'common/components/form/FormSwitch';
+import FormMultiSelect from 'common/components/form/shop/FormMultiSelectChip';
+import FormSwitch from 'common/components/form/common/FormSwitch';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: 'relative',
-    minHeight: '100vh',
-    width: '100vw',
-  },
-  signupContainerInner: {
-    margin: 'auto',
-    borderRadius: 0,
-    padding: theme.spacing(4),
-    paddingBottom: theme.spacing(6),
-  },
-  headerContainer: {
-    marginBottom: theme.spacing(8),
-  },
-  loginText: {
-    marginBottom: theme.spacing(1),
-  },
-  submitButton: {
-    height: '46px',
-    marginTop: theme.spacing(2),
-
-    fontWeight: 'bold',
-  },
-  bottomWave: {
-    position: 'absolute',
-    bottom: '0',
-    left: '0',
-    width: '100vw',
-    pointerEvents: 'none',
-
-    zIndex: -1,
-  },
-  alert: {
-    marginTop: theme.spacing(-1),
-  },
-  [theme.breakpoints.up('sm')]: {
-    signupContainerInner: {
-      maxWidth: '600px',
-      marginTop: theme.spacing(10),
-      marginBottom: theme.spacing(10),
-      borderRadius: theme.shape.borderRadius,
-    },
-  },
-}));
 
 const schema = yup.object({
   name: yup
@@ -78,7 +30,9 @@ const schema = yup.object({
     .string('Geben Sie eine Beschreibung ein.')
     .max(1024, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
-  address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
+  location: yup.object({
+    address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
+  }),
   phoneNumber: yup
     .string('Geben Sie eine Telefonnumer ein.')
     .matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
@@ -113,45 +67,19 @@ const schema = yup.object({
 });
 
 function SignUp({ shopRegistered }) {
-  const classes = useStyles();
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const small = useMediaQuery(theme.breakpoints.down('sm'));
   const shopData = useSelector((state) => state.shop.shop);
 
   const [loading, setLoading] = useState(false);
-  const [selected, setSelected] = useState(false);
-  const { handleSubmit, control, setValue } = useForm({
-    mode: 'onTouched',
-    defaultValues: {
-      name: '',
-      address: '',
-      phoneNumber: '',
-      url: '',
-      serviceTypes: [],
-      cuisineTypes: [],
-      cuisineLabels: [],
-      isActive: false,
-      isKosher: false,
-      openingHours: {
-        monday: [],
-        tuesday: [],
-        wednesday: [],
-        thursday: [],
-        friday: [],
-        saturday: [],
-        sunday: [],
-      },
-    },
+
+  const { handleSubmit, control, setValue, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: shopData,
+    delayError: 500,
     resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    if (shopData.location.address) {
-      setValue('address', shopData.location.address);
-    } else {
-      setValue('address', '');
-    }
-    setSelected(false);
-  }, [shopData.location.address, setValue, selected]);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -163,26 +91,25 @@ function SignUp({ shopRegistered }) {
     return <Redirect to="/" />;
   }
 
+  const { isDirty, isValid } = formState;
+
   return (
-    <div className={classes.root}>
-      <Paper className={classes.signupContainerInner}>
-        <Box className={classes.headerContainer}>
-          <div>
-            <Typography className={classes.loginText} variant="h4">
-              Shop erstellen
-            </Typography>
-            <Typography variant="body2">Erstellen Sie Ihr Shop.</Typography>
-          </div>
-        </Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box m="auto" pb={3}>
-            <Grid container direction="column" spacing={4}>
-              <Grid item xs={12}>
+    <React.Fragment>
+      <Dialog open={true} hideBackdrop={true} fullScreen={small} scroll="body">
+        <Box sx={{ p: 6 }}>
+          <Box sx={{ mb: 8 }}>
+            <div>
+              <Typography variant="h4">Shop erstellen</Typography>
+              <Typography variant="body2">Erstellen Sie Ihr Shop.</Typography>
+            </div>
+          </Box>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Box m="auto" pb={3}>
+              <Stack spacing={4}>
                 <Box>
                   <FormTextField name="name" label="Name*" control={control} variant="outlined" fullWidth />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
                   <FormTextField
                     name="desc"
@@ -193,20 +120,11 @@ function SignUp({ shopRegistered }) {
                     fullWidth
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
-                  <Autocomplete
-                    name="address"
-                    label="Addresse*"
-                    control={control}
-                    onSelect={() => setSelected(true)}
-                    variant="outlined"
-                    fullWidth
-                  />
+                  <Autocomplete name="location" label="Addresse*" control={control} variant="outlined" fullWidth />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
                   <FormTextField
                     name="phoneNumber"
@@ -216,13 +134,11 @@ function SignUp({ shopRegistered }) {
                     fullWidth
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
                   <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
                   <FormMultiSelect
                     name="cuisineTypes"
@@ -230,10 +146,10 @@ function SignUp({ shopRegistered }) {
                     items={CUISINE_TYPES}
                     control={control}
                     variant="outlined"
+                    fullWidth
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
                   <FormTextField
                     name="descLong"
@@ -246,13 +162,11 @@ function SignUp({ shopRegistered }) {
                     fullWidth
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box pt={1}>
                   <OpeningHours name="openingHours" control={control} setOpeningHours={setValue} />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box>
                   <FormMultiSelect
                     name="serviceTypes"
@@ -260,10 +174,10 @@ function SignUp({ shopRegistered }) {
                     items={SERVICE_TYPES}
                     control={control}
                     variant="outlined"
+                    fullWidth
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box pb={1}>
                   <FormMultiSelect
                     name="cuisineLabels"
@@ -271,10 +185,10 @@ function SignUp({ shopRegistered }) {
                     items={CUISINE_LABELS}
                     control={control}
                     variant="outlined"
+                    fullWidth
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <Box py={1}>
                   <FormSwitch
                     name="isKosher"
@@ -283,30 +197,42 @@ function SignUp({ shopRegistered }) {
                     desc="Geben Sie an, ob Ihre Gastronomie das Essen Koscher zubereitet."
                   />
                 </Box>
-              </Grid>
-              <Grid item xs={12}>
+
                 <LoadingButton
-                  className={classes.submitButton}
+                  sx={{
+                    height: '46px',
+                    mt: 2,
+
+                    fontWeight: 'bold',
+                  }}
                   color="primary"
                   variant="contained"
                   type="submit"
                   loading={loading}
                   fullWidth
+                  disabled={!(isValid && isDirty)}
                 >
                   Erstellen
                 </LoadingButton>
-              </Grid>
-              <Grid item xs={12}>
-                <Alert className={classes.alert} severity="info">
+                <Alert sx={{ mt: 2 }} severity="info">
                   Bitte geben Sie Ihre Shop Daten ein. Felder, die mit einem * markiert sind, sind erforderlich.
                 </Alert>
-              </Grid>
-            </Grid>
-          </Box>
-        </form>
-      </Paper>
+              </Stack>
+            </Box>
+          </form>
+        </Box>
+      </Dialog>
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '0',
+          left: '0',
+          width: '100vw',
+          pointerEvents: 'none',
 
-      <div className={classes.bottomWave}>
+          zIndex: -1,
+        }}
+      >
         <svg
           id="wave"
           style={{ transform: 'rotate(0deg) translate(0,5px)', transition: '0.3s' }}
@@ -348,8 +274,8 @@ function SignUp({ shopRegistered }) {
             d="M0,136L130.9,68L261.8,51L392.7,136L523.6,34L654.5,17L785.5,0L916.4,153L1047.3,119L1178.2,68L1309.1,68L1440,136L1570.9,119L1701.8,136L1832.7,102L1963.6,153L2094.5,85L2225.5,0L2356.4,17L2487.3,136L2618.2,153L2749.1,34L2880,136L3010.9,102L3141.8,17L3141.8,170L3010.9,170L2880,170L2749.1,170L2618.2,170L2487.3,170L2356.4,170L2225.5,170L2094.5,170L1963.6,170L1832.7,170L1701.8,170L1570.9,170L1440,170L1309.1,170L1178.2,170L1047.3,170L916.4,170L785.5,170L654.5,170L523.6,170L392.7,170L261.8,170L130.9,170L0,170Z"
           ></path>
         </svg>
-      </div>
-    </div>
+      </Box>
+    </React.Fragment>
   );
 }
 

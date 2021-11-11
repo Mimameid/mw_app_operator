@@ -82,7 +82,6 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
     }
   };
 
-  console.log(activeArea.areaNumber === areaNumber);
   return (
     <React.Fragment key={index}>
       <Box

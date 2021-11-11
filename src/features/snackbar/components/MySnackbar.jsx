@@ -80,7 +80,14 @@ function MySnackBar() {
       transitionDuration={{ enter: 200, exit: 200 }}
       disableWindowBlurListener
     >
-      <Alert aria-describedby="status-snackbar" elevation={6} variant="filled" severity={currentSnack.statusName}>
+      <Alert
+        sx={{
+          borderRadius: 0.5,
+        }}
+        aria-describedby="status-snackbar"
+        elevation={6}
+        severity={currentSnack.statusName}
+      >
         {currentSnack.message}
       </Alert>
     </Snackbar>

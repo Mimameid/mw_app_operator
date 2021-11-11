@@ -1,14 +1,15 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSelector, createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { authenticate, login } from './actions';
-import { createShop, hasShop } from 'features/shop/shop/actions';
+import { createShop, fetchShop } from 'features/shop/shop/actions';
 
 const initialState = {
   loggedIn: false,
+  authenticated: false,
   shopRegistered: false,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: 'user',
   initialState: initialState,
   reducers: {
     setLoggedIn(state, action) {
@@ -17,15 +18,20 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(hasShop.fulfilled, (state, action) => {
+      .addCase(fetchShop.fulfilled, (state, action) => {
         state.shopRegistered = true;
       })
       .addCase(createShop.fulfilled, (state, action) => {
         state.shopRegistered = true;
       })
-      .addMatcher(isAnyOf(authenticate.fulfilled, login.fulfilled), (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.loggedIn = true;
       })
+      .addCase(authenticate.fulfilled, (state, action) => {
+        state.loggedIn = true;
+        state.authenticated = true;
+      })
+
       .addDefaultCase((state, action) => {
         if (action.type.endsWith('/rejected')) {
           if (action.error.code === '401') {
@@ -35,6 +41,15 @@ const authSlice = createSlice({
       });
   },
 });
+
+export const selectUserState = createSelector(
+  (state) => state.user.loggedIn,
+  (state) => state.user.authenticated,
+  (state) => state.user.shopRegistered,
+  (loggedIn, authenticated, shopRegistered) => {
+    return { loggedIn, authenticated, shopRegistered };
+  },
+);
 
 export const { setLoggedIn } = authSlice.actions;
 

@@ -78,7 +78,8 @@ function DishOverviewItem({ dish, selected }) {
           </Box>
         </Grid>
       </ListItem>
-      <EditDish open={editModalOpen} setOpen={setEditModalOpen} dish={dish} />
+
+      <EditDish open={editModalOpen} onClose={() => setEditModalOpen(false)} dish={dish} />
       <DeleteDish trigger={triggerDelete} setTrigger={setTriggerDelete} dishId={dish.id} />
     </React.Fragment>
   );

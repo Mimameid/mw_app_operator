@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { createDiscount, fetchDiscounts, updateDiscount, deleteDiscount, setActivationDiscount } from './actions';
+import { createDiscount, fetchDiscounts, updateDiscount, deleteDiscount, setActive } from './actions';
 
 const initialState = {
   byId: {},
@@ -23,7 +23,7 @@ const discountsSlice = createSlice({
       .addCase(deleteDiscount.fulfilled, (state, action) => {
         delete state.byId[action.payload];
       })
-      .addCase(setActivationDiscount.fulfilled, (state, action) => {
+      .addCase(setActive.fulfilled, (state, action) => {
         state.byId[action.payload.discountId].isActive = action.payload.isActive;
       });
   },

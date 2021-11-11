@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { fetchAllMenus } from '../menus/actions';
 import { createSub, updateSub } from '../subs/actions';
-import { addSubs, createChoice, deleteChoice, removeSub, updateChoice } from './actions';
+import { setSubs, createChoice, deleteChoice, removeSub, updateChoice } from './actions';
 
 const initialState = {
   byId: {},
@@ -25,13 +25,9 @@ const choicesSlice = createSlice({
       .addCase(deleteChoice.fulfilled, (state, action) => {
         delete state.byId[action.payload];
       })
-      .addCase(addSubs.fulfilled, (state, action) => {
+      .addCase(setSubs.fulfilled, (state, action) => {
         const choice = state.byId[action.payload.choiceId];
-        for (const subId of action.payload.subs) {
-          if (choice.subs.indexOf(subId) < 0) {
-            choice.subs.push(subId);
-          }
-        }
+        choice.subs = action.payload.subs;
       })
       .addCase(removeSub.fulfilled, (state, action) => {
         const choice = state.byId[action.payload.choiceId];
@@ -88,6 +84,15 @@ export const selectChoiceIdsToNames = createSelector(
     });
 
     return choiceIdsToNames;
+  },
+);
+
+export const selectChoicesAsArray = createSelector(
+  (state) => state.menus.choices.byId,
+  (byId) => {
+    const choicesArray = Object.values(byId);
+    choicesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return choicesArray;
   },
 );
 

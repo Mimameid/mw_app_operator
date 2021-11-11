@@ -4,7 +4,7 @@ import { useController } from 'react-hook-form';
 import { MenuItem, Checkbox, ListItemText, TextField } from '@mui/material';
 import TruncatedChip from 'features/menus/common/components/TruncatedChip';
 
-function FormMultiSelect({ control, name, items, ...props }) {
+function FormMultiSelectChip({ control, name, items, ...props }) {
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
@@ -34,7 +34,6 @@ function FormMultiSelect({ control, name, items, ...props }) {
       helperText={error ? error.message : null}
       {...inputProps}
       {...props}
-      fullWidth
     >
       {items.length > 0 ? (
         items.map((item, index) => (
@@ -52,4 +51,4 @@ function FormMultiSelect({ control, name, items, ...props }) {
   );
 }
 
-export default FormMultiSelect;
+export default FormMultiSelectChip;

@@ -25,7 +25,8 @@ export const createMenu = createAsyncThunk('menus/createMenu', async (menu, thun
   }
 });
 
-export const updateMenu = createAsyncThunk('menus/updateMenu', async (menu, thunkAPI) => {
+export const updateMenu = createAsyncThunk('menus/updateMenu', async (data, thunkAPI) => {
+  let { created, updated, ...menu } = data;
   const fetchParams = createFetchParams('owner/menus/menus', 'PUT', menu);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 
@@ -48,7 +49,7 @@ export const deleteMenu = createAsyncThunk('menus/deleteMenu', async (id, thunkA
   }
 });
 
-export const addCategories = createAsyncThunk('menus/addCategories', async (data, thunkAPI) => {
+export const setCategories = createAsyncThunk('menus/setCategories', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/menus/categories', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {
@@ -71,7 +72,7 @@ export const removeCategory = createAsyncThunk('menus/removeCategory', async (da
   }
 });
 
-export const activateMenu = createAsyncThunk('menus/activateMenu', async (data, thunkAPI) => {
+export const setActive = createAsyncThunk('menus/setActive', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/menus/active', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 

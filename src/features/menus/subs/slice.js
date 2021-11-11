@@ -41,4 +41,13 @@ export const selectSubIdsToNames = createSelector(
   },
 );
 
+export const selectSubsAsArray = createSelector(
+  (state) => state.menus.subs.byId,
+  (byId) => {
+    const subsArray = Object.values(byId);
+    subsArray.sort((a, b) => a.name.localeCompare(b.name));
+    return subsArray;
+  },
+);
+
 export default dishesSlice.reducer;

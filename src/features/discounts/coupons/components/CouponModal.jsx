@@ -7,15 +7,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Box, Stack } from '@mui/material';
-import FormTextField from 'common/components/form/FormTextField';
-import FormCheckboxField from 'common/components/form/FormCheckboxField';
+import FormTextField from 'common/components/form/common/FormTextField';
+import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
-import FormPriceField from 'common/components/form/FormPriceField';
+import FormPriceField from 'common/components/form/common/FormPriceField';
 import FormDateRange from './FormDateRange';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
-  desc: yup.string('Geben Sie eine Beschreibung ein.').max(48, 'Beschreibung zu lang.').optional(),
+  desc: yup.string('Geben Sie eine Beschreibung ein.').max(128, 'Beschreibung zu lang.').optional(),
   value: yup.number('Geben Sie einen Wert ein.').required('Wert ist erforderlich.'),
   minOrderValue: yup.number('Geben Sie einen Mindestbestellwert ein.').required('Mindestbestellwert ist erforderlich.'),
   numberOfCoupons: yup
@@ -51,6 +51,7 @@ function CouponModal({ open, onClose, coupon }) {
         endDate: new Date().setHours(0, 0, 0, 0),
       },
     },
+    delayError: 500,
     resolver: yupResolver(schema),
   });
 

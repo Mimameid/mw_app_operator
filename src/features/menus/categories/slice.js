@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { createCategory, updateCategory, deleteCategory, addDishes, removeDish } from './actions';
+import { createCategory, updateCategory, deleteCategory, setDishes, removeDish } from './actions';
 import { createDish, updateDish } from '../dishes/actions';
 import { fetchAllMenus } from '../menus/actions';
 
@@ -25,13 +25,9 @@ const categoriesSlice = createSlice({
       .addCase(deleteCategory.fulfilled, (state, action) => {
         delete state.byId[action.payload];
       })
-      .addCase(addDishes.fulfilled, (state, action) => {
+      .addCase(setDishes.fulfilled, (state, action) => {
         const category = state.byId[action.payload.categoryId];
-        for (const dishId of action.payload.dishes) {
-          if (category.dishes.indexOf(dishId) < 0) {
-            category.dishes.push(dishId);
-          }
-        }
+        category.dishes = action.payload.dishes;
       })
       .addCase(removeDish.fulfilled, (state, action) => {
         const category = state.byId[action.payload.categoryId];
@@ -89,6 +85,15 @@ export const selectCategoryIdsToNames = createSelector(
     });
 
     return categoryIdsToNames;
+  },
+);
+
+export const selectCategoriesAsArray = createSelector(
+  (state) => state.menus.categories.byId,
+  (byId) => {
+    const categoriesArray = Object.values(byId);
+    categoriesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return categoriesArray;
   },
 );
 

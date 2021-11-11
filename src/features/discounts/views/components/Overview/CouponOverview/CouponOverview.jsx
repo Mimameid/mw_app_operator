@@ -54,7 +54,7 @@ function CouponOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '194px' }}>
+      <Box sx={{ overflow: 'auto', height: '234px' }}>
         {dataLoaded ? (
           couponsArray.length === 0 ? (
             <EmptyView>Keine Couponaktion verfügbar...</EmptyView>

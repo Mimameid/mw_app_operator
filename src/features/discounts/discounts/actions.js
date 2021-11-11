@@ -47,7 +47,7 @@ export const deleteDiscount = createAsyncThunk('discounts/deleteDiscount', async
   }
 });
 
-export const setActivationDiscount = createAsyncThunk('discounts/setActivationDiscount', async (data, thunkAPI) => {
+export const setActive = createAsyncThunk('discounts/setActive', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/discounts/discounts/active', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 

@@ -1,13 +1,6 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import {
-  fetchAllMenus,
-  createMenu,
-  updateMenu,
-  deleteMenu,
-  addCategories,
-  removeCategory,
-  activateMenu,
-} from './actions';
+import { fetchShop } from 'features/shop/shop/actions';
+import { fetchAllMenus, createMenu, updateMenu, deleteMenu, setCategories, removeCategory, setActive } from './actions';
 import { createCategory, updateCategory } from '../categories/actions';
 
 // reducer
@@ -24,10 +17,13 @@ const slice = createSlice({
       .addCase(fetchAllMenus.fulfilled, (state, action) => {
         state.byId = action.payload.menus;
       })
+      .addCase(fetchShop.fulfilled, (state, action) => {
+        state.byId = action.payload.menus;
+      })
       .addCase(createMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
       })
-      .addCase(activateMenu.fulfilled, (state, action) => {
+      .addCase(setActive.fulfilled, (state, action) => {
         const menu = state.byId[action.payload.menuId];
         menu.isActive = action.payload.isActive;
 
@@ -40,14 +36,9 @@ const slice = createSlice({
       .addCase(deleteMenu.fulfilled, (state, action) => {
         delete state.byId[action.payload];
       })
-      .addCase(addCategories.fulfilled, (state, action) => {
+      .addCase(setCategories.fulfilled, (state, action) => {
         const menu = state.byId[action.payload.menuId];
-
-        for (const categoryId of action.payload.categories) {
-          if (menu.categories.indexOf(categoryId) < 0) {
-            menu.categories.push(categoryId);
-          }
-        }
+        menu.categories = action.payload.categories;
       })
       .addCase(removeCategory.fulfilled, (state, action) => {
         const menu = state.byId[action.payload.menuId];

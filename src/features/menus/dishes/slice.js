@@ -1,5 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
-import { createDish, deleteDish, updateDish, addChoices, removeChoice, setAvailable } from './actions';
+import { createDish, deleteDish, updateDish, setChoices, removeChoice, setAvailable } from './actions';
 import { fetchAllMenus } from '../menus/actions';
 import { createChoice, updateChoice } from '../choices/actions';
 
@@ -26,13 +26,9 @@ const dishesSlice = createSlice({
       .addCase(deleteDish.fulfilled, (state, action) => {
         delete state.byId[action.payload];
       })
-      .addCase(addChoices.fulfilled, (state, action) => {
+      .addCase(setChoices.fulfilled, (state, action) => {
         const dish = state.byId[action.payload.dishId];
-        for (const choiceId of action.payload.choices) {
-          if (dish.choices.indexOf(choiceId) < 0) {
-            dish.choices.push(choiceId);
-          }
-        }
+        dish.choices = action.payload.choices;
       })
       .addCase(removeChoice.fulfilled, (state, action) => {
         const dish = state.byId[action.payload.dishId];
@@ -93,6 +89,15 @@ export const selectDishIdsToNames = createSelector(
     });
 
     return dishIdsToNames;
+  },
+);
+
+export const selectDishesAsArray = createSelector(
+  (state) => state.menus.dishes.byId,
+  (byId) => {
+    let dishesArray = Object.values(byId);
+    dishesArray.sort((a, b) => a.name.localeCompare(b.name));
+    return dishesArray;
   },
 );
 

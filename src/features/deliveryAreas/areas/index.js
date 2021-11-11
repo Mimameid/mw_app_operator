@@ -18,6 +18,7 @@ import {
   setDeliveryFee,
   setMinOrderValue,
   updateVertex,
+  setVersion,
 } from './actions';
 
 import { getCenter, getDifference } from './utils';
@@ -257,6 +258,9 @@ const areas = createReducer(initialState, (builder) => {
         },
         version: action.payload.version,
       };
+    })
+    .addCase(setVersion, (state, action) => {
+      state.version = action.payload;
     });
 });
 

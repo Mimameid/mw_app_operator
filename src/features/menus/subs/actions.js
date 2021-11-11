@@ -15,7 +15,7 @@ export const createSub = createAsyncThunk('subs/createSub', async (data, thunkAP
 });
 
 export const updateSub = createAsyncThunk('dishes/updateSub', async (data, thunkAPI) => {
-  let { choices, ...sub } = data;
+  let { choices, created, updated, ...sub } = data;
 
   const fetchParams = createFetchParams('owner/menus/subs', 'PUT', { choices, sub });
   const response = await fetch(fetchParams.url.href, fetchParams.options);

@@ -19,7 +19,11 @@ function ItemView() {
     }
   };
 
-  return <Paper style={{ overflow: 'hidden' }}>{renderView(group)}</Paper>;
+  return (
+    <Paper sx={{ overflow: 'hidden' }} elevation={2}>
+      {renderView(group)}
+    </Paper>
+  );
 }
 
 export default ItemView;

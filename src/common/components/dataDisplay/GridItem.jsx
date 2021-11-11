@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Box, Grid } from '@mui/material';
 
-function GridItem(props) {
+function GridItem({ sx, ...props }) {
   return (
     <React.Fragment>
-      <Grid sx={{ display: 'flex', alignItems: 'center' }} {...props}>
+      <Grid sx={{ ...{ display: 'flex', alignItems: 'center' }, ...sx }} {...props}>
         <Box
           sx={{
             overflow: 'hidden',

@@ -16,7 +16,7 @@ export const createCategory = createAsyncThunk('categories/createCategory', asyn
 });
 
 export const updateCategory = createAsyncThunk('categories/updateCategory', async (data, thunkAPI) => {
-  let { menus, ...category } = data;
+  let { menus, created, updated, ...category } = data;
 
   const fetchParams = createFetchParams('owner/menus/categories', 'PUT', { menus, category });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
@@ -33,6 +33,7 @@ export const deleteCategory = createAsyncThunk('categories/deleteCategory', asyn
   const path = `owner/menus/categories/${id}`;
   const fetchParams = createFetchParams(path, 'DELETE');
   const response = await fetch(fetchParams.url.href, fetchParams.options);
+
   if (response.ok) {
     return Promise.resolve(id);
   } else {
@@ -40,7 +41,7 @@ export const deleteCategory = createAsyncThunk('categories/deleteCategory', asyn
   }
 });
 
-export const addDishes = createAsyncThunk('categories/addDishes', async (data, thunkAPI) => {
+export const setDishes = createAsyncThunk('categories/setDishes', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/categories/dishes', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {

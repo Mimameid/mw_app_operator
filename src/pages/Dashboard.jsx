@@ -11,10 +11,6 @@ import ContentHeader from 'common/components/dataDisplay/ContentHeader';
 // import { useFetchUserData } from 'hooks/useFetchUserData';
 
 function Dashboard({ name }) {
-  useEffect(() => {
-    // dispatch(fetchShopData());
-  }, []);
-
   const data1 = [
     {
       id: 'japan',
@@ -4508,27 +4504,27 @@ function Dashboard({ name }) {
       </Box>
       <Grid component={Box} container flexGrow={1} spacing={3}>
         <Grid item xs={8}>
-          <Paper style={{ padding: '12px', height: '500px', width: '100%' }}>
+          <Paper style={{ padding: '12px', height: '500px', width: '100%' }} elevation={2}>
             <MyResponsiveLine data={data1} />
           </Paper>
         </Grid>
         <Grid item xs={4}>
-          <Paper style={{ padding: '12px', height: '500px', width: '100%' }}>
+          <Paper style={{ padding: '12px', height: '500px', width: '100%' }} elevation={2}>
             <MyResponsiveBar data={data2} />
           </Paper>
         </Grid>
         <Grid item xs={12}>
-          <Paper style={{ padding: '12px', height: '500px', width: '100%' }}>
+          <Paper style={{ padding: '12px', height: '500px', width: '100%' }} elevation={2}>
             <MyResponsiveCalendar data={data3} />
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper style={{ padding: '12px', height: '500px', width: '100%' }}>
+          <Paper style={{ padding: '12px', height: '500px', width: '100%' }} elevation={2}>
             <MyResponsivePie data={data4} />
           </Paper>
         </Grid>
         <Grid item xs={6}>
-          <Paper style={{ padding: '12px', height: '500px', width: '100%' }}>
+          <Paper style={{ padding: '12px', height: '500px', width: '100%' }} elevation={2}>
             <MyResponsiveAreaBump data={data5} />
           </Paper>
         </Grid>

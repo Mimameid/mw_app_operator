@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedMenus, selectMenuIdsToNames } from 'features/menus/menus/slice';
 import { createCategory, updateCategory } from '../actions';
@@ -8,69 +8,78 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/FormTextField';
-import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
+import FormTextField from 'common/components/form/common/FormTextField';
+import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
   name: yup.string('Geben Sie einen Namen ein.').max(48, 'Name zu lang.').required('Name ist erforderlich'),
   desc: yup
     .string('Geben Sie eine Beschreibung ein.')
-    .max(48, 'Beschreibung zu lang.')
+    .max(128, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
   menus: yup.array(),
 });
+
+const defaultValues = { name: '', desc: '', menus: [] };
 
 function CategoryModal({ open, onClose, category }) {
   const dispatch = useDispatch();
   const selectAffectedMenus = useMemo(makeSelectAffectedMenus, []);
   const affectedMenus = useSelector((state) => selectAffectedMenus(state, category ? category.id : null));
   const menuIdsToNames = useSelector(selectMenuIdsToNames);
+  const [loading, setLoading] = useState(false);
 
-  const { handleSubmit, control, reset, setValue } = useForm({
-    mode: 'onTouched',
-    defaultValues: { name: '', desc: '', menus: [] },
+  const { handleSubmit, control, reset, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: category ? { name: category.name, desc: category.desc, menus: affectedMenus } : defaultValues,
+    delayError: 500,
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (category) {
-      setValue('name', category.name);
-      setValue('desc', category.desc);
-      setValue('menus', affectedMenus);
-    }
-  }, [open, category, affectedMenus, setValue]);
+  const resetValues = useCallback(() => {
+    reset(category ? { name: category.name, desc: category.desc, menus: affectedMenus } : defaultValues);
+  }, [category, affectedMenus, reset]);
 
-  const handleClose = () => {
-    reset();
+  const onSubmit = async (data) => {
+    setLoading(true);
+    data.menus = data.menus.map((item) => item[0]);
+
+    if (!category) {
+      await dispatch(createCategory(data));
+    } else {
+      await dispatch(updateCategory({ ...category, ...data }));
+    }
     onClose();
   };
 
-  const onSubmit = async (data) => {
-    data.menus = data.menus.map((item) => item[0]);
-    if (!category) {
-      dispatch(createCategory(data));
-    } else {
-      dispatch(updateCategory({ ...category, ...data }));
-    }
+  useEffect(() => {
+    resetValues();
+  }, [resetValues, category]);
 
-    handleClose();
-  };
-
+  const { isValid } = formState;
   return (
     <ResponsiveModal
       open={open}
       header={category ? 'Kategorie bearbeiten' : 'Kategorie erstellen'}
       acceptLabel={'Speichern'}
-      onCancel={handleClose}
+      onCancel={onClose}
       onAccept={handleSubmit(onSubmit)}
+      disabled={!isValid}
+      loading={loading}
+      TransitionProps={{
+        onExited: () => {
+          resetValues();
+          setLoading(false);
+        },
+      }}
     >
       <Grid container spacing={2} direction="column">
         <Grid item>
-          <FormTextField name="name" label="Name" control={control} fullWidth />
+          <FormTextField name="name" label="Name*" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
+          <FormTextField name="desc" label="Beschreibung*" control={control} fullWidth />
         </Grid>
         <Grid item>
           <FormMultiSelectGroup

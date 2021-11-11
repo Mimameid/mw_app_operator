@@ -9,7 +9,7 @@ import * as yup from 'yup';
 
 import { Box, Collapse, IconButton, Modal, Paper, Switch, Button, Grid, Divider } from '@mui/material';
 import { Alert } from '@mui/material';
-import FormTimeField from 'common/components/form/FormTimeField';
+import FormTimeField from 'common/components/form/discount/FormTimeField';
 import { Add, Delete } from '@mui/icons-material';
 
 const weekdaySchema = yup

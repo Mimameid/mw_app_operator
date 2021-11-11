@@ -44,7 +44,7 @@ function Sub({ subId, choice }) {
           {sub.price.toFixed(2)}€
         </Box>
       </Grid>
-      <EditSub open={editSubOpen} setOpen={setEditSubOpen} sub={sub} />
+      <EditSub open={editSubOpen} onClose={() => setEditSubOpen(false)} sub={sub} />
     </Grid>
   );
 }

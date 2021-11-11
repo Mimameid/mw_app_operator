@@ -9,14 +9,15 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Box, Button, Grid, Link, Paper, Toolbar, Avatar } from '@mui/material';
+import { Box, Grid, Link, Paper, Toolbar, Avatar } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/dataDisplay/ContentHeader';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
-import FormSwitch from 'common/components/form/FormSwitch';
-import FormMultiSelect from 'common/components/form/FormMultiSelect';
-import FormTextField from 'common/components/form/FormTextField';
+import FormSwitch from 'common/components/form/common/FormSwitch';
+import FormMultiSelect from 'common/components/form/shop/FormMultiSelectChip';
+import FormTextField from 'common/components/form/common/FormTextField';
 import { CloudUpload } from '@mui/icons-material';
 
 const schema = yup.object({
@@ -33,7 +34,9 @@ const schema = yup.object({
     .string('Geben Sie eine Beschreibung ein.')
     .max(1024, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
-  address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
+  location: yup.object({
+    address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
+  }),
   phoneNumber: yup
     .string('Geben Sie eine Telefonnumer ein.')
     .matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
@@ -73,18 +76,20 @@ const schema = yup.object({
 function Shop({ name }) {
   const dispatch = useDispatch();
   const shopData = useSelector((state) => state.shop.shop);
-
   useOnBeforeUnload();
 
   const [dataLoaded, setDataLoaded] = useState(false);
-  const [selected, setSelected] = useState(false);
+  const [saving, setSaving] = useState(false);
 
-  const { handleSubmit, control, setValue, formState } = useForm({
-    mode: 'onTouched',
+  const { handleSubmit, control, setValue, formState, reset } = useForm({
+    mode: 'onChange',
     defaultValues: shopData,
+    delayError: 500,
     resolver: yupResolver(schema),
   });
-  useDetectFormChange(formState);
+
+  const { isDirty } = formState;
+  useDetectFormChange({ isDirty });
 
   useEffect(() => {
     const promise = dispatch(fetchShop());
@@ -93,34 +98,15 @@ function Shop({ name }) {
     });
   }, [dispatch]);
 
-  useEffect(() => {
-    if (shopData) {
-      setValue('name', shopData.name);
-      setValue('desc', shopData.desc);
-      setValue('descLong', shopData.descLong);
-      setValue('address', shopData.location.address);
-      setValue('phoneNumber', shopData.phoneNumber);
-      setValue('url', shopData.url);
-      setValue('serviceTypes', shopData.serviceTypes);
-      setValue('cuisineTypes', shopData.cuisineTypes);
-      setValue('cuisineLabels', shopData.cuisineLabels);
-      setValue('isActive', shopData.isActive);
-      setValue('isKosher', shopData.isKosher);
-      setValue('openingHours', shopData.openingHours);
-    }
-    setSelected(false);
-  }, [shopData, setValue]);
-
-  useEffect(() => {
-    if (shopData.location.address) {
-      setValue('address', shopData.location.address);
-    }
-    setSelected(false);
-  }, [selected, shopData.location.address, setValue]);
-
-  const onSubmit = (data) => {
-    dispatch(updateShop(data));
+  const onSubmit = async (data) => {
+    setSaving(true);
+    await dispatch(updateShop(data));
+    reset(data);
+    setTimeout(() => {
+      setSaving(false);
+    }, 2000);
   };
+
   return dataLoaded ? (
     <Box
       sx={{
@@ -136,7 +122,7 @@ function Shop({ name }) {
         <Box display="flex" justifyContent="space-between">
           <ContentHeader name={name} info="Ihre Shop Daten." />
           <Box alignSelf="flex-end">
-            <Button
+            <LoadingButton
               sx={{
                 mb: 3,
                 fontSize: 'body1.fontSize',
@@ -146,13 +132,14 @@ function Shop({ name }) {
               color="primary"
               startIcon={<CloudUpload />}
               type="submit"
+              loading={saving}
             >
               Speichern
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
 
-        <Paper>
+        <Paper sx={{ position: 'relative', overflow: 'hidden' }} elevation={2}>
           <Box flexDirection="column">
             <Box sx={{ pt: 6, pb: 9, px: 4, textAlign: 'center' }} display="flex" justifyContent="space-around">
               <Box>
@@ -182,11 +169,11 @@ function Shop({ name }) {
                 <Box fontSize="subtitle1.fontSize">{shopData.desc}</Box>
                 <Link
                   rel="noreferrer"
-                  href={`http://www.pickstop.de/${shopData.id}/${shopData.name.replaceAll(' ', '-')}`}
+                  href={`http://www.pickstop.de/${shopData.shopId}/${shopData.name.replaceAll(' ', '-')}`}
                   target="_blank"
                   underline="hover"
                 >
-                  www.pickstop.de/{shopData.id}/{shopData.name.replaceAll(' ', '-')}
+                  www.pickstop.de/{shopData.shopId}/{shopData.name.replaceAll(' ', '-')}
                 </Link>
               </Box>
             </Box>
@@ -212,14 +199,7 @@ function Shop({ name }) {
                 </Grid>
                 <Grid container item spacing={4} justifyContent="space-around">
                   <Grid item xs={12} sm={6}>
-                    <Autocomplete
-                      name="address"
-                      label="Addresse*"
-                      control={control}
-                      onSelect={() => setSelected(true)}
-                      variant="outlined"
-                      fullWidth
-                    />
+                    <Autocomplete name="location" label="Addresse*" control={control} variant="outlined" fullWidth />
                   </Grid>
 
                   <Grid item xs={12} sm={6}>
@@ -245,6 +225,7 @@ function Shop({ name }) {
                           items={CUISINE_TYPES}
                           control={control}
                           variant="outlined"
+                          fullWidth
                         />
                       </Grid>
                     </Grid>
@@ -278,6 +259,7 @@ function Shop({ name }) {
                           items={SERVICE_TYPES}
                           control={control}
                           variant="outlined"
+                          fullWidth
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -287,6 +269,7 @@ function Shop({ name }) {
                           items={CUISINE_LABELS}
                           control={control}
                           variant="outlined"
+                          fullWidth
                         />
                       </Grid>
 

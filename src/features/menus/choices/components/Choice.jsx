@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { removeChoice } from 'features/menus/dishes/actions';
 
-import { Box, Button, Collapse, Grid, IconButton, Paper, Stack } from '@mui/material';
+import { Box, Button, Collapse, IconButton, Paper, Stack } from '@mui/material';
 import ChoiceSubs from './ChoiceSubs';
-import AddSubModal from 'features/menus/choices/components/AddSubModal/AddSubModal';
 import EditChoice from './EditChoice';
+import SetSubsModal from 'features/menus/choices/components/SetSubsModal/SetSubsModal';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
 import { Add, Delete, Edit, Remove } from '@mui/icons-material';
 
@@ -15,7 +15,7 @@ function Choice({ choiceId, dish }) {
 
   const [show, setShow] = useState(true);
   const [editChoiceOpen, setEditChoiceOpen] = useState(false);
-  const [addSubOpen, setAddSubOpen] = useState(false);
+  const [setSubsOpen, setSetSubsOpen] = useState(false);
 
   function handleEditChoice() {
     setEditChoiceOpen(true);
@@ -25,15 +25,16 @@ function Choice({ choiceId, dish }) {
     dispatch(removeChoice({ choiceId, dishId: dish.id }));
   };
 
-  function handleAddSubs() {
-    setAddSubOpen(true);
+  function handleSetSubs() {
+    setSetSubsOpen(true);
   }
+
   function handleClickCollapse() {
     setShow(!show);
   }
 
   return (
-    <Paper elevation={0}>
+    <Paper>
       <Box
         sx={{
           p: 2,
@@ -44,7 +45,7 @@ function Choice({ choiceId, dish }) {
         }}
         display="flex"
       >
-        <Box sx={{ width: '24px', ml: -1, pt: '3px', alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
+        <Box sx={{ width: '24px', ml: -1, alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
           <IconButton
             sx={{
               cursor: 'pointer',
@@ -85,7 +86,7 @@ function Choice({ choiceId, dish }) {
               ) : null}
             </Box>
             <Box sx={{ pl: 1 }}>
-              <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddSubs}>
+              <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleSetSubs}>
                 Option
               </Button>
             </Box>
@@ -109,8 +110,8 @@ function Choice({ choiceId, dish }) {
           <ChoiceSubs choice={choice} />
         </Box>
       </Collapse>
-      <EditChoice open={editChoiceOpen} setOpen={setEditChoiceOpen} choice={choice} />
-      <AddSubModal open={addSubOpen} setOpen={setAddSubOpen} choiceId={choiceId} />
+      <EditChoice open={editChoiceOpen} onClose={() => setEditChoiceOpen(false)} choice={choice} />
+      <SetSubsModal open={setSubsOpen} setOpen={setSetSubsOpen} choice={choice} />
     </Paper>
   );
 }

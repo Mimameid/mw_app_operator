@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from 'common/constants';
 
 import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
 import SubOverviewItem from './SubOverviewItem';
@@ -45,7 +44,7 @@ function SubOverview() {
           <EmptyView>Keine Optiongruppe verfügbar. Bitte erstellen Sie eine Optiongruppe...</EmptyView>
         ) : (
           subsArray.map((sub, index) => (
-            <React.Fragment key={nanoid()}>
+            <React.Fragment key={sub.id}>
               <SubOverviewItem sub={sub} selected={sub.id === selectedSubId} />
               {subsArray.length >= 5 && index === subsArray.length - 1 ? null : <Divider />}
             </React.Fragment>

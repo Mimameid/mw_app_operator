@@ -45,12 +45,12 @@ function CategoryOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '194px' }}>
+      <Box sx={{ overflow: 'auto', height: '234px' }}>
         {categoriesArray.length === 0 ? (
           <EmptyView>Keine Kategorien verfügbar. Bitte erstellen Sie eine Kategorie...</EmptyView>
         ) : (
           categoriesArray.map((category, index) => (
-            <React.Fragment key={nanoid()}>
+            <React.Fragment key={category.id}>
               <CategoryOverviewItem category={category} selected={category.id === selectedCategoryId} />
               {categoriesArray.length >= 5 && index === categoriesArray.length - 1 ? null : <Divider />}
             </React.Fragment>

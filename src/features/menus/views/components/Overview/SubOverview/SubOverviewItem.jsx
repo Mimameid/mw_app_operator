@@ -58,7 +58,8 @@ function SubOverviewItem({ sub, selected }) {
           </Box>
         </Grid>
       </ListItem>
-      <EditSub open={editModalOpen} setOpen={setEditModalOpen} sub={sub} />
+
+      <EditSub open={editModalOpen} onClose={() => setEditModalOpen(false)} sub={sub} />
       <DeleteSub trigger={triggerDelete} setTrigger={setTriggerDelete} subId={sub.id} />
     </React.Fragment>
   );

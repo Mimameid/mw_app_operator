@@ -93,7 +93,9 @@ function Discount({ name }) {
         </Grid>
       </Grid>
 
-      <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} />
+      {discountModalOpen ? (
+        <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} />
+      ) : null}
       <CouponModal open={couponModal} onClose={() => setCouponModalOpen(false)} />
     </Box>
   ) : (

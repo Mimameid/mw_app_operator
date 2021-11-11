@@ -3,7 +3,7 @@ import { useController } from 'react-hook-form';
 
 import { Box, FormHelperText, Switch } from '@mui/material';
 
-function FormTextField({ control, name, label, desc, ...props }) {
+function FormSwitch({ control, name, label, desc, ...props }) {
   const {
     field: { ref, value, ...inputProps },
     fieldState: { error },
@@ -26,4 +26,4 @@ function FormTextField({ control, name, label, desc, ...props }) {
   );
 }
 
-export default FormTextField;
+export default FormSwitch;

@@ -31,11 +31,7 @@ function LeafletMap() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Paper
-        sx={{ width: '100%', height: '100%', overflow: 'hidden', position: 'relative' }}
-        variant="elevation"
-        elevation={3}
-      >
+      <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden', position: 'relative' }} elevation={2}>
         <MapContainer
           style={{ width: '100%', height: '100%' }}
           center={[shop.location.coords.lat, shop.location.coords.lon]}

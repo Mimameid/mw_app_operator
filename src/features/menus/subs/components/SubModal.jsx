@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedChoices, selectChoiceIdsToNames } from 'features/menus/choices/slice';
 import { createSub, updateSub } from '../actions';
@@ -8,9 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/FormTextField';
-import FormPriceField from 'common/components/form/FormPriceField';
-import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
+import FormTextField from 'common/components/form/common/FormTextField';
+import FormPriceField from 'common/components/form/common/FormPriceField';
+import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
@@ -18,52 +18,62 @@ const schema = yup.object({
   price: yup.number('Geben Sie einen Preis ein.').required('Preis ist erforderlich.'),
 });
 
+const defaultValues = {
+  name: '',
+  price: 0,
+  choices: [],
+};
+
 function SubModal({ open, onClose, sub }) {
   const dispatch = useDispatch();
   const selectAffectedChoices = useMemo(makeSelectAffectedChoices, []);
   const affectedChoices = useSelector((state) => selectAffectedChoices(state, sub ? sub.id : null));
   const choiceIdsToNames = useSelector(selectChoiceIdsToNames);
+  const [loading, setLoading] = useState(false);
 
-  const { handleSubmit, control, reset, setValue } = useForm({
-    mode: 'onTouched',
-    defaultValues: {
-      name: '',
-      price: 0,
-      choices: [],
-    },
+  const { handleSubmit, control, reset, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: sub ? { ...sub, choices: affectedChoices } : defaultValues,
+    delayError: 500,
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (sub) {
-      setValue('name', sub.name);
-      setValue('price', sub.price);
-      setValue('choices', affectedChoices);
-    }
-  }, [open, sub, affectedChoices, setValue]);
+  const resetValues = useCallback(() => {
+    reset(sub ? { ...sub, choices: affectedChoices } : defaultValues);
+  }, [sub, affectedChoices, reset]);
 
-  const handleClose = () => {
-    reset();
+  const onSubmit = async (data) => {
+    setLoading(true);
+    data.choices = data.choices.map((item) => item[0]);
+    if (!sub) {
+      await dispatch(createSub(data));
+    } else {
+      await dispatch(updateSub({ ...sub, ...data }));
+    }
+
     onClose();
   };
 
-  const onSubmit = (data) => {
-    data.choices = data.choices.map((item) => item[0]);
-    if (!sub) {
-      dispatch(createSub(data));
-    } else {
-      dispatch(updateSub({ ...sub, ...data }));
-    }
-    handleClose();
-  };
+  useEffect(() => {
+    resetValues();
+  }, [resetValues, sub]);
 
+  const { isValid } = formState;
   return (
     <ResponsiveModal
       open={open}
       header={sub ? 'Option bearbeiten' : 'Option erstellen'}
-      onCancel={handleClose}
+      onCancel={onClose}
       acceptLabel={'Speichern'}
       onAccept={handleSubmit(onSubmit)}
+      disabled={!isValid}
+      loading={loading}
+      TransitionProps={{
+        onExited: () => {
+          resetValues();
+          setLoading(false);
+        },
+      }}
     >
       <Grid container spacing={2} direction="column">
         <Grid item>

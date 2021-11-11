@@ -16,7 +16,7 @@ export const createDish = createAsyncThunk('dishes/createDish', async (data, thu
 });
 
 export const updateDish = createAsyncThunk('dishes/updateDish', async (data, thunkAPI) => {
-  let { categories, ...dish } = data;
+  let { categories, created, updated, ...dish } = data;
 
   const fetchParams = createFetchParams('owner/menus/dishes', 'PUT', { categories, dish });
   const response = await fetch(fetchParams.url.href, fetchParams.options);
@@ -39,7 +39,7 @@ export const deleteDish = createAsyncThunk('dishes/deleteDish', async (id, thunk
   }
 });
 
-export const addChoices = createAsyncThunk('dishes/addChoices', async (data, thunkAPI) => {
+export const setChoices = createAsyncThunk('dishes/setChoices', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/dishes/choices', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
   if (response.ok) {

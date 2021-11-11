@@ -45,12 +45,12 @@ function ChoiceOverview() {
         </Grid>
       </ListSubheader>
       <Divider />
-      <Box sx={{ overflow: 'auto', height: '194px' }}>
+      <Box sx={{ overflow: 'auto', height: '234px' }}>
         {choicesArray.length === 0 ? (
           <EmptyView>Keine Optiongruppen verfügbar. Bitte erstellen Sie eine Optiongruppe...</EmptyView>
         ) : (
           choicesArray.map((choice, index) => (
-            <React.Fragment key={nanoid()}>
+            <React.Fragment key={choice.id}>
               <ChoiceOverviewItem choice={choice} selected={choice.id === selectedChoiceId} />
               {choicesArray.length >= 5 && index === choicesArray.length - 1 ? null : <Divider />}
             </React.Fragment>

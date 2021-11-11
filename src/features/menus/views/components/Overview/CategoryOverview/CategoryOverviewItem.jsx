@@ -64,7 +64,8 @@ function CategoryOverviewItem({ category, selected }) {
           </Box>
         </Grid>
       </ListItem>
-      <EditCategory open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />
+
+      <EditCategory open={editCategoryOpen} onClose={() => setEditCategoryOpen(false)} category={category} />
       <DeleteCategory trigger={triggerDelete} setTrigger={setTriggerDelete} categoryId={category.id} />
     </React.Fragment>
   );

@@ -94,7 +94,6 @@ function CouponOverviewItem({ coupon, selected }) {
         message="Dieser Vorgang kann nicht rückgängig gemacht werden."
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
-        warning
       />
       <CouponModal open={couponModalOpen} onClose={() => setCouponModalOpen(false)} coupon={coupon} />
     </React.Fragment>

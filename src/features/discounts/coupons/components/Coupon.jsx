@@ -29,7 +29,7 @@ function Coupon() {
       }, 0);
 
   return (
-    <Paper sx={{ p: 2, borderBottom: (theme) => '1px solid ' + theme.palette.grey[300] }} elevation={3}>
+    <Paper sx={{ p: 2, borderBottom: (theme) => '1px solid ' + theme.palette.grey[300] }}>
       {couponId ? (
         <React.Fragment>
           <Box display="flex" flexDirection="column">

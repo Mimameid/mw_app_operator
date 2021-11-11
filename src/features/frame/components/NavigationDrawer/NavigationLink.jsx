@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setDrawerOpen } from '../actions';
+import { setDrawerOpen } from '../../actions';
 import { reset } from 'features/mode/actions';
 
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
-import { Box, Button, ListItem, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Fade, ListItem, useMediaQuery, useTheme } from '@mui/material';
 import CustomDialog from 'common/components/feedback/CustomDialog';
 
 function NavigationLink({ name, path, IconComponent }) {
@@ -17,6 +17,7 @@ function NavigationLink({ name, path, IconComponent }) {
     changed: state.mode.changed || state.mode.draw,
     open: state.frame.drawerOpen,
   }));
+
   const location = useLocation();
   const history = useHistory();
 
@@ -48,28 +49,35 @@ function NavigationLink({ name, path, IconComponent }) {
   const selected = location.pathname === path;
   return (
     <React.Fragment>
-      <ListItem sx={{ p: 0 }}>
+      <ListItem sx={{ p: 0, pb: 0.5 }}>
         <Button
           sx={{
-            padding: '12px 16px 12px 14px',
-
-            maxHeight: '46px',
             minWidth: '24px',
+            height: '42px',
+
             justifyContent: 'flex-start',
-            alignItems: 'center',
             textTransform: 'none',
             '&:hover': {
               bgcolor: (theme) => theme.palette.primary.light + '28',
             },
           }}
           component={Link}
-          startIcon={<IconComponent color={selected ? 'primary' : 'action'} />}
+          startIcon={
+            <IconComponent
+              sx={{
+                ml: 0.8,
+              }}
+              color={selected ? 'primary' : 'action'}
+            />
+          }
           size="large"
           to={path}
           onClick={routeTransitionHandler}
           fullWidth
         >
-          <Box color={selected ? 'primary.main' : 'text.secondary'}>{open ? name : ''}</Box>
+          <Fade in={open}>
+            <Box sx={{ color: selected ? 'primary.main' : 'text.secondary' }}>{name}</Box>
+          </Fade>
         </Button>
         <CustomDialog
           open={transitionDialogOpen}

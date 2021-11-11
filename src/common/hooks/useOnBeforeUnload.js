@@ -22,5 +22,5 @@ export default function useOnBeforeUnload() {
     };
   }, [changed]);
 
-  return;
+  return changed;
 }

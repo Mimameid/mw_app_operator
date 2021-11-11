@@ -4,10 +4,11 @@ import { removeCategory } from 'features/menus/menus/actions';
 
 import { Box, Grid, Button, Paper, IconButton, Collapse } from '@mui/material';
 import CategoryDishes from 'features/menus/categories/components/CategoryDishes';
-import { Add, Delete, Edit, Remove } from '@mui/icons-material';
 import EditCategory from './EditCategory';
-import AddDishModal from 'features/menus/categories/components/AddDishModal/AddDishModal';
+import SetDishesModal from 'features/menus/categories/components/SetDishesModal/SetDishesModal';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
+
+import { Add, Delete, Edit, Remove } from '@mui/icons-material';
 
 function Category({ categoryId, menu }) {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function Category({ categoryId, menu }) {
 
   const [show, setShow] = useState(true);
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
-  const [addDishOpen, setAddDishOpen] = useState(false);
+  const [setDishesOpen, setSetDishesOpen] = useState(false);
 
   function handleEditCategory() {
     setEditCategoryOpen(true);
@@ -25,8 +26,8 @@ function Category({ categoryId, menu }) {
     dispatch(removeCategory({ categoryId, menuId: menu.id }));
   }
 
-  function handleAddDishes() {
-    setAddDishOpen(true);
+  function handleSetDishes() {
+    setSetDishesOpen(true);
   }
 
   function handleClickCollapse() {
@@ -34,7 +35,7 @@ function Category({ categoryId, menu }) {
   }
 
   return (
-    <Paper elevation={0}>
+    <Paper>
       <Box
         sx={{
           p: 2,
@@ -44,7 +45,7 @@ function Category({ categoryId, menu }) {
         }}
         display="flex"
       >
-        <Box sx={{ width: '24px', ml: -1, paddingTop: '3px', alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
+        <Box sx={{ width: '24px', ml: -1, alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
           <IconButton
             sx={{
               cursor: 'pointer',
@@ -65,7 +66,6 @@ function Category({ categoryId, menu }) {
             <TruncatedBox
               sx={{
                 cursor: 'pointer',
-
                 userSelect: 'none',
               }}
               fontSize="subtitle1.fontSize"
@@ -85,7 +85,7 @@ function Category({ categoryId, menu }) {
               ) : null}
             </Grid>
             <Grid item sx={{ pl: 1 }}>
-              <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleAddDishes}>
+              <Button size="small" variant="outlined" color="inherit" endIcon={<Add />} onClick={handleSetDishes}>
                 Speise
               </Button>
             </Grid>
@@ -111,8 +111,8 @@ function Category({ categoryId, menu }) {
         </Box>
       </Collapse>
 
-      <EditCategory open={editCategoryOpen} setOpen={setEditCategoryOpen} category={category} />
-      <AddDishModal open={addDishOpen} setOpen={setAddDishOpen} categoryId={category.id} />
+      <EditCategory open={editCategoryOpen} onClose={() => setEditCategoryOpen(false)} category={category} />
+      <SetDishesModal open={setDishesOpen} setOpen={setSetDishesOpen} category={category} />
     </Paper>
   );
 }

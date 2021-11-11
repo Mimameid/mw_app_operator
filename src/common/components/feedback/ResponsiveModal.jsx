@@ -10,9 +10,10 @@ import {
   useMediaQuery,
   useTheme,
   Box,
+  LinearProgress,
 } from '@mui/material';
 
-function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, children }) {
+function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, children, disabled, loading, ...props }) {
   const theme = useTheme();
   const match = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -29,6 +30,7 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
       open={open}
       scroll="body"
       fullScreen={match}
+      {...props}
     >
       <DialogTitle>
         {typeof header === 'string' ? (
@@ -51,12 +53,24 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
             </Button>
           </Grid>
           <Grid item>
-            <Button color="primary" variant="contained" onClick={onAccept}>
+            <Button color="primary" variant="contained" onClick={loading ? null : onAccept}>
               {acceptLabel ? acceptLabel : 'Weiter'}
             </Button>
           </Grid>
         </Grid>
       </DialogActions>
+      {loading ? (
+        <LinearProgress
+          sx={{
+            position: 'absolute',
+            width: '100%',
+
+            top: 0,
+            left: 0,
+            right: 0,
+          }}
+        />
+      ) : null}
     </Dialog>
   );
 }

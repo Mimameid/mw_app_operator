@@ -18,7 +18,7 @@ const getFieldName = (label) => {
   }
 };
 
-function FormLabelMultiSelect({ control, name, items, ...props }) {
+function FormMultiSelectLabel({ control, name, items, ...props }) {
   const {
     field: { ref, ...inputProps },
     fieldState: { error },
@@ -77,4 +77,4 @@ function FormLabelMultiSelect({ control, name, items, ...props }) {
   );
 }
 
-export default FormLabelMultiSelect;
+export default FormMultiSelectLabel;

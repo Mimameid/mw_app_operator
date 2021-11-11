@@ -40,7 +40,7 @@ function Overview() {
   };
 
   return (
-    <Paper sx={{ position: 'relative', overflow: 'hidden' }}>
+    <Paper sx={{ position: 'relative', overflow: 'hidden' }} elevation={2}>
       <Tabs
         sx={{ borderRadius: '16px 16px 0 0', boxShadow: (theme) => theme.shadows[20] }}
         indicatorColor="primary"

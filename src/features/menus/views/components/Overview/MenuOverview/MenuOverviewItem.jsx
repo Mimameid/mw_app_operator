@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteMenu, activateMenu } from 'features/menus/menus/actions';
+import { deleteMenu, setActive } from 'features/menus/menus/actions';
 import { selectItem } from 'features/menus/views/slice';
 
 import { Box, Grid, IconButton, ListItem, Switch } from '@mui/material';
@@ -10,7 +10,7 @@ import GridItem from 'common/components/dataDisplay/GridItem';
 import { DeleteForever, Edit } from '@mui/icons-material';
 import CustomDialog from 'common/components/feedback/CustomDialog';
 
-function MenuOverviewItem({ menu, selected, activeMenuId }) {
+function MenuOverviewItem({ menu, selected, activeMenu }) {
   const dispatch = useDispatch();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [activateDialogOpen, setActivateDialogOpen] = useState(false);
@@ -38,20 +38,24 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
     setSwitchDialogOpen(false);
   }
 
-  function handleAcceptDialog(event) {
-    dispatch(deleteMenu(menu.id));
+  async function handleAcceptDialog(event) {
+    await dispatch(deleteMenu(menu.id));
     setDialogOpen(false);
   }
 
   function handleSwitchAcceptDialog(event) {
-    dispatch(activateMenu({ menuId: menu.id, activeMenuId, isActive: ref.current }));
+    dispatch(setActive({ menuId: menu.id, activeMenuId: activeMenu?.id, isActive: ref.current }));
     setDialogOpen(false);
+    setActivateDialogOpen(false);
+    setDectivateDialogOpen(false);
+    setSwitchDialogOpen(false);
   }
 
-  function handleToggleActivateMenu(event) {
+  function handleToggleSetActive(event) {
     ref.current = event.target.checked;
-    if (activeMenuId) {
-      if (menu.id === activeMenuId) {
+
+    if (activeMenu) {
+      if (menu.id === activeMenu.id) {
         setDectivateDialogOpen(true);
       } else {
         setSwitchDialogOpen(true);
@@ -88,17 +92,24 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
             <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={1}>
               <Switch
                 checked={menu.isActive}
-                onChange={handleToggleActivateMenu}
+                onChange={handleToggleSetActive}
                 color="primary"
                 size="small"
                 inputProps={{ 'aria-label': 'dish available checkbox' }}
               />
             </Grid>
-          ) : menu.id === activeMenuId ? (
-            <GridItem color={'success.main'} fontStyle={'italic'} item xs={1}>
-              aktiv
+          ) : (
+            <GridItem
+              sx={{
+                color: menu.id === activeMenu?.id ? 'success.main' : 'grey.500',
+                fontStyle: 'italic',
+              }}
+              item
+              xs={1}
+            >
+              {menu.id === activeMenu?.id ? 'aktiv' : 'inaktiv'}
             </GridItem>
-          ) : null}
+          )}
 
           <Box
             sx={{ visibility: selected ? 'visible' : 'hidden' }}
@@ -118,10 +129,14 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
       <WarningDialog
         open={dialogOpen}
         title="Menü löschen?"
-        message="Dieser Vorgang kann nicht rückgängig gemacht werden."
+        message={
+          menu.isActive
+            ? 'Bitte deaktivieren Sie das Menü, um es löschen zu können.'
+            : 'Dieser Vorgang kann nicht rückgängig gemacht werden.'
+        }
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
-        warning
+        disabled={menu.isActive}
       />
       <CustomDialog
         open={activateDialogOpen}
@@ -136,7 +151,6 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
         message="Wenn Sie das Menü deaktivieren, kann nicht mehr bestellt werden."
         handleReject={handleRejectDialog}
         handleAccept={handleSwitchAcceptDialog}
-        warning
       />
       <CustomDialog
         open={switchDialogOpen}
@@ -145,6 +159,7 @@ function MenuOverviewItem({ menu, selected, activeMenuId }) {
         handleReject={handleRejectDialog}
         handleAccept={handleSwitchAcceptDialog}
       />
+
       <MenuModal open={menuModalOpen} onClose={() => setMenuModalOpen(false)} menu={menu} />
     </React.Fragment>
   );

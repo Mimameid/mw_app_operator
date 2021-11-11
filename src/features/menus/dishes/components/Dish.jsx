@@ -5,9 +5,24 @@ import { removeDish } from 'features/menus/categories/actions';
 import { Box, Button, Chip, Collapse, Grid, IconButton } from '@mui/material';
 import DishChoices from 'features/menus/dishes/components/DishChoices';
 import EditDish from './EditDish';
-import AddChoiceModal from 'features/menus/dishes/components/AddChoiceModal/AddChoiceModal';
+import SetChoicesModal from 'features/menus/dishes/components/SetChoicesModal/SetChoicesModal';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
 import { Add, Delete, Edit, Remove } from '@mui/icons-material';
+
+const getFieldName = (label) => {
+  switch (label) {
+    case 'Vegan':
+      return 'vegan';
+    case 'Vegetarisch':
+      return 'vegetarian';
+    case 'Halal':
+      return 'halal';
+    case 'Glutenfrei':
+      return 'gluten';
+    default:
+      return null;
+  }
+};
 
 function Dish({ dishId, category }) {
   const dispatch = useDispatch();
@@ -15,22 +30,7 @@ function Dish({ dishId, category }) {
 
   const [show, setShow] = useState(true);
   const [editDishOpen, setEditDishOpen] = useState(false);
-  const [addChoiceOpen, setAddChoiceOpen] = useState(false);
-
-  const getFieldName = (label) => {
-    switch (label) {
-      case 'Vegan':
-        return 'vegan';
-      case 'Vegetarisch':
-        return 'vegetarian';
-      case 'Halal':
-        return 'halal';
-      case 'Glutenfrei':
-        return 'gluten';
-      default:
-        return null;
-    }
-  };
+  const [setChoicesOpen, setSetChoicesOpen] = useState(false);
 
   function handleEditDish() {
     setEditDishOpen(true);
@@ -40,8 +40,8 @@ function Dish({ dishId, category }) {
     dispatch(removeDish({ dishId, categoryId: category.id }));
   };
 
-  function handleAddChoices() {
-    setAddChoiceOpen(true);
+  function handleSetChoices() {
+    setSetChoicesOpen(true);
   }
 
   function handleClickCollapse() {
@@ -51,7 +51,7 @@ function Dish({ dishId, category }) {
   return (
     <div>
       <Box sx={{ height: '104px', p: 2 }} display="flex">
-        <Box sx={{ width: '24px', ml: -1, paddingTop: '3px', alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
+        <Box sx={{ width: '24px', ml: -1, alignSelf: 'flex-start' }} onClick={handleClickCollapse}>
           <IconButton
             sx={{
               cursor: 'pointer',
@@ -89,7 +89,7 @@ function Dish({ dishId, category }) {
               </Box>
             </Grid>
             <Grid item sx={{ pl: 1 }}>
-              <Button size="small" variant="outlined" color="primary" endIcon={<Add />} onClick={handleAddChoices}>
+              <Button size="small" variant="outlined" color="primary" endIcon={<Add />} onClick={handleSetChoices}>
                 Gruppe
               </Button>
             </Grid>
@@ -161,8 +161,8 @@ function Dish({ dishId, category }) {
         </Box>
       </Collapse>
 
-      <EditDish open={editDishOpen} setOpen={setEditDishOpen} dish={dish} />
-      <AddChoiceModal open={addChoiceOpen} setOpen={setAddChoiceOpen} dishId={dishId} />
+      <EditDish open={editDishOpen} onClose={() => setEditDishOpen(false)} dish={dish} />
+      <SetChoicesModal open={setChoicesOpen} setOpen={setSetChoicesOpen} dish={dish} />
     </div>
   );
 }

@@ -12,8 +12,9 @@ function AutocompleteDropdown({ open, onSelect }) {
   const predictions = useSelector((state) => state.shop.location.predictions);
 
   const handleClickPrediction = (e, item) => {
-    dispatch(queryPlace(item));
-    onSelect();
+    dispatch(queryPlace(item)).then((data) => {
+      onSelect({ address: data.payload.address, coords: data.payload.coords });
+    });
   };
 
   return open ? (

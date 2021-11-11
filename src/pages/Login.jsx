@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { login } from 'features/user/actions';
-import { hasShop } from 'features/shop/shop/actions';
 
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,10 +17,11 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
+  Button,
+  LinearProgress,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import FormTextField from 'common/components/form/FormTextField';
-import LoadingButton from 'common/components/inputs/LoadingButton';
+import FormTextField from 'common/components/form/common/FormTextField';
 
 const schema = yup.object({
   email: yup.string('Geben Sie Ihren Benutzernamen ein').required('Benutzername ist erforderlich'),
@@ -47,37 +47,36 @@ function Login({ loggedIn }) {
 
   const submit = async (data) => {
     setLoading(true);
-    dispatch(login(data)).then((data) => {
-      if (data.error) {
-        setLoading(false);
-        return;
-      }
-      dispatch(hasShop()).then((data) => {
-        setLoading(false);
-      });
-    });
+    await dispatch(login(data));
+
+    setLoading(false);
   };
 
   if (loggedIn & !loading) {
     return <Redirect to="/" />;
   }
 
-  console.log(small);
   return (
     <React.Fragment>
       <Dialog open={true} hideBackdrop={true} fullScreen={small} scroll="body">
-        <Box
-          sx={{
-            p: 6,
-          }}
-        >
+        {loading ? (
+          <LinearProgress
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+            }}
+          />
+        ) : null}
+        <Box sx={{ p: 6 }}>
           <Box sx={{ mb: 6 }}>
             <Typography sx={{ mb: 1 }} variant="h4">
               Log in
             </Typography>
             <Typography variant="body2">Loggen Sie sich in Ihre persönliche Plattform ein</Typography>
           </Box>
-          <form onSubmit={handleSubmit(submit)}>
+          <form onSubmit={loading ? null : handleSubmit(submit)}>
             <Grid container spacing={2} direction="column">
               <Grid item>
                 <FormTextField fullWidth name="email" variant="outlined" label="Email" control={control} />
@@ -109,7 +108,7 @@ function Login({ loggedIn }) {
                 />
               </Grid>
               <Grid item>
-                <LoadingButton
+                <Button
                   sx={{
                     height: '46px',
                     mt: 2,
@@ -119,11 +118,10 @@ function Login({ loggedIn }) {
                   color="primary"
                   variant="contained"
                   type="submit"
-                  loading={loading}
                   fullWidth
                 >
                   Log in
-                </LoadingButton>
+                </Button>
               </Grid>
               <Grid item>
                 <Alert sx={{ mt: 1 }} severity="info">

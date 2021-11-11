@@ -5,7 +5,7 @@ import { makeSelectAffectedChoices } from 'features/menus/choices/slice';
 import WarningDialog from 'common/components/feedback/WarningDialog';
 import SubModal from './SubModal';
 
-function EditSub({ open, setOpen, sub }) {
+function EditSub({ open, onClose, sub }) {
   const selectAffectedChoices = useMemo(makeSelectAffectedChoices, []);
   let affectedChoices = useSelector((state) => selectAffectedChoices(state, sub.id));
 
@@ -14,14 +14,14 @@ function EditSub({ open, setOpen, sub }) {
 
   useEffect(() => {
     if (open) {
-      setOpen(false);
-      if (affectedChoices.length > 0) {
+      onClose();
+      if (affectedChoices.length) {
         setDialogOpen(true);
         return;
       }
       setModalOpen(true);
     }
-  }, [open, affectedChoices, setOpen]);
+  }, [open, affectedChoices.length, onClose]);
 
   const handleRejectDialog = (event) => {
     setDialogOpen(false);

@@ -5,7 +5,7 @@ import { makeSelectAffectedDishes } from 'features/menus/dishes/slice';
 import WarningDialog from 'common/components/feedback/WarningDialog';
 import ChoiceModal from './ChoiceModal';
 
-function EditChoice({ open, setOpen, choice }) {
+function EditChoice({ open, onClose, choice }) {
   const selectAffectedDishes = useMemo(makeSelectAffectedDishes, []);
   let affectedDishes = useSelector((state) => selectAffectedDishes(state, choice.id));
 
@@ -14,14 +14,14 @@ function EditChoice({ open, setOpen, choice }) {
 
   useEffect(() => {
     if (open) {
-      setOpen(false);
-      if (affectedDishes.length > 0) {
+      onClose();
+      if (affectedDishes.length) {
         setDialogOpen(true);
         return;
       }
       setModalOpen(true);
     }
-  }, [open, affectedDishes, setOpen]);
+  }, [open, affectedDishes.length, onClose]);
 
   const handleRejectDialog = (event) => {
     setDialogOpen(false);

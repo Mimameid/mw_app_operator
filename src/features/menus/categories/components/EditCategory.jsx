@@ -5,7 +5,7 @@ import { makeSelectAffectedMenus } from 'features/menus/menus/slice';
 import WarningDialog from 'common/components/feedback/WarningDialog';
 import CategoryModal from './CategoryModal';
 
-function EditCategory({ open, setOpen, category }) {
+function EditCategory({ open, onClose, category }) {
   const selectAffectedMenus = useMemo(makeSelectAffectedMenus, []);
   let affectedMenus = useSelector((state) => selectAffectedMenus(state, category.id));
 
@@ -14,14 +14,14 @@ function EditCategory({ open, setOpen, category }) {
 
   useEffect(() => {
     if (open) {
-      setOpen(false);
-      if (affectedMenus.length > 0) {
+      onClose();
+      if (affectedMenus.length) {
         setDialogOpen(true);
         return;
       }
       setModalOpen(true);
     }
-  }, [open, affectedMenus.length, setOpen]);
+  }, [open, affectedMenus.length, onClose]);
 
   const handleRejectDialog = (event) => {
     setDialogOpen(false);
