@@ -22,7 +22,7 @@ function AreaLayer() {
         const point = [event.latlng.lat, event.latlng.lng];
         dispatch(addVertex(point));
       } else {
-        if (activeArea) {
+        if (activeArea.areaNumber > -1) {
           dispatch(deactivateArea());
         }
       }

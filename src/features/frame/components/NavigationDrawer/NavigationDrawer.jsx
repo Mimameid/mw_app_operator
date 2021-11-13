@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { nanoid } from 'common/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from 'features/user/actions';
 import { reset } from 'features/mode/actions';
@@ -10,7 +9,7 @@ import routes from 'routes';
 
 import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, useTheme, Fade } from '@mui/material';
 import NavigationLink from './NavigationLink';
-import CustomDialog from 'common/components/feedback/CustomDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import { ExitToApp } from '@mui/icons-material';
 import ActivateShopSwitch from './ActivateShopSwitch';
 
@@ -95,7 +94,7 @@ function NavigationDrawer() {
         >
           <List>
             {routes.map((data) => (
-              <NavigationLink key={nanoid()} {...data} />
+              <NavigationLink key={data.name} {...data} />
             ))}
           </List>
         </Box>
@@ -164,7 +163,7 @@ function NavigationDrawer() {
         </Box> */}
       </Box>
 
-      <CustomDialog
+      <AlertDialog
         open={transitionDialogOpen}
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}

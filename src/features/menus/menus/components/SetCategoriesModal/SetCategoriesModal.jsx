@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { Box, Button, Grid, Paper } from '@mui/material';
 import CategoryModal from 'features/menus/categories/components/CategoryModal';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
-import FormItemSelect from '../../../../../common/components/form/menu/FormItemSelect';
+import FormItemSelect from '../../../../../common/components/form/FormItemSelect';
 import CategoryItem from './CategoryItem';
 
 const schema = yup.object({
@@ -27,6 +27,7 @@ function SetCategoriesModal({ open, setOpen, menu }) {
     resolver: yupResolver(schema),
   });
 
+  const [loading, setLoading] = useState(false);
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ function SetCategoriesModal({ open, setOpen, menu }) {
   }
 
   async function onSubmit(data) {
+    setLoading(true);
     await dispatch(setCategories({ menuId: menu.id, categories: data.categories }));
     setOpen(false);
   }
@@ -65,6 +67,12 @@ function SetCategoriesModal({ open, setOpen, menu }) {
           setOpen(false);
         }}
         onAccept={handleSubmit(onSubmit)}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       >
         <Paper variant="outlined" square>
           <FormItemSelect

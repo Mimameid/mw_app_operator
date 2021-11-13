@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedCategories } from 'features/menus/categories/slice';
 import { deleteDish } from '../actions';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function DeleteDish({ trigger, setTrigger, dishId }) {
   const dispatch = useDispatch();
   const selectAffectedCategories = useMemo(makeSelectAffectedCategories, []);
   let affectedCategories = useSelector((state) => selectAffectedCategories(state, dishId));
 
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -23,16 +24,17 @@ function DeleteDish({ trigger, setTrigger, dishId }) {
     setTrigger(false);
   };
 
-  const handleAcceptDialog = (event) => {
+  const handleAcceptDialog = async (event) => {
+    setLoading(true);
     dispatch(deleteDish(dishId));
-    setDialogOpen(false);
+    await setDialogOpen(false);
     setTrigger(false);
   };
 
   affectedCategories = affectedCategories.map((item, _) => item[1]);
   return (
     <React.Fragment>
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Speise löschen?"
         message={
@@ -45,6 +47,13 @@ function DeleteDish({ trigger, setTrigger, dishId }) {
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         disabled={affectedCategories.length > 0}
+        loading={loading}
+        warning
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       />
     </React.Fragment>
   );

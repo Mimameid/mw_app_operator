@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
-import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
-import FormPriceField from 'common/components/form/common/FormPriceField';
+import FormCheckboxField from 'common/components/form/FormCheckboxField';
+import FormPriceField from 'common/components/form/FormPriceField';
 
 function FormDiscountType({ control, isFixedPrice, isPercental, setValue }) {
   const handleChange = (event, newValue) => {
@@ -47,7 +47,7 @@ function FormDiscountType({ control, isFixedPrice, isPercental, setValue }) {
         <Box display="flex" flexDirection="column" p={2} pt={2} justifyContent="space-between">
           <Box display="flex" justifyContent="space-between">
             <Box display="flex" alignItems="center" pr={2} fontWeight={600}>
-              Festpreis
+              Festpreis*
             </Box>
           </Box>
           <Box width={62} alignSelf="flex-end">
@@ -59,7 +59,7 @@ function FormDiscountType({ control, isFixedPrice, isPercental, setValue }) {
           <Box display="flex" flexDirection="column" p={2} justifyContent="space-between">
             <Box display="flex" justifyContent="space-between">
               <Box display="flex" alignItems="center" pr={2} fontWeight={600}>
-                Nachlass
+                Nachlass*
               </Box>
               <Box display="flex" mr={-2}>
                 <FormCheckboxField name="isPercental" label="Prozentual" control={control} size="small" />

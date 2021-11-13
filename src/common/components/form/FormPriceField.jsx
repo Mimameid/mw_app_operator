@@ -25,6 +25,9 @@ function getIntAndFractal(value, commaIndex) {
 const maskInput = (newValue, previousValue, cursorPosition) => {
   // check if entered char is valid
   let value = newValue.replace(/[^0-9,]+/g, '');
+  if (!value) {
+    return ['0,00', --cursorPosition];
+  }
   if (value !== newValue) {
     return [value, --cursorPosition];
   }
@@ -73,7 +76,6 @@ const maskInput = (newValue, previousValue, cursorPosition) => {
   if (fractPart.length > 0) {
     value += ',' + fractPart;
   }
-
   return [value, cursorPosition];
 };
 
@@ -115,7 +117,6 @@ function FormPriceField({ control, name, ...props }) {
       inputProps={{
         inputMode: 'numeric',
         pattern: '[0-9]*',
-        defaultValue: inputProps.value.toFixed(2).replace('.', ','),
       }}
       InputProps={{
         endAdornment: <InputAdornment position="end">{props.adornment ? props.adornment : '€'}</InputAdornment>,
@@ -124,6 +125,7 @@ function FormPriceField({ control, name, ...props }) {
       error={!!error}
       helperText={error ? error.message : null}
       {...props}
+      value={inputProps.value.toFixed(2).replace('.', ',')}
       onChange={handleOnChange}
     />
   );

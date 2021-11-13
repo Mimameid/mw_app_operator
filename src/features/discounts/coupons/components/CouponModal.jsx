@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createCoupon, updateCoupon } from '../actions';
 
@@ -7,10 +7,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Box, Stack } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
-import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
+import FormTextField from 'common/components/form/FormTextField';
+import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
-import FormPriceField from 'common/components/form/common/FormPriceField';
+import FormPriceField from 'common/components/form/FormPriceField';
 import FormDateRange from './FormDateRange';
 
 const schema = yup.object({
@@ -34,69 +34,71 @@ const schema = yup.object({
     .required('Angabe der Kombinierbarkeit ist erforderlich'),
 });
 
+const defaultValues = {
+  name: '',
+  desc: '',
+  isCombinable: false,
+  value: 0,
+  minOrderValue: 0,
+  numberOfCoupons: 1,
+  date: {
+    startDate: new Date().setHours(0, 0, 0, 0),
+    endDate: new Date().setHours(0, 0, 0, 0),
+  },
+};
+
 function CouponModal({ open, onClose, coupon }) {
   const dispatch = useDispatch();
 
-  const { handleSubmit, control, reset, setValue } = useForm({
-    mode: 'onTouched',
-    defaultValues: {
-      name: '',
-      desc: '',
-      isCombinable: false,
-      value: 0,
-      minOrderValue: 0,
-      numberOfCoupons: 1,
-      date: {
-        startDate: new Date().setHours(0, 0, 0, 0),
-        endDate: new Date().setHours(0, 0, 0, 0),
-      },
-    },
-    delayError: 500,
+  const { handleSubmit, control, reset, setValue, formState } = useForm({
+    mode: 'onChange',
+    defaultValues: coupon ? JSON.parse(JSON.stringify(coupon)) : defaultValues,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    if (coupon) {
-      setValue('name', coupon.name);
-      setValue('desc', coupon.desc);
-      setValue('combinable', coupon.combinable);
-      setValue('value', coupon.value);
-      setValue('minOrderValue', coupon.minOrderValue);
-      setValue('numberOfCoupons', coupon.numberOfCoupons);
-      setValue('date.startDate', coupon.date.startDate);
-      setValue('date.endDate', coupon.date.endDate);
-    }
-    return () => {
-      reset();
-    };
-  }, [open, coupon, setValue, reset]);
+  const [loading, setLoading] = useState(false);
 
-  const handleClose = () => {
-    reset();
+  const resetValues = useCallback(() => {
+    reset(coupon ? JSON.parse(JSON.stringify(coupon)) : defaultValues);
+  }, [coupon, reset]);
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    if (!coupon) {
+      await dispatch(createCoupon(data));
+    } else {
+      await dispatch(updateCoupon({ ...coupon, ...data }));
+    }
+
     onClose();
   };
 
-  const onSubmit = (data) => {
-    if (!coupon) {
-      dispatch(createCoupon(data));
-    } else {
-      dispatch(updateCoupon({ ...coupon, ...data }));
-    }
+  useEffect(() => {
+    resetValues();
+  }, [resetValues, coupon]);
 
-    handleClose();
-  };
-
+  const { isValid } = formState;
   return (
     <ResponsiveModal
       open={open}
       header={coupon ? 'Gutscheinaktion bearbeiten' : 'Gutscheinaktion erstellen'}
       acceptLabel={'Speichern'}
-      onCancel={handleClose}
+      onCancel={onClose}
       onAccept={handleSubmit(onSubmit)}
+      disabled={!isValid}
+      loading={loading}
+      TransitionProps={{
+        onExited: () => {
+          resetValues();
+          setLoading(false);
+        },
+      }}
+      keepMounted
     >
       <Stack spacing={2}>
         <Box>
-          <FormTextField name="name" label="Name" control={control} fullWidth />
+          <FormTextField name="name" label="Name*" control={control} fullWidth />
         </Box>
         <Box>
           <FormTextField name="desc" label="Beschreibung" control={control} fullWidth />
@@ -104,15 +106,15 @@ function CouponModal({ open, onClose, coupon }) {
         {!coupon ? (
           <React.Fragment>
             <Box>
-              <FormPriceField name="value" label="Wert" control={control} fullWidth />
+              <FormPriceField name="value" label="Wert*" control={control} fullWidth />
             </Box>
             <Box>
-              <FormPriceField name="minOrderValue" label="Mindestbestellwert" control={control} fullWidth />
+              <FormPriceField name="minOrderValue" label="Mindestbestellwert*" control={control} fullWidth />
             </Box>
             <Box>
               <FormTextField
                 name="numberOfCoupons"
-                label="Anzahl"
+                label="Anzahl*"
                 control={control}
                 inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                 fullWidth
@@ -121,11 +123,11 @@ function CouponModal({ open, onClose, coupon }) {
           </React.Fragment>
         ) : null}
         <Box>
-          <FormDateRange control={control} setValue={setValue} />
+          <FormDateRange label="Zeitraum*" control={control} setValue={setValue} />
         </Box>
         {!coupon ? (
           <Box>
-            <FormCheckboxField name="combinable" label="Kombinierbar" control={control} />
+            <FormCheckboxField name="isCombinable" label="Kombinierbar*" control={control} />
           </Box>
         ) : null}
       </Stack>

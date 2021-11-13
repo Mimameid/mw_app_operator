@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeSelectAffectedMenus } from 'features/menus/menus/slice';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import CategoryModal from './CategoryModal';
 
 function EditCategory({ open, onClose, category }) {
@@ -42,7 +42,7 @@ function EditCategory({ open, onClose, category }) {
         }}
         category={category}
       />
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Kategorie bearbeiten?"
         message={
@@ -52,6 +52,7 @@ function EditCategory({ open, onClose, category }) {
         }
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
+        warning
       />
     </React.Fragment>
   );

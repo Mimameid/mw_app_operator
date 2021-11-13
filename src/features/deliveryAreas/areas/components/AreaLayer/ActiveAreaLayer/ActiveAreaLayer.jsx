@@ -5,7 +5,7 @@ import { deactivateArea, removeArea, removePolygon } from '../../../actions';
 
 import PolygonWrapper from './PolygonWrapper/PolygonWrapper';
 import LookaheadLine from './LookaheadLine';
-import CustomDialog from 'common/components/feedback/CustomDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function ActiveAreaLayer({ activeArea, draw }) {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ function ActiveAreaLayer({ activeArea, draw }) {
           color={activeArea.color}
         />
       ) : null}
-      <CustomDialog
+      <AlertDialog
         open={dialogOpen}
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}

@@ -6,7 +6,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
 
-function FormDateRange({ control, setValue }) {
+function FormDateRange({ control, label, setValue }) {
   const theme = useTheme();
 
   const {
@@ -51,15 +51,14 @@ function FormDateRange({ control, setValue }) {
     <React.Fragment>
       <Box sx={{ position: 'relative' }} display="flex" justifyContent="space-between">
         <Box display="flex" alignItems="center" fontSize="subtitle1.fontSize" fontWeight={400}>
-          Zeitraum
+          {label}
         </Box>
         <Box display="flex" pt={1}>
           <Box width={96} px={1}>
             <TextField
               sx={{
-                '& .MuiInputBase-root.Mui-disabled': {
-                  color: 'rgba(0, 0, 0, 1)',
-                  cursor: 'pointer',
+                '& .MuiInputBase-input.Mui-disabled': {
+                  WebkitTextFillColor: (theme) => theme.palette.text.primary,
                 },
               }}
               label="Start"
@@ -81,9 +80,8 @@ function FormDateRange({ control, setValue }) {
           <Box width={88} pl={1}>
             <TextField
               sx={{
-                '& .MuiInputBase-root.Mui-disabled': {
-                  color: 'rgba(0, 0, 0, 1)',
-                  cursor: 'pointer',
+                '& .MuiInputBase-input.Mui-disabled': {
+                  WebkitTextFillColor: (theme) => theme.palette.text.primary,
                 },
               }}
               label="Ende"

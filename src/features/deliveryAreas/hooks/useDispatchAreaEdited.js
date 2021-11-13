@@ -31,7 +31,6 @@ function useDispatchAreaEdited(areas, activeArea) {
         }
       }
     }
-
     dispatch(setEdited(wasAreaEdited()));
   }, [areas, activeArea, dispatch]);
 }

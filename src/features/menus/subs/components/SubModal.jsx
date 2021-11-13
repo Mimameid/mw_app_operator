@@ -8,9 +8,9 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
-import FormPriceField from 'common/components/form/common/FormPriceField';
-import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
+import FormTextField from 'common/components/form/FormTextField';
+import FormPriceField from 'common/components/form/FormPriceField';
+import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
@@ -34,7 +34,7 @@ function SubModal({ open, onClose, sub }) {
   const { handleSubmit, control, reset, formState } = useForm({
     mode: 'onChange',
     defaultValues: sub ? { ...sub, choices: affectedChoices } : defaultValues,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
 
@@ -77,10 +77,10 @@ function SubModal({ open, onClose, sub }) {
     >
       <Grid container spacing={2} direction="column">
         <Grid item>
-          <FormTextField name="name" label="Name" control={control} fullWidth />
+          <FormTextField name="name" label="Name*" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormPriceField name="price" label="Preis" control={control} fullWidth />
+          <FormPriceField name="price" label="Preis*" control={control} fullWidth />
         </Grid>
         <Grid item>
           <FormMultiSelectGroup

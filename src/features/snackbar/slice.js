@@ -43,7 +43,7 @@ const slice = createSlice({
         },
       )
       .addDefaultCase((state, action) => {
-        if (action.type.endsWith('/rejected' && !action.type.includes('fetchShop'))) {
+        if (action.type.endsWith('/rejected') && !action.type.includes('fetchShop')) {
           state.statusCode = STATUS_CODE.ERROR;
           state.statusMessage = navigator.onLine ? 'Etwas ist schief gelaufen.' : 'Netzwerkverbindung unterbrochen.';
           state.count = state.count + 1;

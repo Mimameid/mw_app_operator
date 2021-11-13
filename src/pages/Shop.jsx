@@ -3,22 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchShop, updateShop } from 'features/shop/shop/actions';
 import { CUISINE_TYPES, CUISINE_LABELS, SERVICE_TYPES } from 'common/constants';
 import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
-import useDetectFormChange from 'common/hooks/useDetectFormChange';
 
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Box, Grid, Link, Paper, Toolbar, Avatar } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Box, Button, Link, Paper, Toolbar, Avatar } from '@mui/material';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/dataDisplay/ContentHeader';
-import Autocomplete from 'features/shop/location/components/Autocomplete';
-import OpeningHours from 'features/shop/shop/components/OpeningHours';
-import FormSwitch from 'common/components/form/common/FormSwitch';
-import FormMultiSelect from 'common/components/form/shop/FormMultiSelectChip';
-import FormTextField from 'common/components/form/common/FormTextField';
+
 import { CloudUpload } from '@mui/icons-material';
+import ShopForm from 'features/shop/shop/components/ShopForm';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 const schema = yup.object({
   name: yup
@@ -75,21 +71,19 @@ const schema = yup.object({
 
 function Shop({ name }) {
   const dispatch = useDispatch();
-  const shopData = useSelector((state) => state.shop.shop);
+  const { shopData, changed } = useSelector((state) => ({ shopData: state.shop.shop, changed: state.mode.changed }));
   useOnBeforeUnload();
 
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const { handleSubmit, control, setValue, formState, reset } = useForm({
+  const { handleSubmit, reset, ...methods } = useForm({
     mode: 'onChange',
     defaultValues: shopData,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
-
-  const { isDirty } = formState;
-  useDetectFormChange({ isDirty });
 
   useEffect(() => {
     const promise = dispatch(fetchShop());
@@ -98,31 +92,30 @@ function Shop({ name }) {
     });
   }, [dispatch]);
 
+  const handleRejectDialog = (event) => {
+    setDialogOpen(false);
+  };
+
+  const handleAcceptDialog = async (event) => {
+    setDialogOpen(false);
+    handleSubmit(onSubmit)();
+  };
+
   const onSubmit = async (data) => {
     setSaving(true);
     await dispatch(updateShop(data));
     reset(data);
-    setTimeout(() => {
-      setSaving(false);
-    }, 2000);
+    setSaving(false);
   };
 
   return dataLoaded ? (
-    <Box
-      sx={{
-        p: 3,
-        pt: 0,
-      }}
-      display="flex"
-      flexDirection="column"
-      flexGrow={1}
-    >
+    <Box sx={{ p: 3, pt: 0 }} display="flex" flexDirection="column" flexGrow={1}>
       <Toolbar />
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider {...{ handleSubmit, reset, ...methods }}>
         <Box display="flex" justifyContent="space-between">
           <ContentHeader name={name} info="Ihre Shop Daten." />
           <Box alignSelf="flex-end">
-            <LoadingButton
+            <Button
               sx={{
                 mb: 3,
                 fontSize: 'body1.fontSize',
@@ -131,11 +124,15 @@ function Shop({ name }) {
               variant="contained"
               color="primary"
               startIcon={<CloudUpload />}
-              type="submit"
-              loading={saving}
+              onClick={() => {
+                if (changed) {
+                  setDialogOpen(true);
+                }
+              }}
+              disabled={!changed}
             >
               Speichern
-            </LoadingButton>
+            </Button>
           </Box>
         </Box>
 
@@ -169,126 +166,31 @@ function Shop({ name }) {
                 <Box fontSize="subtitle1.fontSize">{shopData.desc}</Box>
                 <Link
                   rel="noreferrer"
-                  href={`http://www.pickstop.de/${shopData.shopId}/${shopData.name.replaceAll(' ', '-')}`}
+                  href={`${process.env.REACT_APP_WEBSITE_URL}/${shopData.shopId}/${shopData.name.replaceAll(' ', '-')}`}
                   target="_blank"
                   underline="hover"
                 >
-                  www.pickstop.de/{shopData.shopId}/{shopData.name.replaceAll(' ', '-')}
+                  www.{process.env.REACT_APP_WEBSITE_NAME}.de/{shopData.shopId}/{shopData.name.replaceAll(' ', '-')}
                 </Link>
               </Box>
             </Box>
-
-            <Box width="90%" m="auto" pb={8}>
-              <Grid container direction="column" spacing={4}>
-                <Grid container item spacing={4} justifyContent="space-around">
-                  <Grid item xs={12} sm={6}>
-                    <Box>
-                      <FormTextField name="name" label="Name*" control={control} variant="outlined" fullWidth />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormTextField
-                      name="desc"
-                      label="Kurzbeschreibung*"
-                      placeholder="Beschreiben Sie ihr Shop kurz..."
-                      control={control}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container item spacing={4} justifyContent="space-around">
-                  <Grid item xs={12} sm={6}>
-                    <Autocomplete name="location" label="Addresse*" control={control} variant="outlined" fullWidth />
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <FormTextField
-                      name="phoneNumber"
-                      label="Telefonnummer*"
-                      control={control}
-                      variant="outlined"
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-                <Grid container item spacing={4} justifyContent="space-around">
-                  <Grid item xs={12} sm={6}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={12}>
-                        <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormMultiSelect
-                          name="cuisineTypes"
-                          label="Kategorien*"
-                          items={CUISINE_TYPES}
-                          control={control}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormTextField
-                      name="descLong"
-                      label="Beschreibung*"
-                      placeholder="Beschreiben Sie ihr Shop etwas ausführlicher..."
-                      control={control}
-                      variant="outlined"
-                      multiline
-                      rows={6}
-                      fullWidth
-                    />
-                  </Grid>
-                </Grid>
-
-                <Grid container item spacing={4} justifyContent="space-around">
-                  <Grid item xs={12} sm={6}>
-                    <Box>
-                      <OpeningHours name="openingHours" control={control} setOpeningHours={setValue} />
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Grid container spacing={4}>
-                      <Grid item xs={12}>
-                        <FormMultiSelect
-                          name="serviceTypes"
-                          label="Servicearten*"
-                          items={SERVICE_TYPES}
-                          control={control}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-                      <Grid item xs={12}>
-                        <FormMultiSelect
-                          name="cuisineLabels"
-                          label="Labels"
-                          items={CUISINE_LABELS}
-                          control={control}
-                          variant="outlined"
-                          fullWidth
-                        />
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <FormSwitch
-                          name="isKosher"
-                          label="Koscher"
-                          control={control}
-                          desc="Geben Sie an, ob Ihre Gastronomie das Essen Koscher zubereitet."
-                        />
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Box>
+            <ShopForm />
           </Box>
         </Paper>
-      </form>
+      </FormProvider>
+      <AlertDialog
+        open={dialogOpen}
+        handleReject={handleRejectDialog}
+        handleAccept={handleAcceptDialog}
+        title="Änderungen speichern?"
+        message="Sind Sie sicher, dass Sie Ihre Änderungen speichern wollen?"
+        loading={saving}
+        TransitionProps={{
+          onExited: () => {
+            setSaving(false);
+          },
+        }}
+      />
     </Box>
   ) : (
     <LoadingScreen />

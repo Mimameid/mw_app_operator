@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeSelectAffectedCategories } from 'features/menus/categories/slice';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import DishModal from './DishModal';
 
 function EditDish({ open, onClose, dish }) {
@@ -42,7 +42,7 @@ function EditDish({ open, onClose, dish }) {
         }}
         dish={dish}
       />
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Speise bearbeiten?"
         message={
@@ -52,6 +52,7 @@ function EditDish({ open, onClose, dish }) {
         }
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
+        warning
       />
     </React.Fragment>
   );

@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { Box, Button, Grid, Paper } from '@mui/material';
 import DishModal from 'features/menus/dishes/components/DishModal';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
-import FormItemSelect from 'common/components/form/menu/FormItemSelect';
+import FormItemSelect from 'common/components/form/FormItemSelect';
 import DishItem from './DishItem';
 
 const schema = yup.object({
@@ -27,6 +27,7 @@ function SetDishesModal({ open, setOpen, category }) {
     resolver: yupResolver(schema),
   });
 
+  const [loading, setLoading] = useState(false);
   const [dishModalOpen, setDishModalOpen] = useState(false);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ function SetDishesModal({ open, setOpen, category }) {
   }
 
   async function onSubmit(data) {
+    setLoading(true);
     await dispatch(setDishes({ categoryId: category.id, dishes: data.dishes }));
     setOpen(false);
   }
@@ -65,6 +67,12 @@ function SetDishesModal({ open, setOpen, category }) {
           setOpen(false);
         }}
         onAccept={handleSubmit(onSubmit)}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       >
         <Paper variant="outlined" square>
           <FormItemSelect

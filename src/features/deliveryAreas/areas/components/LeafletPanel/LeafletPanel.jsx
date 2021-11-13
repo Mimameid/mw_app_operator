@@ -4,7 +4,7 @@ import { createArea, deactivateArea } from 'features/deliveryAreas/areas/actions
 import L from 'leaflet';
 
 import { Box, Paper, IconButton } from '@mui/material';
-import AreasPanel from './AreasPanel/AreasPanelContainer';
+import AreasPanel from './AreasPanel/AreasPanel';
 import PLZTextField from './PLZTextField';
 import { Add, Block } from '@mui/icons-material';
 import { keyframes } from '@mui/system';

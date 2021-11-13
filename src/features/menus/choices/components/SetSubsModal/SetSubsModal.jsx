@@ -7,10 +7,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import { Box, Button, Divider, Grid, List, Paper } from '@mui/material';
+import { Box, Button, Grid, Paper } from '@mui/material';
 
 import SubModal from 'features/menus/subs/components/SubModal';
-import FormItemSelect from 'common/components/form/menu/FormItemSelect';
+import FormItemSelect from 'common/components/form/FormItemSelect';
 import SubItem from './SubItem';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
@@ -28,6 +28,7 @@ function SetSubsModal({ open, setOpen, choice }) {
     resolver: yupResolver(schema),
   });
 
+  const [loading, setLoading] = useState(false);
   const [subModalOpen, setSubModalOpen] = useState(false);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ function SetSubsModal({ open, setOpen, choice }) {
   }
 
   async function onSubmit(data) {
+    setLoading(true);
     await dispatch(setSubs({ choiceId: choice.id, subs: data.subs }));
     setOpen(false);
   }
@@ -66,6 +68,12 @@ function SetSubsModal({ open, setOpen, choice }) {
           setOpen(false);
         }}
         onAccept={handleSubmit(onSubmit)}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       >
         <Paper variant="outlined" square>
           <FormItemSelect

@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedMenus } from 'features/menus/menus/slice';
 import { deleteCategory } from '../actions';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function DeleteCategory({ trigger, setTrigger, categoryId }) {
   const dispatch = useDispatch();
   const selectAffectedMenus = useMemo(makeSelectAffectedMenus, []);
   let affectedMenus = useSelector((state) => selectAffectedMenus(state, categoryId));
 
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -23,8 +24,9 @@ function DeleteCategory({ trigger, setTrigger, categoryId }) {
     setTrigger(false);
   };
 
-  const handleAcceptDialog = (event) => {
-    dispatch(deleteCategory(categoryId));
+  const handleAcceptDialog = async (event) => {
+    setLoading(true);
+    await dispatch(deleteCategory(categoryId));
     setDialogOpen(false);
     setTrigger(false);
   };
@@ -32,7 +34,7 @@ function DeleteCategory({ trigger, setTrigger, categoryId }) {
   affectedMenus = affectedMenus.map((item, _) => item[1]);
   return (
     <React.Fragment>
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Kategorie löschen?"
         message={
@@ -45,6 +47,13 @@ function DeleteCategory({ trigger, setTrigger, categoryId }) {
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         disabled={affectedMenus.length > 0}
+        loading={loading}
+        warning
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       />
     </React.Fragment>
   );

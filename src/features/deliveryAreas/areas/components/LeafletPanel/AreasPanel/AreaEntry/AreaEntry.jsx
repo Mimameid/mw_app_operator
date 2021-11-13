@@ -1,10 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   activateArea,
   addEmptyPolygon,
   deactivateArea,
-  removeArea,
   setDeliveryFee,
   setMinOrderValue,
 } from 'features/deliveryAreas/areas/actions';
@@ -12,12 +11,11 @@ import { setDraw } from 'features/mode/actions';
 
 import { useMap } from 'react-leaflet';
 import { Box, IconButton, Divider } from '@mui/material';
-import CustomDialog from 'common/components/feedback/CustomDialog';
 import MinimumOrderValueInput from './MinimumOrderValueInput';
 import DeliveryFeeInput from './DeliveryFeeInput';
 import { Delete, Add } from '@mui/icons-material';
 
-function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
+function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber, deleteHandler }) {
   const dispatch = useDispatch();
   const { activeArea, areas } = useSelector((state) => ({
     areas: state.deliveryAreas.areas.areas,
@@ -25,7 +23,6 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
   }));
   const map = useMap();
   const polygonContainer = useRef();
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleActivateArea = (event) => {
     if (activeArea.areaNumber === areaNumber) {
@@ -46,18 +43,6 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
     dispatch(activateArea({ areaNumber }));
     dispatch(addEmptyPolygon());
     dispatch(setDraw(true));
-  };
-
-  const handleDeleteDialogReject = (event) => {
-    setDeleteDialogOpen(false);
-  };
-
-  const handleDeleteDialogAccept = (event) => {
-    if (activeArea.areaNumber === areaNumber) {
-      dispatch(deactivateArea());
-    }
-    dispatch(removeArea(areaNumber));
-    setDeleteDialogOpen(false);
   };
 
   const onChangeDeliveryFee = (event) => {
@@ -113,20 +98,12 @@ function AreaEntry({ color, index, minOrderValue, deliveryFee, areaNumber }) {
         <IconButton size="small" onClick={handleAddPolygon}>
           <Add fontSize="small" />
         </IconButton>
-        <IconButton size="small" onClick={(event) => setDeleteDialogOpen(true)}>
+        <IconButton size="small" onClick={(event) => deleteHandler(areaNumber)}>
           <Delete fontSize="small" />
         </IconButton>
       </Box>
-
-      <CustomDialog
-        open={deleteDialogOpen}
-        title="Gebiet löschen?"
-        message="Sind Sie sicher, dass Sie das Gebiet löschen wollen?"
-        handleReject={handleDeleteDialogReject}
-        handleAccept={handleDeleteDialogAccept}
-      />
     </React.Fragment>
   );
 }
 
-export default AreaEntry;
+export default React.memo(AreaEntry);

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from 'common/constants';
 
 import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
 import CategoryOverviewItem from './CategoryOverviewItem';
+import DeleteCategory from 'features/menus/categories/components/DeleteCategory';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
@@ -14,6 +14,7 @@ function CategoryOverview() {
     return categoriesArray;
   });
   const selectedCategoryId = useSelector((state) => state.menus.views.itemId);
+  const [triggerDelete, setTriggerDelete] = useState(false);
 
   return (
     <List sx={{ p: 0 }}>
@@ -51,12 +52,17 @@ function CategoryOverview() {
         ) : (
           categoriesArray.map((category, index) => (
             <React.Fragment key={category.id}>
-              <CategoryOverviewItem category={category} selected={category.id === selectedCategoryId} />
+              <CategoryOverviewItem
+                category={category}
+                setTriggerDelete={setTriggerDelete}
+                selected={category.id === selectedCategoryId}
+              />
               {categoriesArray.length >= 5 && index === categoriesArray.length - 1 ? null : <Divider />}
             </React.Fragment>
           ))
         )}
       </Box>
+      <DeleteCategory trigger={triggerDelete} setTrigger={setTriggerDelete} categoryId={selectedCategoryId} />
     </List>
   );
 }

@@ -8,8 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
-import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
+import FormTextField from 'common/components/form/FormTextField';
+import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
@@ -33,7 +33,7 @@ function CategoryModal({ open, onClose, category }) {
   const { handleSubmit, control, reset, formState } = useForm({
     mode: 'onChange',
     defaultValues: category ? { name: category.name, desc: category.desc, menus: affectedMenus } : defaultValues,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
 

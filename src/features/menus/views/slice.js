@@ -8,6 +8,7 @@ import { deleteSub } from '../subs/actions';
 const initialState = {
   group: 0, // menus = 0, categories = 1, dishes = 2, choices = 3, options = 4
   itemId: null,
+  action: null,
 };
 
 const viewsSlice = createSlice({
@@ -20,6 +21,9 @@ const viewsSlice = createSlice({
     },
     selectItem(state, action) {
       state.itemId = action.payload;
+    },
+    issueAction(state, action) {
+      state.action = action.payload;
     },
   },
   extraReducers: (builder) => {

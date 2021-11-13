@@ -56,6 +56,16 @@ const areas = createReducer(initialState, (builder) => {
       };
     })
     .addCase(removeArea, (state, action) => {
+      if (state.activeArea.areaNumber === action.payload) {
+        state.activeArea = {
+          areaNumber: -1,
+          areaPolygons: [[[]]],
+          selectedPolygonIndex: -1,
+          minOrderValue: 0,
+          deliveryFee: 0,
+          color: null,
+        };
+      }
       state.areas = state.areas.filter((area) => area.areaNumber !== action.payload);
     })
     .addCase(saveArea, (state) => {

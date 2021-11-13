@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
+import FormTextField from 'common/components/form/FormTextField';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
@@ -30,7 +30,7 @@ function MenuModal({ open, onClose, menu }) {
   const { handleSubmit, control, reset, formState } = useForm({
     mode: 'onChange',
     defaultValues: menu ? menu : defaultValues,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
 

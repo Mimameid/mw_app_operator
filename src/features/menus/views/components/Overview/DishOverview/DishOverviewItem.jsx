@@ -6,13 +6,11 @@ import { setAvailable } from 'features/menus/dishes/actions';
 import { Grid, IconButton, ListItem, Switch, Box } from '@mui/material';
 import GridItem from 'common/components/dataDisplay/GridItem';
 import EditDish from 'features/menus/dishes/components/EditDish';
-import DeleteDish from 'features/menus/dishes/components/DeleteDish';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
-function DishOverviewItem({ dish, selected }) {
+function DishOverviewItem({ dish, setTriggerDelete, selected }) {
   const dispatch = useDispatch();
 
-  const [triggerDelete, setTriggerDelete] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   function handleEditDish(event) {
@@ -21,10 +19,6 @@ function DishOverviewItem({ dish, selected }) {
 
   function handleSelectDish(event) {
     dispatch(selectItem(dish.id));
-  }
-
-  function handleDeleteDish(event) {
-    setTriggerDelete(true);
   }
 
   function handleDisableDish(event) {
@@ -72,7 +66,7 @@ function DishOverviewItem({ dish, selected }) {
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
-            <IconButton aria-label="edit" size="small" onClick={handleDeleteDish}>
+            <IconButton aria-label="edit" size="small" onClick={() => setTriggerDelete(true)}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
           </Box>
@@ -80,9 +74,8 @@ function DishOverviewItem({ dish, selected }) {
       </ListItem>
 
       <EditDish open={editModalOpen} onClose={() => setEditModalOpen(false)} dish={dish} />
-      <DeleteDish trigger={triggerDelete} setTrigger={setTriggerDelete} dishId={dish.id} />
     </React.Fragment>
   );
 }
 
-export default DishOverviewItem;
+export default React.memo(DishOverviewItem);

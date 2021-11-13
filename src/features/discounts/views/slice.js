@@ -31,11 +31,6 @@ const viewsSlice = createSlice({
           state.itemId = null;
         }
       });
-    //   .addCase(deleteCategory.fulfilled, (state, action) => {
-    //     if (state.group === 1 && state.itemId === action.payload) {
-    //       state.itemId = null;
-    //     }
-    //   })
   },
 });
 

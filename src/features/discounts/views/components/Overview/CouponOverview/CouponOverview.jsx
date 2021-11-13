@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCoupons } from 'features/discounts/coupons/actions';
-import { nanoid } from 'common/constants';
 
 import { Grid, List, ListSubheader, Divider, Box } from '@mui/material';
 import CouponOverviewItem from './CouponOverviewItem';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 import Spinner from 'common/components/feedback/Spinner';
+import DeleteCoupon from 'features/discounts/coupons/components/DeleteCoupon';
 
 function CouponOverview() {
   const dispatch = useDispatch();
@@ -18,6 +18,7 @@ function CouponOverview() {
   });
   const selectedCouponId = useSelector((state) => state.discounts.views.itemId);
 
+  const [triggerDelete, setTriggerDelete] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -60,8 +61,12 @@ function CouponOverview() {
             <EmptyView>Keine Couponaktion verfügbar...</EmptyView>
           ) : (
             couponsArray.map((coupon, index) => (
-              <React.Fragment key={nanoid()}>
-                <CouponOverviewItem coupon={coupon} selected={coupon.id === selectedCouponId} />
+              <React.Fragment key={coupon.id}>
+                <CouponOverviewItem
+                  coupon={coupon}
+                  setTriggerDelete={setTriggerDelete}
+                  selected={coupon.id === selectedCouponId}
+                />
                 {couponsArray.length >= 5 && index === couponsArray.length - 1 ? null : <Divider />}
               </React.Fragment>
             ))
@@ -70,6 +75,7 @@ function CouponOverview() {
           <Spinner />
         )}
       </Box>
+      <DeleteCoupon trigger={triggerDelete} setTrigger={setTriggerDelete} couponId={selectedCouponId} />
     </List>
   );
 }

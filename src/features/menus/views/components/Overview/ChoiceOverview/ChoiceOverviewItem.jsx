@@ -4,14 +4,12 @@ import { selectItem } from 'features/menus/views/slice';
 
 import { Box, Grid, IconButton, ListItem } from '@mui/material';
 import EditChoice from 'features/menus/choices/components/EditChoice';
-import DeleteChoice from 'features/menus/choices/components/DeleteChoice';
 import GridItem from 'common/components/dataDisplay/GridItem';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
-function ChoiceOverviewItem({ choice, selected }) {
+function ChoiceOverviewItem({ choice, setTriggerDelete, selected }) {
   const dispatch = useDispatch();
 
-  const [triggerDelete, setTriggerDelete] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   function handleEditDish(event) {
@@ -20,10 +18,6 @@ function ChoiceOverviewItem({ choice, selected }) {
 
   function handleSelectChoice(event) {
     dispatch(selectItem(choice.id));
-  }
-
-  function handleDeleteDish(event) {
-    setTriggerDelete(true);
   }
 
   return (
@@ -58,7 +52,7 @@ function ChoiceOverviewItem({ choice, selected }) {
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
-            <IconButton aria-label="edit" size="small" onClick={handleDeleteDish}>
+            <IconButton aria-label="edit" size="small" onClick={() => setTriggerDelete(true)}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
           </Box>
@@ -66,9 +60,8 @@ function ChoiceOverviewItem({ choice, selected }) {
       </ListItem>
 
       <EditChoice open={editModalOpen} onClose={() => setEditModalOpen(false)} choice={choice} />
-      <DeleteChoice trigger={triggerDelete} setTrigger={setTriggerDelete} choiceId={choice.id} />
     </React.Fragment>
   );
 }
 
-export default ChoiceOverviewItem;
+export default React.memo(ChoiceOverviewItem);

@@ -9,7 +9,7 @@ import * as yup from 'yup';
 
 import { Box, Button, Grid, Paper } from '@mui/material';
 import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
-import FormItemSelect from 'common/components/form/menu/FormItemSelect';
+import FormItemSelect from 'common/components/form/FormItemSelect';
 import ChoiceItem from './ChoiceItem';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
@@ -27,6 +27,7 @@ function SetChoicesModal({ open, setOpen, dish }) {
     resolver: yupResolver(schema),
   });
 
+  const [loading, setLoading] = useState(false);
   const [choiceModalOpen, setChoiceModalOpen] = useState(false);
 
   useEffect(() => {
@@ -38,6 +39,7 @@ function SetChoicesModal({ open, setOpen, dish }) {
   }
 
   async function onSubmit(data) {
+    setLoading(true);
     await dispatch(setChoices({ dishId: dish.id, choices: data.choices }));
     setOpen(false);
   }
@@ -65,6 +67,12 @@ function SetChoicesModal({ open, setOpen, dish }) {
           setOpen(false);
         }}
         onAccept={handleSubmit(onSubmit)}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       >
         <Paper variant="outlined" square>
           <FormItemSelect

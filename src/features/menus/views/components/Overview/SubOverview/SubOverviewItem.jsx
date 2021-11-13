@@ -4,14 +4,12 @@ import { selectItem } from 'features/menus/views/slice';
 
 import { Box, Grid, IconButton, ListItem } from '@mui/material';
 import EditSub from 'features/menus/subs/components/EditSub';
-import DeleteSub from 'features/menus/subs/components/DeleteSub';
 import GridItem from 'common/components/dataDisplay/GridItem';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
-function SubOverviewItem({ sub, selected }) {
+function SubOverviewItem({ sub, setTriggerDelete, selected }) {
   const dispatch = useDispatch();
 
-  const [triggerDelete, setTriggerDelete] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   function handleEditDish(event) {
@@ -20,10 +18,6 @@ function SubOverviewItem({ sub, selected }) {
 
   function handleSelectCategory(event) {
     dispatch(selectItem(sub.id));
-  }
-
-  function handleDeleteDish(event) {
-    setTriggerDelete(true);
   }
 
   return (
@@ -52,7 +46,13 @@ function SubOverviewItem({ sub, selected }) {
             <IconButton aria-label="edit" size="small" onClick={handleEditDish}>
               <Edit fontSize="small" />
             </IconButton>
-            <IconButton aria-label="edit" size="small" onClick={handleDeleteDish}>
+            <IconButton
+              aria-label="edit"
+              size="small"
+              onClick={() => {
+                setTriggerDelete(true);
+              }}
+            >
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
           </Box>
@@ -60,9 +60,8 @@ function SubOverviewItem({ sub, selected }) {
       </ListItem>
 
       <EditSub open={editModalOpen} onClose={() => setEditModalOpen(false)} sub={sub} />
-      <DeleteSub trigger={triggerDelete} setTrigger={setTriggerDelete} subId={sub.id} />
     </React.Fragment>
   );
 }
 
-export default SubOverviewItem;
+export default React.memo(SubOverviewItem);

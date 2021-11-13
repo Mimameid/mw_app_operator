@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Box, Grid, Paper, Toolbar } from '@mui/material';
 import MyResponsiveLine from 'features/dashboard/components/MyResponsiveLine';

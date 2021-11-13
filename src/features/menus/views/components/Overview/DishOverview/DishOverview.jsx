@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
 import DishOverviewItem from './DishOverviewItem';
+import DeleteDish from 'features/menus/dishes/components/DeleteDish';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
@@ -13,6 +14,7 @@ function DishOverview() {
     return dishesArray;
   });
   const selectedDishId = useSelector((state) => state.menus.views.itemId);
+  const [triggerDelete, setTriggerDelete] = useState(false);
 
   return (
     <List sx={{ p: 0 }}>
@@ -53,12 +55,13 @@ function DishOverview() {
         ) : (
           dishesArray.map((dish, index) => (
             <React.Fragment key={dish.id}>
-              <DishOverviewItem dish={dish} selected={dish.id === selectedDishId} />
+              <DishOverviewItem dish={dish} setTriggerDelete={setTriggerDelete} selected={dish.id === selectedDishId} />
               {dishesArray.length >= 5 && index === dishesArray.length - 1 ? null : <Divider />}
             </React.Fragment>
           ))
         )}
       </Box>
+      <DeleteDish trigger={triggerDelete} setTrigger={setTriggerDelete} dishId={selectedDishId} />
     </List>
   );
 }

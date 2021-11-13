@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createDiscount, updateDiscount } from '../actions';
 import { discountTypes, weekdays } from 'common/constants';
@@ -8,8 +8,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Box, Paper, Stack } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
-import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
+import FormTextField from 'common/components/form/FormTextField';
+import FormCheckboxField from 'common/components/form/FormCheckboxField';
 import FormWeekdayField from './FormWeekdayField';
 import FormDateRange from './FormDateRange';
 import FormTimeRange from './FormTimeRange';
@@ -113,9 +113,11 @@ function DiscountModal({ open, onClose, discount }) {
   const { handleSubmit, control, reset, setValue, watch, formState } = useForm({
     mode: 'onChange',
     defaultValues: discount ? JSON.parse(JSON.stringify(discount)) : defaultValues,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
+
+  const [loading, setLoading] = useState(false);
 
   const watchRepeating = watch('isRepeating');
   const watchAllDay = watch('isAllDay');
@@ -123,20 +125,24 @@ function DiscountModal({ open, onClose, discount }) {
   const watchIsFixedPrice = watch('isFixedPrice');
   const watchType = watch('scope.itemType');
 
-  const handleClose = () => {
-    reset(JSON.parse(JSON.stringify(defaultValues)));
-    onClose();
-  };
+  const resetValues = useCallback(() => {
+    reset(discount ? JSON.parse(JSON.stringify(discount)) : defaultValues);
+  }, [discount, reset]);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     if (!discount) {
       await dispatch(createDiscount(data));
     } else {
       await dispatch(updateDiscount({ ...discount, ...data }));
     }
 
-    handleClose();
+    onClose();
   };
+
+  useEffect(() => {
+    resetValues();
+  }, [resetValues, discount]);
 
   const { isValid } = formState;
   return (
@@ -144,9 +150,16 @@ function DiscountModal({ open, onClose, discount }) {
       open={open}
       header={discount ? 'Rabattaktion bearbeiten' : 'Rabattaktion erstellen'}
       acceptLabel={'Speichern'}
-      onCancel={handleClose}
+      onCancel={onClose}
       onAccept={handleSubmit(onSubmit)}
       disabled={!isValid}
+      loading={loading}
+      TransitionProps={{
+        onExited: () => {
+          resetValues();
+          setLoading(false);
+        },
+      }}
     >
       <Stack spacing={2}>
         <Box>
@@ -170,7 +183,7 @@ function DiscountModal({ open, onClose, discount }) {
 
         <Box>
           <Paper variant="outlined">
-            <FormDateRange control={control} isRepeating={watchRepeating} setValue={setValue} />
+            <FormDateRange label={'Zeitraum*'} control={control} isRepeating={watchRepeating} setValue={setValue} />
 
             <FormWeekdayField name="weekdays" control={control} setValue={setValue} />
             <FormTimeRange control={control} isAllDay={watchAllDay} setValue={setValue} />

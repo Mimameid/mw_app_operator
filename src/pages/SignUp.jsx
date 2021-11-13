@@ -9,11 +9,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Alert, Dialog, Stack, useMediaQuery, useTheme, Box, Typography } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
+import FormTextField from 'common/components/form/FormTextField';
 import LoadingButton from 'common/components/inputs/LoadingButton';
 import Autocomplete from 'features/shop/location/components/Autocomplete';
-import FormMultiSelect from 'common/components/form/shop/FormMultiSelectChip';
-import FormSwitch from 'common/components/form/common/FormSwitch';
+import FormMultiSelect from 'common/components/form/FormMultiSelectChip';
+import FormSwitch from 'common/components/form/FormSwitch';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
 
 const schema = yup.object({
@@ -77,7 +77,7 @@ function SignUp({ shopRegistered }) {
   const { handleSubmit, control, setValue, formState } = useForm({
     mode: 'onChange',
     defaultValues: shopData,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
 

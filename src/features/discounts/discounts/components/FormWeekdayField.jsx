@@ -21,7 +21,7 @@ function FormWeekdayField({ name, control, setValue }) {
     <React.Fragment>
       <Box display="flex" flexDirection="column" p={2} justifyContent="space-between">
         <Box display="flex" alignItems="center" fontWeight={600}>
-          Wochentage
+          Wochentage*
         </Box>
         <Box display="flex" pt={1} justifyContent="flex-end">
           <ToggleButtonGroup value={inputProps.value} onChange={handleValues}>

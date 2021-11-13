@@ -9,12 +9,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Grid } from '@mui/material';
-import FormTextField from 'common/components/form/common/FormTextField';
-import FormPriceField from 'common/components/form/common/FormPriceField';
-import FormSelectField from 'common/components/form/common/FormSelectField';
-import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
-import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
-import FormTagMultiSelect from 'common/components/form/menu/FormMultiSelectLabel';
+import FormTextField from 'common/components/form/FormTextField';
+import FormPriceField from 'common/components/form/FormPriceField';
+import FormSelectField from 'common/components/form/FormSelectField';
+import FormCheckboxField from 'common/components/form/FormCheckboxField';
+import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
+import FormMultiSelectLabel from '../../common/components/FormMultiSelectLabel';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 
 const schema = yup.object({
@@ -56,7 +56,7 @@ function DishModal({ open, onClose, dish }) {
   const { handleSubmit, control, reset, formState } = useForm({
     mode: 'onChange',
     defaultValues: dish ? { ...dish, categories: affectedCategories } : defaultValues,
-    delayError: 500,
+    delayError: 300,
     resolver: yupResolver(schema),
   });
 
@@ -111,7 +111,7 @@ function DishModal({ open, onClose, dish }) {
           <FormPriceField name="price" label="Preis*" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormTagMultiSelect name="cuisineLabels" label="Labels" items={CUISINE_LABELS} control={control} />
+          <FormMultiSelectLabel name="cuisineLabels" label="Labels" items={CUISINE_LABELS} control={control} />
         </Grid>
         <Grid item>
           <FormMultiSelectGroup

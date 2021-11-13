@@ -7,7 +7,7 @@ import { selectDishIdsToNames } from 'features/menus/dishes/slice';
 import { discountTypes } from 'common/constants';
 
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
-import FormMultiSelectGroup from 'common/components/form/menu/FormMultiSelectGroup';
+import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 
 function FormDiscountScope({ type, control, setValue }) {
   const menuIdsToNames = useSelector(selectMenuIdsToNames);

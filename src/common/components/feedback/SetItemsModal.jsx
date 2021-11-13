@@ -6,7 +6,7 @@ import * as yup from 'yup';
 
 import { Box, Button, Grid, Paper } from '@mui/material';
 import ChoiceModal from 'features/menus/choices/components/ChoiceModal';
-import FormItemSelect from 'common/components/form/menu/FormItemSelect';
+import FormItemSelect from 'common/components/form/FormItemSelect';
 import ChoiceItem from './ChoiceItem';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';
 

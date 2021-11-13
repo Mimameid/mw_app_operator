@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectDiscountItem } from 'features/discounts/views/slice';
-import { deleteCoupon } from 'features/discounts/coupons/actions';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import { Box, Grid, IconButton, ListItem } from '@mui/material';
-import WarningDialog from 'common/components/feedback/WarningDialog';
 import CouponModal from 'features/discounts/coupons/components/CouponModal';
 import GridItem from 'common/components/dataDisplay/GridItem';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
-function CouponOverviewItem({ coupon, selected }) {
+function CouponOverviewItem({ coupon, setTriggerDelete, selected }) {
   const dispatch = useDispatch();
-  const [dialogOpen, setDialogOpen] = useState(false);
+
   const [couponModalOpen, setCouponModalOpen] = useState(false);
 
   function editEntryHandler(event) {
@@ -22,19 +20,6 @@ function CouponOverviewItem({ coupon, selected }) {
 
   function handleSelectMenu(event) {
     dispatch(selectDiscountItem(coupon.id));
-  }
-
-  function deleteEntryHandler(event) {
-    setDialogOpen(true);
-  }
-
-  function handleRejectDialog(event) {
-    setDialogOpen(false);
-  }
-
-  function handleAcceptDialog(event) {
-    dispatch(deleteCoupon(coupon.id));
-    setDialogOpen(false);
   }
 
   const couponStatus = getDiscountStatus(coupon);
@@ -81,20 +66,13 @@ function CouponOverviewItem({ coupon, selected }) {
               <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
                 <Edit fontSize="small" />
               </IconButton>
-              <IconButton aria-label="edit" size="small" onClick={deleteEntryHandler}>
+              <IconButton aria-label="edit" size="small" onClick={() => setTriggerDelete(true)}>
                 <DeleteForever fontSize="small" color="error" />
               </IconButton>
             </Box>
           </Grid>
         </Grid>
       </ListItem>
-      <WarningDialog
-        open={dialogOpen}
-        title="Couponaktion löschen?"
-        message="Dieser Vorgang kann nicht rückgängig gemacht werden."
-        handleReject={handleRejectDialog}
-        handleAccept={handleAcceptDialog}
-      />
       <CouponModal open={couponModalOpen} onClose={() => setCouponModalOpen(false)} coupon={coupon} />
     </React.Fragment>
   );

@@ -3,8 +3,8 @@ import { useController } from 'react-hook-form';
 
 import { Box, Collapse } from '@mui/material';
 import { Alert } from '@mui/material';
-import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
-import FormTimeField from 'common/components/form/discount/FormTimeField';
+import FormCheckboxField from 'common/components/form/FormCheckboxField';
+import FormTimeField from 'common/components/form/FormTimeField';
 
 function FormTimeRange({ control, isAllDay }) {
   const {
@@ -18,7 +18,7 @@ function FormTimeRange({ control, isAllDay }) {
     <Box display="flex" flexDirection="column" p={2} justifyContent="space-between">
       <Box display="flex" justifyContent="space-between">
         <Box display="flex" alignItems="center" fontWeight={600}>
-          Uhrzeit
+          Uhrzeit*
         </Box>
         <Box display="flex" mr={-2}>
           <FormCheckboxField name="isAllDay" label="Ganztags" control={control} size="small" />

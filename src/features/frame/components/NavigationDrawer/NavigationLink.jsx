@@ -6,7 +6,7 @@ import { reset } from 'features/mode/actions';
 import { Link, useLocation, useHistory } from 'react-router-dom';
 
 import { Box, Button, Fade, ListItem, useMediaQuery, useTheme } from '@mui/material';
-import CustomDialog from 'common/components/feedback/CustomDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function NavigationLink({ name, path, IconComponent }) {
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ function NavigationLink({ name, path, IconComponent }) {
             <Box sx={{ color: selected ? 'primary.main' : 'text.secondary' }}>{name}</Box>
           </Fade>
         </Button>
-        <CustomDialog
+        <AlertDialog
           open={transitionDialogOpen}
           handleReject={handleRejectDialog}
           handleAccept={handleAcceptDialog}

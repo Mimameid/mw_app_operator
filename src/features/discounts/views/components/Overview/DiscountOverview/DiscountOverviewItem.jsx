@@ -1,71 +1,61 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { selectDiscountItem } from 'features/discounts/views/slice';
-import { deleteDiscount, setActive } from 'features/discounts/discounts/actions';
+import { setActive } from 'features/discounts/discounts/actions';
 import { getDiscountTypeName } from 'common/constants';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import { Box, Grid, IconButton, ListItem, Switch } from '@mui/material';
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
 import GridItem from 'common/components/dataDisplay/GridItem';
 import TruncatedBox from 'features/menus/common/components/TruncatedBox';
-import CustomDialog from 'common/components/feedback/CustomDialog';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
-function DiscountOverviewItem({ discount, selected }) {
+function DiscountOverviewItem({ discount, setTriggerDelete, selected }) {
   const dispatch = useDispatch();
-  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+  const [discountModalOpen, setDiscountModalOpen] = useState(false);
   const [activateDialogOpen, setActivateDialogOpen] = useState(false);
   const [deactivateDialogOpen, setDectivateDialogOpen] = useState(false);
-  const [discountModalOpen, setDiscountModalOpen] = useState(false);
-  const ref = useRef(false);
+  const setActiveRef = useRef(false);
 
   function editEntryHandler(event) {
     setDiscountModalOpen(true);
   }
 
-  function handleSelectMenu(event) {
+  function handleSelectDiscount(event) {
     dispatch(selectDiscountItem(discount.id));
   }
 
-  function deleteEntryHandler(event) {
-    setDialogOpen(true);
+  async function handleSetActiveAcceptDialog(event) {
+    setLoading(true);
+    await dispatch(setActive({ discountId: discount.id, isActive: setActiveRef.current }));
+    handleRejectDialog();
   }
 
-  function handleRejectDialog(event) {
-    setDialogOpen(false);
-    setActivateDialogOpen(false);
-    setDectivateDialogOpen(false);
-  }
-
-  function handleAcceptDialog(event) {
-    dispatch(deleteDiscount(discount.id));
-    setDialogOpen(false);
-  }
-
-  function handleSwitchAcceptDialog(event) {
-    dispatch(setActive({ discountId: discount.id, isActive: ref.current }));
-    setDialogOpen(false);
-  }
-
-  function handleToggleActivateDiscount(event) {
-    ref.current = event.target.checked;
-    if (ref.current) {
+  function setActiveHandler(event) {
+    setActiveRef.current = event.target.checked;
+    if (setActiveRef.current) {
       setActivateDialogOpen(true);
     } else {
       setDectivateDialogOpen(true);
     }
   }
 
-  const discountStatus = getDiscountStatus(discount);
+  function handleRejectDialog(event) {
+    setActivateDialogOpen(false);
+    setDectivateDialogOpen(false);
+  }
 
+  const discountStatus = getDiscountStatus(discount);
   return (
     <React.Fragment>
       <ListItem
         sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
-        onClick={!selected ? handleSelectMenu : null}
+        onClick={!selected ? handleSelectDiscount : null}
       >
         <Grid container wrap={'nowrap'}>
           <GridItem item xs={2}>
@@ -89,7 +79,7 @@ function DiscountOverviewItem({ discount, selected }) {
             <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={2}>
               <Switch
                 checked={discount.isActive}
-                onChange={handleToggleActivateDiscount}
+                onChange={setActiveHandler}
                 color="primary"
                 size="small"
                 inputProps={{ 'aria-label': 'dish available checkbox' }}
@@ -110,39 +100,43 @@ function DiscountOverviewItem({ discount, selected }) {
               <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
                 <Edit fontSize="small" />
               </IconButton>
-              <IconButton aria-label="edit" size="small" onClick={deleteEntryHandler}>
+              <IconButton aria-label="edit" size="small" onClick={() => setTriggerDelete(true)}>
                 <DeleteForever fontSize="small" color="error" />
               </IconButton>
             </Box>
           </Grid>
         </Grid>
       </ListItem>
-      <WarningDialog
-        open={dialogOpen}
-        title="Rabattaktion löschen?"
-        message="Dieser Vorgang kann nicht rückgängig gemacht werden."
-        handleReject={handleRejectDialog}
-        handleAccept={handleAcceptDialog}
-      />
-      <CustomDialog
+
+      <AlertDialog
         open={activateDialogOpen}
         title="Rabattaktion aktivieren?"
         message="Wenn Sie die Rabattaktion aktivieren, ist sie ab sofort, sofern im Gültigkeitszeitraum, für die betroffenen Items wirksam."
         handleReject={handleRejectDialog}
-        handleAccept={handleSwitchAcceptDialog}
+        handleAccept={handleSetActiveAcceptDialog}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       />
-      <WarningDialog
+      <AlertDialog
         open={deactivateDialogOpen}
         title="Rabattaktion deaktivieren?"
         message="Wenn Sie die Rabattaktion deaktivieren, ist sie ab sofort unwirksam."
         handleReject={handleRejectDialog}
-        handleAccept={handleSwitchAcceptDialog}
+        handleAccept={handleSetActiveAcceptDialog}
+        warning
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       />
 
-      {discountModalOpen ? (
-        <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
-      ) : null}
-      {/* <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} /> */}
+      <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
     </React.Fragment>
   );
 }

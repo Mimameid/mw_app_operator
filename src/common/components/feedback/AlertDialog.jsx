@@ -1,8 +1,28 @@
 import React from 'react';
 
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  LinearProgress,
+} from '@mui/material';
 
-function CustomDialog({ open, title, message, acceptText, rejectText, handleReject, handleAccept }) {
+function AlertDialog({
+  open,
+  title,
+  message,
+  acceptText,
+  rejectText,
+  handleReject,
+  handleAccept,
+  loading,
+  warning,
+  disabled,
+  ...props
+}) {
   return (
     <Dialog
       PaperProps={{
@@ -13,6 +33,7 @@ function CustomDialog({ open, title, message, acceptText, rejectText, handleReje
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       maxWidth="xs"
+      {...props}
     >
       <DialogTitle
         sx={{
@@ -26,6 +47,18 @@ function CustomDialog({ open, title, message, acceptText, rejectText, handleReje
         {title}
       </DialogTitle>
       <DialogContent dividers>
+        {loading ? (
+          <LinearProgress
+            sx={{
+              position: 'absolute',
+              width: '100%',
+
+              top: 0,
+              left: 0,
+              right: 0,
+            }}
+          />
+        ) : null}
         <DialogContentText sx={{ textAlign: 'center' }} id="alert-dialog-description">
           {message}
         </DialogContentText>
@@ -34,7 +67,12 @@ function CustomDialog({ open, title, message, acceptText, rejectText, handleReje
         <Button color="inherit" onClick={handleReject} autoFocus>
           {rejectText ? rejectText : 'Abbrechen'}
         </Button>
-        <Button onClick={handleAccept} color="primary" variant="contained">
+        <Button
+          onClick={loading ? null : handleAccept}
+          color={warning ? 'error' : 'primary'}
+          variant="contained"
+          disabled={disabled}
+        >
           {acceptText ? acceptText : 'Ja, weiter'}
         </Button>
       </DialogActions>
@@ -42,4 +80,4 @@ function CustomDialog({ open, title, message, acceptText, rejectText, handleReje
   );
 }
 
-export default CustomDialog;
+export default React.memo(AlertDialog);

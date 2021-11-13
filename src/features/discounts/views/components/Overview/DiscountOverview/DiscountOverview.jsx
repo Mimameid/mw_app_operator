@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDiscounts } from 'features/discounts/discounts/actions';
-import { nanoid } from 'common/constants';
 
 import { Grid, List, ListSubheader, Divider, Box } from '@mui/material';
 import DiscountOverviewItem from './DiscountOverviewItem';
+import DeleteDiscount from 'features/discounts/discounts/components/DeleteDiscount';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 import Spinner from 'common/components/feedback/Spinner';
@@ -18,6 +18,7 @@ function DiscountOverview() {
   });
   const selectedDiscountId = useSelector((state) => state.discounts.views.itemId);
 
+  const [triggerDelete, setTriggerDelete] = useState(false);
   const [dataLoaded, setDataLoaded] = useState(false);
 
   useEffect(() => {
@@ -60,8 +61,12 @@ function DiscountOverview() {
             <EmptyView>Keine Rabattaktion verfügbar...</EmptyView>
           ) : (
             discountsArray.map((discount, index) => (
-              <React.Fragment key={nanoid()}>
-                <DiscountOverviewItem discount={discount} selected={discount.id === selectedDiscountId} />
+              <React.Fragment key={discount.id}>
+                <DiscountOverviewItem
+                  discount={discount}
+                  setTriggerDelete={setTriggerDelete}
+                  selected={discount.id === selectedDiscountId}
+                />
                 {discountsArray.length >= 5 && index === discountsArray.length - 1 ? null : <Divider />}
               </React.Fragment>
             ))
@@ -70,6 +75,7 @@ function DiscountOverview() {
           <Spinner />
         )}
       </Box>
+      <DeleteDiscount trigger={triggerDelete} setTrigger={setTriggerDelete} discountId={selectedDiscountId} />
     </List>
   );
 }

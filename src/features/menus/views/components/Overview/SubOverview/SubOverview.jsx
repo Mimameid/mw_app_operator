@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { Box, Divider, Grid, List, ListSubheader } from '@mui/material';
 import SubOverviewItem from './SubOverviewItem';
+import DeleteSub from 'features/menus/subs/components/DeleteSub';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import EmptyView from '../../ItemView/EmptyView';
 
@@ -13,6 +14,7 @@ function SubOverview() {
     return subsArray;
   });
   const selectedSubId = useSelector((state) => state.menus.views.itemId);
+  const [triggerDelete, setTriggerDelete] = useState(false);
 
   return (
     <List sx={{ p: 0 }}>
@@ -45,12 +47,13 @@ function SubOverview() {
         ) : (
           subsArray.map((sub, index) => (
             <React.Fragment key={sub.id}>
-              <SubOverviewItem sub={sub} selected={sub.id === selectedSubId} />
+              <SubOverviewItem sub={sub} setTriggerDelete={setTriggerDelete} selected={sub.id === selectedSubId} />
               {subsArray.length >= 5 && index === subsArray.length - 1 ? null : <Divider />}
             </React.Fragment>
           ))
         )}
       </Box>
+      <DeleteSub trigger={triggerDelete} setTrigger={setTriggerDelete} subId={selectedSubId} />
     </List>
   );
 }

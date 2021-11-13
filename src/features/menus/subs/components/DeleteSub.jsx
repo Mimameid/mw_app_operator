@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedChoices } from 'features/menus/choices/slice';
 import { deleteSub } from '../actions';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function DeleteSub({ trigger, setTrigger, subId }) {
   const dispatch = useDispatch();
   const selectAffectedChoices = useMemo(makeSelectAffectedChoices, []);
   let affectedChoices = useSelector((state) => selectAffectedChoices(state, subId));
 
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -23,8 +24,9 @@ function DeleteSub({ trigger, setTrigger, subId }) {
     setTrigger(false);
   };
 
-  const handleAcceptDialog = (event) => {
-    dispatch(deleteSub(subId));
+  const handleAcceptDialog = async (event) => {
+    setLoading(true);
+    await dispatch(deleteSub(subId));
     setDialogOpen(false);
     setTrigger(false);
   };
@@ -32,7 +34,7 @@ function DeleteSub({ trigger, setTrigger, subId }) {
   affectedChoices = affectedChoices.map((item, _) => item[1]);
   return (
     <React.Fragment>
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Option löschen?"
         message={
@@ -45,6 +47,13 @@ function DeleteSub({ trigger, setTrigger, subId }) {
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         disabled={affectedChoices.length > 0}
+        loading={loading}
+        warning
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       />
     </React.Fragment>
   );

@@ -1,4 +1,4 @@
-import { createSelector, createReducer, isAnyOf } from '@reduxjs/toolkit';
+import { createSelector, createReducer } from '@reduxjs/toolkit';
 import { setActive } from 'features/menus/menus/actions';
 import { fetchShop, updateShop } from 'features/shop/shop/actions';
 import { setDrawerOpen } from './actions';

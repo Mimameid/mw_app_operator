@@ -5,9 +5,9 @@ import { Box, ClickAwayListener, Collapse, Paper, TextField, useTheme } from '@m
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRange } from 'react-date-range';
-import FormCheckboxField from 'common/components/form/common/FormCheckboxField';
+import FormCheckboxField from 'common/components/form/FormCheckboxField';
 
-function FormDateRange({ control, isRepeating, setValue }) {
+function FormDateRange({ control, label, isRepeating, setValue }) {
   const theme = useTheme();
 
   const {
@@ -53,7 +53,7 @@ function FormDateRange({ control, isRepeating, setValue }) {
       <Box display="flex" flexDirection="column" p={2} justifyContent="space-between">
         <Box display="flex" justifyContent="space-between">
           <Box display="flex" alignItems="center" fontWeight={600}>
-            Zeitraum
+            {label}
           </Box>
           <Box display="flex" mr={-2}>
             <FormCheckboxField name="isRepeating" label="Wiederkehrend" control={control} size="small" />

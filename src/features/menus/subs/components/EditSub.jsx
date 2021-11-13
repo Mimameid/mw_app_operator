@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeSelectAffectedChoices } from 'features/menus/choices/slice';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import SubModal from './SubModal';
 
 function EditSub({ open, onClose, sub }) {
@@ -42,7 +42,7 @@ function EditSub({ open, onClose, sub }) {
         }}
         sub={sub}
       />
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Option bearbeiten?"
         message={
@@ -52,6 +52,7 @@ function EditSub({ open, onClose, sub }) {
         }
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
+        warning
       />
     </React.Fragment>
   );

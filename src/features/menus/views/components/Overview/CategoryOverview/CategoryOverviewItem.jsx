@@ -5,14 +5,12 @@ import { selectItem } from 'features/menus/views/slice';
 import { Box, Grid, IconButton, ListItem } from '@mui/material';
 import GridItem from 'common/components/dataDisplay/GridItem';
 import EditCategory from 'features/menus/categories/components/EditCategory';
-import DeleteCategory from 'features/menus/categories/components/DeleteCategory';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
-function CategoryOverviewItem({ category, selected }) {
+function CategoryOverviewItem({ category, setTriggerDelete, selected }) {
   const dispatch = useDispatch();
 
   const [editCategoryOpen, setEditCategoryOpen] = useState(false);
-  const [triggerDelete, setTriggerDelete] = useState(false);
 
   function handleEditCategory(event) {
     setEditCategoryOpen(true);
@@ -20,10 +18,6 @@ function CategoryOverviewItem({ category, selected }) {
 
   function handleSelectCategory(event) {
     dispatch(selectItem(category.id));
-  }
-
-  function handleDeleteCategory(event) {
-    setTriggerDelete(true);
   }
 
   return (
@@ -58,7 +52,7 @@ function CategoryOverviewItem({ category, selected }) {
             <IconButton aria-label="edit" size="small" onClick={handleEditCategory}>
               <Edit fontSize="small" />
             </IconButton>
-            <IconButton aria-label="edit" size="small" onClick={handleDeleteCategory}>
+            <IconButton aria-label="edit" size="small" onClick={() => setTriggerDelete(true)}>
               <DeleteForever fontSize="small" color="error" />
             </IconButton>
           </Box>
@@ -66,9 +60,8 @@ function CategoryOverviewItem({ category, selected }) {
       </ListItem>
 
       <EditCategory open={editCategoryOpen} onClose={() => setEditCategoryOpen(false)} category={category} />
-      <DeleteCategory trigger={triggerDelete} setTrigger={setTriggerDelete} categoryId={category.id} />
     </React.Fragment>
   );
 }
 
-export default CategoryOverviewItem;
+export default React.memo(CategoryOverviewItem);

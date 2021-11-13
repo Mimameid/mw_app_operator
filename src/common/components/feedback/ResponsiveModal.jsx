@@ -33,6 +33,7 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
       {...props}
     >
       <DialogTitle>
+        {' '}
         {typeof header === 'string' ? (
           <Box fontSize={'h5.fontSize'} color="primary.main">
             {header}
@@ -41,7 +42,6 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
           header
         )}
       </DialogTitle>
-
       <DialogContent>
         <div style={{ paddingBottom: '1px' }}>{children}</div>
       </DialogContent>
@@ -53,7 +53,7 @@ function ResponsiveModal({ open, header, acceptLabel, onCancel, onAccept, childr
             </Button>
           </Grid>
           <Grid item>
-            <Button color="primary" variant="contained" onClick={loading ? null : onAccept}>
+            <Button color="primary" variant="contained" onClick={loading ? null : onAccept} disabled={disabled}>
               {acceptLabel ? acceptLabel : 'Weiter'}
             </Button>
           </Grid>

@@ -63,7 +63,7 @@ function Discount() {
                     Typ
                   </Box>
                   <Box display="flex">
-                    <Box>{getDiscountTypeName(discount.scope.type)}rabatt</Box>
+                    <Box>{getDiscountTypeName(discount.scope.itemType)}rabatt</Box>
                   </Box>
                 </Grid>
                 <Grid sx={{ pb: { xs: 2, md: 0 } }} item xs={12} md={4}>
@@ -172,9 +172,8 @@ function Discount() {
               </Grid>
             </Grid>
           </Box>
-          {discountModalOpen ? (
-            <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
-          ) : null}
+
+          <DiscountModal open={discountModalOpen} onClose={() => setDiscountModalOpen(false)} discount={discount} />
         </React.Fragment>
       ) : null}
     </Paper>

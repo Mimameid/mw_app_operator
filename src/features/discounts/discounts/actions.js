@@ -25,7 +25,9 @@ export const createDiscount = createAsyncThunk('discounts/createDiscount', async
 });
 
 export const updateDiscount = createAsyncThunk('discounts/updateDiscount', async (data, thunkAPI) => {
-  const fetchParams = createFetchParams('owner/discounts/discounts', 'PUT', data);
+  let { updated, created, ...discount } = data;
+
+  const fetchParams = createFetchParams('owner/discounts/discounts', 'PUT', discount);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 
   if (response.ok) {

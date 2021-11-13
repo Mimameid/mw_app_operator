@@ -4,16 +4,20 @@ import { deactivateArea, fetchAreas, updateAreas } from 'features/deliveryAreas/
 import { reset } from 'features/mode/actions';
 import useOnBeforeUnload from 'common/hooks/useOnBeforeUnload';
 
-import { Box, Button, Toolbar } from '@mui/material';
+import { Box, Button, Paper, Toolbar } from '@mui/material';
 import LeafletMap from 'features/deliveryAreas/areas/components/LeafletMap';
 import LoadingScreen from './LoadingScreen';
 import ContentHeader from 'common/components/dataDisplay/ContentHeader';
-import CustomDialog from 'common/components/feedback/CustomDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import { CloudUpload } from '@mui/icons-material';
 
 function DeliveryAreas({ name }) {
   const dispatch = useDispatch();
-  const areas = useSelector((state) => state.deliveryAreas.areas);
+  const { areas, changed } = useSelector((state) => ({
+    areas: state.deliveryAreas.areas,
+    changed: state.mode.changed,
+  }));
+
   useOnBeforeUnload();
 
   const [dataLoaded, setDataLoaded] = useState(false);
@@ -42,7 +46,6 @@ function DeliveryAreas({ name }) {
     setSaving(true);
 
     await dispatch(updateAreas(areas));
-    setSaving(false);
   };
 
   return dataLoaded ? (
@@ -68,24 +71,38 @@ function DeliveryAreas({ name }) {
                 mb: 3,
                 textTransform: 'none',
               }}
-              onClick={saving ? null : () => setDialogOpen(true)}
+              onClick={() => {
+                if (changed) {
+                  setDialogOpen(true);
+                }
+              }}
               variant="contained"
               color="primary"
               startIcon={<CloudUpload />}
+              disabled={!changed}
             >
               Speichern
             </Button>
           </Box>
         </Box>
-
-        <LeafletMap />
+        <Box sx={{ flexGrow: 1 }}>
+          <Paper sx={{ width: '100%', height: '100%', overflow: 'hidden', position: 'relative' }} elevation={2}>
+            <LeafletMap />
+          </Paper>
+        </Box>
       </Box>
-      <CustomDialog
+      <AlertDialog
         open={dialogOpen}
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         title="Änderungen speichern?"
         message="Sind Sie sicher, dass Sie Ihre Änderungen speichern wollen?"
+        loading={saving}
+        TransitionProps={{
+          onExited: () => {
+            setSaving(false);
+          },
+        }}
       />
     </Box>
   ) : (

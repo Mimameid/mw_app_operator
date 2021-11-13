@@ -17,11 +17,10 @@ import {
   Typography,
   useMediaQuery,
   useTheme,
-  Button,
-  LinearProgress,
 } from '@mui/material';
+import LoadingButton from 'common/components/inputs/LoadingButton';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import FormTextField from 'common/components/form/common/FormTextField';
+import FormTextField from 'common/components/form/FormTextField';
 
 const schema = yup.object({
   email: yup.string('Geben Sie Ihren Benutzernamen ein').required('Benutzername ist erforderlich'),
@@ -47,8 +46,8 @@ function Login({ loggedIn }) {
 
   const submit = async (data) => {
     setLoading(true);
-    await dispatch(login(data));
 
+    await dispatch(login(data));
     setLoading(false);
   };
 
@@ -59,16 +58,6 @@ function Login({ loggedIn }) {
   return (
     <React.Fragment>
       <Dialog open={true} hideBackdrop={true} fullScreen={small} scroll="body">
-        {loading ? (
-          <LinearProgress
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-            }}
-          />
-        ) : null}
         <Box sx={{ p: 6 }}>
           <Box sx={{ mb: 6 }}>
             <Typography sx={{ mb: 1 }} variant="h4">
@@ -108,7 +97,7 @@ function Login({ loggedIn }) {
                 />
               </Grid>
               <Grid item>
-                <Button
+                <LoadingButton
                   sx={{
                     height: '46px',
                     mt: 2,
@@ -119,9 +108,10 @@ function Login({ loggedIn }) {
                   variant="contained"
                   type="submit"
                   fullWidth
+                  loading={loading}
                 >
                   Log in
-                </Button>
+                </LoadingButton>
               </Grid>
               <Grid item>
                 <Alert sx={{ mt: 1 }} severity="info">

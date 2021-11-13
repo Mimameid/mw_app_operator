@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeSelectAffectedDishes } from 'features/menus/dishes/slice';
 import { deleteChoice } from '../actions';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function DeleteChoice({ trigger, setTrigger, choiceId }) {
   const dispatch = useDispatch();
   const selectAffectedDishes = useMemo(makeSelectAffectedDishes, []);
   let affectedDishes = useSelector((state) => selectAffectedDishes(state, choiceId));
 
+  const [loading, setLoading] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -23,8 +24,9 @@ function DeleteChoice({ trigger, setTrigger, choiceId }) {
     setTrigger(false);
   };
 
-  const handleAcceptDialog = (event) => {
-    dispatch(deleteChoice(choiceId));
+  const handleAcceptDialog = async (event) => {
+    setLoading(true);
+    await dispatch(deleteChoice(choiceId));
     setDialogOpen(false);
     setTrigger(false);
   };
@@ -32,7 +34,7 @@ function DeleteChoice({ trigger, setTrigger, choiceId }) {
   affectedDishes = affectedDishes.map((item, _) => item[1]);
   return (
     <React.Fragment>
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Optiongruppe löschen?"
         message={
@@ -45,6 +47,13 @@ function DeleteChoice({ trigger, setTrigger, choiceId }) {
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
         disabled={affectedDishes.length > 0}
+        loading={loading}
+        warning
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
       />
     </React.Fragment>
   );

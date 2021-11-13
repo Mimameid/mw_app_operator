@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeSelectAffectedDishes } from 'features/menus/dishes/slice';
 
-import WarningDialog from 'common/components/feedback/WarningDialog';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import ChoiceModal from './ChoiceModal';
 
 function EditChoice({ open, onClose, choice }) {
@@ -42,7 +42,7 @@ function EditChoice({ open, onClose, choice }) {
         }}
         choice={choice}
       />
-      <WarningDialog
+      <AlertDialog
         open={dialogOpen}
         title="Optiongruppe bearbeiten?"
         message={
@@ -52,6 +52,7 @@ function EditChoice({ open, onClose, choice }) {
         }
         handleReject={handleRejectDialog}
         handleAccept={handleAcceptDialog}
+        warning
       />
     </React.Fragment>
   );

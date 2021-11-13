@@ -1,4 +1,4 @@
-import { createSelector, createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { authenticate, login } from './actions';
 import { createShop, fetchShop } from 'features/shop/shop/actions';
 

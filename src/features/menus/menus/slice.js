@@ -24,11 +24,11 @@ const slice = createSlice({
         state.byId[action.payload.id] = action.payload;
       })
       .addCase(setActive.fulfilled, (state, action) => {
-        const menu = state.byId[action.payload.menuId];
-        menu.isActive = action.payload.isActive;
-
         const activeMenu = state.byId[action.payload.activeMenuId];
         if (activeMenu) activeMenu.isActive = false;
+
+        const menu = state.byId[action.payload.menuId];
+        menu.isActive = action.payload.isActive;
       })
       .addCase(updateMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
