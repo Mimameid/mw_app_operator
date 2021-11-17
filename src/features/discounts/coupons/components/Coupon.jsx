@@ -161,7 +161,7 @@ function Coupon() {
                 </ListSubheader>
                 <Box sx={{ overflow: 'auto', height: '221px' }}>
                   {visibleCodes.map((code, index) => (
-                    <React.Fragment key={nanoid()}>
+                    <React.Fragment key={code.id}>
                       <ListItem
                         sx={{
                           borderBottomWidth: '1px',
@@ -177,7 +177,7 @@ function Coupon() {
                             {code.code}
                           </GridHeaderItem>
                           <GridHeaderItem item xs={3}>
-                            {coupon.isExpired ? (
+                            {coupon.date.endDate < new Date().setHours(0, 0, 0, 0) ? (
                               <Box color="error.main">Abgelaufen</Box>
                             ) : code.isValid ? (
                               <Box color="success.main">Gültig</Box>

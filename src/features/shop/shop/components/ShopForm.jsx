@@ -5,7 +5,6 @@ import useDetectFormChange from 'common/hooks/useDetectFormChange';
 import { useFormContext } from 'react-hook-form';
 
 import { Box, Grid } from '@mui/material';
-import Autocomplete from 'features/shop/location/components/Autocomplete';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
 import FormSwitch from 'common/components/form/FormSwitch';
 import FormMultiSelect from 'common/components/form/FormMultiSelectChip';
@@ -39,18 +38,54 @@ function ShopForm() {
           </Grid>
           <Grid container item spacing={4} justifyContent="space-around">
             <Grid item xs={12} sm={6}>
-              <Autocomplete name="location" label="Addresse*" control={control} variant="outlined" fullWidth />
+              <FormTextField
+                name="location.postCode"
+                label="Postleitzahl*"
+                control={control}
+                variant="outlined"
+                fullWidth
+              />
             </Grid>
-
             <Grid item xs={12} sm={6}>
-              <FormTextField name="phoneNumber" label="Telefonnummer*" control={control} variant="outlined" fullWidth />
+              <FormTextField name="location.city" label="Ort*" control={control} variant="outlined" fullWidth />
             </Grid>
           </Grid>
           <Grid container item spacing={4} justifyContent="space-around">
             <Grid item xs={12} sm={6}>
+              <FormTextField name="location.street" label="Straße*" control={control} variant="outlined" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormTextField
+                name="location.streetNumber"
+                label="Hausnummer*"
+                control={control}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+          </Grid>
+
+          <Grid container item spacing={4} justifyContent="space-around">
+            <Grid item xs={12} sm={6}>
+              <FormTextField name="phoneNumber" label="Telefonnummer*" control={control} variant="outlined" fullWidth />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
+            </Grid>
+          </Grid>
+
+          <Grid container item spacing={4} justifyContent="space-around">
+            <Grid item xs={12} sm={6}>
               <Grid container spacing={4}>
                 <Grid item xs={12}>
-                  <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
+                  <FormMultiSelect
+                    name="serviceTypes"
+                    label="Servicearten*"
+                    items={SERVICE_TYPES}
+                    control={control}
+                    variant="outlined"
+                    fullWidth
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <FormMultiSelect
@@ -66,6 +101,12 @@ function ShopForm() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormTextField
+                sx={{ height: '100%' }}
+                InputProps={{
+                  sx: {
+                    height: '100%',
+                  },
+                }}
                 name="descLong"
                 label="Beschreibung*"
                 placeholder="Beschreiben Sie ihr Shop etwas ausführlicher..."

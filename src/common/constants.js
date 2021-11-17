@@ -82,8 +82,8 @@ export const markerIcon = L.icon({
 export const shopIcon = L.icon({
   iconUrl: shopSVG,
   iconSize: [36, 36],
-  iconAnchor: [20, 32],
-  popupAnchor: [-2, -14],
+  iconAnchor: [16, 32],
+  popupAnchor: [2.5, -15],
 });
 
 export const STATUS_CODE = {

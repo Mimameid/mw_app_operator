@@ -11,7 +11,6 @@ import * as yup from 'yup';
 import { Alert, Dialog, Stack, useMediaQuery, useTheme, Box, Typography } from '@mui/material';
 import FormTextField from 'common/components/form/FormTextField';
 import LoadingButton from 'common/components/inputs/LoadingButton';
-import Autocomplete from 'features/shop/location/components/Autocomplete';
 import FormMultiSelect from 'common/components/form/FormMultiSelectChip';
 import FormSwitch from 'common/components/form/FormSwitch';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
@@ -31,7 +30,18 @@ const schema = yup.object({
     .max(1024, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
   location: yup.object({
-    address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
+    postCode: yup
+      .string('Geben Sie eine Postleitzahl ein.')
+      .matches(/\d/i, { message: 'Das Format ist fehlerhaft.' })
+      .min(5, 'Das Format ist fehlerhaft.')
+      .max(5, 'Das Format ist fehlerhaft.')
+      .required('Postleitzahl ist erforderlich'),
+    city: yup.string('Geben Sie den Ort ein.').required('Adresse ist erforderlich'),
+    street: yup.string('Geben Sie den Straßennamen ein.').required('Straße ist erforderlich'),
+    streetNumber: yup
+      .number('Geben Sie die Hausnummer ein.')
+      .typeError('Die Hausnummer muss eine Zahl sein.')
+      .required('Hausnummer erforderlich'),
   }),
   phoneNumber: yup
     .string('Geben Sie eine Telefonnumer ein.')
@@ -120,9 +130,35 @@ function SignUp({ shopRegistered }) {
                     fullWidth
                   />
                 </Box>
-
                 <Box>
-                  <Autocomplete name="location" label="Addresse*" control={control} variant="outlined" fullWidth />
+                  <FormTextField
+                    name="location.postCode"
+                    label="Postleitzahl*"
+                    control={control}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Box>
+                <Box>
+                  <FormTextField name="location.city" label="Ort*" control={control} variant="outlined" fullWidth />
+                </Box>
+                <Box>
+                  <FormTextField
+                    name="location.street"
+                    label="Straße*"
+                    control={control}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Box>
+                <Box>
+                  <FormTextField
+                    name="location.streetNumber"
+                    label="Hausnummer*"
+                    control={control}
+                    variant="outlined"
+                    fullWidth
+                  />
                 </Box>
 
                 <Box>

@@ -1,6 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { createShop, fetchShop, saveOpeningHours, updateShop } from './actions';
-import { queryPlace } from '../location/actions';
 
 const initialState = {
   name: '',
@@ -22,7 +21,7 @@ const initialState = {
     saturday: [],
     sunday: [],
   },
-  location: { address: '', coords: {} },
+  location: { postCode: '', city: '', street: '', streetNumber: '' },
   // logo: '',
 };
 
@@ -40,10 +39,6 @@ const shopReducer = createReducer(initialState, (builder) => {
     })
     .addCase(createShop.fulfilled, (state, action) => {
       return { ...state, ...action.payload.data };
-    })
-    .addCase(queryPlace.fulfilled, (state, action) => {
-      state.location.address = action.payload.address;
-      state.location.coords = action.payload.coords;
     });
 });
 

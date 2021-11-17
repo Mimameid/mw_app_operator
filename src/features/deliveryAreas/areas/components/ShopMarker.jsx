@@ -4,10 +4,10 @@ import { Box } from '@mui/material';
 import { Marker, Popup } from 'react-leaflet';
 import { shopIcon } from 'common/constants';
 
-function ShopMarker({ draw, shop }) {
-  const [street, city] = shop.location.address.split(',');
+function ShopMarker({ draw, shop, shopLocation }) {
+  const { street, streetNumber, postCode, city } = shop.location;
   return (
-    <Marker pane="markerPane" position={shop.location.coords} icon={shopIcon}>
+    <Marker pane="markerPane" position={shopLocation} icon={shopIcon}>
       {!draw ? (
         <Popup>
           <Box p={0.5}>
@@ -15,10 +15,10 @@ function ShopMarker({ draw, shop }) {
               {shop.name}
             </Box>
             <Box fontSize="subtitle2.fontSize" pb={0.1}>
-              {street}
+              {street} {streetNumber}
             </Box>
             <Box fontSize="subtitle2.fontSize" pb={0.1}>
-              {city.trim()}
+              {postCode} {city}
             </Box>
           </Box>
         </Popup>

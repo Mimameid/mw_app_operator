@@ -16,13 +16,11 @@ export const fetchShop = createAsyncThunk('shop/shop/fetchShop', async (thunkAPI
 });
 
 export const updateShop = createAsyncThunk('shop/shop/updateShop', async (data, thunkAPI) => {
-  delete data.address;
   delete data.shopId;
-  data.location = thunkAPI.getState().shop.shop.location;
   data.openingHours = JSON.parse(JSON.stringify(data.openingHours));
-
   const fetchParams = createFetchParams('owner/shop/', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
+
   if (response.ok) {
     return Promise.resolve({ data, message: 'Daten erfolgreich aktualisiert.' });
   } else {
@@ -32,7 +30,6 @@ export const updateShop = createAsyncThunk('shop/shop/updateShop', async (data, 
 
 export const createShop = createAsyncThunk('owner/shop/createShop', async (data, thunkAPI) => {
   data.openingHours = JSON.parse(JSON.stringify(data.openingHours));
-
   const fetchParams = createFetchParams('owner/shop/create', 'POST', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 

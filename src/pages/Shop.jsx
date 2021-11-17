@@ -31,7 +31,18 @@ const schema = yup.object({
     .max(1024, 'Beschreibung zu lang.')
     .required('Beschreibung ist erforderlich'),
   location: yup.object({
-    address: yup.string('Geben Sie eine korrekte Adresse ein.').required('Adresse ist erforderlich'),
+    postCode: yup
+      .string('Geben Sie eine Postleitzahl ein.')
+      .matches(/\d/i, { message: 'Das Format ist fehlerhaft.' })
+      .min(5, 'Das Format ist fehlerhaft.')
+      .max(5, 'Das Format ist fehlerhaft.')
+      .required('Postleitzahl ist erforderlich'),
+    city: yup.string('Geben Sie den Ort ein.').required('Adresse ist erforderlich'),
+    street: yup.string('Geben Sie den Straßennamen ein.').required('Straße ist erforderlich'),
+    streetNumber: yup
+      .number('Geben Sie die Hausnummer ein.')
+      .typeError('Die Hausnummer muss eine Zahl sein.')
+      .required('Hausnummer erforderlich'),
   }),
   phoneNumber: yup
     .string('Geben Sie eine Telefonnumer ein.')
