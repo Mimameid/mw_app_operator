@@ -80,7 +80,7 @@ function SubModal({ open, onClose, sub }) {
           <FormTextField name="name" label="Name*" control={control} fullWidth />
         </Grid>
         <Grid item>
-          <FormPriceField name="price" label="Preis*" control={control} fullWidth />
+          <FormPriceField name="price" label="Aufpreis*" control={control} fullWidth />
         </Grid>
         <Grid item>
           <FormMultiSelectGroup

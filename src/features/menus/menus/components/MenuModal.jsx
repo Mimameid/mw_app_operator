@@ -57,7 +57,7 @@ function MenuModal({ open, onClose, menu }) {
   return (
     <ResponsiveModal
       open={open}
-      header={menu ? 'Menü bearbeiten' : 'Menü erstellen'}
+      header={menu ? 'Speisekarte bearbeiten' : 'Speisekarte erstellen'}
       acceptLabel={'Speichern'}
       onCancel={onClose}
       onAccept={handleSubmit(onSubmit)}

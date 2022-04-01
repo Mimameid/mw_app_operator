@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { mapboxClient } from 'common/constants';
 
 import { MapContainer, TileLayer } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanel';
 import AreaLayer from './AreaLayer/AreaLayer';
 import ShopMarker from './ShopMarker';
-
-const mapboxClient = window.mapboxSdk({
-  accessToken: 'pk.eyJ1IjoicGlja3N0b3AiLCJhIjoiY2t3MjVtb2ZlMTBrMDJucm8waGlpazcxeSJ9.bvKJy-aGMsvkhd6E7WA7Pw',
-});
 
 function LeafletMap() {
   const { draw, shop } = useSelector((state) => ({
@@ -40,7 +37,6 @@ function LeafletMap() {
       })
       .send();
     response.then((data) => {
-      console.log(data);
       setShopLocation([data.body.features[0].center[1], data.body.features[0].center[0]]);
     });
   }, [shop]);

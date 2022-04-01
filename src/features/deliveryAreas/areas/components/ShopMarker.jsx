@@ -5,7 +5,7 @@ import { Marker, Popup } from 'react-leaflet';
 import { shopIcon } from 'common/constants';
 
 function ShopMarker({ draw, shop, shopLocation }) {
-  const { street, streetNumber, postCode, city } = shop.location;
+  const { street, number, postCode, city } = shop.location;
   return (
     <Marker pane="markerPane" position={shopLocation} icon={shopIcon}>
       {!draw ? (
@@ -15,7 +15,7 @@ function ShopMarker({ draw, shop, shopLocation }) {
               {shop.name}
             </Box>
             <Box fontSize="subtitle2.fontSize" pb={0.1}>
-              {street} {streetNumber}
+              {street} {number}
             </Box>
             <Box fontSize="subtitle2.fontSize" pb={0.1}>
               {postCode} {city}

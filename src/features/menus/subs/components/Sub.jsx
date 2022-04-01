@@ -41,7 +41,7 @@ function Sub({ subId, choice }) {
 
       <Grid item style={{ marginLeft: 'auto' }}>
         <Box color="primary.main" fontWeight="fontWeightBold">
-          {sub.price.toFixed(2)}€
+          +{sub.price.toFixed(2)}€
         </Box>
       </Grid>
       <EditSub open={editSubOpen} onClose={() => setEditSubOpen(false)} sub={sub} />

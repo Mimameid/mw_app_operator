@@ -68,7 +68,7 @@ function Menu({ name }) {
       <Toolbar />
 
       <Box display="flex" justifyContent="space-between">
-        <ContentHeader name={name} info="Erstellen Sie Ihre Menüs." />
+        <ContentHeader name={name} info="Erstellen Sie Ihre Speisekarten." />
         <Box alignSelf="flex-end">
           <Button
             sx={{

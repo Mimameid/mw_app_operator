@@ -39,7 +39,7 @@ function DeleteCategory({ trigger, setTrigger, categoryId }) {
         title="Kategorie löschen?"
         message={
           affectedMenus.length > 0
-            ? 'Entferne Sie die Kategorie aus sämtlichen Menüs, um sie löschen zu können. Betroffene Menüs: ' +
+            ? 'Entferne Sie die Kategorie aus sämtlichen Speisekarten, um sie löschen zu können. Betroffene Speisekarten: ' +
               affectedMenus.toString() +
               '.'
             : 'Sind Sie sicher, dass Sie die Kategorie löschen wollen?'

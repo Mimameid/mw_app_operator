@@ -16,14 +16,14 @@ export const weekdays = {
   sunday: 'Sonntag',
 };
 
-export const dayBeforeMap = {
-  monday: 'sunday',
-  tuesday: 'monday',
-  wednesday: 'tuesday',
-  thursday: 'wednesday',
-  friday: 'thursday',
-  saturday: 'friday',
-  sunday: 'saturday',
+export const dayAfterMap = {
+  monday: 'tuesday',
+  tuesday: 'wednesday',
+  wednesday: 'thursday',
+  thursday: 'friday',
+  friday: 'saturday',
+  saturday: 'sunday',
+  sunday: 'monday',
 };
 
 export const discountTypes = {
@@ -35,7 +35,7 @@ export const discountTypes = {
 export const getDiscountTypeName = (type) => {
   switch (type) {
     case discountTypes.menu:
-      return 'Menüs';
+      return 'Speisekarten';
     case discountTypes.category:
       return 'Kategorien';
     case discountTypes.dish:
@@ -71,8 +71,6 @@ export const CUISINE_TYPES = [
 
 export const CUISINE_LABELS = ['Vegetarisch', 'Vegan', 'Halal', 'Glutenfrei'];
 
-export const SERVICE_TYPES = ['Lieferung', 'Abholung', 'Lokal'];
-
 export const markerIcon = L.icon({
   iconUrl: markerSVG,
 
@@ -94,3 +92,7 @@ export const STATUS_CODE = {
   WARNING: 4,
   ERROR: 5,
 };
+
+export const mapboxClient = window.mapboxSdk({
+  accessToken: process.env.REACT_APP_MAPBOX_API_KEY,
+});

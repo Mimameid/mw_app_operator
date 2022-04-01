@@ -10,7 +10,7 @@ import DishOverview from './DishOverview/DishOverview';
 import ChoiceOverview from './ChoiceOverview/ChoiceOverview';
 import SubOverview from './SubOverview/SubOverview';
 
-const tabNames = ['Menüs', 'Kategorien', 'Speisen', 'Optiongruppe', 'Optionen'];
+const tabNames = ['Speisekarten', 'Kategorien', 'Speisen', 'Optiongruppe', 'Optionen'];
 function Overview() {
   const dispatch = useDispatch();
   const group = useSelector((state) => state.menus.views.group);

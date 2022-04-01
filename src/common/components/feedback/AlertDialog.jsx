@@ -59,22 +59,31 @@ function AlertDialog({
             }}
           />
         ) : null}
-        <DialogContentText sx={{ textAlign: 'center' }} id="alert-dialog-description">
-          {message}
-        </DialogContentText>
+        {typeof message === 'string' ? (
+          <DialogContentText sx={{ textAlign: 'center' }} id="alert-dialog-description">
+            {message}
+          </DialogContentText>
+        ) : (
+          message
+        )}
       </DialogContent>
       <DialogActions sx={{ mt: 2 }}>
-        <Button color="inherit" onClick={handleReject} autoFocus>
-          {rejectText ? rejectText : 'Abbrechen'}
-        </Button>
-        <Button
-          onClick={loading ? null : handleAccept}
-          color={warning ? 'error' : 'primary'}
-          variant="contained"
-          disabled={disabled}
-        >
-          {acceptText ? acceptText : 'Ja, weiter'}
-        </Button>
+        {handleReject ? (
+          <Button color="inherit" onClick={handleReject} autoFocus>
+            {rejectText ? rejectText : 'Abbrechen'}
+          </Button>
+        ) : null}
+
+        {handleAccept ? (
+          <Button
+            onClick={loading ? null : handleAccept}
+            color={warning ? 'error' : 'primary'}
+            variant="contained"
+            disabled={disabled}
+          >
+            {acceptText ? acceptText : 'Ja, weiter'}
+          </Button>
+        ) : null}
       </DialogActions>
     </Dialog>
   );

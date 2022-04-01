@@ -9,7 +9,10 @@ function DishChoices({ dish }) {
     <Grid container spacing={2}>
       {choiceIds.map((choiceId, index) => (
         <Grid item xs={6} key={choiceId}>
-          <Paper variant="outlined" square>
+          <Paper
+            sx={{ borderStyle: 'solid', borderWidth: '1px', borderColor: 'grey.300', borderRadius: '0 0 16px 16px' }}
+            square
+          >
             <Choice choiceId={choiceId} dish={dish} />
           </Paper>
         </Grid>

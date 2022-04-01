@@ -1,6 +1,14 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import { fetchShop } from 'features/shop/shop/actions';
-import { fetchAllMenus, createMenu, updateMenu, deleteMenu, setCategories, removeCategory, setActive } from './actions';
+import {
+  fetchAllMenus,
+  createMenu,
+  updateMenu,
+  deleteMenu,
+  setCategories,
+  removeCategory,
+  activateMenu,
+} from './actions';
 import { createCategory, updateCategory } from '../categories/actions';
 
 // reducer
@@ -23,12 +31,15 @@ const slice = createSlice({
       .addCase(createMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
       })
-      .addCase(setActive.fulfilled, (state, action) => {
-        const activeMenu = state.byId[action.payload.activeMenuId];
-        if (activeMenu) activeMenu.isActive = false;
+      .addCase(activateMenu.fulfilled, (state, action) => {
+        for (const menu of Object.values(state.byId)) {
+          if (menu.isActive) {
+            menu.isActive = false;
+          }
+        }
 
         const menu = state.byId[action.payload.menuId];
-        menu.isActive = action.payload.isActive;
+        menu.isActive = true;
       })
       .addCase(updateMenu.fulfilled, (state, action) => {
         state.byId[action.payload.id] = action.payload;
@@ -103,6 +114,20 @@ export const selectActiveMenu = createSelector(
   (byId) => {
     const menusArray = Object.values(byId);
     return menusArray.find((menu) => menu.isActive === true);
+  },
+);
+
+export const selectHasDishes = createSelector(
+  (state) => state.menus.categories.byId,
+  (_, menu) => menu,
+  (categories, menu) => {
+    for (const categoryId of menu.categories) {
+      if (categories[categoryId].dishes.length) {
+        return true;
+      }
+    }
+
+    return false;
   },
 );
 

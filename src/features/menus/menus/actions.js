@@ -8,7 +8,7 @@ export const fetchAllMenus = createAsyncThunk('menus/fetchAllMenus', async () =>
     const data = await response.json();
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Laden der Menüdaten.', response.status);
+    return createError('Fehler beim Laden der Speisekartedaten.', response.status);
   }
 });
 
@@ -21,7 +21,7 @@ export const createMenu = createAsyncThunk('menus/createMenu', async (menu, thun
     const data = await response.json();
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Speichern des Menüs.', response.status);
+    return createError('Fehler beim Speichern der Speisekarte.', response.status);
   }
 });
 
@@ -34,7 +34,7 @@ export const updateMenu = createAsyncThunk('menus/updateMenu', async (data, thun
     const data = await response.json();
     return Promise.resolve(data);
   } else {
-    return createError('Fehler beim Aktualisieren des Menüs.', response.status);
+    return createError('Fehler beim Aktualisieren der Speisekarte.', response.status);
   }
 });
 
@@ -45,7 +45,7 @@ export const deleteMenu = createAsyncThunk('menus/deleteMenu', async (id, thunkA
   if (response.ok) {
     return Promise.resolve(id);
   } else {
-    return createError('Fehler beim Löschen des Menüs.', response.status);
+    return createError('Fehler beim Löschen der Speisekarte.', response.status);
   }
 });
 
@@ -72,7 +72,7 @@ export const removeCategory = createAsyncThunk('menus/removeCategory', async (da
   }
 });
 
-export const setActive = createAsyncThunk('menus/setActive', async (data, thunkAPI) => {
+export const activateMenu = createAsyncThunk('menus/activateMenu', async (data, thunkAPI) => {
   const fetchParams = createFetchParams('owner/menus/menus/active', 'PUT', data);
   const response = await fetch(fetchParams.url.href, fetchParams.options);
 

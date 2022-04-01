@@ -46,7 +46,7 @@ function EditCategory({ open, onClose, category }) {
         open={dialogOpen}
         title="Kategorie bearbeiten?"
         message={
-          'Das Bearbeiten der Kategorie ändert die Kategorie in sämtlichen Menüs. Betroffene Menüs: ' +
+          'Das Bearbeiten der Kategorie ändert die Kategorie in sämtlichen Speisekarten. Betroffene Speisekarten: ' +
           affectedMenus.toString() +
           '.'
         }

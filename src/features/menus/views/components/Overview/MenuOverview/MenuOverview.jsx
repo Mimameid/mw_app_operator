@@ -73,7 +73,7 @@ function MenuOverview() {
       <Divider />
       <Box sx={{ overflow: 'auto', height: '234px' }}>
         {menusArray.length === 0 ? (
-          <EmptyView>Keine Menüs verfügbar. Bitte erstellen Sie ein Menü...</EmptyView>
+          <EmptyView>Keine Speisekarten verfügbar. Bitte erstellen Sie eine Speisekarte...</EmptyView>
         ) : (
           menusArray.map((menu, index) => (
             <React.Fragment key={menu.id}>
@@ -90,10 +90,10 @@ function MenuOverview() {
       </Box>
       <AlertDialog
         open={deleteDialogOpen}
-        title="Menü löschen?"
+        title="Speisekarte löschen?"
         message={
           selectedMenu && selectedMenu.isActive
-            ? 'Bitte deaktivieren Sie das Menü, um es löschen zu können.'
+            ? 'Bitte deaktivieren Sie die Speisekarte, um sie löschen zu können.'
             : 'Dieser Vorgang kann nicht rückgängig gemacht werden.'
         }
         handleReject={handleRejectDialog}

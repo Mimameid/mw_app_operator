@@ -34,7 +34,7 @@ function Choice({ choiceId, dish }) {
   }
 
   return (
-    <Paper>
+    <>
       <Box
         sx={{
           p: 2,
@@ -112,7 +112,7 @@ function Choice({ choiceId, dish }) {
       </Collapse>
       <EditChoice open={editChoiceOpen} onClose={() => setEditChoiceOpen(false)} choice={choice} />
       <SetSubsModal open={setSubsOpen} setOpen={setSetSubsOpen} choice={choice} />
-    </Paper>
+    </>
   );
 }
 

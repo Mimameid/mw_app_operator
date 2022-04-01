@@ -3,6 +3,7 @@ import {
   activatePolygon,
   createArea,
   deactivateArea,
+  fetchArea,
   removeArea,
   removePolygon,
   removeVertex,
@@ -33,7 +34,16 @@ const mode = createReducer(initialState, (builder) =>
       state.changed = false;
     })
     .addMatcher(
-      isAnyOf(createArea, removeArea, removePolygon, updateVertex, removeVertex, setDeliveryFee, setMinOrderValue),
+      isAnyOf(
+        createArea,
+        removeArea,
+        removePolygon,
+        updateVertex,
+        removeVertex,
+        setDeliveryFee,
+        setMinOrderValue,
+        fetchArea.fulfilled,
+      ),
       (state, action) => {
         state.changed = true;
       },

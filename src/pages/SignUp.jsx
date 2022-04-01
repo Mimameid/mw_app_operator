@@ -2,79 +2,20 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router';
 import { createShop } from 'features/shop/shop/actions';
-import { CUISINE_TYPES, CUISINE_LABELS, SERVICE_TYPES } from 'common/constants';
+import { CUISINE_TYPES, CUISINE_LABELS } from 'common/constants';
 
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { ShopSchema } from 'features/shop/shop/schema';
 
 import { Alert, Dialog, Stack, useMediaQuery, useTheme, Box, Typography } from '@mui/material';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 import FormTextField from 'common/components/form/FormTextField';
 import LoadingButton from 'common/components/inputs/LoadingButton';
 import FormMultiSelect from 'common/components/form/FormMultiSelectChip';
 import FormSwitch from 'common/components/form/FormSwitch';
 import OpeningHours from 'features/shop/shop/components/OpeningHours';
-
-const schema = yup.object({
-  name: yup
-    .string('Geben Sie einen Namen ein.')
-    .min(1, 'Name ist erforderlich')
-    .max(48, 'Name zu lang.')
-    .required('Name ist erforderlich'),
-  desc: yup
-    .string('Geben Sie eine Kurzbeschreibung ein.')
-    .max(48, 'Kurzbeschreibung zu lang.')
-    .required('Kurzbeschreibung ist erforderlich'),
-  descLong: yup
-    .string('Geben Sie eine Beschreibung ein.')
-    .max(1024, 'Beschreibung zu lang.')
-    .required('Beschreibung ist erforderlich'),
-  location: yup.object({
-    postCode: yup
-      .string('Geben Sie eine Postleitzahl ein.')
-      .matches(/\d/i, { message: 'Das Format ist fehlerhaft.' })
-      .min(5, 'Das Format ist fehlerhaft.')
-      .max(5, 'Das Format ist fehlerhaft.')
-      .required('Postleitzahl ist erforderlich'),
-    city: yup.string('Geben Sie den Ort ein.').required('Adresse ist erforderlich'),
-    street: yup.string('Geben Sie den Straßennamen ein.').required('Straße ist erforderlich'),
-    streetNumber: yup
-      .number('Geben Sie die Hausnummer ein.')
-      .typeError('Die Hausnummer muss eine Zahl sein.')
-      .required('Hausnummer erforderlich'),
-  }),
-  phoneNumber: yup
-    .string('Geben Sie eine Telefonnumer ein.')
-    .matches(/^\+?[0-9]+([0-9]|\/|\(|\)|-| ){7,}$/, {
-      message: 'Das Format ist fehlerhaft',
-      excludeEmptyString: true,
-    })
-    .required(),
-  url: yup
-    .string('Geben Sie eine URL ein.')
-    .matches(
-      /^(www\.|[a-zA-Z0-9](.*[a-zA-Z0-9])?\.)?((?!www)[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9])\.[a-z]{2,5}(:[0-9]{1,5})?$/i,
-      { message: 'Das Format ist fehlerhaft', excludeEmptyString: true },
-    ),
-  serviceTypes: yup
-    .array()
-    .min(1, 'Es muss mindestens eine Serviceart ausgewählt werden.')
-    .of(yup.string().oneOf(SERVICE_TYPES, 'Serviceart muss aus der vorgegebenen Liste ausgewählt werden'))
-    .required(),
-  cuisineTypes: yup
-    .array()
-    .min(1, 'Es muss mindestens eine Kategorie ausgewählt werden.')
-    .max(3, 'Es dürfen maximal 3 Kategorien ausgewählt werden.')
-    .of(yup.string().oneOf(CUISINE_TYPES, 'Kategorie muss aus der vorgegebenen Liste ausgewählt werden'))
-    .required(),
-  cuisineLabels: yup
-    .array()
-    .of(yup.string().oneOf(CUISINE_LABELS, 'Label muss aus der vorgegebenen Liste ausgewählt werden'))
-    .required(),
-  isKosher: yup
-    .boolean('Geben Sie an, ob Ihre Gastronomie das Essen Kosher zubereitet.')
-    .required('Diese Angabe ist erforderlich'),
-});
+import { isAddressValid } from 'features/shop/shop/utils';
 
 function SignUp({ shopRegistered }) {
   const dispatch = useDispatch();
@@ -83,13 +24,23 @@ function SignUp({ shopRegistered }) {
   const shopData = useSelector((state) => state.shop.shop);
 
   const [loading, setLoading] = useState(false);
+  const [locationInvalidDialogOpen, setLocationInvalidDialogOpen] = useState(false);
 
-  const { handleSubmit, control, setValue, formState } = useForm({
+  const { handleSubmit, control, getValues, formState, ...methods } = useForm({
     mode: 'onChange',
     defaultValues: shopData,
     delayError: 300,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(ShopSchema),
   });
+
+  const handleRejectDialog = (event) => {
+    setLocationInvalidDialogOpen(false);
+  };
+
+  const handleAcceptDialog = async (event) => {
+    setLocationInvalidDialogOpen(false);
+    handleSubmit(onSubmit)();
+  };
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -104,7 +55,7 @@ function SignUp({ shopRegistered }) {
   const { isDirty, isValid } = formState;
 
   return (
-    <React.Fragment>
+    <FormProvider {...{ handleSubmit, control, getValues, formState, ...methods }}>
       <Dialog open={true} hideBackdrop={true} fullScreen={small} scroll="body">
         <Box sx={{ p: 6 }}>
           <Box sx={{ mb: 8 }}>
@@ -113,150 +64,179 @@ function SignUp({ shopRegistered }) {
               <Typography variant="body2">Erstellen Sie Ihr Shop.</Typography>
             </div>
           </Box>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Box m="auto" pb={3}>
-              <Stack spacing={4}>
-                <Box>
-                  <FormTextField name="name" label="Name*" control={control} variant="outlined" fullWidth />
-                </Box>
 
-                <Box>
-                  <FormTextField
-                    name="desc"
-                    label="Kurzbeschreibung*"
-                    placeholder="Beschreiben Sie ihr Shop kurz..."
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <FormTextField
-                    name="location.postCode"
-                    label="Postleitzahl*"
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <FormTextField name="location.city" label="Ort*" control={control} variant="outlined" fullWidth />
-                </Box>
-                <Box>
-                  <FormTextField
-                    name="location.street"
-                    label="Straße*"
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-                <Box>
-                  <FormTextField
-                    name="location.streetNumber"
-                    label="Hausnummer*"
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
+          <Box m="auto" pb={3}>
+            <Stack spacing={4}>
+              <Box>
+                <FormTextField name="name" label="Name*" control={control} variant="outlined" fullWidth />
+              </Box>
 
-                <Box>
-                  <FormTextField
-                    name="phoneNumber"
-                    label="Telefonnummer*"
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-
-                <Box>
-                  <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
-                </Box>
-
-                <Box>
-                  <FormMultiSelect
-                    name="cuisineTypes"
-                    label="Kategorien*"
-                    items={CUISINE_TYPES}
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-
-                <Box>
-                  <FormTextField
-                    name="descLong"
-                    label="Beschreibung*"
-                    placeholder="Beschreiben Sie ihr Shop etwas ausführlicher..."
-                    control={control}
-                    variant="outlined"
-                    multiline
-                    rows={6}
-                    fullWidth
-                  />
-                </Box>
-
-                <Box pt={1}>
-                  <OpeningHours name="openingHours" control={control} setOpeningHours={setValue} />
-                </Box>
-
-                <Box>
-                  <FormMultiSelect
-                    name="serviceTypes"
-                    label="Servicearten*"
-                    items={SERVICE_TYPES}
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-
-                <Box pb={1}>
-                  <FormMultiSelect
-                    name="cuisineLabels"
-                    label="Labels"
-                    items={CUISINE_LABELS}
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Box>
-
-                <Box py={1}>
-                  <FormSwitch
-                    name="isKosher"
-                    label="Koscher"
-                    control={control}
-                    desc="Geben Sie an, ob Ihre Gastronomie das Essen Koscher zubereitet."
-                  />
-                </Box>
-
-                <LoadingButton
-                  sx={{
-                    height: '46px',
-                    mt: 2,
-
-                    fontWeight: 'bold',
-                  }}
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  loading={loading}
+              <Box>
+                <FormTextField
+                  name="desc"
+                  label="Kurzbeschreibung*"
+                  placeholder="Beschreiben Sie ihr Shop kurz..."
+                  control={control}
+                  variant="outlined"
                   fullWidth
-                  disabled={!(isValid && isDirty)}
-                >
-                  Erstellen
-                </LoadingButton>
-                <Alert sx={{ mt: 2 }} severity="info">
-                  Bitte geben Sie Ihre Shop Daten ein. Felder, die mit einem * markiert sind, sind erforderlich.
-                </Alert>
-              </Stack>
-            </Box>
-          </form>
+                />
+              </Box>
+              <Box>
+                <FormTextField
+                  name="location.postCode"
+                  label="Postleitzahl*"
+                  control={control}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Box>
+              <Box>
+                <FormTextField name="location.city" label="Ort*" control={control} variant="outlined" fullWidth />
+              </Box>
+              <Box>
+                <FormTextField name="location.street" label="Straße*" control={control} variant="outlined" fullWidth />
+              </Box>
+              <Box>
+                <FormTextField
+                  name="location.number"
+                  label="Hausnummer*"
+                  control={control}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Box>
+
+              <Box>
+                <FormTextField
+                  name="phoneNumber"
+                  label="Telefonnummer*"
+                  control={control}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Box>
+
+              <Box>
+                <FormTextField name="url" label="URL" control={control} variant="outlined" fullWidth />
+              </Box>
+
+              <Box>
+                <FormMultiSelect
+                  name="cuisineTypes"
+                  label="Kategorien*"
+                  items={CUISINE_TYPES}
+                  control={control}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Box>
+
+              <Box>
+                <FormTextField
+                  name="descLong"
+                  label="Beschreibung*"
+                  placeholder="Beschreiben Sie ihr Shop etwas ausführlicher..."
+                  control={control}
+                  variant="outlined"
+                  multiline
+                  rows={6}
+                  fullWidth
+                />
+              </Box>
+
+              <Box pt={1}>
+                <OpeningHours />
+              </Box>
+
+              <Box pb={1}>
+                <FormMultiSelect
+                  name="cuisineLabels"
+                  label="Labels"
+                  items={CUISINE_LABELS}
+                  control={control}
+                  variant="outlined"
+                  fullWidth
+                />
+              </Box>
+
+              <Box py={1}>
+                <FormSwitch
+                  name="isKosher"
+                  label="Koscher"
+                  control={control}
+                  desc="Geben Sie an, ob Ihr Shop das Essen Koscher zubereitet."
+                />
+              </Box>
+
+              <Box py={1}>
+                <FormSwitch
+                  name="isLocal"
+                  label="Vor Ort"
+                  control={control}
+                  desc="Geben Sie an, ob in Ihrem Shop vor Ort  gegessen werden kann."
+                />
+              </Box>
+
+              <LoadingButton
+                sx={{
+                  height: '46px',
+                  mt: 2,
+
+                  fontWeight: 'bold',
+                }}
+                color="primary"
+                variant="contained"
+                onClick={async () => {
+                  const { location } = getValues();
+                  const isValid = await isAddressValid(location);
+                  if (isValid) {
+                    handleSubmit(onSubmit)();
+                  } else {
+                    setLocationInvalidDialogOpen(true);
+                  }
+                }}
+                loading={loading}
+                disabled={!(isValid && isDirty)}
+                fullWidth
+              >
+                Erstellen
+              </LoadingButton>
+              <Alert sx={{ mt: 2 }} severity="info">
+                Bitte geben Sie Ihre Shop Daten ein. Felder, die mit einem * markiert sind, sind erforderlich.
+              </Alert>
+            </Stack>
+          </Box>
         </Box>
+        <AlertDialog
+          open={locationInvalidDialogOpen}
+          handleReject={handleRejectDialog}
+          handleAccept={handleAcceptDialog}
+          title="Adresse korrekt?"
+          message={
+            <Box
+              sx={{
+                typography: 'body1',
+                textAlign: 'center',
+                color: 'grey.700',
+              }}
+            >
+              <Box sx={{ py: 1, fontWeight: 'bold' }}>
+                {getValues('location.street')}&nbsp;
+                {getValues('location.number')} <br />
+                {getValues('location.postCode')}&nbsp;
+                {getValues('location.city')} <br />
+              </Box>
+              Die angegebene Adresse scheint ungültig zu sein. Sind sie sicher, dass die Angaben korrekt sind?
+            </Box>
+          }
+          rejectText={'Zurück'}
+          loading={loading}
+          TransitionProps={{
+            onExited: () => {
+              setLoading(false);
+            },
+          }}
+        />
       </Dialog>
       <Box
         sx={{
@@ -311,7 +291,7 @@ function SignUp({ shopRegistered }) {
           ></path>
         </svg>
       </Box>
-    </React.Fragment>
+    </FormProvider>
   );
 }
 

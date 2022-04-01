@@ -69,7 +69,7 @@ function MyTable({ headCells, data }) {
     // <Paper className={classes.listContainer} elevation={3}>
     //   {menus.length === 0 ? (
     //     <Box color="text.secondary" fontStyle="italic">
-    //       Keine Menüs verfügbar. Bitte fügen Sie ein Menü hinzu...
+    //       Keine Speisekarten verfügbar. Bitte fügen Sie einw Speisekarte hinzu...
     //     </Box>
     //   ) : (
     //     <List component="nav">

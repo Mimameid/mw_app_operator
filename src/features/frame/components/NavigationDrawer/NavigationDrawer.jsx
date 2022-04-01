@@ -9,9 +9,10 @@ import routes from 'routes';
 
 import { Divider, Drawer, List, Toolbar, useMediaQuery, Box, Button, useTheme, Fade } from '@mui/material';
 import NavigationLink from './NavigationLink';
+import ShopStatus from './ShopStatus/ShopStatus';
+import ActivateShopSwitch from './ActivateShopSwitch';
 import AlertDialog from 'common/components/feedback/AlertDialog';
 import { ExitToApp } from '@mui/icons-material';
-import ActivateShopSwitch from './ActivateShopSwitch';
 
 function NavigationDrawer() {
   const dispatch = useDispatch();
@@ -101,6 +102,11 @@ function NavigationDrawer() {
 
         <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end', flexDirection: 'column' }}>
           <Box sx={{ p: 1 }}>
+            <ShopStatus />
+          </Box>
+          <Divider sx={{ borderColor: !open ? 'common.white' : null }} />
+
+          <Box sx={{ p: 1 }}>
             <ActivateShopSwitch />
           </Box>
           <Divider />
@@ -135,32 +141,6 @@ function NavigationDrawer() {
             </Button>
           </Box>
         </Box>
-        {/* <Box sx={{ position: 'absolute', width: '100%', bottom: (theme) => theme.spacing(1) }}>
-          <Divider />
-          <Box sx={{ p: 2, pb: 0 }}>
-            <Button
-              sx={{
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-
-                maxHeight: '46px',
-                minWidth: '24px',
-                padding: '12px 16px 12px 14px',
-
-                textTransform: 'none',
-                '&:hover': {
-                  backgroundColor: theme.palette.primary.light + '28',
-                },
-              }}
-              onClick={handleLogout}
-              startIcon={<ExitToApp color={'action'} style={{ transform: 'rotate(180deg)' }} />}
-              size="large"
-              fullWidth
-            >
-              <Box color="text.secondary"> {open ? 'Abmelden' : null}</Box>
-            </Button>
-          </Box>
-        </Box> */}
       </Box>
 
       <AlertDialog

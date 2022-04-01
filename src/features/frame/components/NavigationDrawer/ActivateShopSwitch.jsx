@@ -1,19 +1,57 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectCanActivate } from 'features/frame';
-import { setActive } from 'features/shop/shop/actions';
-import { setDrawerOpen } from 'features/frame/actions';
+import { selectActiveMenu } from 'features/menus/menus/slice';
+import { updateShopActive } from 'features/shop/shop/actions';
+import { setDeactivatedShopNotification, setDrawerOpen } from 'features/frame/actions';
 
 import { Box, Fade, Switch } from '@mui/material';
+import AlertDialog from 'common/components/feedback/AlertDialog';
 
-function ActivateShopSwitch({ control, name, label, desc, ...props }) {
+function ActivateShopSwitch({ control, name, label, desc }) {
   const dispatch = useDispatch();
-  const { hasOpeningHours, hasActiveMenu } = useSelector(selectCanActivate);
-  const isShopActive = useSelector((state) => state.shop.isActive);
+  const activeMenu = useSelector(selectActiveMenu);
+  const isShopActive = useSelector((state) => state.shop.shop.isActive);
+  const drawerOpen = useSelector((state) => state.frame.drawerOpen);
 
-  useEffect(() => {}, [dispatch]);
+  const setActiveRef = useRef(false);
+  const [enabled, setEnabled] = useState(isShopActive);
+  const [loading, setLoading] = useState(false);
+  const [activateShopDialogOpen, setActivateShopDialogOpen] = useState(false);
+  const [deactivateShopDialogOpen, setDeactivateShopDialogOpen] = useState(false);
 
-  const open = useSelector((state) => state.frame.drawerOpen);
+  useEffect(() => {
+    setEnabled(isShopActive);
+  }, [isShopActive]);
+
+  const handleChange = (event, value) => {
+    setActiveRef.current = value;
+    if (!activeMenu) {
+      dispatch(setDeactivatedShopNotification(true));
+      return;
+    }
+
+    if (!value) {
+      setDeactivateShopDialogOpen(true);
+      return;
+    }
+
+    setActivateShopDialogOpen(true);
+  };
+
+  const handleUpdateShopActive = async () => {
+    setLoading(true);
+    await dispatch(updateShopActive({ isActive: setActiveRef.current }));
+    if (!setActiveRef.current) {
+      dispatch(setDeactivatedShopNotification(true));
+    }
+
+    handleRejectDialog();
+  };
+
+  const handleRejectDialog = (event) => {
+    setActivateShopDialogOpen(false);
+    setDeactivateShopDialogOpen(false);
+  };
 
   return (
     <Box
@@ -25,7 +63,7 @@ function ActivateShopSwitch({ control, name, label, desc, ...props }) {
       }}
     >
       <Box>
-        <Fade in={open}>
+        <Fade in={drawerOpen}>
           <Box>
             <Box
               sx={{
@@ -39,7 +77,7 @@ function ActivateShopSwitch({ control, name, label, desc, ...props }) {
               <Switch
                 sx={{
                   '& .MuiSwitch-thumb': {
-                    ml: open ? 0 : 2,
+                    ml: drawerOpen ? 0 : 2,
                     transition: 'all 0.1s linear',
                     height: '20px',
                     width: '20px',
@@ -63,14 +101,14 @@ function ActivateShopSwitch({ control, name, label, desc, ...props }) {
                   },
 
                   '& .Mui-checked': {
-                    ml: open ? 0 : -2.5,
+                    ml: drawerOpen ? 0 : -2.5,
                     transition: 'all 0.1s linear',
-                    color: 'success.light',
+                    color: 'primary.main',
                     '&+.MuiSwitch-track': {
-                      bgcolor: open ? 'success.light' : 'transparent',
+                      bgcolor: drawerOpen ? 'primary.light' : 'transparent',
                     },
                     '&.Mui-disabled': {
-                      color: 'success.light',
+                      color: 'primary.light',
                       '&+.MuiSwitch-track': {
                         bgcolor: 'transparent',
                       },
@@ -78,13 +116,11 @@ function ActivateShopSwitch({ control, name, label, desc, ...props }) {
                   },
                 }}
                 name={name}
-                checked={isShopActive}
+                checked={enabled}
                 label="Shop aktivieren"
-                onChange={(value) => {
-                  dispatch(setActive(value));
-                }}
+                onChange={handleChange}
                 edge="start"
-                disabled={!open}
+                disabled={!drawerOpen}
               />
             </Box>
           </Box>
@@ -92,16 +128,43 @@ function ActivateShopSwitch({ control, name, label, desc, ...props }) {
         <Box
           sx={{
             typography: 'caption',
-            color: 'grey.600',
-            cursor: open ? 'default' : 'pointer',
+            color: isShopActive ? 'success.light' : 'grey.600',
+            cursor: drawerOpen ? 'default' : 'pointer',
           }}
           onClick={() => {
             dispatch(setDrawerOpen(true));
           }}
         >
-          Offline
+          {isShopActive ? 'Online' : 'Offline'}
         </Box>
       </Box>
+
+      <AlertDialog
+        open={activateShopDialogOpen}
+        title="Shop aktivieren?"
+        message="Wenn Sie ihren Shop aktivieren, geht ihr Shop mit den angegebenen Daten online und kann gesucht werden."
+        handleReject={handleRejectDialog}
+        handleAccept={handleUpdateShopActive}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
+      />
+      <AlertDialog
+        open={deactivateShopDialogOpen}
+        title="Shop deaktivieren?"
+        message="Wenn Sie ihren Shop deaktiveren, geht ihr Shop offline und kann nicht mehr gesucht werden."
+        handleReject={handleRejectDialog}
+        handleAccept={handleUpdateShopActive}
+        loading={loading}
+        TransitionProps={{
+          onExited: () => {
+            setLoading(false);
+          },
+        }}
+      />
     </Box>
   );
 }

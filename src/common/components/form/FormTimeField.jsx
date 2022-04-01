@@ -20,6 +20,7 @@ function FormTimeField({ control, name, onChange, ...props }) {
       {...inputProps}
       onChange={(event) => {
         inputProps.onChange(event);
+
         if (onChange) {
           onChange(event.target.value);
         }

@@ -1,5 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { createShop, fetchShop, saveOpeningHours, updateShop } from './actions';
+import {
+  createShop,
+  fetchShop,
+  updateShopActive,
+  updateShopDelivery,
+  updateShopOpen,
+  updateShopPickup,
+  updateShop,
+} from './actions';
 
 const initialState = {
   name: '',
@@ -8,10 +16,13 @@ const initialState = {
   phoneNumber: '',
   url: '',
   cuisineTypes: [],
-  serviceTypes: [],
   cuisineLabels: [],
   isActive: false,
+  isOpen: false,
+  isDelivery: false,
+  isPickup: false,
   isKosher: false,
+  isLocal: true,
   openingHours: {
     monday: [],
     tuesday: [],
@@ -21,16 +32,11 @@ const initialState = {
     saturday: [],
     sunday: [],
   },
-  location: { postCode: '', city: '', street: '', streetNumber: '' },
-  // logo: '',
+  location: { postCode: '', city: '', street: '', number: '' },
 };
 
 const shopReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(saveOpeningHours, (state, action) => {
-      // This throws an error if not deep copied....I think it is bc RHF and deep nesting
-      state.openingHours = JSON.parse(JSON.stringify(action.payload));
-    })
     .addCase(updateShop.fulfilled, (state, action) => {
       return { ...state, ...action.payload.data };
     })
@@ -39,6 +45,18 @@ const shopReducer = createReducer(initialState, (builder) => {
     })
     .addCase(createShop.fulfilled, (state, action) => {
       return { ...state, ...action.payload.data };
+    })
+    .addCase(updateShopActive.fulfilled, (state, action) => {
+      state.isActive = !state.isActive;
+    })
+    .addCase(updateShopOpen.fulfilled, (state, action) => {
+      state.isOpen = !state.isOpen;
+    })
+    .addCase(updateShopDelivery.fulfilled, (state, action) => {
+      state.isDelivery = !state.isDelivery;
+    })
+    .addCase(updateShopPickup.fulfilled, (state, action) => {
+      state.isPickup = !state.isPickup;
     });
 });
 

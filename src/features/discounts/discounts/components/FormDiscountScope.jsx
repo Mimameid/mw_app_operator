@@ -24,7 +24,7 @@ function FormDiscountScope({ type, control, setValue }) {
   switch (type) {
     case discountTypes.menu:
       items = menuIdsToNames;
-      label = 'Betroffene Menüs*';
+      label = 'Betroffene Speisekarten*';
       break;
 
     case discountTypes.category:
@@ -58,7 +58,7 @@ function FormDiscountScope({ type, control, setValue }) {
           label={
             <FormControlLabel
               control={<Checkbox color="primary" checked={type === discountTypes.menu} size="small" />}
-              label={<Box fontSize="subtitle2.fontSize">Menüs</Box>}
+              label={<Box fontSize="subtitle2.fontSize">Speisekarten</Box>}
             />
           }
         />

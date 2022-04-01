@@ -1,5 +1,5 @@
 import React from 'react';
-import { CUISINE_TYPES, CUISINE_LABELS, SERVICE_TYPES } from 'common/constants';
+import { CUISINE_TYPES, CUISINE_LABELS } from 'common/constants';
 import useDetectFormChange from 'common/hooks/useDetectFormChange';
 
 import { useFormContext } from 'react-hook-form';
@@ -56,7 +56,7 @@ function ShopForm() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormTextField
-                name="location.streetNumber"
+                name="location.number"
                 label="Hausnummer*"
                 control={control}
                 variant="outlined"
@@ -79,9 +79,9 @@ function ShopForm() {
               <Grid container spacing={4}>
                 <Grid item xs={12}>
                   <FormMultiSelect
-                    name="serviceTypes"
-                    label="Servicearten*"
-                    items={SERVICE_TYPES}
+                    name="cuisineTypes"
+                    label="Kategorien*"
+                    items={CUISINE_TYPES}
                     control={control}
                     variant="outlined"
                     fullWidth
@@ -89,9 +89,9 @@ function ShopForm() {
                 </Grid>
                 <Grid item xs={12}>
                   <FormMultiSelect
-                    name="cuisineTypes"
-                    label="Kategorien*"
-                    items={CUISINE_TYPES}
+                    name="cuisineLabels"
+                    label="Labels"
+                    items={CUISINE_LABELS}
                     control={control}
                     variant="outlined"
                     fullWidth
@@ -128,32 +128,19 @@ function ShopForm() {
             <Grid item xs={12} sm={6}>
               <Grid container spacing={4}>
                 <Grid item xs={12}>
-                  <FormMultiSelect
-                    name="serviceTypes"
-                    label="Servicearten*"
-                    items={SERVICE_TYPES}
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <FormMultiSelect
-                    name="cuisineLabels"
-                    label="Labels"
-                    items={CUISINE_LABELS}
-                    control={control}
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
                   <FormSwitch
                     name="isKosher"
                     label="Koscher"
                     control={control}
-                    desc="Geben Sie an, ob Ihre Gastronomie das Essen Koscher zubereitet."
+                    desc="Geben Sie an, ob Ihr Shop das Essen Koscher zubereitet."
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <FormSwitch
+                    name="isLocal"
+                    label="Vor Ort"
+                    control={control}
+                    desc="Geben Sie an, ob in Ihrem Shop vor Ort  gegessen werden kann."
                   />
                 </Grid>
               </Grid>

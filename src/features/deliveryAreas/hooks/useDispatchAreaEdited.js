@@ -6,7 +6,7 @@ function useDispatchAreaEdited(areas, activeArea) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    function wasAreaEdited() {
+    function isAreaEdited() {
       let currentPolygons = activeArea.areaPolygons;
 
       // check if the current polygon is an existing one
@@ -31,7 +31,7 @@ function useDispatchAreaEdited(areas, activeArea) {
         }
       }
     }
-    dispatch(setEdited(wasAreaEdited()));
+    dispatch(setEdited(isAreaEdited()));
   }, [areas, activeArea, dispatch]);
 }
 

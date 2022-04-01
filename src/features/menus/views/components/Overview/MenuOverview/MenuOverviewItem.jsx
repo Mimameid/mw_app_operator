@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setActive } from 'features/menus/menus/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { activateMenu } from 'features/menus/menus/actions';
 import { selectItem } from 'features/menus/views/slice';
+import { selectHasDishes } from 'features/menus/menus/slice';
 
 import { Box, Grid, IconButton, ListItem, Switch } from '@mui/material';
 import MenuModal from 'features/menus/menus/components/MenuModal';
@@ -12,11 +13,12 @@ import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function MenuOverviewItem({ menu, selected, activeMenu, deleteHandler }) {
   const dispatch = useDispatch();
+  const hasDishes = useSelector((state) => selectHasDishes(state, menu));
 
   const [loading, setLoading] = useState(false);
   const [menuModalOpen, setMenuModalOpen] = useState(false);
   const [activateDialogOpen, setActivateDialogOpen] = useState(false);
-  const [deactivateDialogOpen, setDectivateDialogOpen] = useState(false);
+  const [cantActivateDialogOpen, setCantActivateDialogOpen] = useState(false);
   const [switchDialogOpen, setSwitchDialogOpen] = useState(false);
   const setActiveRef = useRef(null);
 
@@ -31,10 +33,8 @@ function MenuOverviewItem({ menu, selected, activeMenu, deleteHandler }) {
   async function handleSetActiveAcceptDialog(event) {
     setLoading(true);
     await dispatch(
-      setActive({
+      activateMenu({
         menuId: menu.id,
-        activeMenuId: activeMenu?.id,
-        isActive: setActiveRef.current,
       }),
     );
     handleRejectDialog();
@@ -42,22 +42,24 @@ function MenuOverviewItem({ menu, selected, activeMenu, deleteHandler }) {
 
   const setActiveHandler = (event) => {
     setActiveRef.current = event.target.checked;
-
-    if (activeMenu) {
-      if (activeMenu.id === menu.id) {
-        setDectivateDialogOpen(true);
-      } else {
-        setSwitchDialogOpen(true);
-      }
-    } else {
-      setActivateDialogOpen(true);
+    if (!hasDishes) {
+      setCantActivateDialogOpen(true);
+      return;
     }
+
+    if (!activeMenu) {
+      setActivateDialogOpen(true);
+      return;
+    }
+
+    setSwitchDialogOpen(true);
   };
 
   function handleRejectDialog(event) {
     setActivateDialogOpen(false);
-    setDectivateDialogOpen(false);
+
     setSwitchDialogOpen(false);
+    setCantActivateDialogOpen(false);
   }
 
   return (
@@ -83,7 +85,7 @@ function MenuOverviewItem({ menu, selected, activeMenu, deleteHandler }) {
           <GridItem item xs={2}>
             {new Date(menu.created).toLocaleDateString('DE-de')}
           </GridItem>
-          {selected ? (
+          {selected && !menu.isActive ? (
             <Grid sx={{ display: 'flex', alignItems: 'center' }} item xs={1}>
               <Switch
                 checked={menu.isActive}
@@ -115,22 +117,24 @@ function MenuOverviewItem({ menu, selected, activeMenu, deleteHandler }) {
             <IconButton aria-label="edit" size="small" onClick={editEntryHandler}>
               <Edit fontSize="small" />
             </IconButton>
-            <IconButton
-              aria-label="edit"
-              size="small"
-              onClick={() => {
-                deleteHandler(menu);
-              }}
-            >
-              <DeleteForever fontSize="small" color="error" />
-            </IconButton>
+            {activeMenu?.id !== menu.id ? (
+              <IconButton
+                aria-label="edit"
+                size="small"
+                onClick={() => {
+                  deleteHandler(menu);
+                }}
+              >
+                <DeleteForever fontSize="small" color="error" />
+              </IconButton>
+            ) : null}
           </Box>
         </Grid>
       </ListItem>
       <AlertDialog
         open={activateDialogOpen}
-        title="Menü aktivieren?"
-        message="Wenn Sie das Menü aktivieren, kann ab sofort aus diesem Menü bestellt werden. Stellen Sie bitte sicher, dass jede Speise des Menüs bereitgestellt werden kann."
+        title="Speisekarte aktivieren?"
+        message="Wenn Sie die Speisekarte aktivieren, kann, wenn ihr Shop aktiv ist, ab sofort aus dieser Speisekarte bestellt werden. Stellen Sie bitte sicher, dass jede Speise der Speisekarte bereitgestellt werden kann."
         handleReject={handleRejectDialog}
         handleAccept={handleSetActiveAcceptDialog}
         loading={loading}
@@ -141,23 +145,23 @@ function MenuOverviewItem({ menu, selected, activeMenu, deleteHandler }) {
         }}
       />
       <AlertDialog
-        open={deactivateDialogOpen}
-        title="Menü deaktivieren?"
-        message="Wenn Sie das Menü deaktivieren, kann nicht mehr bestellt werden."
+        open={cantActivateDialogOpen}
+        title="Speisekarte kann nicht aktiviert werden."
+        message="Diese Speisekarte hat noch keine Speisen. Bitte fügen Sie dieser Speisekarte Kategorien hinzu, die Speisen enthalten."
+        rejectText="OK"
         handleReject={handleRejectDialog}
-        handleAccept={handleSetActiveAcceptDialog}
         loading={loading}
-        warning
         TransitionProps={{
           onExited: () => {
             setLoading(false);
           },
         }}
       />
+
       <AlertDialog
         open={switchDialogOpen}
-        title="Menü wechseln?"
-        message="Das aktuelle Menü wird deaktiviert. Es kann nur noch vom neuen Menü bestellt werden. Stellen Sie bitte sicher, dass jede Speise des neuen Menüs bereitgestellt werden kann."
+        title="Speisekarte wechseln?"
+        message="Die aktuelle Speisekarte wird deaktiviert. Es kann nur noch von der neuen Speisekarte bestellt werden. Stellen Sie bitte sicher, dass jede Speise der neuen Speisekarte bereitgestellt werden kann."
         handleReject={handleRejectDialog}
         handleAccept={handleSetActiveAcceptDialog}
         loading={loading}

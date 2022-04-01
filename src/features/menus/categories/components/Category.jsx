@@ -35,7 +35,7 @@ function Category({ categoryId, menu }) {
   }
 
   return (
-    <Paper>
+    <Paper elevation={0}>
       <Box
         sx={{
           p: 2,

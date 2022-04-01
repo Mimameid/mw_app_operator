@@ -84,8 +84,8 @@ function CategoryModal({ open, onClose, category }) {
         <Grid item>
           <FormMultiSelectGroup
             name="menus"
-            label="Zum Menü hinzufügen"
-            group="Menüs"
+            label="Zur Speisekarte hinzufügen"
+            group="Speisekarten"
             items={menuIdsToNames}
             control={control}
           />
