@@ -4,10 +4,10 @@ import { setDeactivatedShopNotification } from 'features/frame/actions';
 
 import { Box, Paper, Slide } from '@mui/material';
 import { Alert, AlertTitle } from '@mui/material';
-import { selectActiveMenu } from 'features/menus/menus/slice';
+import { selectActiveOffer } from 'features/offers/offers/slice';
 
-function getMessage(hasActiveMenu) {
-  if (hasActiveMenu) {
+function getMessage(hasActiveOffer) {
+  if (hasActiveOffer) {
     return 'Sie können Ihren Shop jederzeit links im Navigationsmenü online stellen.';
   } else {
     return (
@@ -22,7 +22,7 @@ function DeactivatedShopNotification() {
   const dispatch = useDispatch();
   const isShopActive = useSelector((state) => state.shop.shop.isActive);
   const deactivatedShopNotificationOpen = useSelector((state) => state.frame.deactivatedShopNotificationOpen);
-  const activeMenu = useSelector(selectActiveMenu);
+  const activeOffer = useSelector(selectActiveOffer);
   const [open, setOpen] = useState(!isShopActive);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function DeactivatedShopNotification() {
     }
   }, [dispatch, deactivatedShopNotificationOpen]);
 
-  const message = getMessage(!!activeMenu);
+  const message = getMessage(!!activeOffer);
   return open ? (
     <Box
       sx={{

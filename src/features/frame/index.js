@@ -1,5 +1,5 @@
 import { createSelector, createReducer } from '@reduxjs/toolkit';
-import { activateMenu } from 'features/menus/menus/actions';
+import { activateOffer } from 'features/offers/offers/actions';
 
 import { fetchShop } from 'features/shop/shop/actions';
 import { setDeactivatedShopNotification, setDrawerOpen } from './actions';
@@ -7,7 +7,7 @@ import { setDeactivatedShopNotification, setDrawerOpen } from './actions';
 const initialState = {
   drawerOpen: false,
   deactivatedShopNotificationOpen: false,
-  hasActiveMenu: false,
+  hasActiveOffer: false,
 };
 
 const frame = createReducer(initialState, (builder) =>
@@ -19,16 +19,16 @@ const frame = createReducer(initialState, (builder) =>
       state.deactivatedShopNotificationOpen = action.payload;
     })
     .addCase(fetchShop.fulfilled, (state, action) => {
-      for (const menu of Object.values(action.payload.menus)) {
-        if (menu.isActive) {
-          state.hasActiveMenu = true;
+      for (const offer of Object.values(action.payload.offers)) {
+        if (offer.isActive) {
+          state.hasActiveOffer = true;
           break;
         }
       }
     })
 
-    .addCase(activateMenu.fulfilled, (state, action) => {
-      state.hasActiveMenu = action.payload.isActive;
+    .addCase(activateOffer.fulfilled, (state, action) => {
+      state.hasActiveOffer = action.payload.isActive;
     }),
 );
 

@@ -27,14 +27,14 @@ export const dayAfterMap = {
 };
 
 export const discountTypes = {
-  menu: 'menu',
+  offer: 'offer',
   category: 'category',
   dish: 'dish',
 };
 
 export const getDiscountTypeName = (type) => {
   switch (type) {
-    case discountTypes.menu:
+    case discountTypes.offer:
       return 'Speisekarten';
     case discountTypes.category:
       return 'Kategorien';

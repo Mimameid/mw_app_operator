@@ -1,5 +1,5 @@
 import DeliveryAreasPage from './pages/DeliveryAreas';
-import MenuPage from 'pages/Menu';
+import OfferPage from 'pages/Offer';
 import DashboardPage from 'pages/Dashboard';
 import ShopPage from 'pages/Shop';
 import DiscountPage from 'pages/Discount';
@@ -9,7 +9,7 @@ import { Dashboard, Map, Restaurant, Home, LocalOffer } from '@mui/icons-materia
 const routes = [
   { path: '/', exact: true, name: 'Dashboard', Component: DashboardPage, IconComponent: Dashboard },
   { path: '/shop', name: 'Shop', Component: ShopPage, IconComponent: Home },
-  { path: '/menus', name: 'Speisekarte', Component: MenuPage, IconComponent: Restaurant },
+  { path: '/offers', name: 'Speisekarte', Component: OfferPage, IconComponent: Restaurant },
   { path: '/discounts', name: 'Angebote', Component: DiscountPage, IconComponent: LocalOffer },
   { path: '/areas', name: 'Liefergebiete', Component: DeliveryAreasPage, IconComponent: Map },
 ];

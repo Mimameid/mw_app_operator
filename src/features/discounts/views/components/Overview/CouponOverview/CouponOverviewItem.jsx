@@ -6,7 +6,7 @@ import { getDiscountStatus } from 'features/discounts/discounts/utils';
 import { Box, Grid, IconButton, ListItem } from '@mui/material';
 import CouponModal from 'features/discounts/coupons/components/CouponModal';
 import GridItem from 'common/components/dataDisplay/GridItem';
-import TruncatedBox from 'features/menus/common/components/TruncatedBox';
+import TruncatedBox from 'features/offers/common/components/TruncatedBox';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
 function CouponOverviewItem({ coupon, setTriggerDelete, selected }) {
@@ -18,7 +18,7 @@ function CouponOverviewItem({ coupon, setTriggerDelete, selected }) {
     setCouponModalOpen(true);
   }
 
-  function handleSelectMenu(event) {
+  function handleSelectOffer(event) {
     dispatch(selectDiscountItem(coupon.id));
   }
 
@@ -33,7 +33,7 @@ function CouponOverviewItem({ coupon, setTriggerDelete, selected }) {
       <ListItem
         sx={{ px: 2, py: 1, bgcolor: (theme) => (selected ? theme.palette.primary.light + '33' : null) }}
         button={!selected}
-        onClick={!selected ? handleSelectMenu : null}
+        onClick={!selected ? handleSelectOffer : null}
       >
         <Grid container wrap={'nowrap'}>
           <GridItem item xs={2}>

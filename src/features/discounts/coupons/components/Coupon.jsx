@@ -4,7 +4,7 @@ import { nanoid } from 'common/constants';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import { Box, Divider, Grid, IconButton, List, ListItem, ListSubheader, Paper, TablePagination } from '@mui/material';
-import TruncatedBox from 'features/menus/common/components/TruncatedBox';
+import TruncatedBox from 'features/offers/common/components/TruncatedBox';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import CouponModal from './CouponModal';
 import { Edit } from '@mui/icons-material';

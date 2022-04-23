@@ -9,7 +9,7 @@ import { Box, Grid, IconButton, ListItem, Switch } from '@mui/material';
 import AlertDialog from 'common/components/feedback/AlertDialog';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
 import GridItem from 'common/components/dataDisplay/GridItem';
-import TruncatedBox from 'features/menus/common/components/TruncatedBox';
+import TruncatedBox from 'features/offers/common/components/TruncatedBox';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
 function DiscountOverviewItem({ discount, setTriggerDelete, selected }) {

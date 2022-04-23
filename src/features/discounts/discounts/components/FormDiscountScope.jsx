@@ -1,16 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectMenuIdsToNames } from 'features/menus/menus/slice';
-import { selectCategoryIdsToNames } from 'features/menus/categories/slice';
-import { selectDishIdsToNames } from 'features/menus/dishes/slice';
+import { selectOfferIdsToNames } from 'features/offers/offers/slice';
+import { selectCategoryIdsToNames } from 'features/offers/categories/slice';
+import { selectDishIdsToNames } from 'features/offers/dishes/slice';
 import { discountTypes } from 'common/constants';
 
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 
 function FormDiscountScope({ type, control, setValue }) {
-  const menuIdsToNames = useSelector(selectMenuIdsToNames);
+  const offerIdsToNames = useSelector(selectOfferIdsToNames);
   const categoryIdsToNames = useSelector(selectCategoryIdsToNames);
   const dishIdsToNames = useSelector(selectDishIdsToNames);
 
@@ -22,8 +22,8 @@ function FormDiscountScope({ type, control, setValue }) {
   let items;
   let label;
   switch (type) {
-    case discountTypes.menu:
-      items = menuIdsToNames;
+    case discountTypes.offer:
+      items = offerIdsToNames;
       label = 'Betroffene Speisekarten*';
       break;
 
@@ -54,10 +54,10 @@ function FormDiscountScope({ type, control, setValue }) {
       >
         <Tab
           sx={{ minWidth: '90px' }}
-          value={discountTypes.menu}
+          value={discountTypes.offer}
           label={
             <FormControlLabel
-              control={<Checkbox color="primary" checked={type === discountTypes.menu} size="small" />}
+              control={<Checkbox color="primary" checked={type === discountTypes.offer} size="small" />}
               label={<Box fontSize="subtitle2.fontSize">Speisekarten</Box>}
             />
           }

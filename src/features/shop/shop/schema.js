@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-import { CUISINE_TYPES, CUISINE_LABELS, SERVICE_TYPES, dayAfterMap } from 'common/constants';
+import { CUISINE_TYPES, CUISINE_LABELS, dayAfterMap } from 'common/constants';
 
 const WeekdaySchema = yup
   .array()

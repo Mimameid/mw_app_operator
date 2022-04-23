@@ -2,7 +2,7 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 
 import { MenuItem, Checkbox, ListItemText, TextField } from '@mui/material';
-import TruncatedChip from 'features/menus/common/components/TruncatedChip';
+import TruncatedChip from 'features/offers/common/components/TruncatedChip';
 
 function FormMultiSelectChip({ control, name, items, ...props }) {
   const {
@@ -20,7 +20,7 @@ function FormMultiSelectChip({ control, name, items, ...props }) {
         sx: { '&:focus': { borderRadius: (theme) => theme.shape.borderRadius } },
         multiple: true,
         value: inputProps.value,
-        MenuProps: {
+        OfferProps: {
           sx: { maxHeight: (theme) => theme.spacing(53) },
         },
         renderValue: (selected) => {

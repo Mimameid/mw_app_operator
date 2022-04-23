@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllMenus } from 'features/menus/menus/actions';
+import { fetchAllOffers } from 'features/offers/offers/actions';
 
 import { Box, Button, Toolbar, Grid } from '@mui/material';
 import Overview from 'features/discounts/views/components/Overview/Overview';
@@ -20,7 +20,7 @@ function Discount({ name }) {
   const [couponModal, setCouponModalOpen] = useState(false);
 
   useEffect(() => {
-    const promise = dispatch(fetchAllMenus());
+    const promise = dispatch(fetchAllOffers());
     promise.then(() => {
       setDataLoaded(true);
     });

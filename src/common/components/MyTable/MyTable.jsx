@@ -67,7 +67,7 @@ function MyTable({ headCells, data }) {
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
   return (
     // <Paper className={classes.listContainer} elevation={3}>
-    //   {menus.length === 0 ? (
+    //   {offers.length === 0 ? (
     //     <Box color="text.secondary" fontStyle="italic">
     //       Keine Speisekarten verfügbar. Bitte fügen Sie einw Speisekarte hinzu...
     //     </Box>
@@ -75,7 +75,7 @@ function MyTable({ headCells, data }) {
     //     <List component="nav">
     //       <ListSubheader>{`I'm sticky `}</ListSubheader>
     //       <Divider className={classes.divider} />
-    //       {menus.map((menu, index) => (
+    //       {offers.map((offer, index) => (
     //         <ListItem button key={nanoid()}>
     //           TASTAL
     //         </ListItem>
