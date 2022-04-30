@@ -5,7 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { Box, Button, Grid, Paper } from '@mui/material';
-import ChoiceModal from 'features/offers/choices/components/ChoiceModal';
+import ChoiceModal from 'features/products/choices/components/ChoiceModal';
 import FormItemSelect from 'common/components/form/FormItemSelect';
 import ChoiceItem from './ChoiceItem';
 import ResponsiveModal from 'common/components/feedback/ResponsiveModal';

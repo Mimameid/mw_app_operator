@@ -2,7 +2,7 @@ import React from 'react';
 import { useController } from 'react-hook-form';
 
 import { MenuItem, Checkbox, ListItemText, TextField } from '@mui/material';
-import TruncatedChip from 'features/offers/common/components/TruncatedChip';
+import TruncatedChip from 'features/products/common/components/TruncatedChip';
 
 function FormMultiSelectGroup({ control, name, items, ...props }) {
   const {

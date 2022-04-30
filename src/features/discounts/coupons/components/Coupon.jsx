@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { nanoid } from 'common/constants';
 import { getDiscountStatus } from 'features/discounts/discounts/utils';
 
 import { Box, Divider, Grid, IconButton, List, ListItem, ListSubheader, Paper, TablePagination } from '@mui/material';
-import TruncatedBox from 'features/offers/common/components/TruncatedBox';
+import TruncatedBox from 'features/products/common/components/TruncatedBox';
 import GridHeaderItem from 'common/components/dataDisplay/GridHeaderItem';
 import CouponModal from './CouponModal';
 import { Edit } from '@mui/icons-material';

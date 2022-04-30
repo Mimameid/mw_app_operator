@@ -9,7 +9,7 @@ import { Box, Grid, IconButton, ListItem, Switch } from '@mui/material';
 import AlertDialog from 'common/components/feedback/AlertDialog';
 import DiscountModal from 'features/discounts/discounts/components/DiscountModal';
 import GridItem from 'common/components/dataDisplay/GridItem';
-import TruncatedBox from 'features/offers/common/components/TruncatedBox';
+import TruncatedBox from 'features/products/common/components/TruncatedBox';
 import { DeleteForever, Edit } from '@mui/icons-material';
 
 function DiscountOverviewItem({ discount, setTriggerDelete, selected }) {
@@ -82,7 +82,7 @@ function DiscountOverviewItem({ discount, setTriggerDelete, selected }) {
                 onChange={setActiveHandler}
                 color="primary"
                 size="small"
-                inputProps={{ 'aria-label': 'dish available checkbox' }}
+                inputProps={{ 'aria-label': 'product available checkbox' }}
               />
             </Grid>
           ) : (

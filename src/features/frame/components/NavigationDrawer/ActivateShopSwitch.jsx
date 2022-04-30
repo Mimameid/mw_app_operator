@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectActiveOffer } from 'features/offers/offers/slice';
+import { selectActiveMenu } from 'features/products/menus/slice';
 import { updateShopActive } from 'features/shop/shop/actions';
 import { setDeactivatedShopNotification, setDrawerOpen } from 'features/frame/actions';
 
@@ -9,7 +9,7 @@ import AlertDialog from 'common/components/feedback/AlertDialog';
 
 function ActivateShopSwitch({ control, name, label, desc }) {
   const dispatch = useDispatch();
-  const activeOffer = useSelector(selectActiveOffer);
+  const activeMenu = useSelector(selectActiveMenu);
   const isShopActive = useSelector((state) => state.shop.shop.isActive);
   const drawerOpen = useSelector((state) => state.frame.drawerOpen);
 
@@ -25,7 +25,7 @@ function ActivateShopSwitch({ control, name, label, desc }) {
 
   const handleChange = (event, value) => {
     setActiveRef.current = value;
-    if (!activeOffer) {
+    if (!activeMenu) {
       dispatch(setDeactivatedShopNotification(true));
       return;
     }
