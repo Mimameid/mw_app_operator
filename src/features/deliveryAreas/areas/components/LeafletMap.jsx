@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { mapboxClient } from 'common/constants';
 
-import { MapContainer, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet';
 import LeafletPanel from './LeafletPanel/LeafletPanel';
 import AreaLayer from './AreaLayer/AreaLayer';
 import ShopMarker from './ShopMarker';
@@ -52,7 +52,7 @@ function LeafletMap() {
       center={shopLocation}
       zoom={11}
       doubleClickZoom={false}
-      zoomControl={true}
+      zoomControl={false}
       whenCreated={onMapCreate}
     >
       <TileLayer
@@ -62,6 +62,7 @@ function LeafletMap() {
       <ShopMarker draw={draw} shop={shop} shopLocation={shopLocation} />
       <LeafletPanel />
       <AreaLayer />
+      <ZoomControl position="bottomright" />
     </MapContainer>
   ) : null;
 }

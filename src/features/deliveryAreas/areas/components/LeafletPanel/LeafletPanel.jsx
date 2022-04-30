@@ -48,7 +48,7 @@ function LeafletPanel() {
     <Box
       sx={{
         position: 'absolute',
-        right: 10,
+        height: 1,
         top: 200,
         zIndex: 400,
         direction: 'rtl',

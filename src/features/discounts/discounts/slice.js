@@ -30,7 +30,7 @@ const discountsSlice = createSlice({
 });
 
 export const selectDiscountIdsToNames = createSelector(
-  (state) => state.offers.discount.byId,
+  (state) => state.menus.discount.byId,
   (byId) => {
     const discountArray = Object.values(byId);
     const discountIdsToNames = discountArray.map((elem, _) => {

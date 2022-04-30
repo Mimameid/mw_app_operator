@@ -4,15 +4,15 @@ import { setDeactivatedShopNotification } from 'features/frame/actions';
 
 import { Box, Paper, Slide } from '@mui/material';
 import { Alert, AlertTitle } from '@mui/material';
-import { selectActiveOffer } from 'features/offers/offers/slice';
+import { selectActiveMenu } from 'features/products/menus/slice';
 
-function getMessage(hasActiveOffer) {
-  if (hasActiveOffer) {
+function getMessage(hasActiveMenu) {
+  if (hasActiveMenu) {
     return 'Sie können Ihren Shop jederzeit links im Navigationsmenü online stellen.';
   } else {
     return (
       <span>
-        Um ihr Shop aktivieren zu können, erstellen sie <strong>eine aktive Speisekarte!</strong>
+        Um ihr Shop aktivieren zu können, erstellen sie <strong>eine aktives Menü!</strong>
       </span>
     );
   }
@@ -22,7 +22,7 @@ function DeactivatedShopNotification() {
   const dispatch = useDispatch();
   const isShopActive = useSelector((state) => state.shop.shop.isActive);
   const deactivatedShopNotificationOpen = useSelector((state) => state.frame.deactivatedShopNotificationOpen);
-  const activeOffer = useSelector(selectActiveOffer);
+  const activeMenu = useSelector(selectActiveMenu);
   const [open, setOpen] = useState(!isShopActive);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function DeactivatedShopNotification() {
     }
   }, [dispatch, deactivatedShopNotificationOpen]);
 
-  const message = getMessage(!!activeOffer);
+  const message = getMessage(!!activeMenu);
   return open ? (
     <Box
       sx={{

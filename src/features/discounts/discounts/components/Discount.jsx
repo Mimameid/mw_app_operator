@@ -4,7 +4,7 @@ import { getDiscountTypeName, weekdays } from 'common/constants';
 import { getDiscountStatus } from '../utils';
 
 import { Box, Divider, Grid, IconButton, Paper } from '@mui/material';
-import TruncatedBox from 'features/offers/common/components/TruncatedBox';
+import TruncatedBox from 'features/products/common/components/TruncatedBox';
 import DiscountModal from './DiscountModal';
 import { Edit } from '@mui/icons-material';
 

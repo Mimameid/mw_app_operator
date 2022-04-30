@@ -103,7 +103,7 @@ const defaultValues = {
     endTime: '10:00',
   },
   scope: {
-    itemType: discountTypes.offer,
+    itemType: discountTypes.menu,
     items: [],
   },
 };

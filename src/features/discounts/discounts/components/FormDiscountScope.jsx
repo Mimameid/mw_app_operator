@@ -1,18 +1,18 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectOfferIdsToNames } from 'features/offers/offers/slice';
-import { selectCategoryIdsToNames } from 'features/offers/categories/slice';
-import { selectDishIdsToNames } from 'features/offers/dishes/slice';
+import { selectMenuIdsToNames } from 'features/products/menus/slice';
+import { selectCategoryIdsToNames } from 'features/products/categories/slice';
+import { selectProductIdsToNames } from 'features/products/products/slice';
 import { discountTypes } from 'common/constants';
 
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from '@mui/material';
 import FormMultiSelectGroup from 'common/components/form/FormMultiSelectGroup';
 
 function FormDiscountScope({ type, control, setValue }) {
-  const offerIdsToNames = useSelector(selectOfferIdsToNames);
+  const menuIdsToNames = useSelector(selectMenuIdsToNames);
   const categoryIdsToNames = useSelector(selectCategoryIdsToNames);
-  const dishIdsToNames = useSelector(selectDishIdsToNames);
+  const productIdsToNames = useSelector(selectProductIdsToNames);
 
   const handleChange = (event, newValue) => {
     setValue('scope.itemType', newValue);
@@ -22,9 +22,9 @@ function FormDiscountScope({ type, control, setValue }) {
   let items;
   let label;
   switch (type) {
-    case discountTypes.offer:
-      items = offerIdsToNames;
-      label = 'Betroffene Speisekarten*';
+    case discountTypes.menu:
+      items = menuIdsToNames;
+      label = 'Betroffene Menüs*';
       break;
 
     case discountTypes.category:
@@ -32,9 +32,9 @@ function FormDiscountScope({ type, control, setValue }) {
       label = 'Betroffene Kategorien*';
       break;
 
-    case discountTypes.dish:
-      items = dishIdsToNames;
-      label = 'Betroffene Speisen*';
+    case discountTypes.product:
+      items = productIdsToNames;
+      label = 'Betroffene Angebote*';
 
       break;
     default:
@@ -54,11 +54,11 @@ function FormDiscountScope({ type, control, setValue }) {
       >
         <Tab
           sx={{ minWidth: '90px' }}
-          value={discountTypes.offer}
+          value={discountTypes.menu}
           label={
             <FormControlLabel
-              control={<Checkbox color="primary" checked={type === discountTypes.offer} size="small" />}
-              label={<Box fontSize="subtitle2.fontSize">Speisekarten</Box>}
+              control={<Checkbox color="primary" checked={type === discountTypes.menu} size="small" />}
+              label={<Box fontSize="subtitle2.fontSize">Angebote</Box>}
             />
           }
         />
@@ -74,11 +74,11 @@ function FormDiscountScope({ type, control, setValue }) {
         />
         <Tab
           sx={{ minWidth: '90px' }}
-          value={discountTypes.dish}
+          value={discountTypes.product}
           label={
             <FormControlLabel
-              control={<Checkbox color="primary" checked={type === discountTypes.dish} size="small" />}
-              label={<Box fontSize="subtitle2.fontSize">Speisen</Box>}
+              control={<Checkbox color="primary" checked={type === discountTypes.product} size="small" />}
+              label={<Box fontSize="subtitle2.fontSize">Angebote</Box>}
             />
           }
         />

@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import frame from 'features/frame';
 import mode from 'features/mode';
 import deliveryAreas from 'features/deliveryAreas/slices';
-import offers from 'features/offers';
+import menus from 'features/products';
 import discounts from 'features/discounts';
 import shop from 'features/shop';
 import snackbar from 'features/snackbar/slice';
@@ -12,7 +12,7 @@ import user from 'features/user';
 const appReducer = combineReducers({
   frame,
   deliveryAreas,
-  offers,
+  menus,
   discounts,
   user,
   snackbar,

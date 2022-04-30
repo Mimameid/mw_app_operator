@@ -42,7 +42,7 @@ function Overview() {
         }}
         value={value}
         onChange={handleChange}
-        aria-label="offer tabs"
+        aria-label="menu tabs"
         variant="fullWidth"
       >
         {tabNames.map((tabName, index) => (
